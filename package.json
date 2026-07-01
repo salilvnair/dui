@@ -1,0 +1,99 @@
+{
+  "name": "@salilvnair/dui",
+  "version": "1.0.0",
+  "description": "Daakia UI component library — shared across ck8t and daakia",
+  "type": "module",
+  "license": "MIT",
+  "author": "Salil V Nair",
+  "homepage": "https://github.com/salilvnair/dui#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/salilvnair/dui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/salilvnair/dui/issues"
+  },
+  "keywords": [
+    "react",
+    "component-library",
+    "ui",
+    "design-system",
+    "tailwind",
+    "monaco-editor",
+    "typescript"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./monaco-setup": {
+      "types": "./dist/monaco-setup.d.ts",
+      "import": "./dist/monaco-setup.js"
+    },
+    "./style.css": "./dist/style.css",
+    "./theme/core": {
+      "types": "./dist/lib/theme/core.d.ts",
+      "import": "./dist/theme/core.js"
+    },
+    "./theme/utils": {
+      "types": "./dist/lib/theme/utils.d.ts",
+      "import": "./dist/theme/utils.js"
+    },
+    "./theme/editor": {
+      "types": "./dist/lib/theme/editor.d.ts",
+      "import": "./dist/theme/editor.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:lib": "vite build --config vite.publish.config.ts",
+    "prepublishOnly": "npm run build:lib",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "highlight.js": "^11.10.0",
+    "marked": "^14.0.0"
+  },
+  "peerDependencies": {
+    "@monaco-editor/react": ">=4",
+    "monaco-editor": ">=0.50",
+    "react": ">=18",
+    "react-dom": ">=18",
+    "zustand": ">=4"
+  },
+  "peerDependenciesMeta": {
+    "@monaco-editor/react": {
+      "optional": true
+    },
+    "monaco-editor": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@monaco-editor/react": "^4.7.0",
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/node": "^26.1.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "monaco-editor": "^0.55.1",
+    "sucrase": "^3.35.1",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.0",
+    "vite": "^6.0.0",
+    "vite-plugin-dts": "^5.0.3"
+  }
+}

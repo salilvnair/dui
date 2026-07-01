@@ -1,0 +1,1510 @@
+@import "tailwindcss";
+
+@theme {
+  /* Indigo accent palette */
+  --color-primary: #6366f1;
+  --color-primary-hover: #818cf8;
+  --color-primary-light: #a5b4fc;
+  --color-primary-dark: #4f46e5;
+
+  /* Surface colors — VS Code Dark style with good contrast */
+  --color-surface: #1e1e1e;
+  --color-surface-hover: #2a2d2e;
+  --color-surface-active: #37373d;
+  --color-surface-border: #414141;
+
+  /* Panel / sidebar — slightly darker like VS Code sidebar */
+  --color-panel: #181818;
+  --color-panel-border: #333333;
+
+  /* Elevated surface (cards, modals) — brighter for pop */
+  --color-elevated: #252526;
+  --color-elevated-border: #474747;
+
+  /* Surface background — used by modals and overlay panels */
+  --color-surface-bg: #1e1e1e;
+
+  /* Input specific — clearly visible like VS Code inputs */
+  --color-input-bg: #2d2d2d;
+  --color-input-border: #3c3c3c;
+  --color-input-hover: #333333;
+  --color-input-focus: #2d2d2d;
+
+  /* Interactive / icon hover */
+  --color-icon-hover-bg: rgba(99, 102, 241, 0.15);
+  --color-item-hover-bg: #2a2d2e;
+
+  /* Text — bright and crisp */
+  --color-text-primary: #d4d4d4;
+  --color-text-secondary: #acacac;
+  --color-text-muted: #6d6d6d;
+
+  /* Status / methods */
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+
+  /* HTTP method colors */
+  --color-method-get: #22c55e;
+  --color-method-post: #f59e0b;
+  --color-method-put: #3b82f6;
+  --color-method-patch: #a78bfa;
+  --color-method-delete: #ef4444;
+  --color-method-head: #06b6d4;
+  --color-method-options: #ec4899;
+
+  /* Sidebar accent */
+  --color-sidebar-collections: #a855f7;
+  --color-sidebar-history: #2dd4bf;
+  --color-sidebar-environments: #4ade80;
+
+  /* Protocol accent */
+  --color-protocol-rest: #6366f1;
+  --color-protocol-graphql: #E535AB;
+  --color-protocol-websocket: #4caf50;
+  --color-protocol-sse: #f59e0b;
+  --color-protocol-socketio: #14b8a6;
+  --color-protocol-mqtt: #8b5cf6;
+  --color-protocol-grpc: #00b8b5;
+  --color-protocol-soap: #f97171;
+  --color-protocol-ai: #7EACB5;
+  --color-protocol-mcp: #60a5fa;
+
+  /* Mock server */
+  --color-mock-server: #eab308;
+  --color-mock-server-muted: #d4a017;
+  --color-try-button: #6366f1;
+
+  /* Settings */
+  --color-settings: #2a9d8f;
+
+  /* Response time thresholds */
+  --color-time-fast: #22c55e;
+  --color-time-moderate: #eab308;
+  --color-time-slow: #f97316;
+  --color-time-critical: #ef4444;
+
+  /* Misc */
+  --color-muted: #6b7280;
+  --color-muted-fallback: #9ca3af;
+  --color-status-5xx: #dc2626;
+
+  /* Context menu icon colors */
+  --color-ctx-rename: #22d3ee;
+  --color-ctx-duplicate: #a78bfa;
+  --color-ctx-pin: #fbbf24;
+  --color-ctx-close: #ef4444;
+  --color-ctx-close-batch: #fb923c;
+  --color-ctx-close-saved: #4ade80;
+  --color-ctx-close-all: #f43f5e;
+
+  /* Component — Button (granular per-state theming) */
+  --color-btn-primary-bg: var(--color-primary);
+  --color-btn-primary-hover: var(--color-primary-dark);
+  --color-btn-secondary-bg: var(--color-surface-hover);
+  --color-btn-secondary-hover: var(--color-surface-active);
+  --color-btn-secondary-border: var(--color-surface-border);
+  --color-btn-ghost-hover: var(--color-item-hover-bg);
+  --color-btn-danger-bg: var(--color-error);
+
+  /* Component — SideNav */
+  --color-sidenav-item-hover: var(--color-item-hover-bg);
+
+  /* Component — Toggle */
+  --color-toggle-on: var(--color-primary);
+  --color-toggle-thumb: #ffffff;
+
+  /* Component — Variable pill ({{var}} tokens in PromptLibraryEditorView / HighlightedInputView) */
+  --color-var-pill-bg: rgba(139, 92, 246, 0.18);
+  --color-var-pill-text: #c084fc;
+  --color-var-pill-border: rgba(139, 92, 246, 0.38);
+
+  /* Component — PromptCardView */
+  --color-promptcard-avatar-bg: color-mix(in srgb, var(--color-protocol-ai) 20%, var(--color-surface));
+  --color-promptcard-avatar-text: var(--color-protocol-ai);
+  --color-promptcard-title: var(--color-text-primary);
+  --color-promptcard-body: var(--color-text-muted);
+  --color-promptcard-chip: var(--color-protocol-ai);
+  --color-promptcard-badge-bg: color-mix(in srgb, var(--color-protocol-ai) 15%, transparent);
+  --color-promptcard-badge-text: var(--color-protocol-ai);
+  --color-promptcard-action-icon: var(--color-text-muted);
+  --color-promptcard-delete-icon: var(--color-error);
+
+  /* Component — Tooltip */
+  --color-tooltip-bg: color-mix(in srgb, var(--color-elevated) 95%, var(--color-primary) 5%);
+  --color-tooltip-text: var(--color-text-primary);
+  --color-tooltip-border: var(--color-elevated-border);
+
+  /* Component — Modal */
+  --color-modal-backdrop: rgba(0, 0, 0, 0.5);
+  --color-modal-header-tint: color-mix(in srgb, var(--color-surface) 97%, var(--color-primary) 3%);
+
+  /* Component — Context Menu */
+  --color-ctx-backdrop: transparent;
+
+  /* Component — TagInputView */
+  --color-tag-bg: color-mix(in srgb, var(--color-primary) 12%, transparent);
+  --color-tag-text: var(--color-primary);
+  --color-tag-border: color-mix(in srgb, var(--color-primary) 25%, transparent);
+  --color-tag-remove-hover: var(--color-error);
+
+  /* Component — PillTabsView */
+  --color-pilltab-track-bg: var(--color-surface);
+  --color-pilltab-indicator-bg: color-mix(in srgb, var(--color-primary) 12%, transparent);
+  --color-pilltab-indicator-border: color-mix(in srgb, var(--color-primary) 25%, transparent);
+  --color-pilltab-text-active: var(--color-primary);
+  --color-pilltab-text-inactive: var(--color-text-secondary);
+
+  /* Component — DurationInputView */
+  --color-dur-segment-bg: var(--color-surface);
+  --color-dur-segment-hover: color-mix(in srgb, var(--color-primary) 8%, transparent);
+  --color-dur-segment-selected: color-mix(in srgb, var(--color-primary) 12%, transparent);
+
+  /* Component — DataTableView */
+  --color-table-stripe: color-mix(in srgb, var(--color-text-primary) 2%, transparent);
+  --color-table-header-bg: color-mix(in srgb, var(--color-text-primary) 4%, transparent);
+  --color-table-border: var(--color-surface-border);
+
+  /* Component — CodeBlockView */
+  --color-codeblock-bg: color-mix(in srgb, var(--color-text-primary) 3%, transparent);
+  --color-codeblock-header-bg: color-mix(in srgb, var(--color-text-primary) 4%, transparent);
+  --color-codeblock-border: var(--color-surface-border);
+
+  /* Component — SideNavView */
+  --color-sidenav-active-bg: color-mix(in srgb, var(--color-primary) 15%, transparent);
+  --color-sidenav-active-text: var(--color-primary);
+  --color-sidenav-hover-bg: var(--color-surface-hover);
+
+  /* Component — ResizablePanelView */
+  --color-resizable-grip: var(--color-panel-border);
+  --color-resizable-grip-hover: var(--color-primary);
+
+  /* Component — StageView */
+  --color-stage-check: var(--color-success);
+  --color-stage-spin: var(--color-primary);
+  --color-stage-pulse: var(--color-text-muted);
+  --color-stage-error: var(--color-error);
+
+  /* Component — LoaderView */
+  --color-loader-accent: var(--color-primary);
+  --color-loader-track: color-mix(in srgb, var(--color-text-primary) 10%, transparent);
+
+  /* Component — ChipView */
+  --color-chip-active-text: var(--color-btn-primary-text, #ffffff);
+
+  /* Component — IconButtonView */
+  --color-iconbtn-bg-hover: var(--color-surface-hover);
+  --color-iconbtn-bg-active: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  --color-iconbtn-border: var(--color-surface-border);
+
+  /* Component — StatsCardView */
+  --color-statscard-bg: var(--color-surface);
+  --color-statscard-border: var(--color-surface-border);
+  --color-statscard-trend-up: var(--color-success);
+  --color-statscard-trend-down: var(--color-error);
+
+  /* Component — EmptyStateView */
+  --color-emptystate-icon: var(--color-text-muted);
+  --color-emptystate-title: var(--color-text-primary);
+  --color-emptystate-desc: var(--color-text-secondary);
+
+  /* Component — AIButtonView */
+  --color-aibtn-bg: color-mix(in srgb, var(--color-protocol-ai) 10%, transparent);
+  --color-aibtn-border: color-mix(in srgb, var(--color-protocol-ai) 25%, transparent);
+  --color-aibtn-text: var(--color-protocol-ai);
+  --color-aibtn-bg-hover: color-mix(in srgb, var(--color-protocol-ai) 24%, transparent);
+
+  /* Component — Prompt Library avatars (12 per-category colors) */
+  --color-prompt-avatar-rest: var(--color-protocol-rest);
+  --color-prompt-avatar-curl: var(--color-method-post);
+  --color-prompt-avatar-mock: var(--color-protocol-grpc);
+  --color-prompt-avatar-test: var(--color-success);
+  --color-prompt-avatar-knowledge: var(--color-protocol-ai);
+  --color-prompt-avatar-ask: var(--color-primary);
+  --color-prompt-avatar-explain: var(--color-protocol-graphql);
+  --color-prompt-avatar-followup: var(--color-protocol-websocket);
+  --color-prompt-avatar-generate: var(--color-warning);
+  --color-prompt-avatar-suggest: var(--color-protocol-soap);
+  --color-prompt-avatar-headers: var(--color-method-get);
+  --color-prompt-avatar-body: var(--color-method-post);
+
+  /* JSON TREE / DEBUGGER TOKEN COLORS — VS Code Dark+ palette */
+  --color-debug-key:     #4fc3f7;
+  --color-debug-string:  #ce9178;
+  --color-debug-number:  #b5cea8;
+  --color-debug-boolean: #569cd6;
+  --color-debug-null:    #808080;
+  --color-debug-object:  #9cdcfe;
+  --color-debug-fn:      #808080;
+  --color-debug-scope:   #c586c0;
+}
+
+/* ─── Light theme — VS Code Light+ / GitHub Light / Atom One Light blend ─── */
+.vscode-light,
+[data-theme="light"] {
+  /* Accent / primary — deeper indigo for light bg contrast */
+  --color-primary: #4338ca;
+  --color-primary-hover: #4f46e5;
+  --color-primary-light: #6366f1;
+  --color-primary-dark: #3730a3;
+
+  /* Surface — white editor, light gray panel (VS Code Light sidebar: #f3f3f3) */
+  --color-surface: #ffffff;
+  --color-surface-hover: #f0f0f0;
+  --color-surface-active: #e8e8e8;
+  --color-surface-border: #d8d8d8;
+
+  /* Panel / sidebar — VS Code Light #f3f3f3 */
+  --color-panel: #f3f3f3;
+  --color-panel-border: #d0d0d0;
+
+  /* Elevated — dialogs, dropdowns */
+  --color-elevated: #ffffff;
+  --color-elevated-border: #d0d0d0;
+
+  --color-surface-bg: #ffffff;
+
+  /* Inputs — VS Code Light: white bg, #cecece border */
+  --color-input-bg: #ffffff;
+  --color-input-border: #d0d0d0;
+  --color-input-hover: #f5f5f5;
+  --color-input-focus: #ffffff;
+
+  --color-icon-hover-bg: rgba(0, 0, 0, 0.06);
+  --color-item-hover-bg: rgba(0, 0, 0, 0.04);
+
+  /* Text — GitHub Light palette */
+  --color-text-primary: #1f2328;
+  --color-text-secondary: #57606a;
+  --color-text-muted: #8c959f;
+
+  --color-success: #1a7f37;
+  --color-warning: #b55e00;
+  --color-error: #cf222e;
+  --color-info: #4338ca;
+
+  /* HTTP method colors — saturated for light bg visibility */
+  --color-method-get: #1a7f37;
+  --color-method-post: #b55e00;
+  --color-method-put: #1d6ae5;
+  --color-method-patch: #7c3aed;
+  --color-method-delete: #cf222e;
+  --color-method-head: #0891b2;
+  --color-method-options: #c026d3;
+
+  --color-sidebar-collections: #8b5cf6;
+  --color-sidebar-history: #0d9488;
+  --color-sidebar-environments: #1a7f37;
+
+  /* Protocol accents — deeper for light background readability */
+  --color-protocol-rest: #4338ca;
+  --color-protocol-graphql: #b91c8c;
+  --color-protocol-websocket: #15803d;
+  --color-protocol-sse: #b55e00;
+  --color-protocol-socketio: #0d9488;
+  --color-protocol-mqtt: #7c3aed;
+  --color-protocol-grpc: #0891b2;
+  --color-protocol-soap: #dc2626;
+  --color-protocol-ai: #be123c;
+  --color-protocol-mcp: #475569;
+
+  --color-mock-server: #b55e00;
+  --color-mock-server-muted: #92400e;
+  --color-try-button: #4338ca;
+
+  --color-settings: #1f7a6e;
+
+  --color-time-fast: #1a7f37;
+  --color-time-moderate: #b55e00;
+  --color-time-slow: #c2410c;
+  --color-time-critical: #cf222e;
+
+  --color-muted: #6b7280;
+  --color-muted-fallback: #9ca3af;
+  --color-status-5xx: #991b1b;
+
+  --color-ctx-rename: #0891b2;
+  --color-ctx-duplicate: #7c3aed;
+  --color-ctx-pin: #b55e00;
+  --color-ctx-close: #cf222e;
+  --color-ctx-close-batch: #ea580c;
+  --color-ctx-close-saved: #1a7f37;
+  --color-ctx-close-all: #9f1239;
+}
+
+:root {
+  --font-sans: "Inter", var(--vscode-font-family, system-ui, -apple-system, sans-serif);
+  --font-mono: "JetBrains Mono", "Fira Code", var(--vscode-editor-font-family, monospace);
+  --radius: 8px;
+  --radius-sm: 6px;
+  --radius-lg: 12px;
+
+  font-family: var(--font-sans);
+  font-size: var(--vscode-font-size, 13px);
+  line-height: 1.5;
+  color: var(--color-text-primary);
+  background-color: var(--color-panel);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* ─── Animations ─── */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Breathing / glowing animation for connected state */
+@keyframes breathing {
+  0%, 100% { opacity: 0.6; box-shadow: 0 0 4px currentColor; }
+  50% { opacity: 1; box-shadow: 0 0 12px currentColor, 0 0 24px currentColor; }
+}
+@keyframes breathingSweep {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.dui-breathing-connected {
+  animation: breathing 2.5s ease-in-out infinite;
+}
+
+/* Mock server running — smooth, subtle scale-pulse (not the jarring glow) */
+@keyframes mockServerPulse {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
+.dui-mock-server-running {
+  animation: mockServerPulse 2.4s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* iOS-style red badge pulse (badge itself, not the icon) */
+@keyframes badgePop {
+  0% { transform: scale(0.7); opacity: 0; }
+  60% { transform: scale(1.15); }
+  100% { transform: scale(1); opacity: 1; }
+}
+.dui-mock-badge-enter {
+  animation: badgePop 300ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.dui-breathing-sweep {
+  background: linear-gradient(90deg, transparent 0%, currentColor 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: breathingSweep 3s ease-in-out infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.dui-breathing-btn {
+  position: relative;
+  overflow: hidden;
+  animation: breathingRedGlow 2.5s ease-in-out infinite;
+}
+.dui-breathing-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(239,68,68,0.18) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: breathingSweep 2.5s ease-in-out infinite;
+}
+
+@keyframes breathingRedGlow {
+  0%, 100% { box-shadow: 0 0 4px rgba(239,68,68,0.15); }
+  50% { box-shadow: 0 0 12px rgba(239,68,68,0.35), 0 0 4px rgba(239,68,68,0.2); }
+}
+
+/* Hide scrollbar but keep scroll functionality */
+.dui-scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.dui-scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* ─── Disable Tailwind v4 default focus ring ─── */
+
+*:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* ─── Global input styling (in @layer base so Tailwind utilities can override) ─── */
+
+@layer base {
+  input[type="text"],
+  input[type="password"],
+  input[type="url"],
+  input[type="email"],
+  input[type="number"],
+  textarea {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    padding: 9px 12px;
+    background: var(--color-input-bg);
+    border: 1px solid var(--color-input-border);
+    border-radius: 4px;
+    color: var(--color-text-primary);
+    transition: border-color 140ms, box-shadow 140ms, background 140ms;
+  }
+
+  input[type="text"]::placeholder,
+  input[type="password"]::placeholder,
+  textarea::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  input[type="text"]:hover,
+  input[type="password"]:hover,
+  textarea:hover {
+    border-color: #505050;
+    background: var(--color-input-hover);
+  }
+
+  input[type="text"]:focus,
+  input[type="password"]:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--color-accent, var(--color-primary));
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-accent, var(--color-primary)) 25%, transparent);
+    background: var(--color-input-focus);
+  }
+}
+
+/* ─── Strip number input spinners globally ─── */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+input[type="number"] {
+  -moz-appearance: textfield !important;
+  appearance: textfield !important;
+}
+
+/* ─── Unified URL Bar ─── */
+
+.dui-url-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 12px;
+  overflow: visible;
+  position: relative;
+  height: 34px;
+  flex-shrink: 0;
+}
+
+/* Uniform dropdown height inside URL bars */
+.dui-url-bar .sd-trigger {
+  min-height: 36px;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 6px;
+  border: 1px solid var(--color-input-border);
+  background: var(--color-input-bg);
+}
+.dui-url-bar .sd-trigger:hover {
+  background: var(--color-input-hover);
+  border-color: #505050;
+}
+
+.dui-url-bar:hover {
+}
+
+.dui-url-bar:focus-within {
+}
+
+.dui-url-bar-method {
+  flex-shrink: 0;
+}
+
+.dui-url-bar-method .sd-wrap {
+  position: relative;
+}
+
+.dui-url-bar-method .sd-trigger {
+  min-width: 72px;
+  font-weight: 700;
+  font-size: 11.5px;
+  letter-spacing: 0.5px;
+  border: 1px solid var(--color-input-border);
+  border-radius: 6px;
+  background: var(--color-input-bg);
+  min-height: 36px;
+  height: 36px;
+  padding: 0 12px;
+}
+
+.dui-mock-method .sd-trigger {
+  min-width: 64px;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  border: 1px solid var(--color-input-border);
+  border-radius: 6px;
+  background: var(--color-input-bg);
+  min-height: 32px;
+  height: 32px;
+  padding: 0 10px;
+}
+
+.dui-mock-method .sd-trigger:hover {
+  background: var(--color-input-hover);
+  border-color: #505050;
+}
+
+.dui-mock-method .sd-trigger.open {
+  background: rgba(234, 179, 8, 0.12);
+  box-shadow: 0 0 0 1px rgba(234, 179, 8, 0.3);
+  border-color: var(--color-mock-server);
+}
+
+.dui-url-bar-method .sd-trigger:hover {
+  background: var(--color-input-hover);
+  border-color: #505050;
+}
+
+.dui-url-bar-method .sd-trigger.open {
+  background: rgba(99, 102, 241, 0.12);
+  box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.3);
+  border-color: var(--color-primary);
+}
+
+/* ── Highlighted Input (variable tokens) ── */
+
+/* Shared wrapper — used by the legacy shared HighlightedInput (REST/GQL/gRPC URL bars) */
+.dui-highlighted-input-wrapper {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── Legacy shared HighlightedInput (mirror + native input — used by REST/GQL/gRPC/etc. URL bars) ── */
+
+.dui-highlighted-input-mirror {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 12px;
+  font-size: 13px;
+  line-height: 36px;
+  white-space: nowrap;
+  pointer-events: none;
+  color: transparent;
+  overflow: hidden;
+}
+
+.dui-highlighted-input-mirror .var-highlight {
+  color: var(--color-primary);
+  font-weight: 500;
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  border-radius: 3px;
+  padding: 1px 2px;
+}
+
+.dui-highlighted-input-mirror .var-escape-highlight {
+  color: var(--color-warning);
+  font-weight: 500;
+  background: color-mix(in srgb, var(--color-warning) 10%, transparent);
+  border-radius: 3px;
+  padding: 1px 2px;
+}
+
+.dui-highlighted-input-mirror .placeholder-text {
+  color: var(--color-text-muted);
+}
+
+.dui-highlighted-input {
+  width: 100%;
+  padding: 0 12px;
+  font-size: 13px;
+  background: var(--color-input-bg);
+  border: 1px solid var(--color-input-border);
+  border-radius: 6px;
+  color: var(--color-text-primary);
+  height: 36px;
+  min-height: unset;
+  position: relative;
+  caret-color: var(--color-text-primary);
+  box-sizing: border-box;
+}
+
+.dui-highlighted-input::placeholder {
+  color: transparent;
+}
+
+.dui-highlighted-input:hover {
+  border-color: #505050;
+}
+
+.dui-highlighted-input:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: var(--color-accent, var(--color-primary));
+}
+
+/* Smooth expand/collapse animation */
+.dui-collapse-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 200ms ease-out;
+}
+.dui-collapse-wrapper.expanded {
+  grid-template-rows: 1fr;
+}
+.dui-collapse-wrapper > .dui-collapse-inner {
+  overflow: hidden;
+}
+
+.dui-url-bar-input {
+  flex: 1;
+  padding: 0 12px;
+  font-size: 13px;
+  background: var(--color-input-bg);
+  border: 1px solid var(--color-input-border);
+  border-radius: 6px;
+  color: var(--color-text-primary);
+  height: 36px;
+  min-height: unset;
+}
+
+.dui-url-bar-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.dui-url-bar-input:hover {
+  background: var(--color-input-hover);
+  border-color: #505050;
+}
+
+.dui-url-bar-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-accent, var(--color-primary)) 25%, transparent);
+  border-color: var(--color-accent, var(--color-primary));
+  background: var(--color-input-bg);
+}
+
+.dui-url-bar-send {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 18px;
+  margin: 0;
+  height: 36px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  color: #fff;
+  background: var(--color-primary);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 140ms, box-shadow 140ms, transform 80ms;
+}
+
+.dui-url-bar-send:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+  box-shadow: 0 2px 16px rgba(99, 102, 241, 0.4), 0 0 0 1px rgba(99, 102, 241, 0.2);
+}
+
+.dui-url-bar-send:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.dui-url-bar-send:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.dui-url-bar-send-loading {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dui-url-bar-spinner {
+  width: 14px;
+  height: 14px;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Progress overlay spinning circle */
+.dui-progress-spin-ring {
+  animation: spin 1.2s linear infinite;
+  transform-origin: center center;
+}
+.dui-progress-pulse-ring {
+  animation: progress-pulse 1.2s ease-in-out infinite;
+  transform-origin: center center;
+}
+@keyframes progress-pulse {
+  0%, 100% { opacity: 0.15; transform: scale(0.85); }
+  50% { opacity: 0.9; transform: scale(1.15); }
+}
+
+.dui-url-bar-env {
+  margin-left: 8px;
+  flex-shrink: 0;
+}
+
+.dui-url-bar-env .sd-trigger {
+  height: 36px;
+  min-height: 36px;
+  padding: 0 10px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+@keyframes confirm-in {
+  from { opacity: 0; transform: scale(0.95) translateY(-4px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes toastSlideUp {
+  from { opacity: 0; transform: translateY(12px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── AI Generate modal snake-border glow animation ─────────────── */
+@keyframes ai-snake-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ─── Custom scrollbar (protocol-aware, thin & colorful) ─── */
+
+/* Base scrollbar — always visible track + thumb */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: color-mix(in srgb, var(--color-surface-border) 60%, var(--color-surface));
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-accent) 55%, var(--color-surface-border));
+  border-radius: 99px;
+  min-height: 24px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--color-accent) 85%, var(--color-surface-border));
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox scrollbar — always visible */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-surface-border)) color-mix(in srgb, var(--color-surface-border) 60%, var(--color-surface));
+}
+
+/* ─── Utility ─── */
+
+.dui-scrollbar-gutter-stable {
+  scrollbar-gutter: stable;
+}
+
+.dui-truncate-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ─── Monaco editor — themed scrollbar matching Daakia's global style ─── */
+/*
+ * Monaco renders its own DOM-based scrollbar (not the browser native one),
+ * so ::-webkit-scrollbar has no effect on it. We override Monaco's CSS classes
+ * directly, scoped to .dui-editor-shell so other Monaco instances are unaffected.
+ * --editor-accent is set on the shell by EditorView from the accentColor prop,
+ * falling back to the app's global --color-accent.
+ */
+
+.dui-editor-shell .monaco-scrollable-element > .scrollbar > .slider {
+  background: color-mix(in srgb, var(--editor-accent, var(--color-accent)) 50%, transparent) !important;
+  border-radius: 99px !important;
+  transition: background 120ms !important;
+}
+.dui-editor-shell .monaco-scrollable-element > .scrollbar > .slider:hover {
+  background: color-mix(in srgb, var(--editor-accent, var(--color-accent)) 75%, transparent) !important;
+}
+.dui-editor-shell .monaco-scrollable-element > .scrollbar > .slider.active {
+  background: color-mix(in srgb, var(--editor-accent, var(--color-accent)) 90%, transparent) !important;
+}
+
+/* ─── Monaco Find/Replace Widget ─── */
+
+.monaco-editor .find-widget {
+  top: 4px !important;
+  right: 14px !important;
+}
+
+.monaco-editor .find-widget .monaco-inputbox .input {
+  font-size: 12px;
+}
+
+/* Fix tooltip flickering on find widget action buttons —
+   The ::after overlay with z-index caused hover-event interference.
+   pointer-events: none keeps the expanded hit area without stealing events. */
+.monaco-editor .find-widget .button {
+  position: relative;
+}
+
+.monaco-editor .find-widget .button::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  pointer-events: none;
+}
+
+/* Prevent Monaco hover tooltip from stealing pointer events and causing flicker.
+   hoverService.setupDelayedHover() renders as .monaco-hover.workbench-hover appended
+   to document.body — outside .monaco-editor scope — so the old scoped rule never fired.
+   Unscoped rules here catch both the body-level workbench hover and editor-level hovers. */
+.monaco-hover.workbench-hover,
+.workbench-hover-container,
+.monaco-editor .monaco-hover,
+.monaco-editor .monaco-editor-hover {
+  pointer-events: none !important;
+}
+
+/* ─── Daakia Debug Variable Hover (custom popup) ─── */
+.dui-daakia-debug-hover {
+  position: fixed;
+  z-index: 99999;
+  min-width: 120px;
+  max-width: 320px;
+  background: var(--color-surface, #1e1e2e);
+  border: 1px solid var(--color-surface-border, #333);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  pointer-events: auto;
+}
+
+.dui-daakia-debug-hover__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--color-surface-border, #333);
+}
+
+.dui-daakia-debug-hover__name {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-primary, #e4e4e7);
+}
+
+.dui-daakia-debug-hover__type {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dui-daakia-debug-hover__value {
+  padding: 8px 12px;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--color-text-secondary, #a1a1aa);
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* ─── Monaco Breakpoint Glyph ─── */
+
+.dui-daakia-bp-glyph {
+  cursor: pointer;
+}
+
+.dui-daakia-bp-glyph::before {
+  content: '';
+  position: absolute;
+  left: calc(50% + 2px);
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-error, #ef4444);
+}
+
+/* Disabled breakpoint (gray hollow circle) */
+.dui-daakia-bp-glyph--disabled {
+  cursor: pointer;
+}
+
+.dui-daakia-bp-glyph--disabled::before {
+  content: '';
+  position: absolute;
+  left: calc(50% + 2px);
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1.5px solid var(--color-text-muted, #6b7280);
+  opacity: 0.6;
+}
+
+/* Conditional breakpoint (orange dot) */
+.dui-daakia-bp-glyph--conditional {
+  cursor: pointer;
+}
+
+.dui-daakia-bp-glyph--conditional::before {
+  content: '';
+  position: absolute;
+  left: calc(50% + 2px);
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-warning, #eab308);
+}
+
+/* Hover hint (faded red dot on hover over glyph margin) */
+.dui-daakia-bp-glyph--hover {
+  cursor: pointer;
+}
+
+.dui-daakia-bp-glyph--hover::before {
+  content: '';
+  position: absolute;
+  left: calc(50% + 2px);
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.3);
+}
+
+.monaco-editor .glyph-margin {
+  cursor: pointer;
+}
+
+/* Paused line — yellow highlight (VS Code-style current execution line) */
+.dui-daakia-paused-line {
+  background: rgba(229, 195, 53, 0.12) !important;
+  border-left: 2px solid #e5c335;
+}
+
+/* Breakpoint line — light reddish background (IntelliJ-style) */
+.dui-daakia-bp-line {
+  background: rgba(255, 82, 82, 0.06) !important;
+}
+
+.dui-daakia-paused-line__arrow {
+  position: relative;
+}
+
+.dui-daakia-paused-line__arrow::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 14px;
+  height: 14px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%23e5c335' d='M8.879 14H5C3.897 14 3 13.103 3 12V4C3 2.897 3.897 2 5 2H8.879C9.405 2 9.921 2.213 10.293 2.586L14.505 6.798C14.826 7.119 15.003 7.546 15.003 8C15.003 8.454 14.826 8.881 14.505 9.202L10.293 13.414C9.921 13.787 9.405 14 8.879 14Z'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Combined: arrow on a breakpoint line — yellow arrow with red dot inside */
+.dui-daakia-paused-line__arrow--with-bp {
+  position: relative;
+}
+
+.dui-daakia-paused-line__arrow--with-bp::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%23e5c335' d='M8.879 14H5C3.897 14 3 13.103 3 12V4C3 2.897 3.897 2 5 2H8.879C9.405 2 9.921 2.213 10.293 2.586L14.505 6.798C14.826 7.119 15.003 7.546 15.003 8C15.003 8.454 14.826 8.881 14.505 9.202L10.293 13.414C9.921 13.787 9.405 14 8.879 14Z'/%3E%3Ccircle cx='7' cy='8' r='2' fill='%23ef4444'/%3E%3C/svg%3E");
+}
+
+/* ─── Sidebar shimmer skeleton animation ─── */
+.dui-sidebar-shimmer {
+  animation: sidebarShimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes sidebarShimmer {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* ─── WSDL XML Syntax Highlighting ─── */
+.dui-wsdl-tag { color: #e879f9; }
+.dui-wsdl-attr { color: #60a5fa; }
+.dui-wsdl-val { color: #4ade80; }
+.dui-wsdl-proc { color: #fbbf24; opacity: 0.8; }
+.dui-wsdl-comment { color: #6b7280; font-style: italic; }
+.dui-wsdl-text { color: var(--color-text-primary); }
+
+/* ─── Monaco Find widget: fix X close button vertical alignment ──────────────
+   Real class: .button.codicon.codicon-widget-close (SimpleButton in findWidget.js)
+   Monaco positions it `position:absolute; top:5px` in a 33px widget.
+   Button total height = 16px + 3px padding × 2 = 22px → perfect center = (33-22)/2 = 5.5px.
+   Use calc(50% - 11px) so it works regardless of our border overrides.
+   ─────────────────────────────────────────────────────────────────────────── */
+.monaco-editor .find-widget > .button.codicon-widget-close {
+  top: calc(50% - 11px) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Ensure the find widget has a solid non-transparent background */
+.monaco-editor .find-widget {
+  background-color: var(--color-surface-bg, #1e1e1e) !important;
+  border: 1px solid var(--color-surface-border, #414141) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4) !important;
+}
+
+/* ─── ConvEngineChat fullscreen integration overrides ─── */
+/* Strip the outer panel border/shadow so it blends into the Daakia AI panel */
+.dui-ce-chat-root--fullscreen {
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+.dui-ce-fullscreen {
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  height: 100% !important;
+}
+.dui-ce-fullscreen-header {
+  border-bottom: 1px solid var(--color-surface-border) !important;
+  background: var(--color-surface) !important;
+}
+
+/* ─── Composer input — remove inner colored rectangle box ─── */
+/* The ce-composer-input textarea has its own border/background drawn INSIDE
+   the outer rounded composer wrapper, creating a "box inside a box" effect.
+   Strip it so only the outer composer rounded border is visible. */
+.dui-ce-composer-input {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+/* Also ensure the send button doesn't have a colored box background */
+.dui-ce-composer-send {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* ─── Multiselect HUD (ditto dmcr_copilot pattern) ─────────────────────────── */
+.dui-bs-multiselect-hud {
+  position: sticky;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: fit-content;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  background: var(--color-panel, #111827);
+  border: 1px solid rgba(99,102,241,0.45);
+  border-radius: 99px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.55), 0 0 0 1px rgba(99,102,241,0.12);
+  backdrop-filter: blur(8px);
+  white-space: nowrap;
+  animation: bs-hud-in 120ms ease;
+  margin: 12px auto 0;
+}
+@keyframes bs-hud-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(8px) scale(0.95); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0)    scale(1);   }
+}
+.dui-bs-multiselect-hud-count {
+  font-size: 12px; font-weight: 600; color: #a5b4fc;
+  padding: 0 4px; letter-spacing: 0.02em;
+}
+.dui-bs-multiselect-hud-divider {
+  width: 1px; height: 18px;
+  background: rgba(99,102,241,0.25); margin: 0 2px;
+}
+.dui-bs-multiselect-hud-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px; border: none; border-radius: 99px;
+  font-size: 12px; font-weight: 500; cursor: pointer;
+  transition: background 120ms, color 120ms;
+  background: rgba(99,102,241,0.12); color: #c7d2fe;
+}
+.dui-bs-multiselect-hud-btn:hover { background: rgba(99,102,241,0.28); color: #fff; }
+.dui-bs-multiselect-hud-btn-danger { background: rgba(239,68,68,0.1); color: #fca5a5; }
+.dui-bs-multiselect-hud-btn-danger:hover { background: rgba(239,68,68,0.25); color: #fff; }
+.dui-bs-multiselect-hud-btn-muted { background: transparent; color: #64748b; }
+.dui-bs-multiselect-hud-btn-muted:hover { background: rgba(255,255,255,0.06); color: #94a3b8; }
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   MdViewer — rich Markdown renderer for AI responses (moved from dynamic JS
+   injection to static CSS bundle to avoid VS Code webview CSP issues).
+   All rules scoped under .dui-mdv-root so they never bleed into other UI.
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* ── MdViewer root ──────────────────────────────────────────────────── */
+.dui-mdv-root {
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--color-text-primary, #e4e4e7);
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* ── Headings ───────────────────────────────────────────────────────── */
+.dui-mdv-root h1, .dui-mdv-root h2, .dui-mdv-root h3, .dui-mdv-root h4, .dui-mdv-root h5 {
+  font-weight: 600;
+  margin: 0.9em 0 0.35em;
+  line-height: 1.3;
+  color: var(--color-text-primary, #f4f4f5);
+}
+.dui-mdv-root h1 { font-size: 1.22em; border-bottom: 1px solid rgba(255,255,255,0.07); padding-bottom: 0.3em; }
+.dui-mdv-root h2 { font-size: 1.1em; }
+.dui-mdv-root h3 { font-size: 1em; color: #c4b5fd; }
+.dui-mdv-root h4 { font-size: 0.9em; opacity: 0.8; }
+.dui-mdv-root h5 { font-size: 0.85em; opacity: 0.7; }
+
+/* ── Paragraphs ─────────────────────────────────────────────────────── */
+.dui-mdv-root p { margin: 0.45em 0; }
+.dui-mdv-root p:first-child { margin-top: 0; }
+.dui-mdv-root p:last-child  { margin-bottom: 0; }
+
+/* ── ConvEngine chat — tighter spacing inside chat bubbles ─────────── */
+/* Root: reduce line-height from 1.7 → 1.5 — this is the main cause of
+   large gaps, each block element gets (1.7-1)/2 * 12.5px = 4.4px of
+   half-leading above AND below, adding ~9px of invisible whitespace
+   between every adjacent block pair even before any margins apply.     */
+.dui-daakia-chat-md .dui-mdv-root { line-height: 1.5; }
+.dui-daakia-chat-md .dui-mdv-root p { margin: 0.1em 0; }
+.dui-daakia-chat-md .dui-mdv-root p:first-child { margin-top: 0; }
+.dui-daakia-chat-md .dui-mdv-root p:last-child  { margin-bottom: 0; }
+.dui-daakia-chat-md .dui-mdv-root ul,
+.dui-daakia-chat-md .dui-mdv-root ol { margin: 0.15em 0; }
+.dui-daakia-chat-md .dui-mdv-root li { margin: 0.06em 0; }
+.dui-daakia-chat-md .dui-mdv-root h1,
+.dui-daakia-chat-md .dui-mdv-root h2,
+.dui-daakia-chat-md .dui-mdv-root h3,
+.dui-daakia-chat-md .dui-mdv-root h4,
+.dui-daakia-chat-md .dui-mdv-root h5 { margin: 0.4em 0 0.15em; }
+.dui-daakia-chat-md .dui-mdv-root hr { margin: 0.4em 0; }
+.dui-daakia-chat-md .dui-mdv-root .dui-mdv-code-block { margin: 0.3em 0; }
+
+/* ── Inline code ────────────────────────────────────────────────────── */
+.dui-mdv-root .dui-mdv-inline-code,
+.dui-mdv-root code:not(.hljs) {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+  font-size: 0.87em;
+  background: rgba(139,92,246,0.13);
+  color: #c084fc;
+  padding: 1px 5px;
+  border-radius: 4px;
+  border: 1px solid rgba(139,92,246,0.22);
+  letter-spacing: 0;
+}
+
+/* ── Bold / italic / strikethrough ─────────────────────────────────── */
+.dui-mdv-root strong { font-weight: 650; color: #f4f4f5; }
+.dui-mdv-root em     { font-style: italic; color: #d4d4d8; }
+.dui-mdv-root del    { text-decoration: line-through; opacity: 0.55; }
+
+/* ── Links ──────────────────────────────────────────────────────────── */
+.dui-mdv-root a {
+  color: var(--color-protocol-ai, #818cf8);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+.dui-mdv-root a:hover { opacity: 0.8; }
+
+/* ── Horizontal rule ────────────────────────────────────────────────── */
+.dui-mdv-root hr { border: none; border-top: 1px solid rgba(255,255,255,0.09); margin: 0.9em 0; }
+
+/* ── Lists ──────────────────────────────────────────────────────────── */
+.dui-mdv-root ul, .dui-mdv-root ol {
+  padding-left: 1.35em;
+  margin: 0.35em 0;
+}
+.dui-mdv-root li { margin: 0.18em 0; }
+.dui-mdv-root ul > li::marker { color: rgba(139,92,246,0.7); }
+.dui-mdv-root ol > li::marker { color: rgba(139,92,246,0.7); font-variant-numeric: tabular-nums; }
+.dui-mdv-root li > ul, .dui-mdv-root li > ol { margin: 0; }
+
+/* Task-list checkboxes */
+.dui-mdv-root input[type="checkbox"] {
+  margin-right: 5px;
+  accent-color: #8b5cf6;
+  cursor: default;
+}
+
+/* ── Blockquote ─────────────────────────────────────────────────────── */
+.dui-mdv-root .dui-mdv-bq,
+.dui-mdv-root blockquote {
+  margin: 0.55em 0;
+  padding: 0.4em 0.85em;
+  border-left: 3px solid rgba(139,92,246,0.5);
+  background: rgba(139,92,246,0.06);
+  border-radius: 0 6px 6px 0;
+  color: var(--color-text-muted, #a1a1aa);
+  font-style: italic;
+}
+.dui-mdv-root .dui-mdv-bq p, .dui-mdv-root blockquote p { margin: 0; }
+
+/* ── Tables ─────────────────────────────────────────────────────────── */
+.dui-mdv-root table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.65em 0;
+  font-size: 0.9em;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.dui-mdv-root th {
+  background: rgba(139,92,246,0.14);
+  color: #c084fc;
+  font-weight: 600;
+  padding: 5px 11px;
+  text-align: left;
+  font-size: 0.83em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid rgba(139,92,246,0.25);
+}
+.dui-mdv-root td {
+  padding: 4px 11px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  color: var(--color-text-primary, #e4e4e7);
+}
+.dui-mdv-root tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+.dui-mdv-root tr:last-child td { border-bottom: none; }
+.dui-mdv-root tr:hover td { background: rgba(139,92,246,0.06); transition: background 0.1s; }
+
+/* ── Code blocks ────────────────────────────────────────────────────── */
+.dui-mdv-root .dui-mdv-code-block {
+  margin: 0.65em 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: #0d0d10;
+}
+.dui-mdv-root .dui-mdv-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 10px;
+  background: rgba(255,255,255,0.035);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  gap: 8px;
+}
+.dui-mdv-root .dui-mdv-lang-pill {
+  font-size: 9.5px;
+  font-family: 'JetBrains Mono', monospace;
+  color: rgba(255,255,255,0.3);
+  text-transform: lowercase;
+  letter-spacing: 0.06em;
+  padding: 1px 6px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.dui-mdv-root .dui-mdv-copy-btn {
+  font-size: 9.5px;
+  font-family: inherit;
+  color: rgba(139,92,246,0.55);
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 2px 7px;
+  transition: all 0.15s;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.dui-mdv-root .dui-mdv-copy-btn:hover {
+  background: rgba(139,92,246,0.12);
+  border-color: rgba(139,92,246,0.25);
+  color: #c084fc;
+}
+.dui-mdv-root .dui-mdv-copy-btn.dui-mdv-copied {
+  color: #22c55e;
+  border-color: rgba(34,197,94,0.3);
+  background: rgba(34,197,94,0.08);
+}
+.dui-mdv-root .dui-mdv-copy-icon {
+  flex-shrink: 0;
+  transition: opacity 0.15s;
+}
+.dui-mdv-root .dui-mdv-check-icon { stroke: currentColor; }
+.dui-mdv-root .dui-mdv-copy-label { line-height: 1; }
+.dui-mdv-root pre {
+  margin: 0;
+  padding: 10px 13px;
+  overflow-x: hidden;
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: transparent !important;
+}
+.dui-mdv-root pre code.hljs {
+  background: transparent !important;
+  padding: 0;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+  font-size: 11px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ── hljs atom-one-dark colour palette ─────────────────────────────── */
+.dui-mdv-root .hljs                                     { color: #abb2bf; }
+.dui-mdv-root .hljs-comment, .dui-mdv-root .hljs-quote      { color: #5c6370; font-style: italic; }
+.dui-mdv-root .hljs-keyword, .dui-mdv-root .hljs-selector-tag,
+.dui-mdv-root .hljs-built_in                            { color: #c678dd; }
+.dui-mdv-root .hljs-string, .dui-mdv-root .hljs-regexp,
+.dui-mdv-root .hljs-addition, .dui-mdv-root .hljs-attribute { color: #98c379; }
+.dui-mdv-root .hljs-number, .dui-mdv-root .hljs-literal,
+.dui-mdv-root .hljs-variable, .dui-mdv-root .hljs-template-variable,
+.dui-mdv-root .hljs-meta                                { color: #56b6c2; }
+.dui-mdv-root .hljs-title, .dui-mdv-root .hljs-section,
+.dui-mdv-root .hljs-name, .dui-mdv-root .hljs-selector-id   { color: #61aeee; }
+.dui-mdv-root .hljs-type, .dui-mdv-root .hljs-class .hljs-title,
+.dui-mdv-root .hljs-attr                                { color: #e6c07b; }
+.dui-mdv-root .hljs-tag, .dui-mdv-root .hljs-deletion,
+.dui-mdv-root .hljs-subst                               { color: #e06c75; }
+.dui-mdv-root .hljs-link                                { color: #61aeee; text-decoration: underline; }
+.dui-mdv-root .hljs-emphasis                            { font-style: italic; }
+.dui-mdv-root .hljs-strong                              { font-weight: 700; }
+.dui-mdv-root .hljs-punctuation                         { color: #abb2bf; }
+.dui-mdv-root .hljs-property                            { color: #e06c75; }
+.dui-mdv-root .hljs-operator                            { color: #56b6c2; }
+.dui-mdv-root .hljs-params                              { color: #abb2bf; }
+.dui-mdv-root .hljs-function                            { color: #61aeee; }
+.dui-mdv-root .hljs-class                               { color: #e6c07b; }
+.dui-mdv-root .hljs-doctag                              { color: #c678dd; }
+.dui-mdv-root .hljs-formula                             { background: rgba(255,255,255,0.04); }
+.dui-mdv-root .hljs-selector-class                      { color: #d19a66; }
+.dui-mdv-root .hljs-selector-pseudo                     { color: #56b6c2; }
+.dui-mdv-root .hljs-template-tag                        { color: #c678dd; }
+.dui-mdv-root .hljs-symbol                              { color: #98c379; }
+
+/* ── Compact MdViewer in Daakia AI chat bubbles ──────────────────────────────── */
+.dui-daakia-chat-md .dui-mdv-root { line-height: 1.5; }
+.dui-daakia-chat-md .dui-mdv-root p { margin: 0.15em 0; }
+.dui-daakia-chat-md .dui-mdv-root p:empty { display: none; }
+.dui-daakia-chat-md .dui-mdv-root h1,
+.dui-daakia-chat-md .dui-mdv-root h2,
+.dui-daakia-chat-md .dui-mdv-root h3 { margin: 0.4em 0 0.2em; }
+.dui-daakia-chat-md .dui-mdv-root li { margin: 0.1em 0; }
+.dui-daakia-chat-md .dui-mdv-root ul,
+.dui-daakia-chat-md .dui-mdv-root ol { margin: 0.2em 0; padding-left: 1.4em; }
+.dui-daakia-chat-md .dui-mdv-root pre { margin: 0.3em 0; }
+
+/* ── Fix ConvEngineChat token popup — force solid background ─────────────────── */
+/* The token usage popup (shown when clicking the tok chip) uses a portal
+   and may inherit a transparent background from the VS Code webview. */
+[class*="token-popup"],
+[class*="TokenPopup"],
+[class*="ce-token"],
+[class*="tok-detail"],
+[class*="usage-popup"],
+.dui-ce-usage-popup {
+  background-color: var(--color-panel) !important;
+  border: 1px solid var(--color-surface-border) !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4) !important;
+  border-radius: 10px !important;
+}
+
+/* ─── Light theme: improved tab distinction ──────────────────────────────────
+   In light mode, PillTabs renders bg-[var(--color-surface)] which is white on a
+   near-white panel (#f9fafb). We need a subtle elevated appearance so tabs are
+   visually separate from the surrounding panel.
+   ─────────────────────────────────────────────────────────────────────────── */
+[data-theme="light"] [role="tablist"] {
+  background-color: #ececec !important;
+  border: 1px solid #d1d5db;
+}
+
+/* Inactive tab text should be clearly visible, not the same as active */
+[data-theme="light"] [role="tab"]:not([aria-selected="true"]) {
+  color: #6b7280;
+}
+[data-theme="light"] [role="tab"][aria-selected="true"] {
+  color: var(--color-primary);
+}
+
+/* ─── Light theme: fix any remaining rgba(255,255,255, ...) backgrounds ───────
+   Components that use rgba(255,255,255,0.04) etc for dark-mode translucency
+   become nearly invisible in light mode. Override key UI elements.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* Generic code/script text areas in light mode */
+[data-theme="light"] .monaco-editor .lines-content {
+  background: #ffffff !important;
+}
+
+/* Scrollbar track in light mode — light gray instead of dark */
+[data-theme="light"] ::-webkit-scrollbar-track {
+  background: #f3f4f6;
+}
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+}
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+[data-theme="light"] * {
+  scrollbar-color: #d1d5db #f3f4f6;
+}
+
+/* .graphify-var-mark — moved to dui/components/display/PromptLibraryEditorView.css */
+
+/* ─── Light theme: input / textarea base styles ───────────────────────────────
+   Many components hardcode rgba(255,255,255,0.04) / rgba(255,255,255,0.08)
+   for dark-mode translucency. In light mode these become white-on-white.
+   This CSS catch-all ensures native inputs always look correct.
+   ─────────────────────────────────────────────────────────────────────────── */
+[data-theme="light"] input:not([type="checkbox"]):not([type="radio"]):not([type="range"]) {
+  background-color: var(--color-input-bg, #f9fafb) !important;
+  border-color: var(--color-surface-border, #e5e7eb) !important;
+  color: var(--color-text-primary) !important;
+}
+[data-theme="light"] textarea {
+  background-color: var(--color-input-bg, #f9fafb) !important;
+  border-color: var(--color-surface-border, #e5e7eb) !important;
+  color: var(--color-text-primary) !important;
+}

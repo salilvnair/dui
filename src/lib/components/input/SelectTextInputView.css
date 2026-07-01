@@ -1,0 +1,33 @@
+.dui_select-text__trigger { transition: background 100ms; }
+.dui_select-text__trigger:not(.dui_select-text__trigger--disabled):hover {
+  background: var(--color-surface-hover);
+}
+
+.dui_select-text__option { transition: background 100ms; }
+.dui_select-text__option--selected {
+  background: color-mix(in srgb, var(--dui-stiv-accent, var(--color-primary)) 12%, transparent);
+}
+.dui_select-text__option:hover {
+  background: color-mix(in srgb, var(--dui-stiv-accent, var(--color-primary)) 10%, transparent);
+}
+
+/* Suggestion portal items — CSS :hover so it works reliably in all contexts */
+.dui-stiv-sugg-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  margin-bottom: 2px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--color-text-primary);
+  transition: background 80ms;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dui-stiv-sugg-item:hover,
+.dui-stiv-sugg-item--active {
+  background: color-mix(in srgb, var(--dui-stiv-accent, var(--color-primary)) 13%, transparent);
+}

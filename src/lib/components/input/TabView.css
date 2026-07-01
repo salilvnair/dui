@@ -1,0 +1,9 @@
+.dui_tab__btn { transition: color 150ms; }
+.dui_tab__btn:not(.dui_tab__btn--active):hover {
+  color: var(--color-text-primary);
+}
+
+.dui_tab__picker-btn { transition: background 150ms, color 150ms, box-shadow 150ms; }
+.dui_tab__picker-btn:not(.dui_tab__picker-btn--active):hover {
+  color: var(--color-text-primary);
+}
