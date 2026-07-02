@@ -1,4 +1,4 @@
-import { useState, useRef, useLayoutEffect } from 'react';
+import { useState, useRef, useLayoutEffect, type ReactNode } from 'react';
 import type { DuiSize, DuiRadius, DuiWidth, DuiFontStyle } from '../../core/DuiTypes';
 import { useTabBase } from '../../core/TabBase';
 import './TabView.css';
@@ -6,10 +6,19 @@ import './TabView.css';
 export interface TabItem {
   id: string;
   label: string;
+  /** Optional icon rendered before the label (any variant) */
+  icon?: ReactNode;
   badge?: number;
   dot?: boolean;
   dotColor?: string;
   badgeColor?: string;
+  /**
+   * 'right' pushes this tab (and any tabs after it) to the far end of the
+   * row via margin-left: auto — e.g. tabs=[Params, Headers, Body, {label:
+   * 'Auth', align: 'right'}] renders "Params Headers Body ⟶ Auth".
+   * Only meaningful on the first tab marked 'right' in the list.
+   */
+  align?: 'left' | 'right';
 }
 
 export type TabVariant = 'pill' | 'underline' | 'chip' | 'picker';
@@ -68,8 +77,10 @@ export function TabView({
         className={className}
         style={{
           position: 'relative',
-          display: base.width !== 'auto' ? 'flex' : 'inline-flex',
-          width: base.width !== 'auto' ? base.width : undefined,
+          // Page-level nav sections read wrong shrunk to content width — full
+          // width by default, unless the consumer opts into a narrower one.
+          display: 'flex',
+          width: base.width !== 'auto' ? base.width : '100%',
           alignItems: 'center',
           gap: 4,
         }}
@@ -103,8 +114,10 @@ export function TabView({
                 ? (accentColor || base.activeColor ? accent : 'var(--color-pilltab-text-active)')
                 : inactiveColor,
               display: 'inline-flex', alignItems: 'center', gap: base.gap,
+              marginLeft: tab.align === 'right' ? 'auto' : undefined,
             }}
           >
+            {tab.icon}
             {tab.label}
             {TabBadge(tab, accent)}
           </button>
@@ -158,8 +171,10 @@ export function TabView({
                 gap: base.gap,
                 transition: 'background 150ms, color 150ms, border-color 150ms',
                 whiteSpace: 'nowrap',
+                marginLeft: tab.align === 'right' ? 'auto' : undefined,
               }}
             >
+              {tab.icon}
               {tab.label}
               {TabBadge(tab, accent)}
             </button>
@@ -217,8 +232,10 @@ export function TabView({
                 transition: 'background 150ms, color 150ms, box-shadow 150ms',
                 whiteSpace: 'nowrap',
                 lineHeight: 1,
+                marginLeft: tab.align === 'right' ? 'auto' : undefined,
               }}
             >
+              {tab.icon}
               {tab.label}
               {TabBadge(tab, isActive ? 'var(--color-surface, #1e1e1e)' : accent)}
             </button>
@@ -232,7 +249,7 @@ export function TabView({
     <div
       ref={containerRef}
       role="tablist"
-      className={className}
+      className={`dui_tab__pill ${className}`}
       style={{
         position: 'relative',
         display: base.width !== 'auto' ? 'flex' : 'inline-flex',
@@ -278,8 +295,10 @@ export function TabView({
               ? (accentColor || base.activeColor ? accent : 'var(--color-pilltab-text-active)')
               : inactiveColor,
             display: 'inline-flex', alignItems: 'center', gap: base.gap,
+            marginLeft: tab.align === 'right' ? 'auto' : undefined,
           }}
         >
+          {tab.icon}
           {tab.label}
           {TabBadge(tab, accent)}
         </button>

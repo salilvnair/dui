@@ -20,7 +20,7 @@ export default defineConfig({
     tailwindcss(),
     dts({
       entryRoot: 'src',
-      include: ['src/index.ts', 'src/icons/**/*.tsx', 'src/lib/**/*.ts', 'src/lib/**/*.tsx', 'src/monaco-setup.ts', 'src/*.d.ts'],
+      include: ['src/index.ts', 'src/icons/**/*.tsx', 'src/lib/**/*.ts', 'src/lib/**/*.tsx', 'src/monaco-setup.ts', 'src/vis-setup.ts', 'src/*.d.ts'],
       outDir: 'dist',
       rollupTypes: false,
       insertTypesEntry: false,
@@ -34,6 +34,7 @@ export default defineConfig({
         index: resolve(__dirname, 'src/index.ts'),
         style: resolve(__dirname, 'src/css-entry.ts'),
         'monaco-setup': resolve(__dirname, 'src/monaco-setup.ts'),
+        'vis-setup': resolve(__dirname, 'src/vis-setup.ts'),
         'theme/core': resolve(__dirname, 'src/lib/theme/core.ts'),
         'theme/utils': resolve(__dirname, 'src/lib/theme/utils.ts'),
         'theme/editor': resolve(__dirname, 'src/lib/theme/editor.tsx'),
@@ -50,7 +51,9 @@ export default defineConfig({
       external: (id) =>
         id === 'react' || id === 'react-dom' || id === 'react/jsx-runtime' || id === 'zustand' ||
         id === '@monaco-editor/react' || id.startsWith('@monaco-editor/react/') ||
-        id === 'monaco-editor' || id.startsWith('monaco-editor/'),
+        id === 'monaco-editor' || id.startsWith('monaco-editor/') ||
+        id === 'vis-network' || id.startsWith('vis-network/') ||
+        id === 'vis-data' || id.startsWith('vis-data/'),
       output: {
         preserveModules: false,
         entryFileNames: '[name].js',

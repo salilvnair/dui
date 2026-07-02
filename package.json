@@ -34,6 +34,10 @@
       "types": "./dist/monaco-setup.d.ts",
       "import": "./dist/monaco-setup.js"
     },
+    "./vis-setup": {
+      "types": "./dist/vis-setup.d.ts",
+      "import": "./dist/vis-setup.js"
+    },
     "./style.css": "./dist/style.css",
     "./theme/core": {
       "types": "./dist/lib/theme/core.d.ts",
@@ -72,6 +76,8 @@
     "monaco-editor": ">=0.50",
     "react": ">=18",
     "react-dom": ">=18",
+    "vis-data": ">=7",
+    "vis-network": ">=9",
     "zustand": ">=4"
   },
   "peerDependenciesMeta": {
@@ -79,6 +85,12 @@
       "optional": true
     },
     "monaco-editor": {
+      "optional": true
+    },
+    "vis-data": {
+      "optional": true
+    },
+    "vis-network": {
       "optional": true
     }
   },
@@ -93,6 +105,8 @@
     "sucrase": "^3.35.1",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.7.0",
+    "vis-data": "^7.1.10",
+    "vis-network": "^9.1.13",
     "vite": "^6.0.0",
     "vite-plugin-dts": "^5.0.3"
   }

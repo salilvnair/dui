@@ -32,6 +32,8 @@ hljs.registerLanguage('py', python);
 export interface CodeBlockViewProps {
   code: string;
   language?: string;
+  /** Optional filename/title row rendered above the language + copy bar */
+  title?: string;
   showCopyButton?: boolean;
   showLineNumbers?: boolean;
   maxHeight?: string;
@@ -43,6 +45,7 @@ export interface CodeBlockViewProps {
 export function CodeBlockView({
   code,
   language,
+  title,
   showCopyButton = true,
   showLineNumbers = false,
   maxHeight = '300px',
@@ -88,6 +91,20 @@ export function CodeBlockView({
         fontFamily: 'monospace',
       }}
     >
+      {/* Optional title/filename row */}
+      {title && (
+        <div style={{
+          padding: '5px 10px',
+          borderBottom: '1px solid var(--color-surface-border)',
+          background: 'var(--color-codeblock-header-bg)',
+          fontSize: '11px',
+          fontFamily: 'monospace',
+          color: 'var(--color-text-muted)',
+        }}>
+          {title}
+        </div>
+      )}
+
       {/* Top bar */}
       <div style={{
         display: 'flex',

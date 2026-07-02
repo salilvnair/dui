@@ -10,6 +10,10 @@ export interface StatsCardViewProps {
   trendValue?: string;
   accentColor?: string;
   compact?: boolean;
+  /** 'label-top' (default): small caps label, then the big value below it.
+   *  'value-top': big value first, small label caption below — for tiles
+   *  where the number/timestamp is the headline (e.g. "2,847 / Nodes"). */
+  layout?: 'label-top' | 'value-top';
   className?: string;
   style?: React.CSSProperties;
 }
@@ -24,12 +28,38 @@ export function StatsCardView({
   trendValue,
   accentColor,
   compact = false,
+  layout = 'label-top',
   className = '',
   style,
 }: StatsCardViewProps) {
   const accent = accentColor || 'var(--color-primary)';
   const trendColor = trend === 'up' ? 'var(--color-statscard-trend-up)' : trend === 'down' ? 'var(--color-statscard-trend-down)' : 'var(--color-text-muted)';
   const trendChar = trend === 'up' ? '↑' : trend === 'down' ? '↓' : '→';
+
+  const labelRow = (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <span style={{ fontSize: '10px', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+        {label}
+      </span>
+      {icon && layout === 'label-top' && (
+        <span style={{ color: accent, opacity: 0.7 }}>{icon}</span>
+      )}
+    </div>
+  );
+
+  const valueRow = (
+    <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+      {icon && layout === 'value-top' && (
+        <span style={{ color: accent, opacity: 0.8, marginRight: '2px' }}>{icon}</span>
+      )}
+      <span style={{ fontSize: compact ? '18px' : '22px', fontWeight: 700, color: accent, lineHeight: 1 }}>
+        {value}
+      </span>
+      {unit && (
+        <span style={{ fontSize: '11px', color: 'var(--color-text-muted)', fontWeight: 500 }}>{unit}</span>
+      )}
+    </div>
+  );
 
   return (
     <div
@@ -46,23 +76,19 @@ export function StatsCardView({
         ...style,
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <span style={{ fontSize: '10px', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-          {label}
-        </span>
-        {icon && (
-          <span style={{ color: accent, opacity: 0.7 }}>{icon}</span>
-        )}
-      </div>
-
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-        <span style={{ fontSize: compact ? '18px' : '22px', fontWeight: 700, color: accent, lineHeight: 1 }}>
-          {value}
-        </span>
-        {unit && (
-          <span style={{ fontSize: '11px', color: 'var(--color-text-muted)', fontWeight: 500 }}>{unit}</span>
-        )}
-      </div>
+      {layout === 'value-top' ? (
+        <>
+          {valueRow}
+          <span style={{ fontSize: '10px', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+            {label}
+          </span>
+        </>
+      ) : (
+        <>
+          {labelRow}
+          {valueRow}
+        </>
+      )}
 
       {(subValue || (trend && trendValue)) && (
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>

@@ -87,6 +87,22 @@
   cursor: not-allowed;
 }
 
+/* Legend items — dot/icon + label pill, auto-width instead of the fixed
+   26x26 icon-only square (used e.g. for a source-layer color key) */
+.dui_hud__btn--legend {
+  width: auto;
+  height: 22px;
+  gap: 6px;
+  padding: 0 8px;
+  transition: background 100ms, opacity 150ms;
+}
+
+.dui_hud__label {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
 /* Active state — e.dui-g. "mute breakpoints" toggled on */
 .dui_hud__btn--active {
   background: color-mix(in srgb, var(--dui-hud-active-color, var(--color-error)) 22%, transparent);

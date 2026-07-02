@@ -106,6 +106,36 @@ export function TabViewExamples() {
       </ExampleCard>
 
       <ExampleCard
+        title="Right-aligned tab — align: 'right'"
+        description="Mark any tab align:'right' to push it (and anything after it) to the far end of the row"
+        code={`const tabs = [
+  { id: 'params',  label: 'Params',  badge: 3 },
+  { id: 'headers', label: 'Headers', badge: 6 },
+  { id: 'body',    label: 'Body' },
+  { id: 'auth',    label: 'Auth', align: 'right' },
+];
+
+<TabView
+  tabs={tabs}
+  activeTab={activeTab}
+  onChange={setActiveTab}
+  variant="underline"
+/>`}
+      >
+        <TabView
+          tabs={[
+            { id: 'params',  label: 'Params',  badge: 3 },
+            { id: 'headers', label: 'Headers', badge: 6 },
+            { id: 'body',    label: 'Body' },
+            { id: 'auth',    label: 'Auth', align: 'right' },
+          ]}
+          activeTab={reqTab}
+          onChange={setReqTab}
+          variant="underline"
+        />
+      </ExampleCard>
+
+      <ExampleCard
         title="With Active Dot — WebSocket Live Status"
         description="dot=true + dotColor shows a status indicator — e.g. connected WebSocket"
         code={`const tabs = [

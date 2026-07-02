@@ -1453,8 +1453,11 @@ input[type="number"] {
    In light mode, PillTabs renders bg-[var(--color-surface)] which is white on a
    near-white panel (#f9fafb). We need a subtle elevated appearance so tabs are
    visually separate from the surrounding panel.
+   Scoped to the pill variant only (.dui_tab__pill) — underline/chip/picker
+   are deliberately borderless/transparent and must never pick this up just
+   because they share role="tablist".
    ─────────────────────────────────────────────────────────────────────────── */
-[data-theme="light"] [role="tablist"] {
+[data-theme="light"] .dui_tab__pill {
   background-color: #ececec !important;
   border: 1px solid #d1d5db;
 }

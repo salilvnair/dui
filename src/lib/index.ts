@@ -137,6 +137,24 @@ export type { DataTableViewProps, DataTableColumn } from './components/display/D
 export { CodeBlockView } from './components/display/CodeBlockView';
 export type { CodeBlockViewProps } from './components/display/CodeBlockView';
 
+export { CalloutView } from './components/display/CalloutView';
+export type { CalloutViewProps, CalloutVariant } from './components/display/CalloutView';
+
+export { GaugeView } from './components/display/GaugeView';
+export type { GaugeViewProps } from './components/display/GaugeView';
+
+export { InspectorPanelView, InspectorSectionView } from './components/display/InspectorPanelView';
+export type { InspectorPanelViewProps, InspectorSectionViewProps } from './components/display/InspectorPanelView';
+
+export { TerminalBlockView } from './components/display/TerminalBlockView';
+export type { TerminalBlockViewProps } from './components/display/TerminalBlockView';
+
+export { ThemeToggleView } from './components/button/ThemeToggleView';
+export type { ThemeToggleViewProps } from './components/button/ThemeToggleView';
+
+export { NetworkGraphView } from './components/display/NetworkGraphView';
+export type { NetworkGraphViewProps, NetworkGraphNode, NetworkGraphEdge } from './components/display/NetworkGraphView';
+
 export { AIButtonView } from './components/button/AIButtonView';
 export type { AIButtonViewProps, AIButtonAction } from './components/button/AIButtonView';
 

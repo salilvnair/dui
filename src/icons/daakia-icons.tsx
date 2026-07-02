@@ -801,6 +801,14 @@ export function SunIcon(props: IconProps) {
   );
 }
 
+export function MoonIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults({ fill: 'currentColor', stroke: 'none', ...props })}>
+      <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+    </svg>
+  );
+}
+
 export function CpuIcon(props: IconProps) {
   return (
     <svg {...withDefaults(props)}>
@@ -2232,5 +2240,100 @@ export function StateMachineIcon({ size = 14, ...props }: IconProps) {
       <polyline points="17,7.8 18.2,7.8 18.2,9" />
     </svg>
   )
+}
+
+// ─── NS9-originated icons (ported from ns9-ui/src/icons.tsx) ────────────────
+
+export function BrainIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M9 3a3 3 0 00-3 3 3 3 0 00-2 2.8V11a3 3 0 000 6v.2A3 3 0 008 20a3 3 0 004-.6" />
+      <path d="M15 3a3 3 0 013 3 3 3 0 012 2.8V11a3 3 0 010 6v.2A3 3 0 0116 20a3 3 0 01-4-.6" />
+      <path d="M12 3v17" />
+    </svg>
+  );
+}
+
+export function CallGraphIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="6" cy="6" r="2.5" />
+      <circle cx="18" cy="6" r="2.5" />
+      <circle cx="12" cy="18" r="2.5" />
+      <path d="M8.2 7.2L15.8 7.2" />
+      <path d="M7 8.2L11 15.8" />
+      <path d="M17 8.2L13 15.8" />
+    </svg>
+  );
+}
+
+export function ActivityIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <polyline points="2 12 6 12 9 20 15 4 18 12 22 12" />
+    </svg>
+  );
+}
+
+export function HashIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <line x1="5" y1="9" x2="20" y2="9" />
+      <line x1="4" y1="15" x2="19" y2="15" />
+      <line x1="10" y1="3" x2="7" y2="21" />
+      <line x1="17" y1="3" x2="14" y2="21" />
+    </svg>
+  );
+}
+
+export function GridIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="3" width="7" height="7" rx="1" />
+      <rect x="14" y="3" width="7" height="7" rx="1" />
+      <rect x="3" y="14" width="7" height="7" rx="1" />
+      <rect x="14" y="14" width="7" height="7" rx="1" />
+    </svg>
+  );
+}
+
+export function ListIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <line x1="9" y1="6" x2="21" y2="6" />
+      <line x1="9" y1="12" x2="21" y2="12" />
+      <line x1="9" y1="18" x2="21" y2="18" />
+      <circle cx="4" cy="6" r="1" fill="currentColor" stroke="none" />
+      <circle cx="4" cy="12" r="1" fill="currentColor" stroke="none" />
+      <circle cx="4" cy="18" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function MessageIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
+    </svg>
+  );
+}
+
+export function BellIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
+      <path d="M13.73 21a2 2 0 01-3.46 0" />
+    </svg>
+  );
+}
+
+export function MegaphoneIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M3 11v3a1 1 0 001 1h2l3.5 5.5a1 1 0 001.8-.6V4.1a1 1 0 00-1.8-.6L6 8H4a1 1 0 00-1 1z" />
+      <path d="M15.5 8a4 4 0 010 8" />
+      <path d="M18.5 5a8 8 0 010 14" />
+    </svg>
+  );
 }
 

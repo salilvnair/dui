@@ -3,11 +3,18 @@ import './HudView.css';
 
 export interface HudItem {
   id: string;
-  icon: React.ReactNode;
+  /** Icon-only items (default look) — omit when using dotColor + label instead */
+  icon?: React.ReactNode;
+  /** Colored swatch rendered before the label — e.g. a source-layer legend key */
+  dotColor?: string;
+  /** Text label rendered after the icon/dot — turns the item into a legend pill instead of an icon-only square button */
+  label?: string;
   onClick?: () => void;
   title?: string;
   disabled?: boolean;
-  /** Renders a highlighted active state (e.g. "mute breakpoints" toggled on) */
+  /** Renders a highlighted active state (e.g. "mute breakpoints" toggled on).
+   * For dot+label legend items, `active: false` instead dims the item to
+   * indicate "hidden/off" rather than highlighting it. */
   active?: boolean;
   /** Separator before this item */
   separator?: boolean;
@@ -23,8 +30,17 @@ export interface HudViewProps {
   activeColor?: string;
   className?: string;
   onDragEnd?: (x: number, y: number) => void;
-  /** Embed in a positioned container — uses position:relative, drag disabled. For showcase/preview use. */
+  /** Embed in a positioned container — uses position:relative instead of
+   * fixed-centered-on-viewport. Drag is still enabled by default; pass
+   * `draggable={false}` explicitly to disable it (e.g. static showcase/demo use). */
   contained?: boolean;
+  /** 'free' (default) drags in any direction, matching the original
+   * always-has-been HUD behavior. 'x' constrains the drag handle to
+   * horizontal movement only. */
+  dragAxis?: 'free' | 'x';
+  /** Explicitly enable/disable the drag handle. Defaults to true regardless
+   * of `contained` — set to false for a static, non-draggable HUD bar. */
+  draggable?: boolean;
 }
 
 export function HudView({
@@ -35,6 +51,8 @@ export function HudView({
   className = '',
   onDragEnd,
   contained = false,
+  dragAxis = 'free',
+  draggable = true,
 }: HudViewProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const dragState = useRef<{ dragging: boolean; startX: number; startY: number; originLeft: number; originTop: number }>({
@@ -49,14 +67,14 @@ export function HudView({
     const d = dragState.current;
     if (!d.dragging || !rootRef.current) return;
     const dx = e.clientX - d.startX;
-    const dy = e.clientY - d.startY;
+    const dy = dragAxis === 'x' ? 0 : e.clientY - d.startY;
     const el = rootRef.current;
     const newLeft = Math.max(0, Math.min(window.innerWidth - el.offsetWidth, d.originLeft + dx));
     const newTop = Math.max(0, Math.min(window.innerHeight - el.offsetHeight, d.originTop + dy));
     el.style.left = `${newLeft}px`;
     el.style.top = `${newTop}px`;
     el.style.transform = 'none';
-  }, []);
+  }, [dragAxis]);
 
   const onMouseUp = useCallback((e: MouseEvent) => {
     const d = dragState.current;
@@ -107,31 +125,45 @@ export function HudView({
       className={`dui_hud${contained ? ' dui_hud--contained' : ''}${className ? ` ${className}` : ''}`}
       style={customStyle}
     >
-      {/* Drag handle — hidden grip in contained/showcase mode */}
+      {/* Drag handle — hidden grip when explicitly non-draggable */}
       <div
         className="dui_hud__drag"
-        onMouseDown={contained ? undefined : onDragMouseDown}
-        title={contained ? undefined : 'Drag to move'}
-        style={contained ? { cursor: 'default', opacity: 0.25 } : undefined}
+        onMouseDown={draggable ? onDragMouseDown : undefined}
+        title={draggable ? 'Drag to move' : undefined}
+        style={draggable ? undefined : { cursor: 'default', opacity: 0.25 }}
       >
         <span className="dui_hud__grip" />
       </div>
 
       {/* Items */}
-      {items.map(item => (
-        <div key={item.id} style={{ display: 'contents' }}>
-          {item.separator && <div className="dui_hud__sep" />}
-          <button
-            type="button"
-            className={`dui_hud__btn${item.active ? ' dui_hud__btn--active' : ''}`}
-            onClick={item.onClick}
-            disabled={item.disabled}
-            title={item.title}
-          >
-            {item.icon}
-          </button>
-        </div>
-      ))}
+      {items.map(item => {
+        const isLegendItem = item.dotColor !== undefined || item.label !== undefined;
+        return (
+          <div key={item.id} style={{ display: 'contents' }}>
+            {item.separator && <div className="dui_hud__sep" />}
+            <button
+              type="button"
+              className={`dui_hud__btn${isLegendItem ? ' dui_hud__btn--legend' : (item.active ? ' dui_hud__btn--active' : '')}`}
+              onClick={item.onClick}
+              disabled={item.disabled}
+              title={item.title}
+              style={isLegendItem ? { opacity: item.active === false ? 0.4 : 1 } : undefined}
+            >
+              {item.dotColor && (
+                <span
+                  aria-hidden="true"
+                  style={{
+                    width: 10, height: 10, borderRadius: '50%', flexShrink: 0,
+                    background: item.dotColor, display: 'inline-block',
+                  }}
+                />
+              )}
+              {item.icon}
+              {item.label && <span className="dui_hud__label">{item.label}</span>}
+            </button>
+          </div>
+        );
+      })}
 
       {/* Status text */}
       {status && <span className="dui_hud__status">{status}</span>}

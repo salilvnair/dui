@@ -336,23 +336,22 @@ export function PromptLibraryEditorView({
             })}
           </div>
 
-          {/* Preview / Edit toggle */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 0, flexShrink: 0 }}>
+          {/* Preview / Edit — same underline-tab treatment as the System/User
+              tabs to the left (not a color-mix() filled pill, which reads
+              fine on dark backgrounds but nearly disappears on light ones —
+              underline + solid text color has real contrast in both themes). */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 0, flexShrink: 0, height: 34 }}>
             {(['preview', 'edit'] as const).map(mode => (
               <button
                 key={mode}
                 type="button"
                 onClick={() => setViewMode(mode)}
                 style={{
-                  height: 24, padding: '0 10px', border: 'none',
-                  borderRadius: mode === 'preview' ? '4px 0 0 4px' : '0 4px 4px 0',
-                  background: resolvedViewMode === mode
-                    ? `color-mix(in srgb, ${accent} 15%, transparent)`
-                    : 'color-mix(in srgb, var(--color-text-muted) 8%, transparent)',
+                  height: 34, padding: '0 10px', border: 'none', background: 'transparent',
                   color: resolvedViewMode === mode ? accent : 'var(--color-text-muted)',
-                  fontSize: 10, fontWeight: 600, cursor: 'pointer',
-                  transition: 'background 100ms, color 100ms',
-                  outline: resolvedViewMode === mode ? `1px solid color-mix(in srgb, ${accent} 30%, transparent)` : '1px solid transparent',
+                  fontSize: 11, fontWeight: resolvedViewMode === mode ? 600 : 400, cursor: 'pointer',
+                  borderBottom: resolvedViewMode === mode ? `2px solid ${accent}` : '2px solid transparent',
+                  transition: 'color 100ms, border-color 100ms',
                 }}
               >
                 {mode === 'preview' ? '◉ Preview' : '⇌ Edit'}

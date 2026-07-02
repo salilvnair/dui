@@ -2139,13 +2139,13 @@ export function HudViewPanel() {
 
         {/* ① Debug HUD — left */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 6 }}>
-          <HudView items={itemsWithMute} status={muteActive ? 'Breakpoints muted' : 'Paused — Line 42'} contained />
+          <HudView items={itemsWithMute} status={muteActive ? "Breakpoints muted" : "Paused — Line 42"} contained draggable={false} />
           <span style={{ fontSize: 9, color: 'var(--color-text-muted)' }}>① Debug — click bug icon to toggle mute</span>
         </div>
 
         {/* ② Toolbar HUD — center */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-          <HudView items={TOOLBAR_HUD_ITEMS} status="3 files selected" contained />
+          <HudView items={TOOLBAR_HUD_ITEMS} status="3 files selected" contained draggable={false} />
           <span style={{ fontSize: 9, color: 'var(--color-text-muted)' }}>② Toolbar — default accentColor</span>
         </div>
 
@@ -2159,7 +2159,7 @@ export function HudViewPanel() {
               { id: 'restart', icon: <RestartIcon size={13} />, title: 'Restart', separator: true },
             ]}
             status="Ready"
-            contained
+            contained draggable={false}
           />
           <span style={{ fontSize: 9, color: 'var(--color-text-muted)' }}>③ Custom accentColor</span>
         </div>
