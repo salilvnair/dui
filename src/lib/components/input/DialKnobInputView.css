@@ -1,0 +1,9 @@
+@keyframes dui_dialknob_bounce {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+.dui_dialknob--bounce {
+  animation: dui_dialknob_bounce 140ms ease-out;
+}

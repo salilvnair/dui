@@ -5,7 +5,7 @@ export function DebugViewDocs() {
     <div style={{ maxWidth: 860 }}>
       <DocSection title="Overview">
         <DocNote type="info">
-          DebugView is a VS Code-style "Run and Debug" side panel as a standalone DUI component. It is fully abstract — the consumer provides session data and action callbacks. No daakia store imports are required.
+          DebugView is a code-editor-style "Run and Debug" side panel as a standalone DUI component. It is fully abstract — the consumer provides session data and action callbacks. No daakia store imports are required.
         </DocNote>
       </DocSection>
 
@@ -17,7 +17,7 @@ export function DebugViewDocs() {
           { label: 'CALL STACK with frame restart', color: 'var(--color-warning)' },
           { label: 'BREAKPOINTS with enable/disable/mute', color: '#a855f7' },
           { label: 'Debug toolbar (Continue/Step Over/Into/Out/Restart/Stop)', color: '#ec4899' },
-          { label: 'VS Code-style value colors', color: '#14b8a6' },
+          { label: 'Syntax-highlighted value colors', color: '#14b8a6' },
           { label: 'CollapsibleSectionView for all sections', color: '#f97316' },
         ]} />
       </DocSection>
@@ -65,7 +65,7 @@ export function DebugViewDocs() {
         ]} />
       </DocSection>
 
-      <DocSection title="Value type colors (VS Code style)">
+      <DocSection title="Value type colors (syntax-highlighted)">
         <EnumTable name="value type" values={[
           { value: 'string', description: "#ce9178 — orange-red", color: '#ce9178' },
           { value: 'number', description: '#b5cea8 — soft green', color: '#b5cea8' },
@@ -75,6 +75,15 @@ export function DebugViewDocs() {
           { value: 'object', description: '#9cdcfe — light blue', color: '#9cdcfe' },
         ]} />
       </DocSection>
-    </div>
+      
+      <DocSection
+        title="DUI Sizing & Theming"
+        description="DebugView does not read size, width, color, or borderRadius from the DuiProvider context — it is not part of the sized-component system and has no size prop to fall back to a provider default."
+      >
+        <DocNote type="info">
+          DebugView is unaffected by <code>{'<DuiProvider>'}</code> size/color context. Style it directly via its own props (and CSS variables where documented above) rather than expecting provider-level sizing to apply.
+        </DocNote>
+      </DocSection>
+      </div>
   );
 }

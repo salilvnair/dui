@@ -16,7 +16,7 @@ export function HudViewExamples() {
     <div>
       <ExampleCard
         title="Debug Toolbar"
-        description="Continue / Step Over / Step Into / Step Out / Stop — like VS Code's floating debug bar"
+        description="Continue / Step Over / Step Into / Step Out / Stop — a floating debug bar"
         code={`<HudView
   contained
   items={[

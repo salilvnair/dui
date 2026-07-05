@@ -115,11 +115,11 @@ function ImportFromUrlDemo() {
         open={open}
         onClose={() => setOpen(false)}
         title="Import Collection"
-        subtitle="Enter an OpenAPI / Postman JSON URL"
+        subtitle="Enter an OpenAPI / collection JSON URL"
         size="md"
         footerLeft={
           <span style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
-            Supports OpenAPI 3.x, Postman v2.1
+            Supports OpenAPI 3.x, collection format v2.1
           </span>
         }
         footerRight={

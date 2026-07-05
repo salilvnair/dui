@@ -1,0 +1,7 @@
+@keyframes dui-envbadge-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.3; }
+}
+.dui_envbadge__dot {
+  animation: dui-envbadge-pulse 1.6s ease-in-out infinite;
+}

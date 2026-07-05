@@ -49,6 +49,15 @@ export function ThemeCardSelectorViewDocs() {
           The selected card shows a <code>var(--color-primary)</code> border and a circular checkmark badge. The label turns primary-colored and gains font-weight 600.
         </DocNote>
       </DocSection>
-    </div>
+      
+      <DocSection
+        title="DUI Sizing & Theming"
+        description="ThemeCardSelectorView does not read size, width, color, or borderRadius from the DuiProvider context — it is not part of the sized-component system and has no size prop to fall back to a provider default."
+      >
+        <DocNote type="info">
+          ThemeCardSelectorView is unaffected by <code>{'<DuiProvider>'}</code> size/color context. Style it directly via its own props (and CSS variables where documented above) rather than expecting provider-level sizing to apply.
+        </DocNote>
+      </DocSection>
+      </div>
   );
 }

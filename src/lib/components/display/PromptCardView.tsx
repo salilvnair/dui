@@ -149,13 +149,17 @@ export function PromptCardView({
           )}
         </div>
         {(description || content) && (
-          <div style={{
-            fontSize: '10px',
-            color: colors?.bodyText ?? 'var(--color-text-muted)',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}>
+          <div
+            // Full text on hover — the single-line ellipsis otherwise hides
+            // most of the description with no way to read it.
+            title={description || content}
+            style={{
+              fontSize: '10px',
+              color: colors?.bodyText ?? 'var(--color-text-muted)',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}>
             {description || content}
           </div>
         )}

@@ -1,0 +1,29 @@
+.dui_rangeslider__track {
+  position: relative;
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-surface-border);
+}
+
+.dui_rangeslider__fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 2px;
+}
+
+.dui_rangeslider__thumb {
+  position: absolute;
+  top: 50%;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid var(--color-panel, #1e1e1e);
+  box-shadow: 0 1px 3px rgba(0,0,0,.3);
+  cursor: grab;
+  touch-action: none;
+  transition: transform 100ms;
+}
+.dui_rangeslider__thumb:active { cursor: grabbing; transform: translate(-50%, -50%) scale(1.2); }

@@ -1,0 +1,55 @@
+.dui_imagegallery__lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  z-index: 99998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: dui-imagegallery-in 160ms ease-out;
+}
+@keyframes dui-imagegallery-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.dui_imagegallery__image {
+  max-width: 90vw;
+  max-height: 90vh;
+  border-radius: 6px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.5);
+}
+
+.dui_imagegallery__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  border: none;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border-radius: 999px;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.dui_imagegallery__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  border: none;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border-radius: 999px;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.dui_imagegallery__nav--left  { left: 16px; }
+.dui_imagegallery__nav--right { right: 16px; }

@@ -62,6 +62,15 @@ export function ToastViewDocs() {
           The hook stores toasts in a ref (not React state) so calls from outside React components work without re-renders. Subscribe in a <code>useEffect</code> to drive the <code>ToastView</code>.
         </DocNote>
       </DocSection>
-    </div>
+      
+      <DocSection
+        title="DUI Sizing & Theming"
+        description="ToastView does not read size, width, color, or borderRadius from the DuiProvider context — it is not part of the sized-component system and has no size prop to fall back to a provider default."
+      >
+        <DocNote type="info">
+          ToastView is unaffected by <code>{'<DuiProvider>'}</code> size/color context. Style it directly via its own props (and CSS variables where documented above) rather than expecting provider-level sizing to apply.
+        </DocNote>
+      </DocSection>
+      </div>
   );
 }

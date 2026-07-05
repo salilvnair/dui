@@ -1,0 +1,10 @@
+@keyframes dui_latencypulse_scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-33.333%); }
+}
+
+.dui_latencypulse__track {
+  animation-name: dui_latencypulse_scroll;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}

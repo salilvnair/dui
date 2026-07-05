@@ -83,7 +83,7 @@ export function SelectTextInputViewLive() {
 
   return (
     <div>
-      <Row label="REST — HTTP method + URL (Postman-style)" gap={0} code={`<SelectTextInputView\n  selectValue={method}\n  selectOptions={HTTP_METHODS}  // colored GET/POST/PUT/PATCH/DELETE\n  onSelectChange={setMethod}\n  inputValue={url}\n  onInputChange={setUrl}\n  size="md"\n  placeholder="Enter URL or paste text"\n/>`}>
+      <Row label="REST — HTTP method + URL (request bar style)" gap={0} code={`<SelectTextInputView\n  selectValue={method}\n  selectOptions={HTTP_METHODS}  // colored GET/POST/PUT/PATCH/DELETE\n  onSelectChange={setMethod}\n  inputValue={url}\n  onInputChange={setUrl}\n  size="md"\n  placeholder="Enter URL or paste text"\n/>`}>
         <div style={{ width: '100%' }}>
           <SelectTextInputView
             selectValue={method} selectOptions={ST_HTTP_METHODS} onSelectChange={setMethod}

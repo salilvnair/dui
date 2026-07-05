@@ -58,7 +58,9 @@
     "LICENSE"
   ],
   "sideEffects": [
-    "**/*.css"
+    "**/*.css",
+    "./dist/vis-setup.js",
+    "./dist/monaco-setup.js"
   ],
   "scripts": {
     "dev": "vite",

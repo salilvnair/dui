@@ -11,6 +11,60 @@ type IconEntry = {
 
 const ICON_CATEGORIES: { label: string; names: string[] }[] = [
   {
+    label: 'HTTP & API',
+    names: [
+      'HttpPatchIcon','StatusFamily2xxIcon','StatusFamily3xxIcon','StatusFamily4xxIcon',
+      'StatusFamily5xxIcon','HeadersIcon','CacheIcon','RateLimitIcon','PaginationIcon',
+      'WebhookBellIcon','EndpointIcon','PayloadIcon','ApiContractIcon','MockDataIcon',
+      'ProxyIcon','GatewayIcon','LoadBalancerIcon','CdnIcon','DnsRecordIcon',
+      'SslLockIcon','SslUnlockedIcon','OAuthIcon','JwtTokenIcon','ApiKeyIcon','ScopeIcon',
+      'TokenRefreshIcon','PausedStatusIcon','ScheduledStatusIcon','ExpiredStatusIcon',
+      'HttpGetIcon','HttpPostIcon','HttpPutIcon','HttpDeleteIcon','HttpHeadIcon',
+      'HttpOptionsIcon','RequestQueueIcon','ResponseTimeIcon','ApiVersionIcon',
+      'IdempotencyIcon','RequestTimeoutIcon','CircuitBreakerIcon','RetryIcon',
+      'ApiGatewayRouteIcon','StatusUpdateIcon','QueuedStatusIcon','DataPipelineIcon',
+      'ApiDocsIcon','CurlCommandIcon','AssertionIcon','EnvSwitcherIcon',
+      'RequestHistoryIcon','VariablePoolIcon','ImportCollectionIcon','RunAllTestsIcon',
+      'ResponseBodyIcon','AuthBasicIcon','EnvironmentGlobeIcon','RequestBodyRawIcon',
+      'TestSuiteIcon','StatusPendingDotIcon','DataMappingIcon','RequestChainIcon',
+      'SecretVaultIcon','ApiThrottleGaugeIcon','BulkImportIcon','VersionTagIcon',
+      'MockResponseIcon','ApiTestRunIcon',
+    ],
+  },
+
+  {
+    label: 'Collaboration',
+    names: [
+      'TeamIcon','OrganizationIcon','WorkspaceIcon','InviteIcon','MentionIcon',
+      'ThreadIcon','ReplyIcon','ReactionEmojiIcon','PinAltIcon','StarFavoriteIcon',
+      'StarFilledIcon','TrashEmptyIcon','TrashFullIcon','ShareAltIcon',
+      'ExportVariantIcon','ImportVariantIcon','TemplateIcon','WorkflowIcon',
+      'AutomationIcon','IntegrationPlugIcon','AssignUserIcon','PollIcon',
+      'AnnouncementIcon','HandshakeIcon','ChecklistIcon',
+    ],
+  },
+
+  {
+    label: 'Devices',
+    names: [
+      'DesktopDeviceIcon','LaptopDeviceIcon','TabletDeviceIcon','MobileDeviceIcon',
+      'WatchDeviceIcon','BrowserWindowIcon','BrowserTabIcon','WindowControlsIcon',
+      'PrintIcon','ScanIcon','QrCodeIcon','BarcodeIcon','NfcIcon','BluetoothIcon',
+      'WifiWeakIcon','WifiStrongIcon','BatteryFullIcon','BatteryLowIcon','SignalBarsIcon',
+      'FingerprintIcon','StopwatchIcon','ServerRackIcon','RouterIcon','GpuChipIcon',
+      'UsbIcon','ClipboardCheckIcon','RemoteControlIcon',
+    ],
+  },
+
+  {
+    label: 'People & Identity',
+    names: [
+      'UserSingleIcon','UserAddIcon','UserRemoveIcon','UserCheckIcon','UserXIcon',
+      'AdminShieldIcon','RoleBadgeIcon','PermissionKeyIcon','FaceIdIcon',
+    ],
+  },
+
+  {
     label: 'Actions',
     names: [
       'UndoIcon','RedoIcon','CutIcon','PasteIcon','SelectAllIcon','SaveIcon','DownloadIcon',
@@ -34,6 +88,12 @@ const ICON_CATEGORIES: { label: string; names: string[] }[] = [
   {
     label: 'Status',
     names: [
+      'SpinnerDotsIcon','SpinnerArcIcon','SuccessBadgeIcon','FailBadgeIcon',
+      'WarningBadgeIcon','InfoBadgeIcon','OfflineIcon','OnlineIcon','SyncIcon',
+      'SyncingIcon','VerifiedIcon','UnverifiedIcon','FlaggedIcon','BlockedIcon',
+      'MutedIcon','HealthCheckIcon','UptimeMonitorIcon','DowntimeIcon','LatencyIcon',
+      'ThrottleIcon','DeprecatedIcon','CloudSyncIcon','CloudOfflineIcon',
+      'ShieldCheckIcon','ShieldAlertIcon',
       'CheckIcon','CheckCircleIcon','CheckCircleFilledIcon','XCircleIcon','CloseCircleIcon',
       'SpinnerIcon','DotIcon','StageCheckIcon','StageErrorIcon','StagePendingIcon',
       'StageSpinIcon','StagePulseIcon','InfoCircleIcon','WarningTriangleIcon','HelpCircleIcon',
@@ -43,6 +103,14 @@ const ICON_CATEGORIES: { label: string; names: string[] }[] = [
   {
     label: 'Files & Data',
     names: [
+      'ArchiveIcon','HashIcon','CsvFileIcon','JsonFileIcon','XmlFileIcon','YamlFileIcon',
+      'SpreadsheetIcon','DatabaseTableIcon','DatabaseIndexIcon','MigrationIcon',
+      'BackupIcon','ArchiveZipIcon','CompressionIcon','EncryptionIcon','DecryptionIcon',
+      'HashGlyphIcon','ChecksumIcon','DiffIcon','MergeIcon','BranchIcon','CommitIcon',
+      'PullRequestIcon','TagLabelIcon','ReleaseIcon','ArchiveFolderIcon','TagVariantIcon',
+      'FileBinaryIcon','FilePdfIcon','FileLockIcon','FileSearchIcon','FolderTreeIcon',
+      'DataExportIcon','SchemaValidationIcon','NullValueIcon','BooleanToggleIcon',
+      'ArrayBracketsIcon','GraphNodeIcon','DataFlowIcon',
       'FolderIcon','FolderOpenIcon','FolderPlusIcon','FolderExportIcon','FolderImportIcon',
       'FolderTransferIcon','DocumentIcon','FilePlusIcon','FileTextIcon','FileUploadIcon',
       'AttachmentIcon','DragHandleIcon','LayersIcon','CodeIcon','CodeBracketsIcon',
@@ -52,6 +120,17 @@ const ICON_CATEGORIES: { label: string; names: string[] }[] = [
   {
     label: 'UI Controls',
     names: [
+      'ChevronUpIcon','ArrowUpLeftIcon','ArrowDownRightIcon','ArrowLeftIcon',
+      'ArrowRightIcon','ChevronDoubleLeftIcon','ChevronDoubleRightIcon',
+      'DragHandleVerticalIcon','ResizeHandleIcon','SplitHorizontalIcon',
+      'SplitVerticalIcon','MaximizeIcon','MinimizeIcon','FullscreenIcon','LockOpenIcon',
+      'SortAscendingIcon','SortDescendingIcon','GroupIcon','UngroupIcon','AlignLeftIcon',
+      'AlignCenterIcon','AlignRightIcon','AlignJustifyIcon','DistributeHorizontalIcon',
+      'DistributeVerticalIcon','BringForwardIcon','SendBackwardIcon','ZoomInIcon',
+      'ZoomOutIcon','ZoomResetIcon','CropIcon','RotateIcon','FlipHorizontalIcon',
+      'FlipVerticalIcon','UserGroupIcon','ArrowsExpandIcon','ArrowsCollapseIcon',
+      'PanelTopIcon','PanelBottomIcon','LayoutGridIcon','HandleGripIcon','CommandKeyIcon',
+      'KeyboardIcon','CursorPointerIcon','ContextMenuIcon','BreadcrumbIcon','TabsIcon',
       'PinIcon','UnpinIcon','EyeIcon','EyeOffIcon','SunIcon','LockIcon','KeyIcon',
       'GlobeIcon','CookieIcon','ClockIcon','WandIcon','SparkleIcon','BugIcon',
       'BookOpenIcon','LineNumbersIcon',
@@ -60,6 +139,14 @@ const ICON_CATEGORIES: { label: string; names: string[] }[] = [
   {
     label: 'Server & DevTools',
     names: [
+      'TerminalWindowIcon','PackageDependencyIcon','BuildIcon','DeployIcon',
+      'PipelineIcon','ContainerBoxIcon','PodClusterIcon','TestTubeIcon','TestPassIcon',
+      'TestFailIcon','CoverageIcon','LintIcon','DebugBugScanIcon','DebugBugFixedIcon',
+      'ProfilerIcon','LogLevelTraceIcon','LogLevelDebugIcon','LogLevelInfoIcon',
+      'LogLevelWarnIcon','LogLevelErrorIcon','LogLevelFatalIcon','StackTraceIcon',
+      'EnvironmentVariableIcon','ConfigFileIcon','SandboxIcon','FeatureFlagIcon',
+      'ServerClusterIcon','CronScheduleIcon','EventBusIcon','MessageQueueIcon',
+      'LoadTestIcon','NoteStickyIcon',
       'ServerIcon','SettingsIcon','TerminalIcon','NetworkIcon','TimelineIcon',
       'GaugeIcon','MemoryIcon','UptimeIcon','ProcessIcon','OutputIcon',
       'DevToolsIcon','BugIcon','AutoScrollIcon','CpuIcon','RunDebugIcon',
@@ -109,6 +196,22 @@ const ICON_CATEGORIES: { label: string; names: string[] }[] = [
   {
     label: 'Misc',
     names: [
+      'MinusIcon','CalendarIcon','MoonIcon','CameraIcon','BoldIcon','ItalicIcon',
+      'UnderlineIcon','ImageIcon','VideoIcon','MusicIcon','VolumeIcon','VolumeMuteIcon',
+      'ThumbsUpIcon','ThumbsDownIcon','PaperclipIcon','HeartIcon','BookmarkIcon',
+      'ColumnsIcon','MonitorIcon','DiagonalLinesPattern','SidebarLeftIcon',
+      'SidebarRightIcon','SystemIcon','UserPromptIcon','ProtocolRestBadge',
+      'ProtocolGraphQLBadge','ProtocolRealtimeBadge','ProtocolGrpcBadge',
+      'ProtocolSoapBadge','ProtocolAiBadge','ProtocolMcpBadge','PaletteIcon',
+      'StateMachineIcon','BrainIcon','CallGraphIcon','ActivityIcon','GridIcon','ListIcon',
+      'MessageIcon','BellIcon','MegaphoneIcon','CalendarDayIcon','CalendarWeekIcon',
+      'CalendarMonthIcon','CalendarEventIcon','AlarmClockIcon','TimerIcon',
+      'HistoryClockIcon','MapLocationPinIcon','CompassIcon','FlagVariantIcon',
+      'BookmarkVariantIcon','FilterVariantIcon','SlidersControlIcon','PuzzlePieceIcon',
+      'GiftRewardIcon','TrophyAchievementIcon','LightbulbIdeaIcon','TargetGoalIcon',
+      'RocketLaunchIcon','AnchorIcon','MagnetIcon','CloudUploadIcon','CloudDownloadIcon',
+      'BellRingIcon','BellOffIcon','LifeRingIcon','GlobeSearchIcon','GaugeHighIcon',
+      'ScaleBalanceIcon','InboxIcon','OutboxIcon','SandClockIcon','TrafficLightIcon',
       'SendIcon','ReplSendIcon','RadioIcon','RadioSelectIcon','DropdownArrowIcon',
       'BookOpenIcon',
     ],
@@ -168,7 +271,7 @@ export function IconsGalleryPanel() {
       </div>
 
       {/* Category filter pills */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', rowGap: '8px', marginBottom: 4 }}>
         {categories.map(cat => {
           const isActive = activeCategory === cat;
           return (

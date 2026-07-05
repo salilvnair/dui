@@ -1,0 +1,20 @@
+.dui_blueprint {
+  background-color: #0a2540;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size: 16px 16px;
+  color: #8ecdf7;
+  font-family: var(--font-mono, monospace);
+}
+
+.dui_blueprint__node {
+  border: 1px dashed #4a9fd8;
+  background: rgba(20, 60, 100, 0.5);
+}
+
+.dui_blueprint__connector {
+  stroke: #4a9fd8;
+  stroke-dasharray: 4 3;
+  fill: none;
+}

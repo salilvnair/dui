@@ -1,0 +1,8 @@
+@keyframes dui_constellation_drift1 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(6px, -4px); } }
+@keyframes dui_constellation_drift2 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-5px, 5px); } }
+@keyframes dui_constellation_drift3 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(4px, 6px); } }
+@keyframes dui_constellation_twinkle { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+.dui_constellation__dot:nth-child(3n)   { animation: dui_constellation_drift1 2.4s ease-in-out infinite, dui_constellation_twinkle 1.6s ease-in-out infinite; }
+.dui_constellation__dot:nth-child(3n+1) { animation: dui_constellation_drift2 2.8s ease-in-out infinite, dui_constellation_twinkle 1.9s ease-in-out infinite; }
+.dui_constellation__dot:nth-child(3n+2) { animation: dui_constellation_drift3 2.2s ease-in-out infinite, dui_constellation_twinkle 1.4s ease-in-out infinite; }

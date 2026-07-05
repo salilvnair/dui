@@ -29,7 +29,7 @@ const IMPORT_OPTIONS: ContextMenuItem[] = [
   { id: 'url',       label: 'Import from URL',        onClick: () => alert('URL') },
   { id: 'clipboard', label: 'Paste from Clipboard',   onClick: () => alert('Clipboard') },
   { id: 'sep', label: '', separator: true },
-  { id: 'postman',   label: 'Import Postman v2.1',    onClick: () => alert('Postman') },
+  { id: 'import-collection',   label: 'Import Collection v2.1',    onClick: () => alert('Import') },
   { id: 'openapi',   label: 'Import OpenAPI 3.0',     onClick: () => alert('OpenAPI') },
 ];
 

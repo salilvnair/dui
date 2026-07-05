@@ -36,6 +36,15 @@ export function ExpandableLogEntryViewDocs() {
           Use JsonTreeView or a pre-styled code block as children to display structured log data. The content area has no built-in padding — add padding inside the children as needed.
         </DocNote>
       </DocSection>
-    </div>
+      
+      <DocSection
+        title="DUI Sizing & Theming"
+        description="ExpandableLogEntryView does not read size, width, color, or borderRadius from the DuiProvider context — it is not part of the sized-component system and has no size prop to fall back to a provider default."
+      >
+        <DocNote type="info">
+          ExpandableLogEntryView is unaffected by <code>{'<DuiProvider>'}</code> size/color context. Style it directly via its own props (and CSS variables where documented above) rather than expecting provider-level sizing to apply.
+        </DocNote>
+      </DocSection>
+      </div>
   );
 }

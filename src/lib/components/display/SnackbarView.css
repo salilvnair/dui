@@ -1,0 +1,7 @@
+.dui_snackbar {
+  animation: dui-snackbar-in 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes dui-snackbar-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

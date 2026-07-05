@@ -40,6 +40,15 @@ export function ResizablePanelViewDocs() {
       <DocNote type="tip">
         For a two-panel split that resizes left/right or top/bottom, use SplitPanelView instead. ResizablePanelView is for a single panel with a user-adjustable bottom edge — for example a request body editor that the user can make taller.
       </DocNote>
-    </div>
+      
+      <DocSection
+        title="DUI Sizing & Theming"
+        description="ResizablePanelView does not read size, width, color, or borderRadius from the DuiProvider context — it is not part of the sized-component system and has no size prop to fall back to a provider default."
+      >
+        <DocNote type="info">
+          ResizablePanelView is unaffected by <code>{'<DuiProvider>'}</code> size/color context. Style it directly via its own props (and CSS variables where documented above) rather than expecting provider-level sizing to apply.
+        </DocNote>
+      </DocSection>
+      </div>
   );
 }

@@ -1,4 +1,4 @@
-import { DocSection, PropTable, FeatureGrid, DocNote } from '../../../shared/DocComponents';
+import { DocSection, PropTable, FeatureGrid, DocNote, RadiusReference } from '../../../shared/DocComponents';
 
 export function SettingsNavViewDocs() {
   return (
@@ -53,6 +53,30 @@ export function SettingsNavViewDocs() {
           SettingsNavView differs from SideNavView in that it is designed for dense settings panels, not sidebars. It has no collapse toggle or search box. Use it for app settings screens with multiple named sections.
         </DocNote>
       </DocSection>
-    </div>
+      
+      <DocSection
+        title="DUI Sizing & Theming"
+        description="SettingsNavView reads <code>size</code>, <code>color</code>, and related style props directly from the DuiProvider context via useDui() rather than through a shared category base hook. Omitting a local size or color prop falls back to the nearest <DuiProvider> value."
+      >
+        <FeatureGrid features={[
+          { label: 'useDui() context read', color: 'var(--color-primary)' },
+          { label: 'Falls back to DuiProvider context', color: 'var(--color-success)' },
+          { label: 'size / color overrides', color: 'var(--color-info)' },
+        ]} />
+        <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginTop: 4, marginBottom: 8 }}>
+          Border radius presets, resolved via the <code>borderRadius</code> prop:
+        </div>
+        <RadiusReference radii={[
+          { radius: 'none', value: '0px' },
+          { radius: 'sm', value: '3px' },
+          { radius: 'md', value: '4px' },
+          { radius: 'lg', value: '6px' },
+          { radius: 'full', value: 'full' },
+        ]} />
+        <DocNote type="info">
+          SettingsNavView derives its own local size map from the resolved <code>size</code> value rather than sharing one of the category base hooks (e.g. useInputBase, useButtonBase). Behavior is still provider-aware: change <code>{'<DuiProvider size="...">'}</code> to restyle this component along with the rest of the tree.
+        </DocNote>
+      </DocSection>
+      </div>
   );
 }

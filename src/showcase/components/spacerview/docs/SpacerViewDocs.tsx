@@ -36,6 +36,15 @@ export function SpacerViewDocs() {
           In a flex column layout, a horizontal SpacerView adds top/bottom margin. In a flex row layout, use a vertical SpacerView to add left/right margin between items.
         </DocNote>
       </DocSection>
-    </div>
+      
+      <DocSection
+        title="DUI Sizing & Theming"
+        description="SpacerView does not read size, width, color, or borderRadius from the DuiProvider context — it is not part of the sized-component system and has no size prop to fall back to a provider default."
+      >
+        <DocNote type="info">
+          SpacerView is unaffected by <code>{'<DuiProvider>'}</code> size/color context. Style it directly via its own props (and CSS variables where documented above) rather than expecting provider-level sizing to apply.
+        </DocNote>
+      </DocSection>
+      </div>
   );
 }

@@ -52,6 +52,15 @@ export function StatusIndicatorViewDocs() {
       <DocNote type="tip">
         Use showLabel=false when embedding in a tight toolbar where only the colored dot is needed. Add a tooltip on the parent element to explain the status to keyboard/assistive users.
       </DocNote>
-    </div>
+      
+      <DocSection
+        title="DUI Sizing & Theming"
+        description="StatusIndicatorView does not read size, width, color, or borderRadius from the DuiProvider context — it is not part of the sized-component system and has no size prop to fall back to a provider default."
+      >
+        <DocNote type="info">
+          StatusIndicatorView is unaffected by <code>{'<DuiProvider>'}</code> size/color context. Style it directly via its own props (and CSS variables where documented above) rather than expecting provider-level sizing to apply.
+        </DocNote>
+      </DocSection>
+      </div>
   );
 }

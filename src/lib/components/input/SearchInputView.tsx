@@ -36,10 +36,11 @@ export function SearchInputView({
       className={className}
       style={{
         height: resolvedHeight,
+        flexShrink: 0,
         display: 'flex',
         alignItems: 'center',
         gap: 6,
-        flex: 1,
+        width: '100%',
         borderRadius: base.borderRadius,
         border: '1px solid var(--color-input-border)',
         background: 'var(--color-input-bg)',

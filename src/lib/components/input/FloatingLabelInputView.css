@@ -1,0 +1,21 @@
+.dui_floatinglabel {
+  position: relative;
+}
+
+.dui_floatinglabel__label {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-muted);
+  pointer-events: none;
+  transition: top 150ms ease-out, font-size 150ms ease-out, color 150ms ease-out, transform 150ms ease-out;
+  background: var(--color-surface);
+  padding: 0 4px;
+}
+
+.dui_floatinglabel__label--float {
+  top: 0;
+  transform: translateY(-50%) scale(0.85);
+  color: var(--dui-floatinglabel-accent, var(--color-primary));
+}

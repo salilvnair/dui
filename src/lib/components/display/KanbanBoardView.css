@@ -1,0 +1,39 @@
+.dui_kanban__column {
+  flex-shrink: 0;
+  width: 220px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-surface-border);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  max-height: 420px;
+}
+
+.dui_kanban__columnhead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-top: 3px solid;
+  border-radius: 8px 8px 0 0;
+  border-bottom: 1px solid var(--color-surface-border);
+}
+
+.dui_kanban__cards {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  overflow-y: auto;
+}
+
+.dui_kanban__card {
+  background: var(--color-panel);
+  border: 1px solid var(--color-surface-border);
+  border-radius: 6px;
+  padding: 8px;
+  cursor: grab;
+  transition: box-shadow 100ms, transform 100ms;
+}
+.dui_kanban__card:hover { box-shadow: 0 2px 8px rgba(0,0,0,.15); }
+.dui_kanban__card:active { cursor: grabbing; transform: scale(0.98); }

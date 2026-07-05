@@ -1,0 +1,8 @@
+.dui_progressring__svg--spin {
+  animation: dui-progressring-spin 1s linear infinite;
+  transform-origin: center;
+}
+@keyframes dui-progressring-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}

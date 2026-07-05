@@ -259,7 +259,7 @@ export function LivePlayground({ code: initialCode, content, themeMode, vars }: 
           </div>
 
           {/* Live preview — full width, user-resizable height */}
-          <ResizablePanelView defaultHeight={180} minHeight={80} maxHeight={700} borderRadius={10}>
+          <ResizablePanelView defaultHeight={500} minHeight={80} maxHeight={900} borderRadius={10}>
             <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: 'var(--color-panel)' }}>
               <div style={{
                 padding: '6px 12px', flexShrink: 0,

@@ -1,0 +1,10 @@
+@keyframes dui_gradienttext_shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.dui_gradienttext {
+  background-size: 200% auto;
+  animation: dui_gradienttext_shift 4s ease-in-out infinite;
+}

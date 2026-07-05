@@ -82,7 +82,11 @@ export function DataTableView<T extends Record<string, unknown>>({
     : rows;
 
   const expandCol = renderExpanded ? '28px ' : '';
-  const colTemplate = expandCol + columns.map(c => c.width ?? '1fr').join(' ');
+  // A bare number (valid per DataTableColumn.width's type) must become a
+  // px length — grid-template-columns rejects the WHOLE value (not just
+  // that track) if any token is a unitless number, silently collapsing
+  // the table to a single implicit column the width of its container.
+  const colTemplate = expandCol + columns.map(c => (typeof c.width === 'number' ? `${c.width}px` : c.width ?? '1fr')).join(' ');
   const rowH = DUI_HEIGHT.table[s];
   const cellPad = `${Math.round((rowH - 16) / 2)}px 12px`;
   const fontSize = DUI_FONT_SIZE[s];
@@ -98,6 +102,7 @@ export function DataTableView<T extends Record<string, unknown>>({
         border: '1px solid var(--color-surface-border)',
         borderRadius: '6px',
         overflow: 'hidden',
+        minWidth: 360,
         ...(pushMode ? {} : { maxHeight, display: 'flex', flexDirection: 'column' }),
       }}
     >

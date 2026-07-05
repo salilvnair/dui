@@ -1,0 +1,102 @@
+/* ─── Wheel container ─────────────────────────────────────────────────────── */
+
+.dui_picker__col {
+  position: relative;
+  min-width: 0;
+}
+
+.dui_picker__wheel {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ─── Scrollable track ────────────────────────────────────────────────────── */
+
+.dui_picker__scroll {
+  height: 100%;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  display: flex;
+  flex-direction: column;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  outline: none;
+}
+
+.dui_picker__scroll::-webkit-scrollbar { display: none; }
+
+.dui_picker__scroll--disabled { pointer-events: none; }
+
+/* ─── Rows ────────────────────────────────────────────────────────────────── */
+
+.dui_picker__item {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: center;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  transition: color 140ms ease-out;
+  will-change: transform, opacity;
+  transform-style: preserve-3d;
+}
+
+.dui_picker__item--selected {
+  color: var(--color-text-primary);
+  font-weight: 700;
+}
+
+.dui_picker__item--disabled {
+  color: var(--color-text-muted);
+  opacity: 0.35 !important;
+  cursor: default;
+}
+
+/* ─── Selection highlight band ───────────────────────────────────────────── */
+
+.dui_picker__highlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  border-top: 1px solid;
+  border-bottom: 1px solid;
+  z-index: 1;
+  transition: border-color 160ms ease-out, background 160ms ease-out;
+}
+
+/* ─── Top / bottom fade masks — the "cool" iOS depth touch ──────────────── */
+
+.dui_picker__fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 40%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.dui_picker__fade--top {
+  top: 0;
+  background: linear-gradient(to bottom, var(--color-input-bg) 0%, transparent 100%);
+}
+
+.dui_picker__fade--bottom {
+  bottom: 0;
+  background: linear-gradient(to top, var(--color-input-bg) 0%, transparent 100%);
+}
+
+/* ─── Caption under each wheel (multi-column mode) ───────────────────────── */
+
+.dui_picker__label {
+  margin-top: 4px;
+  text-align: center;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}

@@ -1,0 +1,26 @@
+.dui_mentioninput__menu {
+  background: var(--color-surface-bg, var(--color-elevated));
+  border: 1px solid var(--color-surface-border);
+  border-radius: 8px;
+  padding: 4px;
+  min-width: 160px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.35);
+  animation: dui-mentioninput-in 100ms ease-out;
+}
+@keyframes dui-mentioninput-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.dui_mentioninput__item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  font-weight: 600;
+  cursor: pointer;
+}
+.dui_mentioninput__item:hover { background: color-mix(in srgb, var(--color-primary) 10%, transparent); }

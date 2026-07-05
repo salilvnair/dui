@@ -1,4 +1,4 @@
-import { DocSection, PropTable, FeatureGrid, EnumTable, DocNote, InlineCode } from '../../../shared/DocComponents';
+import { DocSection, PropTable, FeatureGrid, EnumTable, DocNote, InlineCode, SizeReference } from '../../../shared/DocComponents';
 
 export function EditorViewDocs() {
   return (
@@ -175,7 +175,29 @@ export function EditorViewDocs() {
       <DocNote type="info">
         <strong>DebugEditorView</strong> is a specialized variant of EditorView that adds breakpoint gutter clicks, paused-line highlight, and variable-hover tooltips. See the DebugEditorView panel for its own props and adapter API.
       </DocNote>
-
-    </div>
+      
+      <DocSection
+        title="DUI Sizing & Theming"
+        description="EditorView maps its size prop to an editor-specific font-size scale (mirroring useEditorBase / DUI_EDITOR_FONT_SIZE) rather than the standard input height/padding tokens, since code needs a larger, monospaced font than label-sized UI text. An explicit fontSize prop always takes precedence over size."
+      >
+        <FeatureGrid features={[
+          { label: 'Editor font-size scale (DUI_EDITOR_FONT_SIZE)', color: 'var(--color-primary)' },
+          { label: 'fontSize prop overrides size', color: 'var(--color-success)' },
+        ]} />
+        <SizeReference sizes={[
+          { size: 'xxs', height: '—', font: '10px', desc: 'editor font-size' },
+          { size: 'xs', height: '—', font: '11px', desc: 'editor font-size' },
+          { size: 'sm', height: '—', font: '11px', desc: 'editor font-size' },
+          { size: 'md', height: '—', font: '12px', desc: 'editor font-size (default)' },
+          { size: 'lg', height: '—', font: '13px', desc: 'editor font-size' },
+          { size: 'xl', height: '—', font: '14px', desc: 'editor font-size' },
+          { size: 'xxl', height: '—', font: '15px', desc: 'editor font-size' },
+          { size: 'xxxl', height: '—', font: '16px', desc: 'editor font-size' },
+        ]} />
+        <DocNote type="info">
+          These values come from <code>DUI_EDITOR_FONT_SIZE</code> in <code>DuiTokens.ts</code> — deliberately larger than the standard <code>DUI_FONT_SIZE</code> scale used by label-sized components. Omitting size falls back to 'md' (12px); EditorView does not read ambient {'<DuiProvider>'} size context directly.
+        </DocNote>
+      </DocSection>
+      </div>
   );
 }

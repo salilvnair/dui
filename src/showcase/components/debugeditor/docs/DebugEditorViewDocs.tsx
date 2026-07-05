@@ -49,6 +49,15 @@ export function DebugEditorViewDocs() {
           The <code>debugSupported</code>, <code>onToggleBreakpoint</code>, <code>onGlyphContextMenu</code>, and <code>onEditorMount</code> props are stripped from the pass-through to prevent double-binding. Always use the <code>adapter</code> prop for these callbacks.
         </DocNote>
       </DocSection>
-    </div>
+      
+      <DocSection
+        title="DUI Sizing & Theming"
+        description="DebugEditorView does not read size, width, color, or borderRadius from the DuiProvider context — it is not part of the sized-component system and has no size prop to fall back to a provider default."
+      >
+        <DocNote type="info">
+          DebugEditorView is unaffected by <code>{'<DuiProvider>'}</code> size/color context. Style it directly via its own props (and CSS variables where documented above) rather than expecting provider-level sizing to apply.
+        </DocNote>
+      </DocSection>
+      </div>
   );
 }

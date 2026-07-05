@@ -41,6 +41,15 @@ export function EmptyStateViewDocs() {
       <DocNote type="info">
         EmptyStateView is used internally by DataTableView when the rows array is empty. Pass emptyTitle and emptyMessage to DataTableView to customize the message without rendering EmptyStateView directly.
       </DocNote>
-    </div>
+      
+      <DocSection
+        title="DUI Sizing & Theming"
+        description="EmptyStateView does not read size, width, color, or borderRadius from the DuiProvider context — it is not part of the sized-component system and has no size prop to fall back to a provider default."
+      >
+        <DocNote type="info">
+          EmptyStateView is unaffected by <code>{'<DuiProvider>'}</code> size/color context. Style it directly via its own props (and CSS variables where documented above) rather than expecting provider-level sizing to apply.
+        </DocNote>
+      </DocSection>
+      </div>
   );
 }

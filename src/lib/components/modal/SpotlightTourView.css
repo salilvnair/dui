@@ -1,0 +1,56 @@
+.dui_spotlight__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99998;
+}
+
+.dui_spotlight__cutout {
+  position: fixed;
+  border-radius: 8px;
+  pointer-events: none;
+  transition: top 220ms ease-out, left 220ms ease-out, width 220ms ease-out, height 220ms ease-out;
+  animation: dui-spotlight-pulse 1.8s ease-in-out infinite;
+}
+@keyframes dui-spotlight-pulse {
+  0%, 100% { filter: brightness(1); }
+  50%      { filter: brightness(1.08); }
+}
+
+.dui_spotlight__tooltip {
+  position: fixed;
+  width: 280px;
+  background: var(--color-surface-bg, var(--color-elevated));
+  border: 1px solid var(--color-surface-border);
+  padding: 14px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.4);
+  z-index: 99999;
+  animation: dui-spotlight-tooltip-in 200ms ease-out;
+}
+@keyframes dui-spotlight-tooltip-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.dui_spotlight__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  display: inline-block;
+  transition: background 140ms;
+}
+
+.dui_spotlight__btn {
+  border: none;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+}
+.dui_spotlight__btn--ghost {
+  background: transparent;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+.dui_spotlight__btn--ghost:hover { color: var(--color-text-primary); }

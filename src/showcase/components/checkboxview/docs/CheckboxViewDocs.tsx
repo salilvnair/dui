@@ -63,6 +63,20 @@ export function CheckboxViewDocs() {
       <DocNote type="tip">
         When a label is provided, the entire row div (including the label text) triggers onChange on click — you do not need to click the box exactly.
       </DocNote>
-    </div>
+      
+      <DocSection
+        title="DUI Sizing & Theming"
+        description="CheckboxView reads <code>size</code>, <code>color</code>, and related style props directly from the DuiProvider context via useDui() rather than through a shared category base hook. Omitting a local size or color prop falls back to the nearest <DuiProvider> value."
+      >
+        <FeatureGrid features={[
+          { label: 'useDui() context read', color: 'var(--color-primary)' },
+          { label: 'Falls back to DuiProvider context', color: 'var(--color-success)' },
+          { label: 'size / color overrides', color: 'var(--color-info)' },
+        ]} />
+        <DocNote type="info">
+          CheckboxView derives its own local size map from the resolved <code>size</code> value rather than sharing one of the category base hooks (e.g. useInputBase, useButtonBase). Behavior is still provider-aware: change <code>{'<DuiProvider size="...">'}</code> to restyle this component along with the rest of the tree.
+        </DocNote>
+      </DocSection>
+      </div>
   );
 }

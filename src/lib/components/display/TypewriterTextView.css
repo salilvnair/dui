@@ -1,0 +1,13 @@
+@keyframes dui_typewriter_blink {
+  50% { opacity: 0; }
+}
+
+.dui_typewriter__cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: currentColor;
+  margin-left: 2px;
+  vertical-align: middle;
+  animation: dui_typewriter_blink 800ms step-end infinite;
+}

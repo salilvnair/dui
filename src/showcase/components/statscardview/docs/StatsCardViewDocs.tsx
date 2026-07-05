@@ -46,6 +46,15 @@ export function StatsCardViewDocs() {
       <DocNote type="tip">
         Combine trend and trendValue for change indicators: trend="up" trendValue="+5%" renders a green "↑ +5%" line below the value. trendValue is only displayed when trend is also provided.
       </DocNote>
-    </div>
+      
+      <DocSection
+        title="DUI Sizing & Theming"
+        description="StatsCardView does not read size, width, color, or borderRadius from the DuiProvider context — it is not part of the sized-component system and has no size prop to fall back to a provider default."
+      >
+        <DocNote type="info">
+          StatsCardView is unaffected by <code>{'<DuiProvider>'}</code> size/color context. Style it directly via its own props (and CSS variables where documented above) rather than expecting provider-level sizing to apply.
+        </DocNote>
+      </DocSection>
+      </div>
   );
 }

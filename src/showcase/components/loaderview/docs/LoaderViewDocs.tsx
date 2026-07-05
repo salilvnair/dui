@@ -52,6 +52,15 @@ export function LoaderViewDocs() {
       <DocNote type="tip">
         The progress-bar variant requires the progress prop (0–100). The fill width transitions smoothly via CSS (300ms ease). Pair it with label for a "Loading 42%" style indicator.
       </DocNote>
-    </div>
+      
+      <DocSection
+        title="DUI Sizing & Theming"
+        description="LoaderView does not read size, width, color, or borderRadius from the DuiProvider context — it is not part of the sized-component system and has no size prop to fall back to a provider default."
+      >
+        <DocNote type="info">
+          LoaderView is unaffected by <code>{'<DuiProvider>'}</code> size/color context. Style it directly via its own props (and CSS variables where documented above) rather than expecting provider-level sizing to apply.
+        </DocNote>
+      </DocSection>
+      </div>
   );
 }

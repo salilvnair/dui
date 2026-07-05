@@ -1,0 +1,66 @@
+.dui_colorpicker__menu {
+  background: var(--color-surface-bg, var(--color-elevated));
+  border: 1px solid var(--color-surface-border);
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.35);
+  width: 216px;
+  animation: dui-colorpicker-in 120ms ease-out;
+}
+@keyframes dui-colorpicker-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.dui_colorpicker__grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.dui_colorpicker__swatch {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 6px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 100ms, border-color 100ms;
+}
+.dui_colorpicker__swatch:hover { transform: scale(1.12); }
+.dui_colorpicker__swatch--active {
+  border-color: var(--color-text-primary);
+}
+
+.dui_colorpicker__hexrow {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.dui_colorpicker__native {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--color-surface-border);
+  border-radius: 6px;
+  cursor: pointer;
+  background: none;
+}
+
+.dui_colorpicker__hexinput {
+  flex: 1;
+  min-width: 0;
+  height: 28px;
+  padding: 0 8px;
+  border: 1px solid var(--color-input-border);
+  border-radius: 6px;
+  background: var(--color-input-bg);
+  color: var(--color-text-primary);
+  font-size: 11px;
+  font-family: monospace;
+  outline: none;
+}
+.dui_colorpicker__hexinput:focus {
+  border-color: var(--color-primary);
+}

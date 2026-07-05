@@ -1,0 +1,44 @@
+@keyframes dui_orb_breathe {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50%      { transform: scale(1.08); opacity: 1; }
+}
+
+@keyframes dui_orb_ripple {
+  0%   { transform: scale(1);   opacity: 0.5; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+@keyframes dui_orb_wave {
+  0%, 100% { transform: scaleY(0.4); }
+  50%      { transform: scaleY(1); }
+}
+
+.dui_orb {
+  position: relative;
+  border-radius: 999px;
+  cursor: pointer;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dui_orb--idle {
+  animation: dui_orb_breathe 3s ease-in-out infinite;
+}
+
+.dui_orb__ripple {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  border: 2px solid currentColor;
+  animation: dui_orb_ripple 1.6s ease-out infinite;
+}
+
+.dui_orb__bar {
+  display: inline-block;
+  width: 3px;
+  border-radius: 2px;
+  background: #fff;
+  animation: dui_orb_wave 600ms ease-in-out infinite;
+}

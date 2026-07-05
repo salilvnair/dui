@@ -56,7 +56,7 @@ export function DebugViewLive() {
 
   return (
     <div>
-      <Row label="DebugView — full VS Code-style Run & Debug panel" noPad
+      <Row label="DebugView — full Run & Debug panel" noPad
         code={`<DebugView\n  session={session}\n  watchExpressions={watchExprs}\n  actions={{\n    onContinue, onStop, onStepOver, onStepInto,\n    onAddWatchExpression, onRemoveWatchExpression,\n    onToggleBreakpoint, onRemoveBreakpoint,\n    onToggleMuteBreakpoints, onClearAllBreakpoints,\n  }}\n/>`}>
         <div style={{ height: 500, width: '100%', border: '1px solid var(--color-surface-border)', borderRadius: 8, overflow: 'hidden' }}>
           <DebugView session={session} watchExpressions={watchExprs} actions={actions} accentColor="var(--color-protocol-rest)" />

@@ -1,0 +1,8 @@
+@keyframes dui_breathing_pulse {
+  0%, 100% { transform: scale(0.85); opacity: 0.5; }
+  50%      { transform: scale(1);    opacity: 1; }
+}
+
+.dui_breathing__circle {
+  animation: dui_breathing_pulse 3.2s ease-in-out infinite;
+}

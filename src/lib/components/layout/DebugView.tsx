@@ -1,5 +1,5 @@
 /**
- * DebugView — VS Code-style "Run and Debug" panel as a standalone DUI component.
+ * DebugView — editor-style "Run and Debug" panel as a standalone DUI component.
  *
  * Sections: toolbar, VARIABLES (scopes + recursive tree), WATCH,
  * CALL STACK, BREAKPOINTS.
@@ -473,7 +473,7 @@ function HeaderBtn({ children, onClick, title }: { children: ReactNode; onClick?
   );
 }
 
-// ── Value helpers (VS Code-style colors) ──────────────────────────────────────
+// ── Value helpers (editor-style colors) ──────────────────────────────────────
 
 function isExpandable(v: unknown): boolean {
   return v !== null && typeof v === 'object';

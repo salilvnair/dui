@@ -56,6 +56,15 @@ export function SplitPanelViewDocs() {
       <DocNote type="warning">
         When using controlled mode (split prop), always also wire onResize — otherwise the panel will not respond to drag input because internal state is overridden by the prop on every render.
       </DocNote>
-    </div>
+      
+      <DocSection
+        title="DUI Sizing & Theming"
+        description="SplitPanelView does not read size, width, color, or borderRadius from the DuiProvider context — it is not part of the sized-component system and has no size prop to fall back to a provider default."
+      >
+        <DocNote type="info">
+          SplitPanelView is unaffected by <code>{'<DuiProvider>'}</code> size/color context. Style it directly via its own props (and CSS variables where documented above) rather than expecting provider-level sizing to apply.
+        </DocNote>
+      </DocSection>
+      </div>
   );
 }

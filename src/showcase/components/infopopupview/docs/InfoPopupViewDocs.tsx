@@ -59,6 +59,15 @@ export function InfoPopupViewDocs() {
       <DocNote type="tip">
         The popup is z-index 1100, above ModalView instances. Pass the ref of the ? icon button as anchorEl so the popup appears directly below the icon, flipping to above when there is insufficient space below.
       </DocNote>
-    </div>
+      
+      <DocSection
+        title="DUI Sizing & Theming"
+        description="InfoPopupView does not read size, width, color, or borderRadius from the DuiProvider context — it is not part of the sized-component system and has no size prop to fall back to a provider default."
+      >
+        <DocNote type="info">
+          InfoPopupView is unaffected by <code>{'<DuiProvider>'}</code> size/color context. Style it directly via its own props (and CSS variables where documented above) rather than expecting provider-level sizing to apply.
+        </DocNote>
+      </DocSection>
+      </div>
   );
 }

@@ -76,7 +76,7 @@ export function DocSection({ title, description, children, style }: DocSectionPr
 
 export function FeatureGrid({ features }: { features: (string | FeatureEntry)[] }) {
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 4 }}>
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 20 }}>
       {features.map((f, i) => {
         const label = typeof f === 'string' ? f : f.label;
         const color = typeof f === 'string' ? chipColor(i) : (f.color ?? chipColor(i));
@@ -248,7 +248,7 @@ export function DocNote({ type = 'info', children }: { type?: NoteType; children
   return (
     <div style={{
       display: 'flex', gap: 10,
-      padding: '10px 14px', borderRadius: 8, marginBottom: 16,
+      padding: '10px 14px', borderRadius: 8, marginBottom: 20,
       background: `color-mix(in srgb, ${cfg.color} 8%, transparent)`,
       border: `1px solid color-mix(in srgb, ${cfg.color} 24%, transparent)`,
     }}>
@@ -289,20 +289,76 @@ export interface SizeRef { size: string; height: string; font: string; desc: str
 
 export function SizeReference({ sizes }: { sizes: SizeRef[] }) {
   return (
-    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+    <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 20 }}>
       {sizes.map(s => (
         <div key={s.size} style={{
-          padding: '8px 14px', borderRadius: 8,
+          padding: '20px 18px', borderRadius: 8,
           border: '1px solid var(--color-surface-border)',
           background: 'var(--color-surface)',
-          minWidth: 80, textAlign: 'center',
+          minWidth: 96, textAlign: 'center',
         }}>
           <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--color-primary)', lineHeight: 1 }}>
             {s.size}
           </div>
-          <div style={{ fontSize: 10, color: 'var(--color-text-muted)', marginTop: 4 }}>h: {s.height}</div>
-          <div style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>fs: {s.font}</div>
-          <div style={{ fontSize: 10, color: 'var(--color-text-secondary)', marginTop: 2 }}>{s.desc}</div>
+          <div style={{ fontSize: 10, color: 'var(--color-text-muted)', marginTop: 10 }}>h: {s.height}</div>
+          <div style={{ fontSize: 10, color: 'var(--color-text-muted)', marginTop: 4 }}>fs: {s.font}</div>
+          <div style={{ fontSize: 10, color: 'var(--color-text-secondary)', marginTop: 8 }}>{s.desc}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ─── WidthReference ───────────────────────────────────────────────────────────
+
+export interface WidthRef { width: string; value: string; desc?: string }
+
+export function WidthReference({ widths }: { widths: WidthRef[] }) {
+  return (
+    <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 20 }}>
+      {widths.map(w => (
+        <div key={w.width} style={{
+          padding: '20px 18px', borderRadius: 8,
+          border: '1px solid var(--color-surface-border)',
+          background: 'var(--color-surface)',
+          minWidth: 96, textAlign: 'center',
+        }}>
+          <div style={{ fontSize: 16, fontWeight: 800, color: 'var(--color-info)', lineHeight: 1 }}>
+            {w.width}
+          </div>
+          <div style={{ fontSize: 10, color: 'var(--color-text-muted)', marginTop: 10 }}>{w.value}</div>
+          {w.desc && <div style={{ fontSize: 10, color: 'var(--color-text-secondary)', marginTop: 8 }}>{w.desc}</div>}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ─── RadiusReference ──────────────────────────────────────────────────────────
+
+export interface RadiusRef { radius: string; value: string; desc?: string }
+
+export function RadiusReference({ radii }: { radii: RadiusRef[] }) {
+  return (
+    <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 20 }}>
+      {radii.map(r => (
+        <div key={r.radius} style={{
+          padding: '18px', borderRadius: 8,
+          border: '1px solid var(--color-surface-border)',
+          background: 'var(--color-surface)',
+          minWidth: 88, textAlign: 'center',
+        }}>
+          <div
+            style={{
+              width: 40, height: 40, margin: '0 auto 10px', background: 'var(--color-primary)',
+              borderRadius: r.value === 'full' ? '999px' : r.value,
+            }}
+          />
+          <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--color-warning)', lineHeight: 1 }}>
+            {r.radius}
+          </div>
+          <div style={{ fontSize: 10, color: 'var(--color-text-muted)', marginTop: 6 }}>{r.value}</div>
+          {r.desc && <div style={{ fontSize: 10, color: 'var(--color-text-secondary)', marginTop: 6 }}>{r.desc}</div>}
         </div>
       ))}
     </div>

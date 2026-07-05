@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import {
-  ToggleSwitchView, CheckboxView, ModalView, LoaderView, EmptyStateView, ButtonView,
+  ToggleSwitchView, CheckboxView, ModalView, LoaderView, EmptyStateView, ButtonView, IconButtonView,
   StatusIndicatorView, InfoPopupView, ResizablePanelView, SplitPanelView, DottedCardView,
   ColoredTextView, StatsCardView, DataTableView, CodeBlockView, AIButtonView,
   SideNavView, SettingsNavView, ThemeCardSelectorView, FeatureCategoryView,
@@ -19,12 +19,197 @@ import {
   YamlKeyChip,
   LiveColorCustomizer,
   SpacerView,
+  PickerView,
+  SegmentedControlView,
+  CalendarView,
+  DateInputView,
+  DateRangePickerView,
+  TimeWheelView,
+  CountdownRingView,
+  RadioGroupView,
+  RadioCardView,
+  RatingView,
+  OtpInputView,
+  PhoneInputView,
+  ColorPickerView,
+  IconPickerView,
+  EmojiPickerView,
+  FileDropzoneView,
+  AvatarUploadView,
+  MaskedInputView,
+  TransferListView,
+  StepperInputView,
+  SwitchGroupView,
+  SnackbarView,
+  BannerView,
+  ProgressRingView,
+  ProgressBarView,
+  SkeletonView,
+  NotificationBadgeView,
+  AvatarView,
+  AvatarGroupView,
+  PresenceDotView,
+  ConfettiBurstView,
+  PopoverView,
+  TooltipView,
+  DrawerView,
+  ActionSheetView,
+  BottomSheetView,
+  SpotlightTourView,
+  FabView,
+  DockView,
+  BreadcrumbView,
+  PaginationView,
+  HeroView,
+  LevelView,
+  MediaObjectView,
+  TileGridView,
+  PanelListView,
+  NavbarView,
+  AffixView,
+  AnchorView,
+  StickyHeaderView,
+  AspectRatioView,
+  MasonryGridView,
+  ScrollAreaView,
+  BackToTopView,
+  WatermarkView,
+  DescriptionsView,
+  StatisticView,
+  ResultView,
+  CascaderView,
+  ComboBoxView,
+  ListView,
+  VirtualizedListView,
+  StickyTableHeaderView,
+  TablePaginationView,
+  FilterBarView,
+  SortableHeaderView,
+  EditableCellView,
+  DataGridToolbarView,
+  ColumnVisibilityMenuView,
+  KbdView,
+  WizardStepperView,
+  AccordionGroupView,
+  SegmentedProgressBarView,
+  ChecklistView,
+  PriorityPickerView,
+  TagCloudView,
+  RangeSliderView,
+  VoteWidgetView,
+  LikeButtonView,
+  BookmarkButtonView,
+  FollowButtonView,
+  ShortcutRecorderView,
+  MessageBubbleView,
+  ChatInputView,
+  TypingIndicatorView,
+  CommentThreadView,
+  NotificationCenterView,
+  AlertDialogView,
+  FeedbackWidgetView,
+  NpsSurveyView,
+  ShareSheetView,
+  ContactCardView,
+  ArticleCardView,
+  FaqAccordionView,
+  MessageBannerView,
+  QuoteBlockView,
+  SettingsRowView,
+  SettingsSectionView,
+  OnboardingChecklistView,
+  KeyValueListView,
+  EnvironmentBadgeView,
+  VersionBadgeView,
+  LicenseBadgeView,
+  UsageMeterView,
+  PermissionMatrixView,
+  AuditLogRowView,
+  WebhookStatusView,
+  ApiKeyRowView,
+  RateLimitMeterView,
+  EmptyInboxView,
+  FeatureSpotlightBadgeView,
+  CookieConsentBannerView,
+  MaintenanceBannerView,
+  TrialCountdownBannerView,
+  TeamMemberRowView,
+  InviteInputView,
+  RoleSelectView,
+  IntegrationCardView,
+  StatusPageRowView,
+  ChangelogEntryView,
+  ImageGalleryView,
+  ImageCropperView,
+  VideoPlayerView,
+  AudioWaveformView,
+  AudioPlayerView,
+  PdfViewerView,
+  FileIconView,
+  FileListView,
+  DragHandleView,
+  SignaturePadView,
+  BarcodeView,
+  ImageZoomView,
+  TimelineView,
+  ActivityFeedView,
+  KanbanBoardView,
+  SparklineView,
+  HeatmapCalendarView,
+  ComparisonSliderView,
+  CarouselView,
+  QRCodeView,
+  StatTrendCardView,
+  PricingCardView,
+  TestimonialCardView,
+  RatingBreakdownView,
+  TreeSelectView,
+  RichTextToolbarView,
+  MentionInputView,
+  GradientTextView,
+  TypewriterTextView,
+  CountUpNumberView,
+  MagneticButtonView,
+  TiltCardView,
+  ParticleBackgroundView,
+  GlowBorderView,
+  RevealOnScrollView,
+  FloatingLabelInputView,
+  PulseDotView,
+  RequestFlowView,
+  LatencyPulseView,
+  AIStreamingTextView,
+  CommandOrbView,
+  TimeTravelSliderView,
+  DiffMorphView,
+  SchemaBlueprintView,
+  LiveCursorPresenceView,
+  UndoRedoTimelineView,
+  DialKnobInputView,
+  HoldToConfirmView,
+  MorphingIconButtonView,
+  StackedSwipeCardView,
+  NetworkWeatherView,
+  ConstellationLoaderView,
+  HoloCardView,
+  GhostTypingPlaceholderView,
+  ConnectionPulseLineView,
+  StackedToastDeckView,
+  PathRevealView,
+  SpectrumSliderView,
+  BreathingLoaderView,
 } from '@/dui';
+import type { SortDirection, PriorityLevel } from '@/dui';
+import type { PickerColumn, SegmentedControlOption, IsoDate, TimeWheelValue, FileDropzoneEntry, ConfettiBurstHandle } from '@/dui';
 import type { HudItem, FormDataRow, LiveColorVar } from '@/dui';
 import type { MergedInputSegment } from '@/dui';
 import type {
   ContextMenuItem, PromptLibrarySection, PromptLibraryEditorTab,
   KeyValueTableRow, PinnedKeyValueRow, TabItem,
+} from '@/dui';
+import type {
+  EnvironmentKind, LicenseTier, WebhookHealth, ServiceStatus, ChangeType, RichTextAction,
+  KanbanColumn, TreeSelectNode,
 } from '@/dui';
 import {
   SearchIcon, SettingsIcon, ServerIcon, LayersIcon, RestApiIcon,
@@ -34,6 +219,7 @@ import {
   SystemIcon, UserPromptIcon, UploadIcon, CodeBracketsIcon,
   StepOverIcon, StepIntoIcon, StepOutIcon, RestartIcon, StopSquareIcon, MuteBreakpointsIcon, RefreshIcon,
   ArrowUpRightIcon, ArrowDownLeftIcon, InfoCircleIcon, ChevronRightIcon,
+  CheckCircleIcon, KeyIcon, ShareIcon, MoreHorizontalIcon,
 } from '@/icons';
 
 // ─── Layout helpers (local) ───────────────────────────────────────────────────
@@ -1121,8 +1307,8 @@ export function ThemeCardSelectorPanel() {
           value={theme}
           onChange={setTheme}
           options={[
-            { value: 'dark',  label: 'Dark',  description: 'VS Code dark theme', preview: { bg: '#1e1e1e', panel: '#252526', accent: '#0078d4', text: '#d4d4d4' } },
-            { value: 'light', label: 'Light', description: 'VS Code light theme', preview: { bg: '#f3f3f3', panel: '#ffffff', accent: '#0078d4', text: '#333333' } },
+            { value: 'dark',  label: 'Dark',  description: 'Dark code-editor theme', preview: { bg: '#1e1e1e', panel: '#252526', accent: '#0078d4', text: '#d4d4d4' } },
+            { value: 'light', label: 'Light', description: 'Light code-editor theme', preview: { bg: '#f3f3f3', panel: '#ffffff', accent: '#0078d4', text: '#333333' } },
             { value: 'monokai', label: 'Monokai', preview: { bg: '#272822', panel: '#3e3d32', accent: '#a6e22e', text: '#f8f8f2' } },
             { value: 'nord', label: 'Nord', preview: { bg: '#2e3440', panel: '#3b4252', accent: '#88c0d0', text: '#eceff4' } },
           ]}
@@ -2651,6 +2837,2942 @@ export function LiveColorCustomizerPanel() {
     <div>
       <Row label="Live color editor — changes apply immediately to the document" align="flex-start">
         <LiveColorCustomizer vars={DEMO_VARS} />
+      </Row>
+    </div>
+  );
+}
+
+// ─── PickerView panel ──────────────────────────────────────────────────────────
+
+const METHOD_OPTIONS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'].map(m => ({ value: m, label: m }));
+const HOUR_OPTIONS   = Array.from({ length: 12 }, (_, i) => ({ value: String(i + 1), label: String(i + 1) }));
+const MINUTE_OPTIONS = Array.from({ length: 60 }, (_, i) => ({ value: String(i).padStart(2, '0'), label: String(i).padStart(2, '0') }));
+const MERIDIEM_OPTIONS = [{ value: 'AM', label: 'AM' }, { value: 'PM', label: 'PM' }];
+
+export function PickerPanel() {
+  const [method, setMethod] = useState('GET');
+  const [hour, setHour] = useState('9');
+  const [minute, setMinute] = useState('30');
+  const [meridiem, setMeridiem] = useState('AM');
+  const [sizeVal, setSizeVal] = useState('md');
+
+  const timeColumns: PickerColumn[] = [
+    { options: HOUR_OPTIONS, value: hour, onChange: setHour, label: 'Hour' },
+    { options: MINUTE_OPTIONS, value: minute, onChange: setMinute, label: 'Min' },
+    { options: MERIDIEM_OPTIONS, value: meridiem, onChange: setMeridiem, label: '' },
+  ];
+
+  return (
+    <div>
+      <Row
+        label="Single column — HTTP method wheel"
+        code={`<PickerView\n  options={methodOptions}\n  value={method}\n  onChange={setMethod}\n  size="md"\n/>`}
+      >
+        <PickerView options={METHOD_OPTIONS} value={method} onChange={setMethod} size="md" style={{ width: 140 }} />
+      </Row>
+
+      <Row
+        label="Multi-column — wheel time picker (hour / minute / AM-PM)"
+        code={`<PickerView\n  columns={[\n    { options: hours,   value: hour,   onChange: setHour,   label: 'Hour' },\n    { options: minutes, value: minute, onChange: setMinute, label: 'Min' },\n    { options: meridiem, value: meridiem, onChange: setMeridiem },\n  ]}\n  visibleRows={5}\n/>`}
+      >
+        <PickerView columns={timeColumns} visibleRows={5} style={{ width: 220 }} />
+      </Row>
+
+      <Row
+        label="Sizes xs / sm / md / lg / xl"
+        code={`<PickerView options={options} value={v} onChange={setV} size="xs" />\n<PickerView options={options} value={v} onChange={setV} size="lg" />`}
+      >
+        {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map(sz => (
+          <PickerView key={sz} options={METHOD_OPTIONS} value={sizeVal} onChange={setSizeVal} size={sz} style={{ width: 100 }} />
+        ))}
+      </Row>
+
+      <Row
+        label="Disabled state"
+        code={`<PickerView options={options} value={value} onChange={() => {}} disabled />`}
+      >
+        <PickerView options={METHOD_OPTIONS} value="POST" onChange={() => {}} disabled style={{ width: 140 }} />
+      </Row>
+
+      <Row
+        label="Custom accent color"
+        code={`<PickerView options={options} value={v} onChange={setV} color="var(--color-success)" />`}
+      >
+        <PickerView options={METHOD_OPTIONS} value={method} onChange={setMethod} color="var(--color-success)" style={{ width: 140 }} />
+      </Row>
+    </div>
+  );
+}
+
+// ─── SegmentedControlView panel ────────────────────────────────────────────────
+
+const SEG_OPTIONS: SegmentedControlOption[] = [
+  { value: 'opt1', label: 'Option 1' },
+  { value: 'opt2', label: 'Option 2' },
+  { value: 'opt3', label: 'Option 3' },
+];
+
+const SEG_PROTOCOL_OPTIONS: SegmentedControlOption[] = [
+  { value: 'rest', label: 'REST' },
+  { value: 'graphql', label: 'GraphQL' },
+  { value: 'ws', label: 'WebSocket' },
+];
+
+export function SegmentedControlPanel() {
+  const [pill, setPill] = useState('opt1');
+  const [rounded, setRounded] = useState('opt1');
+  const [pointy, setPointy] = useState('opt1');
+  const [protocol, setProtocol] = useState('rest');
+  const [sizeVal, setSizeVal] = useState('md');
+  const [fullWidthVal, setFullWidthVal] = useState('opt1');
+  const [withIcon, setWithIcon] = useState('rest');
+
+  return (
+    <div>
+      <Row
+        label="Variants — pill / rounded / pointy"
+        code={`<SegmentedControlView options={options} value={v} onChange={setV} variant="pill" />\n<SegmentedControlView options={options} value={v} onChange={setV} variant="rounded" />\n<SegmentedControlView options={options} value={v} onChange={setV} variant="pointy" />`}
+        align="flex-start"
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          <SegmentedControlView options={SEG_OPTIONS} value={pill} onChange={setPill} variant="pill" />
+          <SegmentedControlView options={SEG_OPTIONS} value={rounded} onChange={setRounded} variant="rounded" accentColor="var(--color-success)" />
+          <SegmentedControlView options={SEG_OPTIONS} value={pointy} onChange={setPointy} variant="pointy" accentColor="var(--color-warning)" />
+        </div>
+      </Row>
+
+      <Row
+        label="Sizes xs / sm / md / lg / xl"
+        code={`<SegmentedControlView options={options} value={v} onChange={setV} size="xs" />\n<SegmentedControlView options={options} value={v} onChange={setV} size="lg" />`}
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map(sz => (
+            <SegmentedControlView key={sz} options={SEG_OPTIONS} value={sizeVal} onChange={setSizeVal} size={sz} />
+          ))}
+        </div>
+      </Row>
+
+      <Row
+        label="Full width — protocol switcher pattern"
+        code={`<SegmentedControlView\n  options={protocolOptions}\n  value={protocol}\n  onChange={setProtocol}\n  fullWidth\n/>`}
+      >
+        <div style={{ width: 320 }}>
+          <SegmentedControlView options={SEG_PROTOCOL_OPTIONS} value={protocol} onChange={setProtocol} fullWidth />
+        </div>
+      </Row>
+
+      <Row
+        label="With icons + disabled segment"
+        code={`<SegmentedControlView\n  options={[\n    { value: 'rest', label: 'REST', icon: <RestApiIcon size={12} /> },\n    { value: 'graphql', label: 'GraphQL', icon: <GraphQLIcon size={12} /> },\n    { value: 'ws', label: 'WS', disabled: true },\n  ]}\n  value={v}\n  onChange={setV}\n/>`}
+      >
+        <SegmentedControlView
+          options={[
+            { value: 'rest', label: 'REST', icon: <RestApiIcon size={12} /> },
+            { value: 'graphql', label: 'GraphQL', icon: <GraphQLIcon size={12} /> },
+            { value: 'ws', label: 'WS', disabled: true },
+          ]}
+          value={withIcon}
+          onChange={setWithIcon}
+        />
+      </Row>
+
+      <Row
+        label="Disabled control"
+        code={`<SegmentedControlView options={options} value={value} onChange={() => {}} disabled />`}
+      >
+        <SegmentedControlView options={SEG_OPTIONS} value="opt2" onChange={() => {}} disabled />
+      </Row>
+    </div>
+  );
+}
+
+// ─── Sprint 7, Batch A — Date & Time panels ────────────────────────────────────
+
+function todayIso(offsetDays = 0): IsoDate {
+  const d = new Date();
+  d.setDate(d.getDate() + offsetDays);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+export function CalendarPanel() {
+  const [single, setSingle] = useState<IsoDate | null>(todayIso());
+  const [range, setRange] = useState<[IsoDate | null, IsoDate | null]>([todayIso(-3), todayIso(2)]);
+  const [multi, setMulti] = useState<IsoDate[]>([todayIso(), todayIso(4)]);
+
+  return (
+    <div>
+      <Row
+        label="Single select — click Month or Year to jump via a scrollable dropdown"
+        code={`<CalendarView mode="single" value={date} onChange={setDate} />\n// The "July" and "2026" header controls are independent\n// dropdowns — click either to open a real scrollable popup\n// list and jump to any month/year instantly.`}
+      >
+        <CalendarView mode="single" value={single} onChange={v => setSingle(v as IsoDate)} />
+      </Row>
+      <Row
+        label={'Range select — rangeStyle="block" (default): connected "snake" of boxes'}
+        code={`<CalendarView mode="range" value={[start, end]} onChange={setRange} color="var(--color-success)" />`}
+      >
+        <CalendarView mode="range" value={range} onChange={v => setRange(v as [IsoDate | null, IsoDate | null])} color="var(--color-success)" />
+      </Row>
+      <Row
+        label="Multi select"
+        code={`<CalendarView mode="multi" value={dates} onChange={setDates} color="var(--color-warning)" />`}
+      >
+        <CalendarView mode="multi" value={multi} onChange={v => setMulti(v as IsoDate[])} color="var(--color-warning)" />
+      </Row>
+      <Row
+        label="Min/max bounds + sizes"
+        code={`<CalendarView mode="single" value={date} onChange={setDate} minDate={minIso} maxDate={maxIso} size="xs" />`}
+      >
+        <CalendarView mode="single" value={single} onChange={v => setSingle(v as IsoDate)} minDate={todayIso(-5)} maxDate={todayIso(10)} size="xs" />
+      </Row>
+    </div>
+  );
+}
+
+export function DateInputPanel() {
+  const [date, setDate] = useState<IsoDate | null>(todayIso());
+  const [sizeVal, setSizeVal] = useState<IsoDate | null>(todayIso());
+
+  return (
+    <div>
+      <Row
+        label="Basic usage"
+        code={`<DateInputView value={date} onChange={setDate} placeholder="Select date…" />`}
+      >
+        <DateInputView value={date} onChange={setDate} style={{ width: 200 }} />
+      </Row>
+      <Row
+        label="Sizes xs / sm / md / lg / xl"
+        code={`<DateInputView value={date} onChange={setDate} size="xs" />\n<DateInputView value={date} onChange={setDate} size="lg" />`}
+      >
+        {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map(sz => (
+          <DateInputView key={sz} value={sizeVal} onChange={setSizeVal} size={sz} style={{ width: 180 }} />
+        ))}
+      </Row>
+      <Row
+        label="Disabled + custom accent"
+        code={`<DateInputView value={date} onChange={setDate} disabled />\n<DateInputView value={date} onChange={setDate} color="var(--color-success)" />`}
+      >
+        <DateInputView value={date} onChange={setDate} disabled style={{ width: 180 }} />
+        <DateInputView value={date} onChange={setDate} color="var(--color-success)" style={{ width: 180 }} />
+      </Row>
+    </div>
+  );
+}
+
+export function DateRangePickerPanel() {
+  const [range, setRange] = useState<[IsoDate | null, IsoDate | null]>([todayIso(-6), todayIso()]);
+  const [range2, setRange2] = useState<[IsoDate | null, IsoDate | null]>([todayIso(-6), todayIso()]);
+  const [range3, setRange3] = useState<[IsoDate | null, IsoDate | null]>([todayIso(-6), todayIso()]);
+
+  return (
+    <div>
+      <Row
+        label={'variant="panel" (default) — presets sidebar + calendar, one box'}
+        code={`<DateRangePickerView value={[start, end]} onChange={setRange} variant="panel" />`}
+        align="flex-start"
+      >
+        <DateRangePickerView value={range} onChange={setRange} variant="panel" />
+      </Row>
+      <Row
+        label={'variant="single" — one unified box, presets as a chip row above the calendar'}
+        code={`<DateRangePickerView value={[start, end]} onChange={setRange} variant="single" color="var(--color-success)" />`}
+        align="flex-start"
+      >
+        <DateRangePickerView value={range2} onChange={setRange2} variant="single" color="var(--color-success)" />
+      </Row>
+      <Row
+        label={'rangeStyle="tint" — soft background instead of the default connected "block" snake'}
+        code={`<DateRangePickerView value={[start, end]} onChange={setRange} presets={[]} rangeStyle="tint" color="var(--color-warning)" />`}
+        align="flex-start"
+      >
+        <DateRangePickerView value={range3} onChange={setRange3} presets={[]} rangeStyle="tint" color="var(--color-warning)" />
+      </Row>
+    </div>
+  );
+}
+
+export function TimeWheelPanel() {
+  const [time12, setTime12] = useState<TimeWheelValue>({ hour: 9, minute: 30, meridiem: 'AM' });
+  const [time24, setTime24] = useState<TimeWheelValue>({ hour: 14, minute: 45 });
+  const [step5, setStep5] = useState<TimeWheelValue>({ hour: 6, minute: 15, meridiem: 'PM' });
+
+  return (
+    <div>
+      <Row
+        label="12-hour (default)"
+        code={`<TimeWheelView value={{ hour: 9, minute: 30, meridiem: 'AM' }} onChange={setTime} />`}
+      >
+        <TimeWheelView value={time12} onChange={setTime12} style={{ width: 220 }} />
+      </Row>
+      <Row
+        label="24-hour mode"
+        code={`<TimeWheelView value={{ hour: 14, minute: 45 }} onChange={setTime} use24Hour />`}
+      >
+        <TimeWheelView value={time24} onChange={setTime24} use24Hour style={{ width: 160 }} />
+      </Row>
+      <Row
+        label="5-minute step + custom accent"
+        code={`<TimeWheelView value={time} onChange={setTime} minuteStep={5} color="var(--color-success)" />`}
+      >
+        <TimeWheelView value={step5} onChange={setStep5} minuteStep={5} color="var(--color-success)" style={{ width: 220 }} />
+      </Row>
+    </div>
+  );
+}
+
+export function CountdownRingPanel() {
+  return (
+    <div>
+      <Row
+        label="Duration countdown (60s)"
+        code={`<CountdownRingView durationSeconds={60} label="Session expires" />`}
+      >
+        <CountdownRingView durationSeconds={60} label="Session expires" />
+      </Row>
+      <Row
+        label="Sizes xs / sm / md / lg / xl"
+        code={`<CountdownRingView durationSeconds={120} size="xs" />\n<CountdownRingView durationSeconds={120} size="lg" />`}
+      >
+        {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map(sz => (
+          <CountdownRingView key={sz} durationSeconds={120} size={sz} />
+        ))}
+      </Row>
+      <Row
+        label="Target Date + custom accent"
+        code={`<CountdownRingView target={new Date(Date.now() + 90_000)} color="var(--color-warning)" label="Rate limit reset" />`}
+      >
+        <CountdownRingView target={new Date(Date.now() + 90_000)} color="var(--color-warning)" label="Rate limit reset" />
+      </Row>
+    </div>
+  );
+}
+
+// ─── Sprint 7 · Batch B — Form & Selection panels ──────────────────────────────
+
+export function RadioGroupPanel() {
+  const [v1, setV1] = useState('json');
+  const [v2, setV2] = useState('get');
+  return (
+    <div>
+      <Row label="With descriptions" code={`<RadioGroupView options={bodyTypes} value={value} onChange={setValue} />`}>
+        <RadioGroupView
+          value={v1}
+          onChange={setV1}
+          options={[
+            { value: 'json', label: 'JSON', description: 'application/json request body' },
+            { value: 'form', label: 'Form Data', description: 'multipart/form-data' },
+            { value: 'raw', label: 'Raw', description: 'Plain text body' },
+          ]}
+        />
+      </Row>
+      <Row label="Horizontal, custom accent" code={`<RadioGroupView options={methods} value={value} onChange={setValue} direction="horizontal" accentColor="var(--color-success)" />`}>
+        <RadioGroupView
+          value={v2}
+          onChange={setV2}
+          direction="horizontal"
+          accentColor="var(--color-success)"
+          options={[{ value: 'get', label: 'GET' }, { value: 'post', label: 'POST' }, { value: 'delete', label: 'DELETE', disabled: true }]}
+        />
+      </Row>
+    </div>
+  );
+}
+
+export function RadioCardPanel() {
+  const [plan, setPlan] = useState('pro');
+  return (
+    <div>
+      <Row label="Plan selector — 3 columns" code={`<RadioCardView columns={3} options={plans} value={plan} onChange={setPlan} />`}>
+        <div style={{ width: '100%' }}>
+          <RadioCardView
+            columns={3}
+            value={plan}
+            onChange={setPlan}
+            options={[
+              { value: 'free', label: 'Free', description: '100 requests/mo' },
+              { value: 'pro', label: 'Pro', description: 'Unlimited requests', icon: <SparkleIcon size={16} /> },
+              { value: 'team', label: 'Team', description: 'Shared workspaces' },
+            ]}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function RatingPanel() {
+  const [v1, setV1] = useState(3);
+  const [v2, setV2] = useState(3.5);
+  return (
+    <div>
+      <Row label="Stars — whole steps" code={`<RatingView value={value} onChange={setValue} />`}>
+        <RatingView value={v1} onChange={setV1} />
+      </Row>
+      <Row label="Half-steps + heart icon" code={`<RatingView value={value} onChange={setValue} allowHalf icon="heart" color="var(--color-error)" />`}>
+        <RatingView value={v2} onChange={setV2} allowHalf icon="heart" color="var(--color-error)" />
+      </Row>
+      <Row label="Read-only" code={`<RatingView value={4.5} allowHalf readOnly />`}>
+        <RatingView value={4.5} allowHalf readOnly />
+      </Row>
+    </div>
+  );
+}
+
+export function OtpInputPanel() {
+  const [otp, setOtp] = useState('');
+  return (
+    <div>
+      <Row label="6-digit code — auto-advance, paste-splits, onComplete" code={`<OtpInputView value={otp} onChange={setOtp} length={6} onComplete={code => verify(code)} />`}>
+        <OtpInputView value={otp} onChange={setOtp} length={6} onComplete={() => {}} />
+      </Row>
+      <Row label="4-digit, custom accent" code={`<OtpInputView value={otp} onChange={setOtp} length={4} color="var(--color-success)" />`}>
+        <OtpInputView value="" onChange={() => {}} length={4} color="var(--color-success)" />
+      </Row>
+    </div>
+  );
+}
+
+export function PhoneInputPanel() {
+  const [country, setCountry] = useState('US');
+  const [number, setNumber] = useState('');
+  return (
+    <div>
+      <Row label="Country select + number" code={`<PhoneInputView countryCode={country} onCountryChange={setCountry} number={number} onNumberChange={setNumber} />`}>
+        <PhoneInputView countryCode={country} onCountryChange={setCountry} number={number} onNumberChange={setNumber} style={{ width: 260 }} />
+      </Row>
+    </div>
+  );
+}
+
+export function ColorPickerPanel() {
+  const [color, setColor] = useState('#6366F1');
+  return (
+    <div>
+      <Row label="Swatch grid + hex input" code={`<ColorPickerView value={color} onChange={setColor} />`}>
+        <ColorPickerView value={color} onChange={setColor} />
+      </Row>
+    </div>
+  );
+}
+
+export function IconPickerPanel() {
+  const [icon, setIcon] = useState<string | null>('SparkleIcon');
+  return (
+    <div>
+      <Row label="Searchable icon grid — all DUI icons" code={`<IconPickerView value={iconName} onChange={setIconName} />`}>
+        <IconPickerView value={icon} onChange={setIcon} />
+      </Row>
+    </div>
+  );
+}
+
+export function EmojiPickerPanel() {
+  const [emoji, setEmoji] = useState<string | null>('🚀');
+  return (
+    <div>
+      <Row label="Categorized grid + search" code={`<EmojiPickerView value={emoji} onChange={setEmoji} />`}>
+        <EmojiPickerView value={emoji} onChange={setEmoji} />
+      </Row>
+    </div>
+  );
+}
+
+export function FileDropzonePanel() {
+  const [files, setFiles] = useState<FileDropzoneEntry[]>([]);
+  return (
+    <div>
+      <Row label="Drag-drop + file list" code={`<FileDropzoneView files={files} onFilesAdded={addFiles} onRemove={removeFile} />`} align="flex-start">
+        <div style={{ width: 360 }}>
+          <FileDropzoneView
+            files={files}
+            onFilesAdded={fs => setFiles(prev => [...prev, ...fs.map(file => ({ file, progress: 100 }))])}
+            onRemove={i => setFiles(prev => prev.filter((_, idx) => idx !== i))}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function AvatarUploadPanel() {
+  const [src, setSrc] = useState<string | null>(null);
+  return (
+    <div>
+      <Row label="Circular avatar + camera overlay" code={`<AvatarUploadView src={avatarUrl} onFileSelected={file => upload(file)} initials="SV" />`}>
+        <AvatarUploadView src={src} onFileSelected={f => setSrc(URL.createObjectURL(f))} initials="SV" />
+      </Row>
+    </div>
+  );
+}
+
+export function MaskedInputPanel() {
+  const [phone, setPhone] = useState('');
+  const [card, setCard] = useState('');
+  return (
+    <div>
+      <Row label={'Phone mask "999-999-9999"'} code={`<MaskedInputView mask="999-999-9999" value={phone} onChange={setPhone} />`}>
+        <MaskedInputView mask="999-999-9999" value={phone} onChange={setPhone} />
+      </Row>
+      <Row label={'Card mask "9999 9999 9999 9999"'} code={`<MaskedInputView mask="9999 9999 9999 9999" value={card} onChange={setCard} />`}>
+        <MaskedInputView mask="9999 9999 9999 9999" value={card} onChange={setCard} style={{ width: 220 }} />
+      </Row>
+    </div>
+  );
+}
+
+export function TransferListPanel() {
+  const [selected, setSelected] = useState<string[]>(['read', 'write']);
+  const permissions = [
+    { value: 'read', label: 'Read' },
+    { value: 'write', label: 'Write' },
+    { value: 'delete', label: 'Delete' },
+    { value: 'admin', label: 'Admin' },
+    { value: 'billing', label: 'Billing' },
+  ];
+  return (
+    <div>
+      <Row label="Permission assignment" code={`<TransferListView items={permissions} value={selected} onChange={setSelected} />`} align="flex-start">
+        <TransferListView items={permissions} value={selected} onChange={setSelected} style={{ width: 420 }} />
+      </Row>
+    </div>
+  );
+}
+
+export function StepperInputPanel() {
+  const [v1, setV1] = useState(3);
+  const [v2, setV2] = useState(30);
+  return (
+    <div>
+      <Row label="Basic — min 0" code={`<StepperInputView value={value} onChange={setValue} min={0} max={10} />`}>
+        <StepperInputView value={v1} onChange={setV1} min={0} max={10} />
+      </Row>
+      <Row label="Step 5 — timeout (seconds)" code={`<StepperInputView value={value} onChange={setValue} min={0} max={120} step={5} color="var(--color-warning)" />`}>
+        <StepperInputView value={v2} onChange={setV2} min={0} max={120} step={5} color="var(--color-warning)" />
+      </Row>
+    </div>
+  );
+}
+
+export function SwitchGroupPanel() {
+  const [checked, setChecked] = useState<string[]>(['ssl', 'redirects']);
+  return (
+    <div>
+      <Row label="Settings.app-style grouped toggles" code={`<SwitchGroupView title="Request Options" items={items} checked={checked} onChange={setChecked} />`} align="flex-start">
+        <div style={{ width: 340 }}>
+          <SwitchGroupView
+            title="Request Options"
+            checked={checked}
+            onChange={setChecked}
+            items={[
+              { value: 'ssl', label: 'Verify SSL', description: 'Reject self-signed certificates', icon: <KeyIcon size={14} /> },
+              { value: 'redirects', label: 'Follow redirects', description: 'Auto-follow 3xx responses' },
+              { value: 'gzip', label: 'Accept gzip', description: 'Request compressed responses', disabled: true },
+            ]}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+// ─── Sprint 7 · Batch C — Feedback & Status panels ─────────────────────────────
+
+export function SnackbarPanel() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div>
+      <Row label="Single-line bottom bar + action, auto-dismisses (pauses on hover)" code={`<SnackbarView open={open} message="Environment saved" actionLabel="Undo" onAction={undo} onClose={() => setOpen(false)} />`}>
+        <ButtonView label="Show snackbar" variant="secondary" size="sm" onClick={() => setOpen(true)} />
+        {open && (
+          <div style={{ position: 'fixed', bottom: 24, left: '50%', transform: 'translateX(-50%)', zIndex: 999 }}>
+            <SnackbarView open={open} message="Environment saved" actionLabel="Undo" onAction={() => {}} onClose={() => setOpen(false)} />
+          </div>
+        )}
+      </Row>
+    </div>
+  );
+}
+
+export function BannerPanel() {
+  const [open1, setOpen1] = useState(true);
+  const [open2, setOpen2] = useState(true);
+  return (
+    <div>
+      <Row label="Info banner with action" code={`<BannerView open={open} variant="info" message="A new version is available." actionLabel="Refresh" onAction={refresh} onDismiss={() => setOpen(false)} />`}>
+        <div style={{ width: '100%' }}>
+          <BannerView open={open1} variant="info" message="A new version is available." actionLabel="Refresh" onAction={() => {}} onDismiss={() => setOpen1(false)} />
+        </div>
+      </Row>
+      <Row label="Warning banner, no dismiss" code={`<BannerView open={open} variant="warning" message="Rate limit at 80% for this workspace." />`}>
+        <div style={{ width: '100%' }}>
+          <BannerView open={open2} variant="warning" message="Rate limit at 80% for this workspace." />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function ProgressRingPanel() {
+  return (
+    <div>
+      <Row label="Determinate — 35% / 70% / 100%" code={`<ProgressRingView value={70} />`}>
+        <ProgressRingView value={35} size="sm" />
+        <ProgressRingView value={70} />
+        <ProgressRingView value={100} color="var(--color-success)" />
+      </Row>
+      <Row label="Indeterminate (spinning)" code={`<ProgressRingView />`}>
+        <ProgressRingView />
+      </Row>
+    </div>
+  );
+}
+
+export function ProgressBarPanel() {
+  return (
+    <div>
+      <Row label="Determinate, with buffer" code={`<ProgressBarView value={45} buffer={70} style={{ width: 240 }} />`}>
+        <ProgressBarView value={45} buffer={70} style={{ width: 240 }} />
+      </Row>
+      <Row label="Indeterminate" code={`<ProgressBarView style={{ width: 240 }} />`}>
+        <ProgressBarView style={{ width: 240 }} />
+      </Row>
+      <Row label="Sizes xs / md / xl" code={`<ProgressBarView value={60} size="xs" style={{ width: 200 }} />`}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <ProgressBarView value={60} size="xs" style={{ width: 200 }} />
+          <ProgressBarView value={60} size="md" style={{ width: 200 }} />
+          <ProgressBarView value={60} size="xl" style={{ width: 200 }} />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function SkeletonPanel() {
+  return (
+    <div>
+      <Row label="Text lines" code={`<SkeletonView variant="text" lines={3} />`}>
+        <div style={{ width: 260 }}><SkeletonView variant="text" lines={3} /></div>
+      </Row>
+      <Row label="Row — avatar + 2 lines" code={`<SkeletonView variant="row" />`}>
+        <div style={{ width: 260 }}><SkeletonView variant="row" /></div>
+      </Row>
+      <Row label="Block + Avatar primitives" code={`<SkeletonView variant="block" height={80} />\n<SkeletonView variant="avatar" />`}>
+        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+          <div style={{ width: 120 }}><SkeletonView variant="block" height={60} /></div>
+          <SkeletonView variant="avatar" />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function NotificationBadgePanel() {
+  return (
+    <div>
+      <Row label="Count + dot + overflow (max)" code={`<NotificationBadgeView count={3}><IconButtonView icon={<BellIcon />} /></NotificationBadgeView>`}>
+        <NotificationBadgeView count={3}>
+          <div style={{ width: 32, height: 32, borderRadius: 8, background: 'var(--color-surface)', border: '1px solid var(--color-surface-border)' }} />
+        </NotificationBadgeView>
+        <NotificationBadgeView dot>
+          <div style={{ width: 32, height: 32, borderRadius: 8, background: 'var(--color-surface)', border: '1px solid var(--color-surface-border)' }} />
+        </NotificationBadgeView>
+        <NotificationBadgeView count={128} max={99}>
+          <div style={{ width: 32, height: 32, borderRadius: 8, background: 'var(--color-surface)', border: '1px solid var(--color-surface-border)' }} />
+        </NotificationBadgeView>
+      </Row>
+    </div>
+  );
+}
+
+export function AvatarPanel() {
+  return (
+    <div>
+      <Row label="Initials, image, with presence dot" code={`<AvatarView name="Salil Vasa Nair" status="online" />`}>
+        <AvatarView name="Salil Vasa Nair" status="online" />
+        <AvatarView name="Jordan Lee" status="away" color="var(--color-success)" />
+        <AvatarView src="https://i.pravatar.cc/100?img=12" name="River Chen" status="busy" />
+      </Row>
+      <Row label="Sizes xs / md / xl" code={`<AvatarView name="AB" size="xl" />`}>
+        <AvatarView initials="AB" size="xs" />
+        <AvatarView initials="AB" size="md" />
+        <AvatarView initials="AB" size="xl" />
+      </Row>
+    </div>
+  );
+}
+
+export function AvatarGroupPanel() {
+  const members = [
+    { name: 'Salil Vasa Nair' },
+    { name: 'Jordan Lee' },
+    { src: 'https://i.pravatar.cc/100?img=12', name: 'River Chen' },
+    { name: 'Amara Okafor' },
+    { name: 'Priya Sharma' },
+    { name: 'Tomas Ruiz' },
+  ];
+  return (
+    <div>
+      <Row label="Overlapping stack, max 4 + overflow" code={`<AvatarGroupView members={members} max={4} />`}>
+        <AvatarGroupView members={members} max={4} />
+      </Row>
+    </div>
+  );
+}
+
+export function PresenceDotPanel() {
+  return (
+    <div>
+      <Row label="online / away / busy / offline" code={`<PresenceDotView status="online" />`}>
+        <PresenceDotView status="online" />
+        <PresenceDotView status="away" />
+        <PresenceDotView status="busy" />
+        <PresenceDotView status="offline" />
+      </Row>
+    </div>
+  );
+}
+
+export function ConfettiBurstPanel() {
+  const ref = useRef<ConfettiBurstHandle>(null);
+  return (
+    <div>
+      <Row label="Imperative celebration burst — fire() from any event handler" code={`const ref = useRef(null);\n<ConfettiBurstView ref={ref} />\n<ButtonView onClick={() => ref.current.fire()}>Celebrate</ButtonView>`}>
+        <ButtonView label="🎉 Celebrate" variant="primary" size="sm" onClick={e => ref.current?.fire({ x: e.clientX, y: e.clientY })} />
+        <ConfettiBurstView ref={ref} />
+      </Row>
+    </div>
+  );
+}
+
+// ─── Sprint 7 · Batch D — Overlays & Navigation panels ─────────────────────────
+
+export function PopoverPanel() {
+  const [open, setOpen] = useState(false);
+  const [anchor, setAnchor] = useState<HTMLElement | null>(null);
+  return (
+    <div>
+      <Row label="Generic anchored floating content" code={`const [anchor, setAnchor] = useState(null);\n<span ref={setAnchor}><ButtonView onClick={() => setOpen(true)}>Open</ButtonView></span>\n<PopoverView open={open} anchorEl={anchor} onClose={() => setOpen(false)}>\n  Any content here\n</PopoverView>`}>
+        <span ref={setAnchor} style={{ display: 'inline-flex' }}>
+          <ButtonView label="Open popover" variant="secondary" size="sm" onClick={() => setOpen(o => !o)} />
+        </span>
+        <PopoverView open={open} anchorEl={anchor} onClose={() => setOpen(false)}>
+          <div style={{ width: 200, fontSize: 12, color: 'var(--color-text-primary)' }}>
+            Any content can go here — forms, lists, menus.
+          </div>
+        </PopoverView>
+      </Row>
+    </div>
+  );
+}
+
+export function TooltipPanel() {
+  return (
+    <div>
+      <Row label="Hover/focus tooltip primitive — top / bottom / right (wrap non-ref-forwarding triggers in a span)" code={`<TooltipView content="Copy to clipboard" placement="top">\n  <span><ButtonView>Top</ButtonView></span>\n</TooltipView>`}>
+        <TooltipView content="Copy to clipboard" placement="top">
+          <span style={{ display: 'inline-flex' }}><ButtonView label="Top" variant="secondary" size="sm" /></span>
+        </TooltipView>
+        <TooltipView content="Delete this request" placement="bottom">
+          <span style={{ display: 'inline-flex' }}><ButtonView label="Bottom" variant="secondary" size="sm" /></span>
+        </TooltipView>
+        <TooltipView content="Send to workspace" placement="right">
+          <span style={{ display: 'inline-flex' }}><ButtonView label="Right" variant="secondary" size="sm" /></span>
+        </TooltipView>
+      </Row>
+    </div>
+  );
+}
+
+export function DrawerPanel() {
+  const [edge, setEdge] = useState<'left' | 'right' | 'top' | 'bottom' | null>(null);
+  return (
+    <div>
+      <Row label="Slide-in overlay, any edge" code={`<DrawerView open={open} edge="right" title="Environment" onClose={() => setOpen(false)}>\n  ...\n</DrawerView>`}>
+        <ButtonView label="Left" variant="secondary" size="sm" onClick={() => setEdge('left')} />
+        <ButtonView label="Right" variant="secondary" size="sm" onClick={() => setEdge('right')} />
+        <ButtonView label="Top" variant="secondary" size="sm" onClick={() => setEdge('top')} />
+        <ButtonView label="Bottom" variant="secondary" size="sm" onClick={() => setEdge('bottom')} />
+        <DrawerView open={!!edge} edge={edge ?? 'right'} title="Environment" onClose={() => setEdge(null)}>
+          <div style={{ fontSize: 12, color: 'var(--color-text-secondary)' }}>Drawer content — forms, settings, filters.</div>
+        </DrawerView>
+      </Row>
+    </div>
+  );
+}
+
+export function ActionSheetPanel() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div>
+      <Row label="Bottom sheet action list + cancel" code={`<ActionSheetView\n  open={open}\n  title="Manage request"\n  items={[\n    { label: 'Duplicate', onClick: duplicate },\n    { label: 'Delete', danger: true, onClick: del },\n  ]}\n  onClose={() => setOpen(false)}\n/>`}>
+        <ButtonView label="Open action sheet" variant="secondary" size="sm" onClick={() => setOpen(true)} />
+        <ActionSheetView
+          open={open}
+          title="Manage request"
+          onClose={() => setOpen(false)}
+          items={[
+            { label: 'Duplicate', icon: <CopyIcon size={15} />, onClick: () => {} },
+            { label: 'Share', icon: <ShareIcon size={15} />, onClick: () => {} },
+            { label: 'Delete', icon: <TrashIcon size={15} />, danger: true, onClick: () => {} },
+          ]}
+        />
+      </Row>
+    </div>
+  );
+}
+
+export function BottomSheetPanel() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div>
+      <Row label="Drag-to-dismiss mobile sheet — distinct from the persistent BottomPanelView" code={`<BottomSheetView open={open} title="Request Options" onClose={() => setOpen(false)}>\n  ...\n</BottomSheetView>`}>
+        <ButtonView label="Open bottom sheet" variant="secondary" size="sm" onClick={() => setOpen(true)} />
+        <BottomSheetView open={open} title="Request Options" onClose={() => setOpen(false)} heightRatio={0.4}>
+          <div style={{ fontSize: 12, color: 'var(--color-text-secondary)' }}>Drag the handle down to dismiss.</div>
+        </BottomSheetView>
+      </Row>
+    </div>
+  );
+}
+
+export function SpotlightTourPanel() {
+  const [open, setOpen] = useState(false);
+  const [step, setStep] = useState(0);
+  const steps = [
+    { target: '#tour-target-1', title: 'Send requests', content: 'Build and fire off HTTP requests from here.' },
+    { target: '#tour-target-2', title: 'Save to a collection', content: 'Organize related requests together.' },
+  ];
+  return (
+    <div>
+      <Row label="Coach-mark onboarding — spotlight cutout + step tooltip" code={`<SpotlightTourView open={open} steps={steps} stepIndex={step} onNext={...} onPrev={...} onClose={...} />`}>
+        <ButtonView id="tour-target-1" label="Send" variant="primary" size="sm" onClick={() => setOpen(true)} />
+        <ButtonView id="tour-target-2" label="Save" variant="secondary" size="sm" />
+        <SpotlightTourView
+          open={open}
+          steps={steps}
+          stepIndex={step}
+          onNext={() => setStep(s => Math.min(steps.length - 1, s + 1))}
+          onPrev={() => setStep(s => Math.max(0, s - 1))}
+          onClose={() => { setOpen(false); setStep(0); }}
+        />
+      </Row>
+    </div>
+  );
+}
+
+export function FabPanel() {
+  return (
+    <div style={{ position: 'relative', height: 160 }}>
+      <Row label="Standard FAB + speed-dial (relative-positioned demo box below)" code={`<FabView actions={[\n  { icon: <FolderIcon />, label: 'New Folder', onClick: newFolder },\n  { icon: <DownloadIcon />, label: 'Import', onClick: importFile },\n]} />`}>
+        <span style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>See the floating buttons in the box below ↓</span>
+      </Row>
+      <div style={{ position: 'relative', height: 140, border: '1px dashed var(--color-surface-border)', borderRadius: 10, overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', bottom: 16, right: 16 }}>
+          <FabView
+            actions={[
+              { icon: <FolderIcon size={16} />, label: 'New Folder', onClick: () => {} },
+              { icon: <DownloadIcon size={16} />, label: 'Import', onClick: () => {} },
+            ]}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function DockPanel() {
+  const [active, setActive] = useState('server');
+  return (
+    <div>
+      <Row label="Magnify-on-hover dock" code={`<DockView items={items} onSelect={setActive} />`}>
+        <DockView
+          onSelect={setActive}
+          items={[
+            { id: 'server', icon: <ServerIcon size={18} />, label: 'Servers', active: active === 'server' },
+            { id: 'globe', icon: <GlobeIcon size={18} />, label: 'Network', active: active === 'globe' },
+            { id: 'settings', icon: <SettingsIcon size={18} />, label: 'Settings', active: active === 'settings' },
+            { id: 'folder', icon: <FolderIcon size={18} />, label: 'Collections', active: active === 'folder' },
+          ]}
+        />
+      </Row>
+    </div>
+  );
+}
+
+export function BreadcrumbPanel() {
+  return (
+    <div>
+      <Row label="Full trail" code={`<BreadcrumbView items={[{ label: 'Workspace', onClick: go }, { label: 'Collections', onClick: go }, { label: 'Users API' }]} />`}>
+        <BreadcrumbView items={[{ label: 'Workspace', onClick: () => {} }, { label: 'Collections', onClick: () => {} }, { label: 'Users API' }]} />
+      </Row>
+      <Row label="Overflow-collapse — long trail" code={`<BreadcrumbView items={longTrail} maxVisible={4} />`}>
+        <BreadcrumbView
+          maxVisible={4}
+          items={[
+            { label: 'Workspace', onClick: () => {} },
+            { label: 'Collections', onClick: () => {} },
+            { label: 'Public APIs', onClick: () => {} },
+            { label: 'Weather', onClick: () => {} },
+            { label: 'v2', onClick: () => {} },
+            { label: 'Current Conditions' },
+          ]}
+        />
+      </Row>
+    </div>
+  );
+}
+
+export function PaginationPanel() {
+  const [page, setPage] = useState(1);
+  const [page2, setPage2] = useState(12);
+  return (
+    <div>
+      <Row label="Short range — no collapse" code={`<PaginationView page={page} totalPages={5} onChange={setPage} />`}>
+        <PaginationView page={page} totalPages={5} onChange={setPage} />
+      </Row>
+      <Row label="Long range — ellipsis ⋯ collapse" code={`<PaginationView page={page} totalPages={40} onChange={setPage} />`}>
+        <PaginationView page={page2} totalPages={40} onChange={setPage2} />
+      </Row>
+    </div>
+  );
+}
+
+// ─── Sprint 7 · Batch F — Layout & Structural panels ───────────────────────────
+
+export function HeroPanel() {
+  return (
+    <div>
+      <Row label="Title + subtitle + CTA" code={`<HeroView\n  title="Build APIs faster"\n  subtitle="Design, test, and document HTTP, GraphQL, and gRPC APIs in one workspace."\n  actions={<ButtonView variant="primary">Get Started</ButtonView>}\n/>`}>
+        <div style={{ width: '100%' }}>
+          <HeroView
+            title="Build APIs faster"
+            subtitle="Design, test, and document HTTP, GraphQL, and gRPC APIs in one workspace."
+            actions={<ButtonView variant="primary" label="Get Started" />}
+            size="sm"
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function LevelPanel() {
+  return (
+    <div>
+      <Row label="Toolbar row — left group / right group" code={`<LevelView\n  left={<span>142 requests</span>}\n  right={<ButtonView size="sm">Export</ButtonView>}\n/>`}>
+        <div style={{ width: '100%', padding: 10, border: '1px solid var(--color-surface-border)', borderRadius: 8 }}>
+          <LevelView
+            left={<span style={{ fontSize: 12, fontWeight: 600, color: 'var(--color-text-primary)' }}>142 requests</span>}
+            right={<ButtonView label="Export" variant="secondary" size="sm" />}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function MediaObjectPanel() {
+  return (
+    <div>
+      <Row label="Avatar + content + actions" code={`<MediaObjectView media={<AvatarView name="Jordan Lee" />} actions={<IconButtonView icon={<MoreHorizontalIcon />} />}>\n  <b>Jordan Lee</b> commented on your request\n</MediaObjectView>`}>
+        <div style={{ width: '100%' }}>
+          <MediaObjectView
+            media={<div style={{ width: 32, height: 32, borderRadius: '999px', background: 'var(--color-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: 12 }}>JL</div>}
+            actions={<IconButtonView icon={<MoreHorizontalIcon size={14} />} variant="ghost" size="sm" />}
+          >
+            <b>Jordan Lee</b> commented on your request — "Can we add a retry policy here?"
+          </MediaObjectView>
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function TileGridPanel() {
+  return (
+    <div>
+      <Row label="Nested ancestor/parent/child grid" code={`<TileGridView nodes={[\n  { content: <Box>A</Box>, weight: 2 },\n  { children: [{ content: <Box>B</Box> }, { content: <Box>C</Box> }], vertical: true },\n]} />`}>
+        <div style={{ width: '100%', height: 120 }}>
+          <TileGridView
+            nodes={[
+              { content: <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-surface-border)', borderRadius: 8, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>A</div>, weight: 2 },
+              { vertical: true, children: [
+                { content: <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-surface-border)', borderRadius: 8, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>B</div> },
+                { content: <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-surface-border)', borderRadius: 8, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>C</div> },
+              ] },
+            ]}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function PanelListPanel() {
+  const [active, setActive] = useState('users');
+  const [tab, setTab] = useState('collections');
+  return (
+    <div>
+      <Row label="Heading + tabs + filterable list" code={`<PanelListView\n  heading="Workspace"\n  tabs={[{ id: 'collections', label: 'Collections' }, { id: 'history', label: 'History' }]}\n  activeTab={tab}\n  onTabChange={setTab}\n  items={items}\n/>`}>
+        <div style={{ width: 280 }}>
+          <PanelListView
+            heading="Workspace"
+            tabs={[{ id: 'collections', label: 'Collections' }, { id: 'history', label: 'History' }]}
+            activeTab={tab}
+            onTabChange={setTab}
+            items={[
+              { value: 'users', label: 'Users API', active: active === 'users', onClick: () => setActive('users') },
+              { value: 'orders', label: 'Orders API', active: active === 'orders', onClick: () => setActive('orders') },
+              { value: 'payments', label: 'Payments API', active: active === 'payments', onClick: () => setActive('payments') },
+            ]}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function NavbarPanel() {
+  return (
+    <div>
+      <Row label="Brand + links + right slot" code={`<NavbarView\n  brand="Daakia"\n  links={[{ id: 'requests', label: 'Requests', active: true }, { id: 'docs', label: 'Docs' }]}\n  right={<ButtonView size="sm">Sign in</ButtonView>}\n/>`}>
+        <div style={{ width: '100%' }}>
+          <NavbarView
+            brand="Daakia"
+            links={[{ id: 'requests', label: 'Requests', active: true }, { id: 'docs', label: 'Docs' }, { id: 'settings', label: 'Settings' }]}
+            right={<ButtonView label="Sign in" variant="secondary" size="sm" />}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function AffixPanel() {
+  return (
+    <div>
+      <Row label="Sticky-on-scroll wrapper — scroll this box" code={`<AffixView offsetTop={0}>\n  <div>Pinned toolbar</div>\n</AffixView>`}>
+        <div style={{ width: '100%', height: 160, overflow: 'auto', border: '1px solid var(--color-surface-border)', borderRadius: 8 }}>
+          <AffixView offsetTop={0}>
+            <div style={{ background: 'var(--color-surface)', padding: 8, fontSize: 12, fontWeight: 700, borderBottom: '1px solid var(--color-surface-border)' }}>Pinned toolbar</div>
+          </AffixView>
+          <div style={{ padding: 12, fontSize: 12, color: 'var(--color-text-muted)', height: 320 }}>Scroll down — the toolbar above sticks to the top of this box.</div>
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function AnchorPanel() {
+  return (
+    <div>
+      <Row label="Scroll-spy in-page nav — click a link or scroll the box" code={`<AnchorView links={[{ id: 'intro', label: 'Introduction' }, { id: 'auth', label: 'Authentication' }]} />`}>
+        <div style={{ display: 'flex', gap: 16, width: '100%' }}>
+          <AnchorView links={[{ id: 'pl-intro', label: 'Introduction' }, { id: 'pl-auth', label: 'Authentication' }, { id: 'pl-errors', label: 'Errors' }]} />
+          <div style={{ flex: 1, height: 160, overflow: 'auto', border: '1px solid var(--color-surface-border)', borderRadius: 8, padding: 12, fontSize: 12, color: 'var(--color-text-muted)' }}>
+            <h4 id="pl-intro" style={{ color: 'var(--color-text-primary)' }}>Introduction</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <div style={{ height: 100 }} />
+            <h4 id="pl-auth" style={{ color: 'var(--color-text-primary)' }}>Authentication</h4>
+            <p>Use a Bearer token in the Authorization header.</p>
+            <div style={{ height: 100 }} />
+            <h4 id="pl-errors" style={{ color: 'var(--color-text-primary)' }}>Errors</h4>
+            <p>All errors return a standard JSON envelope.</p>
+          </div>
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function StickyHeaderPanel() {
+  return (
+    <div>
+      <Row label="Sticky header, shadow grows once pinned — scroll this box" code={`<StickyHeaderView>Response Headers</StickyHeaderView>`}>
+        <div style={{ width: '100%', height: 160, overflow: 'auto', border: '1px solid var(--color-surface-border)', borderRadius: 8 }}>
+          <StickyHeaderView>
+            <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--color-text-primary)' }}>Response Headers</span>
+          </StickyHeaderView>
+          <div style={{ padding: 12, fontSize: 12, color: 'var(--color-text-muted)', height: 320 }}>Scroll down to see the shadow appear beneath the sticky header.</div>
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function AspectRatioPanel() {
+  return (
+    <div>
+      <Row label="16:9 (default) and 1:1" code={`<AspectRatioView ratio={16/9}>\n  <img src="..." style={{ width: '100%', height: '100%', objectFit: 'cover' }} />\n</AspectRatioView>`}>
+        <div style={{ width: 180 }}>
+          <AspectRatioView>
+            <div style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg, var(--color-primary), var(--color-success))' }} />
+          </AspectRatioView>
+        </div>
+        <div style={{ width: 100 }}>
+          <AspectRatioView ratio={1}>
+            <div style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg, var(--color-warning), var(--color-error))' }} />
+          </AspectRatioView>
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function MasonryGridPanel() {
+  const heights = [80, 120, 60, 100, 140, 70];
+  return (
+    <div>
+      <Row label="Pinterest-style column-balanced layout" code={`<MasonryGridView columns={3}>\n  {cards.map(c => <Card key={c.id}>{c.content}</Card>)}\n</MasonryGridView>`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <MasonryGridView columns={3}>
+            {heights.map((h, i) => (
+              <div key={i} style={{ height: h, background: 'var(--color-surface)', border: '1px solid var(--color-surface-border)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, color: 'var(--color-text-muted)' }}>
+                Card {i + 1}
+              </div>
+            ))}
+          </MasonryGridView>
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function ScrollAreaPanel() {
+  return (
+    <div>
+      <Row label="Custom accent-tinted scrollbar" code={`<ScrollAreaView maxHeight={140}>\n  {longContent}\n</ScrollAreaView>`}>
+        <div style={{ width: 260 }}>
+          <ScrollAreaView maxHeight={120}>
+            <div style={{ padding: 8, fontSize: 12, color: 'var(--color-text-secondary)', lineHeight: 2 }}>
+              {Array.from({ length: 20 }, (_, i) => <div key={i}>Row {i + 1}</div>)}
+            </div>
+          </ScrollAreaView>
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function BackToTopPanel() {
+  return (
+    <div>
+      <Row label="Floating scroll-to-top — appears past a scroll threshold (scroll the showcase page to see it)" code={`<BackToTopView threshold={240} />`}>
+        <span style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>Scroll this page down 240px+ to see the button appear in the bottom-right corner.</span>
+        <BackToTopView threshold={240} />
+      </Row>
+    </div>
+  );
+}
+
+export function WatermarkPanel() {
+  return (
+    <div>
+      <Row label="Repeated diagonal text overlay" code={`<WatermarkView text="CONFIDENTIAL">\n  <div>Protected content</div>\n</WatermarkView>`}>
+        <div style={{ width: '100%' }}>
+          <WatermarkView text="DAAKIA · DEMO">
+            <div style={{ height: 120, border: '1px solid var(--color-surface-border)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, color: 'var(--color-text-muted)' }}>
+              Protected content sits beneath the watermark
+            </div>
+          </WatermarkView>
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+// ─── Sprint 7 · Batch G — Data & Enterprise panels ─────────────────────────────
+
+export function DescriptionsPanel() {
+  return (
+    <div>
+      <Row label="Read-only entity detail grid" code={`<DescriptionsView\n  title="Request Details"\n  items={[{ label: 'Method', value: 'POST' }, { label: 'Status', value: '200 OK' }]}\n/>`}>
+        <div style={{ width: '100%' }}>
+          <DescriptionsView
+            title="Request Details"
+            items={[
+              { label: 'Method', value: 'POST' },
+              { label: 'Status', value: '200 OK' },
+              { label: 'URL', value: 'api.example.com/users', span: 2 },
+              { label: 'Duration', value: '142ms' },
+              { label: 'Size', value: '2.4 KB' },
+            ]}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function StatisticPanel() {
+  return (
+    <div>
+      <Row label="Animated count-up, prefix/suffix" code={`<StatisticView label="Requests today" value={1420} />\n<StatisticView label="Success rate" value={99.2} suffix="%" precision={1} />`}>
+        <StatisticView label="Requests today" value={1420} />
+        <StatisticView label="Success rate" value={99.2} suffix="%" precision={1} color="var(--color-success)" />
+        <StatisticView label="Avg latency" value={142} suffix="ms" color="var(--color-warning)" />
+      </Row>
+    </div>
+  );
+}
+
+export function ResultPanel() {
+  return (
+    <div>
+      <Row label="success / error / 404" code={`<ResultView status="success" title="Request sent" subtitle="Your webhook was delivered successfully." />`}>
+        <div style={{ width: '100%', display: 'flex', gap: 8 }}>
+          <div style={{ flex: 1, border: '1px solid var(--color-surface-border)', borderRadius: 8 }}>
+            <ResultView status="success" title="Request sent" subtitle="Delivered successfully." size="sm" />
+          </div>
+          <div style={{ flex: 1, border: '1px solid var(--color-surface-border)', borderRadius: 8 }}>
+            <ResultView status="404" title="Not found" subtitle="This endpoint doesn't exist." size="sm" />
+          </div>
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function CascaderPanel() {
+  const [path, setPath] = useState<string[]>(['us', 'ca']);
+  return (
+    <div>
+      <Row label="Multi-level cascading select" code={`<CascaderView options={regions} value={path} onChange={setPath} />`}>
+        <CascaderView
+          value={path}
+          onChange={setPath}
+          options={[
+            { value: 'us', label: 'United States', children: [
+              { value: 'ca', label: 'California', children: [{ value: 'sf', label: 'San Francisco' }, { value: 'la', label: 'Los Angeles' }] },
+              { value: 'ny', label: 'New York' },
+            ] },
+            { value: 'in', label: 'India', children: [{ value: 'ka', label: 'Karnataka' }, { value: 'mh', label: 'Maharashtra' }] },
+          ]}
+        />
+      </Row>
+    </div>
+  );
+}
+
+export function ComboBoxPanel() {
+  const [val, setVal] = useState('GET');
+  return (
+    <div>
+      <Row label="Free-text + filtered suggestions" code={`<ComboBoxView options={methods} value={value} onChange={setValue} />`}>
+        <ComboBoxView
+          value={val}
+          onChange={setVal}
+          options={['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'].map(m => ({ value: m, label: m }))}
+          style={{ width: 160 }}
+        />
+      </Row>
+    </div>
+  );
+}
+
+export function ListViewPanel() {
+  return (
+    <div>
+      <Row label="Avatar/title/subtitle/action rows" code={`<ListView items={[{ id: '1', title: 'Users API', subtitle: '12 requests' }]} />`} align="flex-start">
+        <div style={{ width: 280, border: '1px solid var(--color-surface-border)', borderRadius: 8 }}>
+          <ListView
+            items={[
+              { id: '1', title: 'Users API', subtitle: '12 requests', avatar: <div style={{ width: 28, height: 28, borderRadius: 6, background: 'var(--color-primary)' }} /> },
+              { id: '2', title: 'Orders API', subtitle: '5 requests', avatar: <div style={{ width: 28, height: 28, borderRadius: 6, background: 'var(--color-success)' }} /> },
+              { id: '3', title: 'Payments API', subtitle: '3 requests', avatar: <div style={{ width: 28, height: 28, borderRadius: 6, background: 'var(--color-warning)' }} /> },
+            ]}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function VirtualizedListPanel() {
+  const items = Array.from({ length: 5000 }, (_, i) => `Row ${i + 1}`);
+  return (
+    <div>
+      <Row label="5,000 rows — only visible ones are mounted" code={`<VirtualizedListView items={items} itemHeight={28} height={200} renderItem={item => <div>{item}</div>} />`} align="flex-start">
+        <div style={{ width: 280, border: '1px solid var(--color-surface-border)', borderRadius: 8 }}>
+          <VirtualizedListView
+            items={items}
+            itemHeight={28}
+            height={180}
+            renderItem={item => (
+              <div style={{ padding: '4px 10px', fontSize: 12, color: 'var(--color-text-secondary)', borderBottom: '1px solid var(--color-surface-border)' }}>{item}</div>
+            )}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function StickyTableHeaderPanel() {
+  const rows = Array.from({ length: 20 }, (_, i) => ({ id: i, name: `Item ${i + 1}`, status: i % 2 === 0 ? 'Active' : 'Paused', owner: 'Salil', updated: '2h ago' }));
+  return (
+    <div>
+      <Row label="Sticky header + frozen first column — scroll the box" code={`<StickyTableHeaderView columns={columns} rows={rows} keyField="id" />`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <StickyTableHeaderView
+            keyField="id"
+            maxHeight={180}
+            rows={rows}
+            columns={[
+              { key: 'name', label: 'Name', render: r => r.name },
+              { key: 'status', label: 'Status', render: r => r.status },
+              { key: 'owner', label: 'Owner', render: r => r.owner },
+              { key: 'updated', label: 'Updated', render: r => r.updated },
+            ]}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function TablePaginationPanel() {
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  return (
+    <div>
+      <Row label="Rows-per-page + page footer" code={`<TablePaginationView page={page} totalRows={247} rowsPerPage={rowsPerPage} onPageChange={setPage} onRowsPerPageChange={setRowsPerPage} />`}>
+        <div style={{ width: '100%', border: '1px solid var(--color-surface-border)', borderRadius: 8 }}>
+          <TablePaginationView page={page} totalRows={247} rowsPerPage={rowsPerPage} onPageChange={setPage} onRowsPerPageChange={setRowsPerPage} />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function FilterBarPanel() {
+  const [filters, setFilters] = useState([
+    { key: 'method', label: 'Method: GET' },
+    { key: 'status', label: 'Status: 200' },
+  ]);
+  return (
+    <div>
+      <Row label="Active filters + clear all" code={`<FilterBarView filters={filters} onRemove={removeFilter} onClearAll={() => setFilters([])} />`}>
+        <FilterBarView filters={filters} onRemove={key => setFilters(f => f.filter(x => x.key !== key))} onClearAll={() => setFilters([])} />
+      </Row>
+    </div>
+  );
+}
+
+export function SortableHeaderPanel() {
+  const [dir, setDir] = useState<SortDirection>('asc');
+  return (
+    <div>
+      <Row label="Click to cycle asc → desc" code={`<SortableHeaderView label="Name" direction={direction} onClick={cycle} />`}>
+        <SortableHeaderView
+          label="Name"
+          direction={dir}
+          onClick={() => setDir(d => (d === 'asc' ? 'desc' : 'asc'))}
+        />
+      </Row>
+    </div>
+  );
+}
+
+export function EditableCellPanel() {
+  const [val, setVal] = useState('Users API');
+  return (
+    <div>
+      <Row label="Click to edit — Enter commits, Escape cancels" code={`<EditableCellView value={value} onChange={setValue} />`}>
+        <div style={{ width: 160, border: '1px solid var(--color-surface-border)', borderRadius: 6 }}>
+          <EditableCellView value={val} onChange={setVal} />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function DataGridToolbarPanel() {
+  const [search, setSearch] = useState('');
+  const [visible, setVisible] = useState(['name', 'status']);
+  const [density, setDensity] = useState<'compact' | 'default' | 'comfortable'>('default');
+  return (
+    <div>
+      <Row label="Search + column visibility + density + export" code={`<DataGridToolbarView search={search} onSearchChange={setSearch} columns={columns} visibleColumns={visible} onVisibleColumnsChange={setVisible} density={density} onDensityChange={setDensity} onExport={exportCsv} />`} align="flex-start">
+        <div style={{ width: '100%', border: '1px solid var(--color-surface-border)', borderRadius: 8 }}>
+          <DataGridToolbarView
+            search={search}
+            onSearchChange={setSearch}
+            columns={[{ key: 'name', label: 'Name' }, { key: 'status', label: 'Status' }, { key: 'owner', label: 'Owner' }]}
+            visibleColumns={visible}
+            onVisibleColumnsChange={setVisible}
+            density={density}
+            onDensityChange={setDensity}
+            onExport={() => {}}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function ColumnVisibilityPanel() {
+  const [visible, setVisible] = useState(['name', 'status']);
+  return (
+    <div>
+      <Row label="Checkbox menu to toggle table columns" code={`<ColumnVisibilityMenuView columns={columns} visible={visible} onChange={setVisible} />`}>
+        <ColumnVisibilityMenuView
+          columns={[{ key: 'name', label: 'Name' }, { key: 'status', label: 'Status' }, { key: 'owner', label: 'Owner' }, { key: 'updated', label: 'Updated' }]}
+          visible={visible}
+          onChange={setVisible}
+        />
+      </Row>
+    </div>
+  );
+}
+
+// ─── Sprint 7 · Batch J — Advanced Selection & Wizards panels ──────────────────
+
+export function KbdPanel() {
+  return (
+    <div>
+      <Row label="Single key + combo" code={`<KbdView keys="Esc" />\n<KbdView keys={['⌘', 'K']} />`}>
+        <KbdView keys="Esc" />
+        <KbdView keys={['⌘', 'K']} />
+        <KbdView keys={['Ctrl', 'Shift', 'P']} />
+      </Row>
+    </div>
+  );
+}
+
+export function WizardStepperPanel() {
+  const [active, setActive] = useState('auth');
+  const steps = [
+    { id: 'connect', label: 'Connect' },
+    { id: 'auth', label: 'Authenticate' },
+    { id: 'configure', label: 'Configure' },
+    { id: 'review', label: 'Review' },
+  ];
+  const idx = steps.findIndex(s => s.id === active);
+  const completed = steps.slice(0, idx).map(s => s.id);
+  return (
+    <div>
+      <Row label="Multi-step form wizard header" code={`<WizardStepperView steps={steps} activeStep={active} completedSteps={completed} onStepClick={setActive} />`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <WizardStepperView steps={steps} activeStep={active} completedSteps={completed} onStepClick={setActive} />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function AccordionGroupPanel() {
+  return (
+    <div>
+      <Row label="Single-open (default) accordion group" code={`<AccordionGroupView items={items} />`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <AccordionGroupView
+            items={[
+              { id: 'a', title: 'Environment Variables', children: <span style={{ fontSize: 12 }}>Set per-environment values here.</span> },
+              { id: 'b', title: 'Headers', children: <span style={{ fontSize: 12 }}>Default headers applied to every request.</span> },
+              { id: 'c', title: 'Auth', children: <span style={{ fontSize: 12 }}>Bearer token, Basic, or OAuth 2.0.</span> },
+            ]}
+            defaultOpen={['a']}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function SegmentedProgressBarPanel() {
+  return (
+    <div>
+      <Row label="Upload pipeline stages" code={`<SegmentedProgressBarView segments={[{ label: 'Upload', status: 'done' }, { label: 'Scan', status: 'active' }, { label: 'Deploy', status: 'pending' }]} />`}>
+        <div style={{ width: 260 }}>
+          <SegmentedProgressBarView
+            segments={[
+              { label: 'Upload', status: 'done' },
+              { label: 'Scan', status: 'active' },
+              { label: 'Deploy', status: 'pending' },
+            ]}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function ChecklistPanel() {
+  const [items, setItems] = useState([
+    { id: '1', label: 'Create workspace', checked: true },
+    { id: '2', label: 'Invite teammates', checked: true },
+    { id: '3', label: 'Send first request', checked: false },
+  ]);
+  return (
+    <div>
+      <Row label="Todo-style checklist, strikethrough on complete" code={`<ChecklistView items={items} onToggle={toggleItem} />`} align="flex-start">
+        <ChecklistView items={items} onToggle={id => setItems(prev => prev.map(i => i.id === id ? { ...i, checked: !i.checked } : i))} />
+      </Row>
+    </div>
+  );
+}
+
+export function PriorityPickerPanel() {
+  const [priority, setPriority] = useState<PriorityLevel>('high');
+  return (
+    <div>
+      <Row label="Low / medium / high / urgent" code={`<PriorityPickerView value={priority} onChange={setPriority} />`}>
+        <PriorityPickerView value={priority} onChange={setPriority} />
+      </Row>
+    </div>
+  );
+}
+
+export function TagCloudPanel() {
+  return (
+    <div>
+      <Row label="Font size scales with weight" code={`<TagCloudView tags={[{ label: 'rest', weight: 40 }, { label: 'graphql', weight: 22 }, { label: 'auth', weight: 15 }]} />`}>
+        <TagCloudView
+          tags={[
+            { label: 'rest', weight: 40 },
+            { label: 'graphql', weight: 22 },
+            { label: 'auth', weight: 18 },
+            { label: 'websocket', weight: 15 },
+            { label: 'grpc', weight: 10 },
+            { label: 'mock', weight: 6 },
+          ]}
+        />
+      </Row>
+    </div>
+  );
+}
+
+export function RangeSliderPanel() {
+  const [range, setRange] = useState<[number, number]>([20, 80]);
+  return (
+    <div>
+      <Row label="Dual-handle min/max range" code={`<RangeSliderView value={range} onChange={setRange} showValue />`}>
+        <RangeSliderView value={range} onChange={setRange} showValue />
+      </Row>
+    </div>
+  );
+}
+
+export function VoteWidgetPanel() {
+  const [score, setScore] = useState(42);
+  const [vote, setVote] = useState<'up' | 'down' | null>(null);
+  return (
+    <div>
+      <Row label="Upvote/downvote counter" code={`<VoteWidgetView score={score} userVote={vote} onVote={handleVote} />`}>
+        <VoteWidgetView
+          score={score}
+          userVote={vote}
+          onVote={v => {
+            const delta = v === vote ? (v === 'up' ? -1 : 1) : v === 'up' ? (vote === 'down' ? 2 : 1) : (vote === 'up' ? -2 : -1);
+            setScore(s => s + delta);
+            setVote(v === vote ? null : v);
+          }}
+        />
+      </Row>
+    </div>
+  );
+}
+
+export function LikeButtonPanel() {
+  const [liked, setLiked] = useState(false);
+  return (
+    <div>
+      <Row label="Animated heart toggle, pop on like" code={`<LikeButtonView liked={liked} onChange={setLiked} count={128} />`}>
+        <LikeButtonView liked={liked} onChange={v => { setLiked(v); }} count={liked ? 129 : 128} />
+      </Row>
+    </div>
+  );
+}
+
+export function BookmarkButtonPanel() {
+  const [saved, setSaved] = useState(false);
+  return (
+    <div>
+      <Row label="Animated bookmark toggle" code={`<BookmarkButtonView saved={saved} onChange={setSaved} />`}>
+        <BookmarkButtonView saved={saved} onChange={setSaved} />
+      </Row>
+    </div>
+  );
+}
+
+export function FollowButtonPanel() {
+  const [following, setFollowing] = useState(false);
+  return (
+    <div>
+      <Row label={'Hover while following to reveal "Unfollow"'} code={`<FollowButtonView following={following} onChange={setFollowing} />`}>
+        <FollowButtonView following={following} onChange={setFollowing} />
+      </Row>
+    </div>
+  );
+}
+
+export function ShortcutRecorderPanel() {
+  const [keys, setKeys] = useState(['⌘', 'K']);
+  return (
+    <div>
+      <Row label="Click to record — press a key combo" code={`<ShortcutRecorderView value={keys} onChange={setKeys} />`}>
+        <ShortcutRecorderView value={keys} onChange={setKeys} />
+      </Row>
+    </div>
+  );
+}
+
+// ─── Sprint 7 · Batch H — Communication & Content panels ───────────────────────
+
+export function MessageBubblePanel() {
+  return (
+    <div>
+      <Row label="Sent (right) / received (left)" code={`<MessageBubbleView variant="sent" timestamp="10:02 AM">Sounds good, sending now.</MessageBubbleView>`} align="flex-start">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, width: '100%' }}>
+          <MessageBubbleView variant="received" timestamp="10:01 AM">Can you share the API response?</MessageBubbleView>
+          <MessageBubbleView variant="sent" timestamp="10:02 AM">Sounds good, sending now.</MessageBubbleView>
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function ChatInputPanel() {
+  const [msg, setMsg] = useState('');
+  return (
+    <div>
+      <Row label="Auto-growing composer + attach + send" code={`<ChatInputView value={msg} onChange={setMsg} onSend={send} onAttach={handleFiles} />`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <ChatInputView value={msg} onChange={setMsg} onSend={() => setMsg('')} onAttach={() => {}} />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function TypingIndicatorPanel() {
+  return (
+    <div>
+      <Row label="Animated dots" code={`<TypingIndicatorView label="Jordan is typing…" />`}>
+        <TypingIndicatorView label="Jordan is typing…" />
+      </Row>
+    </div>
+  );
+}
+
+export function CommentThreadPanel() {
+  return (
+    <div>
+      <Row label="Nested replies" code={`<CommentThreadView comments={comments} onReply={handleReply} />`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <CommentThreadView
+            onReply={() => {}}
+            comments={[
+              { id: '1', author: 'Jordan Lee', timestamp: '2h ago', content: 'Should we add retry logic here?', replies: [
+                { id: '2', author: 'Salil Vasa Nair', timestamp: '1h ago', content: 'Yes, exponential backoff sounds right.' },
+              ] },
+            ]}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function NotificationCenterPanel() {
+  return (
+    <div>
+      <Row label="Bell + dropdown list, unread badge" code={`<NotificationCenterView notifications={notifications} onMarkAllRead={markAllRead} />`}>
+        <NotificationCenterView
+          onMarkAllRead={() => {}}
+          notifications={[
+            { id: '1', title: 'Deploy succeeded', description: 'Production deploy #482 finished.', timestamp: '5m ago' },
+            { id: '2', title: 'New comment', description: 'Jordan replied to your thread.', timestamp: '1h ago', read: true },
+          ]}
+        />
+      </Row>
+    </div>
+  );
+}
+
+export function AlertDialogPanel() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div>
+      <Row label="Pre-built confirm/cancel, danger styling" code={`<AlertDialogView open={open} title="Delete collection?" message="This can't be undone." danger onConfirm={del} onCancel={() => setOpen(false)} />`}>
+        <ButtonView label="Delete collection" variant="danger" size="sm" onClick={() => setOpen(true)} />
+        <AlertDialogView
+          open={open}
+          title="Delete collection?"
+          message="This will permanently delete the collection and all its requests. This can't be undone."
+          danger
+          onConfirm={() => setOpen(false)}
+          onCancel={() => setOpen(false)}
+        />
+      </Row>
+    </div>
+  );
+}
+
+export function FeedbackWidgetPanel() {
+  const [vote, setVote] = useState<'up' | 'down' | null>(null);
+  const [comment, setComment] = useState('');
+  return (
+    <div>
+      <Row label="Thumbs + optional comment" code={`<FeedbackWidgetView vote={vote} onVote={setVote} comment={comment} onCommentChange={setComment} onSubmit={submit} />`}>
+        <FeedbackWidgetView vote={vote} onVote={setVote} comment={comment} onCommentChange={setComment} onSubmit={() => {}} />
+      </Row>
+    </div>
+  );
+}
+
+export function NpsSurveyPanel() {
+  const [score, setScore] = useState<number | null>(9);
+  const [followUp, setFollowUp] = useState('');
+  return (
+    <div>
+      <Row label="0-10 NPS score + follow-up" code={`<NpsSurveyView score={score} onScoreChange={setScore} followUp={followUp} onFollowUpChange={setFollowUp} onSubmit={submit} />`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <NpsSurveyView score={score} onScoreChange={setScore} followUp={followUp} onFollowUpChange={setFollowUp} onSubmit={() => {}} />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function ShareSheetPanel() {
+  return (
+    <div>
+      <Row label="Share targets + copy-link" code={`<ShareSheetView url="https://daakia.app/s/abc123" targets={targets} />`} align="flex-start">
+        <ShareSheetView
+          url="https://daakia.app/s/abc123"
+          targets={[
+            { id: 'globe', label: 'Web', icon: <GlobeIcon size={16} />, onClick: () => {} },
+            { id: 'server', label: 'Team Chat', icon: <ServerIcon size={16} />, onClick: () => {} },
+          ]}
+        />
+      </Row>
+    </div>
+  );
+}
+
+export function ContactCardPanel() {
+  return (
+    <div>
+      <Row label="Avatar + name + role + contact icons" code={`<ContactCardView name="Jordan Lee" role="Platform Engineer" contacts={[{ icon: <MailIcon />, label: 'Email' }]} />`}>
+        <ContactCardView
+          name="Jordan Lee"
+          role="Platform Engineer"
+          contacts={[
+            { icon: <GlobeIcon size={14} />, label: 'Website', onClick: () => {} },
+            { icon: <ShareIcon size={14} />, label: 'Share', onClick: () => {} },
+          ]}
+        />
+      </Row>
+    </div>
+  );
+}
+
+export function ArticleCardPanel() {
+  return (
+    <div>
+      <Row label="Image + title + excerpt + meta" code={`<ArticleCardView image="..." title="What's new in v2.0" excerpt="Faster requests, smarter mocks." meta="5 min read" />`} align="flex-start">
+        <div style={{ width: 260 }}>
+          <ArticleCardView
+            title="What's new in v2.0"
+            excerpt="Faster requests, smarter mocks, and a redesigned collection tree."
+            meta="5 min read · July 2, 2026"
+            onClick={() => {}}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function FaqAccordionPanel() {
+  return (
+    <div>
+      <Row label="Pre-styled Q&A accordion" code={`<FaqAccordionView faqs={faqs} />`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <FaqAccordionView
+            faqs={[
+              { id: '1', question: 'How do I import a saved collection?', answer: 'Go to Import → Collection and select your .json export.' },
+              { id: '2', question: 'Can I self-host mock servers?', answer: 'Yes, mock servers run locally by default and can be deployed to any Node environment.' },
+            ]}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function MessageBannerPanel() {
+  return (
+    <div>
+      <Row label="success / error / info / warning" code={`<MessageBannerView variant="success">Environment saved.</MessageBannerView>`} align="flex-start">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, width: '100%' }}>
+          <MessageBannerView variant="success">Environment saved successfully.</MessageBannerView>
+          <MessageBannerView variant="error">Failed to connect — check your network.</MessageBannerView>
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function QuoteBlockPanel() {
+  return (
+    <div>
+      <Row label="Blockquote + attribution" code={`<QuoteBlockView attribution="Jordan Lee" role="Platform Engineer">Daakia cut our API testing time in half.</QuoteBlockView>`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <QuoteBlockView attribution="Jordan Lee" role="Platform Engineer at Acme Corp">
+            Daakia cut our API testing time in half — the mock servers alone saved us a full sprint.
+          </QuoteBlockView>
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+// ─── Sprint 7 · Batch L — Enterprise, Settings & SaaS panels ───────────────────
+
+export function SettingsRowPanel() {
+  return (
+    <div>
+      <Row label="Label + description + control row" code={`<SettingsRowView label="Two-factor auth" description="Require a code at sign-in." control={<ToggleSwitchView checked />} />`} align="flex-start">
+        <div style={{ width: '100%', border: '1px solid var(--color-surface-border)', borderRadius: 8 }}>
+          <SettingsRowView label="Two-factor auth" description="Require a code at sign-in." control={<ToggleSwitchView checked onChange={() => {}} />} />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function SettingsSectionPanel() {
+  return (
+    <div>
+      <Row label="Grouped settings card with a header" code={`<SettingsSectionView title="Security" description="Manage sign-in and access.">\n  <SettingsRowView label="Two-factor auth" control={<ToggleSwitchView checked />} />\n</SettingsSectionView>`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <SettingsSectionView title="Security" description="Manage sign-in and access.">
+            <SettingsRowView label="Two-factor auth" control={<ToggleSwitchView checked onChange={() => {}} />} />
+            <SettingsRowView label="Session timeout" control={<VersionBadgeView version="30m" />} />
+          </SettingsSectionView>
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function OnboardingChecklistPanel() {
+  return (
+    <div>
+      <Row label="Collapsible getting-started checklist" code={`<OnboardingChecklistView steps={steps} />`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <OnboardingChecklistView
+            steps={[
+              { id: '1', label: 'Create workspace', done: true },
+              { id: '2', label: 'Invite teammates', done: true },
+              { id: '3', label: 'Send first request', done: false },
+            ]}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function KeyValueListPanel() {
+  return (
+    <div>
+      <Row label="Lightweight label:value stacked list" code={`<KeyValueListView entries={[{ key: 'Plan', value: 'Pro' }, { key: 'Seats', value: '12' }]} />`} align="flex-start">
+        <div style={{ width: 260 }}>
+          <KeyValueListView
+            entries={[
+              { key: 'Plan', value: 'Pro' },
+              { key: 'Seats', value: '12' },
+              { key: 'Renewal', value: 'Aug 1, 2026' },
+            ]}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function EnvironmentBadgePanel() {
+  return (
+    <div>
+      <Row label="dev / staging / prod" code={`<EnvironmentBadgeView env="prod" live />`}>
+        <EnvironmentBadgeView env="dev" />
+        <EnvironmentBadgeView env="staging" />
+        <EnvironmentBadgeView env="prod" live />
+      </Row>
+    </div>
+  );
+}
+
+export function VersionBadgePanel() {
+  return (
+    <div>
+      <Row label="Version chip with update-available dot" code={`<VersionBadgeView version="2.4.1" updateAvailable onClick={openChangelog} />`}>
+        <VersionBadgeView version="2.4.1" />
+        <VersionBadgeView version="2.3.0" updateAvailable onClick={() => {}} />
+      </Row>
+    </div>
+  );
+}
+
+export function LicenseBadgePanel() {
+  return (
+    <div>
+      <Row label="Free / Pro / Enterprise tier ribbon" code={`<LicenseBadgeView tier="enterprise" />`}>
+        <LicenseBadgeView tier="free" />
+        <LicenseBadgeView tier="pro" />
+        <LicenseBadgeView tier="enterprise" />
+      </Row>
+    </div>
+  );
+}
+
+export function UsageMeterPanel() {
+  return (
+    <div>
+      <Row label="Quota bar with warning-color thresholds" code={`<UsageMeterView used={82} limit={100} label="API calls" />`} align="flex-start">
+        <div style={{ width: 260 }}>
+          <UsageMeterView used={82} limit={100} label="API calls" />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function PermissionMatrixPanel() {
+  const [matrix, setMatrix] = useState([
+    [true, true, false],
+    [true, false, false],
+    [true, true, true],
+  ]);
+  return (
+    <div>
+      <Row label="Role x permission checkbox grid" code={`<PermissionMatrixView roles={roles} permissions={permissions} matrix={matrix} onChange={handleChange} />`} align="flex-start">
+        <PermissionMatrixView
+          roles={['Viewer', 'Editor', 'Admin']}
+          permissions={['Read', 'Write', 'Delete']}
+          matrix={matrix}
+          onChange={(ri, pi, v) => setMatrix(prev => prev.map((row, i) => i === ri ? row.map((c, j) => j === pi ? v : c) : row))}
+        />
+      </Row>
+    </div>
+  );
+}
+
+export function AuditLogRowPanel() {
+  return (
+    <div>
+      <Row label="Timestamped actor+action+target row" code={`<AuditLogRowView timestamp="2026-07-02 09:14" actor="Jordan Lee" action="deleted" target="Users API" />`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <AuditLogRowView timestamp="2026-07-02 09:14" actor="Jordan Lee" action="deleted" target="Users API" />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function WebhookStatusPanel() {
+  return (
+    <div>
+      <Row label="Webhook endpoint health row" code={`<WebhookStatusView url="https://api.example.com/hooks/deploy" health="healthy" statusCode={200} lastDelivery="2m ago" onRetry={retry} />`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <WebhookStatusView url="https://api.example.com/hooks/deploy" health="healthy" statusCode={200} lastDelivery="2m ago" onRetry={() => {}} />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function ApiKeyRowPanel() {
+  return (
+    <div>
+      <Row label="Masked API key with reveal/copy/revoke" code={`<ApiKeyRowView label="Production" apiKey="sk_live_••••••••••••" onRevoke={revoke} />`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <ApiKeyRowView label="Production" apiKey="sk_live_••••••••••••" onRevoke={() => {}} />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function RateLimitMeterPanel() {
+  return (
+    <div>
+      <Row label="Requests-remaining ring gauge" code={`<RateLimitMeterView remaining={342} limit={1000} resetLabel="in 12m" />`}>
+        <RateLimitMeterView remaining={342} limit={1000} resetLabel="in 12m" />
+      </Row>
+    </div>
+  );
+}
+
+export function EmptyInboxPanel() {
+  return (
+    <div>
+      <Row label="Zero-notifications empty state" code={`<EmptyInboxView />`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <EmptyInboxView />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function FeatureSpotlightBadgePanel() {
+  return (
+    <div>
+      <Row label={'Pulsing "New" badge'} code={`<FeatureSpotlightBadgeView label="New" />`}>
+        <FeatureSpotlightBadgeView label="New" />
+        <FeatureSpotlightBadgeView label="Beta" color="var(--color-info)" />
+      </Row>
+    </div>
+  );
+}
+
+export function CookieConsentBannerPanel() {
+  const [open, setOpen] = useState(true);
+  return (
+    <div>
+      <Row label="Fixed bottom cookie-consent bar" code={`function Preview() {\n  const [open, setOpen] = useState(true);\n  return (\n    <CookieConsentBannerView\n      open={open}\n      onAccept={() => setOpen(false)}\n      onCustomize={() => {}}\n    />\n  );\n}`} align="flex-start">
+        <div style={{ width: '100%', position: 'relative', minHeight: 80 }}>
+          <ButtonView label="Reopen banner" variant="secondary" size="sm" onClick={() => setOpen(true)} />
+          <div style={{ position: 'relative', marginTop: 12 }}>
+            <CookieConsentBannerView
+              open={open}
+              onAccept={() => setOpen(false)}
+              onCustomize={() => {}}
+              style={{ position: 'static', margin: 0, maxWidth: 'none' }}
+            />
+          </div>
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function MaintenanceBannerPanel() {
+  const [open, setOpen] = useState(true);
+  return (
+    <div>
+      <Row label="Scheduled-downtime notice strip" code={`function Preview() {\n  const [open, setOpen] = useState(true);\n  return <MaintenanceBannerView open={open} window="July 4, 2AM-4AM UTC" onDismiss={() => setOpen(false)} />;\n}`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <ButtonView label="Reopen banner" variant="secondary" size="sm" onClick={() => setOpen(true)} />
+          <div style={{ marginTop: 12 }}>
+            <MaintenanceBannerView open={open} window="July 4, 2AM-4AM UTC" onDismiss={() => setOpen(false)} />
+          </div>
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function TrialCountdownBannerPanel() {
+  return (
+    <div>
+      <Row label="Days-left-in-trial strip with upgrade CTA" code={`<TrialCountdownBannerView daysLeft={3} onUpgrade={upgrade} />`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <TrialCountdownBannerView daysLeft={3} onUpgrade={() => {}} />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function TeamMemberRowPanel() {
+  return (
+    <div>
+      <Row label="Avatar + name + role + remove-action row" code={`<TeamMemberRowView name="Jordan Lee" role="Platform Engineer" onRemove={remove} />`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <TeamMemberRowView name="Jordan Lee" role="Platform Engineer" onRemove={() => {}} />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function InviteInputPanel() {
+  const [emails, setEmails] = useState(['jordan@daakia.app']);
+  return (
+    <div>
+      <Row label="Email-chip input for multi-invite forms" code={`function Preview() {\n  const [emails, setEmails] = useState(['jordan@daakia.app']);\n  return <InviteInputView emails={emails} onChange={setEmails} />;\n}`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <InviteInputView emails={emails} onChange={setEmails} />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function RoleSelectPanel() {
+  const [role, setRole] = useState('editor');
+  return (
+    <div>
+      <Row label="Role dropdown with per-option description" code={`function Preview() {\n  const [role, setRole] = useState('editor');\n  return (\n    <RoleSelectView\n      options={[{ value: 'viewer', label: 'Viewer', description: 'Read-only access' }, { value: 'editor', label: 'Editor', description: 'Can edit content' }]}\n      value={role}\n      onChange={setRole}\n    />\n  );\n}`}>
+        <RoleSelectView
+          options={[
+            { value: 'viewer', label: 'Viewer', description: 'Read-only access' },
+            { value: 'editor', label: 'Editor', description: 'Can edit content' },
+            { value: 'admin', label: 'Admin', description: 'Full workspace control' },
+          ]}
+          value={role}
+          onChange={setRole}
+        />
+      </Row>
+    </div>
+  );
+}
+
+export function IntegrationCardPanel() {
+  const [connected, setConnected] = useState(false);
+  return (
+    <div>
+      <Row label="Logo + name + connect/disconnect card" code={`function Preview() {\n  const [connected, setConnected] = useState(false);\n  return (\n    <IntegrationCardView\n      logo={<GlobeIcon size={18} />}\n      name="Team Chat"\n      description="Send alerts to a channel"\n      connected={connected}\n      onConnect={() => setConnected(true)}\n      onDisconnect={() => setConnected(false)}\n    />\n  );\n}`} align="flex-start">
+        <div style={{ width: 320 }}>
+          <IntegrationCardView
+            logo={<GlobeIcon size={18} />}
+            name="Team Chat"
+            description="Send alerts to a channel"
+            connected={connected}
+            onConnect={() => setConnected(true)}
+            onDisconnect={() => setConnected(false)}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function StatusPageRowPanel() {
+  return (
+    <div>
+      <Row label="Service + uptime% + status-dot row" code={`<StatusPageRowView service="API" status="operational" uptime={99.98} />`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <StatusPageRowView service="API" status="operational" uptime={99.98} />
+          <StatusPageRowView service="Webhooks" status="degraded" uptime={97.2} />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function ChangelogEntryPanel() {
+  return (
+    <div>
+      <Row label="Version + date + change-type badges" code={`<ChangelogEntryView version="2.4.0" date="July 2, 2026" changes={[{ type: 'feature', description: 'Added mock servers' }]} />`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <ChangelogEntryView
+            version="2.4.0"
+            date="July 2, 2026"
+            changes={[
+              { type: 'feature', description: 'Added self-hosted mock servers' },
+              { type: 'fix', description: 'Fixed OAuth token refresh race condition' },
+            ]}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+// ─── Sprint 7 · Batch I — Media & Files panels ──────────────────────────────────
+
+export function ImageGalleryPanel() {
+  return (
+    <div>
+      <Row label="Grid gallery with click-to-open lightbox" code={`<ImageGalleryView images={images} columns={3} />`} align="flex-start">
+        <div style={{ width: '100%', maxWidth: 360 }}>
+          <ImageGalleryView
+            images={[1, 2, 3, 4, 5, 6].map(n => ({ src: `https://picsum.photos/seed/${n}/300/200`, alt: `Photo ${n}` }))}
+            columns={3}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function ImageCropperPanel() {
+  const [value, setValue] = useState({ x: 0, y: 0, zoom: 1.2 });
+  return (
+    <div>
+      <Row label="Drag-crop + zoom image editor" code={`function Preview() {\n  const [value, setValue] = useState({ x: 0, y: 0, zoom: 1.2 });\n  return <ImageCropperView src="..." value={value} onChange={setValue} height={220} />;\n}`} align="flex-start">
+        <div style={{ width: 260 }}>
+          <ImageCropperView src="https://picsum.photos/seed/crop/600/600" value={value} onChange={setValue} height={220} />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function VideoPlayerPanel() {
+  return (
+    <div>
+      <Row label="Custom video controls wrapper" code={`<VideoPlayerView src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" />`} align="flex-start">
+        <div style={{ width: 320 }}>
+          <VideoPlayerView src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function AudioWaveformPanel() {
+  return (
+    <div>
+      <Row label="Static/animated waveform visualization" code={`<AudioWaveformView progress={0.4} animated />`} align="flex-start">
+        <div style={{ width: 260 }}>
+          <AudioWaveformView progress={0.4} animated />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function AudioPlayerPanel() {
+  return (
+    <div>
+      <Row label="Waveform + play/pause/seek audio player" code={`<AudioPlayerView src="https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3" />`} align="flex-start">
+        <div style={{ width: 320 }}>
+          <AudioPlayerView src="https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3" />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function PdfViewerPanel() {
+  return (
+    <div>
+      <Row label="Paginated PDF preview wrapper (needs a real PDF URL in production)" code={`<PdfViewerView src="https://example.com/document.pdf" totalPages={5} height={320} />`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <PdfViewerView src="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" totalPages={1} height={260} />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function FileIconPanel() {
+  return (
+    <div>
+      <Row label="Extension-based file-type icon + name + size" code={`<FileIconView name="report.pdf" bytes={204800} />`}>
+        <FileIconView name="hero.png" bytes={102400} />
+        <FileIconView name="demo.mp4" bytes={5242880} />
+        <FileIconView name="report.pdf" bytes={204800} />
+        <FileIconView name="archive.zip" bytes={1048576} />
+      </Row>
+    </div>
+  );
+}
+
+export function FileListPanel() {
+  const [files, setFiles] = useState([
+    { id: '1', name: 'hero.png', bytes: 102400, progress: 100 },
+    { id: '2', name: 'demo.mp4', bytes: 5242880, progress: 60 },
+    { id: '3', name: 'broken.zip', bytes: 1024, error: 'Upload failed' },
+  ]);
+  return (
+    <div>
+      <Row label="Uploaded-files list with per-row progress + remove" code={`function Preview() {\n  const [files, setFiles] = useState(initialFiles);\n  return <FileListView files={files} onRemove={id => setFiles(f => f.filter(x => x.id !== id))} />;\n}`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <FileListView files={files} onRemove={id => setFiles(f => f.filter(x => x.id !== id))} />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function DragHandlePanel() {
+  return (
+    <div>
+      <Row label="Grab-handle primitive for reorderable lists" code={`<DragHandleView />`}>
+        <DragHandleView />
+      </Row>
+    </div>
+  );
+}
+
+export function SignaturePadPanel() {
+  return (
+    <div>
+      <Row label="Canvas signature capture" code={`<SignaturePadView onChange={setDataUrl} height={140} />`} align="flex-start">
+        <div style={{ width: 320 }}>
+          <SignaturePadView onChange={() => {}} height={140} />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function BarcodePanel() {
+  return (
+    <div>
+      <Row label="Deterministic bar-pattern generator (visual only)" code={`<BarcodeView value="8901234567890" />`}>
+        <BarcodeView value="8901234567890" />
+      </Row>
+    </div>
+  );
+}
+
+export function ImageZoomPanel() {
+  return (
+    <div>
+      <Row label="Click-to-zoom lightbox for a single image" code={`<ImageZoomView src="..." alt="Product photo" thumbnailStyle={{ width: 120, height: 90, borderRadius: 8 }} />`}>
+        <ImageZoomView src="https://picsum.photos/seed/zoom/600/400" alt="Product photo" thumbnailStyle={{ width: 120, height: 90, borderRadius: 8, objectFit: 'cover' }} />
+      </Row>
+    </div>
+  );
+}
+
+// ─── Sprint 7 · Batch E — Data Display & "Wow" panels ───────────────────────────
+
+export function TimelinePanel() {
+  return (
+    <div>
+      <Row label="Event trail with icon nodes" code={`<TimelineView entries={entries} />`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <TimelineView
+            entries={[
+              { id: '1', icon: <CheckIcon size={12} />, title: 'Request sent', timestamp: '10:02 AM', color: 'var(--color-success)' },
+              { id: '2', icon: <ClockIcon size={12} />, title: 'Awaiting response', timestamp: '10:02 AM' },
+              { id: '3', icon: <CheckIcon size={12} />, title: 'Response received', timestamp: '10:03 AM', color: 'var(--color-success)' },
+            ]}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function ActivityFeedPanel() {
+  return (
+    <div>
+      <Row label="Chronological feed grouped by day" code={`<ActivityFeedView entries={entries} />`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <ActivityFeedView
+            entries={[
+              { id: '1', actor: 'Jordan Lee', action: 'deployed Users API', timestamp: '9:14 AM', day: '2026-07-02' },
+              { id: '2', actor: 'Salil Vasa Nair', action: 'merged PR #482', timestamp: '4:50 PM', day: '2026-07-01' },
+            ]}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function KanbanBoardPanel() {
+  const [columns, setColumns] = useState<KanbanColumn[]>([
+    { id: 'todo', title: 'To Do', color: 'var(--color-text-muted)', cards: [{ id: 'c1', title: 'Design auth flow' }, { id: 'c2', title: 'Write API docs' }] },
+    { id: 'progress', title: 'In Progress', color: 'var(--color-primary)', cards: [{ id: 'c3', title: 'Build mock server' }] },
+    { id: 'done', title: 'Done', color: 'var(--color-success)', cards: [{ id: 'c4', title: 'Set up CI' }] },
+  ]);
+  return (
+    <div>
+      <Row label="Draggable columns + cards board" code={`function Preview() {\n  const [columns, setColumns] = useState(initialColumns);\n  return <KanbanBoardView columns={columns} onChange={setColumns} />;\n}`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <KanbanBoardView columns={columns} onChange={setColumns} />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function SparklinePanel() {
+  return (
+    <div>
+      <Row label="Tiny inline SVG trend line" code={`<SparklineView data={[4, 8, 6, 9, 12, 10, 14]} width={100} height={28} />`}>
+        <SparklineView data={[4, 8, 6, 9, 12, 10, 14]} width={100} height={28} />
+      </Row>
+    </div>
+  );
+}
+
+export function HeatmapCalendarPanel() {
+  const data = Array.from({ length: 84 }, (_, i) => {
+    const d = new Date(2026, 6, 2);
+    d.setDate(d.getDate() - i);
+    return { date: d.toISOString().slice(0, 10), count: Math.floor(Math.random() * 6) };
+  });
+  return (
+    <div>
+      <Row label="GitHub-style contribution heatmap" code={`<HeatmapCalendarView data={data} />`} align="flex-start">
+        <HeatmapCalendarView data={data} />
+      </Row>
+    </div>
+  );
+}
+
+export function ComparisonSliderPanel() {
+  return (
+    <div>
+      <Row label="Before/after drag slider" code={`<ComparisonSliderView beforeSrc="..." afterSrc="..." beforeLabel="Before" afterLabel="After" />`} align="flex-start">
+        <div style={{ width: '100%', maxWidth: 360 }}>
+          <ComparisonSliderView
+            beforeSrc="https://picsum.photos/seed/before/400/260"
+            afterSrc="https://picsum.photos/seed/after/400/260"
+            beforeLabel="Before"
+            afterLabel="After"
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function CarouselPanel() {
+  return (
+    <div>
+      <Row label="Swipeable card carousel with dot indicators" code={`<CarouselView slides={slides} autoplay />`} align="flex-start">
+        <div style={{ width: '100%', maxWidth: 360 }}>
+          <CarouselView
+            autoplay
+            slides={[
+              <div key="1" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', background: 'var(--color-surface)', borderRadius: 10, fontWeight: 700 }}>Slide 1</div>,
+              <div key="2" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', background: 'var(--color-surface)', borderRadius: 10, fontWeight: 700 }}>Slide 2</div>,
+              <div key="3" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', background: 'var(--color-surface)', borderRadius: 10, fontWeight: 700 }}>Slide 3</div>,
+            ]}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function QRCodePanel() {
+  return (
+    <div>
+      <Row label="QR-style module grid (visual, not spec-scannable)" code={`<QRCodeView value="https://daakia.app" size={140} />`}>
+        <QRCodeView value="https://daakia.app" size={140} />
+      </Row>
+    </div>
+  );
+}
+
+export function StatTrendCardPanel() {
+  return (
+    <div>
+      <Row label="Count-up number + sparkline trend" code={`<StatTrendCardView label="Requests today" value={1842} trend={[900, 1100, 1400, 1300, 1700, 1842]} />`} align="flex-start">
+        <div style={{ width: 260 }}>
+          <StatTrendCardView label="Requests today" value={1842} trend={[900, 1100, 1400, 1300, 1700, 1842]} />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function PricingCardPanel() {
+  return (
+    <div>
+      <Row label="Plan comparison card with a popular ribbon" code={`<PricingCardView planName="Pro" price="$29" features={['Unlimited requests', 'Team collaboration']} popular actions={<ButtonView label="Choose Pro" />} />`} align="flex-start">
+        <div style={{ width: 240 }}>
+          <PricingCardView
+            planName="Pro"
+            price="$29"
+            features={['Unlimited requests', 'Team collaboration', 'Priority support']}
+            popular
+            actions={<ButtonView label="Choose Pro" variant="primary" size="sm" onClick={() => {}} />}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function TestimonialCardPanel() {
+  return (
+    <div>
+      <Row label="Quote + avatar testimonial card" code={`<TestimonialCardView quote="Daakia cut our testing time in half." author="Jordan Lee" role="Platform Engineer" />`} align="flex-start">
+        <div style={{ width: 300 }}>
+          <TestimonialCardView quote="Daakia cut our testing time in half." author="Jordan Lee" role="Platform Engineer" />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function RatingBreakdownPanel() {
+  return (
+    <div>
+      <Row label="5-star rating distribution bars" code={`<RatingBreakdownView counts={[2, 4, 10, 28, 56]} />`} align="flex-start">
+        <div style={{ width: 260 }}>
+          <RatingBreakdownView counts={[2, 4, 10, 28, 56]} />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function TreeSelectPanel() {
+  const [value, setValue] = useState<string[]>(['ca']);
+  return (
+    <div>
+      <Row label="Checkbox-driven hierarchical select" code={`function Preview() {\n  const [value, setValue] = useState(['ca']);\n  return <TreeSelectView nodes={nodes} value={value} onChange={setValue} />;\n}`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <TreeSelectView
+            nodes={[
+              { id: 'us', label: 'United States', children: [{ id: 'ca', label: 'California' }, { id: 'ny', label: 'New York' }] },
+              { id: 'eu', label: 'Europe', children: [{ id: 'de', label: 'Germany' }, { id: 'fr', label: 'France' }] },
+            ] as TreeSelectNode[]}
+            value={value}
+            onChange={setValue}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function RichTextToolbarPanel() {
+  const [active, setActive] = useState<RichTextAction[]>(['bold']);
+  return (
+    <div>
+      <Row label="Formatting toolbar primitive" code={`function Preview() {\n  const [active, setActive] = useState(['bold']);\n  return (\n    <RichTextToolbarView\n      active={active}\n      onAction={a => setActive(prev => prev.includes(a) ? prev.filter(x => x !== a) : [...prev, a])}\n    />\n  );\n}`}>
+        <RichTextToolbarView
+          active={active}
+          onAction={a => setActive(prev => prev.includes(a) ? prev.filter(x => x !== a) : [...prev, a])}
+        />
+      </Row>
+    </div>
+  );
+}
+
+export function MentionInputPanel() {
+  const [value, setValue] = useState('Hey @Jordan, can you review this?');
+  return (
+    <div>
+      <Row label="@mention autocomplete textarea" code={`function Preview() {\n  const [value, setValue] = useState('');\n  return <MentionInputView value={value} onChange={setValue} users={users} />;\n}`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <MentionInputView
+            value={value}
+            onChange={setValue}
+            users={[{ id: '1', label: 'Jordan Lee' }, { id: '2', label: 'Salil Vasa Nair' }, { id: '3', label: 'Priya Nair' }]}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+// ─── Sprint 7 · Batch K — Fun / "Wow" & Micro-interactions panels ─────────────
+
+export function GradientTextPanel() {
+  return (
+    <div>
+      <Row label="Animated gradient-shifting text" code={`<GradientTextView>Ship faster with Daakia</GradientTextView>`}>
+        <GradientTextView>Ship faster with Daakia</GradientTextView>
+      </Row>
+    </div>
+  );
+}
+
+export function TypewriterTextPanel() {
+  return (
+    <div>
+      <Row label="Animated typing-effect text" code={`<TypewriterTextView text={['Build APIs.', 'Test flows.', 'Ship faster.']} />`}>
+        <TypewriterTextView text={['Build APIs.', 'Test flows.', 'Ship faster.']} />
+      </Row>
+    </div>
+  );
+}
+
+export function CountUpNumberPanel() {
+  const [value, setValue] = useState(1284);
+  return (
+    <div>
+      <Row label="Animated number count-up" code={`function Preview() {\n  const [value, setValue] = useState(1284);\n  return <CountUpNumberView value={value} suffix=" reqs" />;\n}`}>
+        <CountUpNumberView value={value} suffix=" reqs" />
+        <ButtonView size="sm" onClick={() => setValue(v => v + 500)}>+500</ButtonView>
+      </Row>
+    </div>
+  );
+}
+
+export function MagneticButtonPanel() {
+  return (
+    <div>
+      <Row label="Cursor-attraction hover button" code={`<MagneticButtonView onClick={() => {}}>Hover me</MagneticButtonView>`}>
+        <MagneticButtonView onClick={() => {}}>Hover me</MagneticButtonView>
+      </Row>
+    </div>
+  );
+}
+
+export function TiltCardPanel() {
+  return (
+    <div>
+      <Row label="3D perspective tilt-on-hover card" code={`<TiltCardView>...</TiltCardView>`} align="flex-start">
+        <div style={{ width: 220 }}>
+          <TiltCardView>
+            <div style={{ fontWeight: 700, fontSize: 13 }}>Webhook Delivery</div>
+            <div style={{ fontSize: 12, color: 'var(--color-text-muted)', marginTop: 4 }}>Move your cursor over this card.</div>
+          </TiltCardView>
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function ParticleBackgroundPanel() {
+  return (
+    <div>
+      <Row label="Subtle animated particle background" code={`<ParticleBackgroundView height={160} />`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <ParticleBackgroundView height={160} />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function GlowBorderPanel() {
+  return (
+    <div>
+      <Row label="Animated gradient glowing-border wrapper" code={`<GlowBorderView>...</GlowBorderView>`} align="flex-start">
+        <div style={{ width: 220 }}>
+          <GlowBorderView>
+            <div style={{ fontWeight: 700, fontSize: 13 }}>API Key</div>
+            <div style={{ fontSize: 12, color: 'var(--color-text-muted)', marginTop: 4 }}>sk_live_••••••••1234</div>
+          </GlowBorderView>
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function RevealOnScrollPanel() {
+  return (
+    <div>
+      <Row label="Fade/slide-in-on-scroll wrapper" code={`<RevealOnScrollView direction="up">...</RevealOnScrollView>`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <RevealOnScrollView direction="up">
+            <div style={{ padding: 12, border: '1px solid var(--color-surface-border)', borderRadius: 8 }}>
+              Scroll this panel out of view and back in to replay.
+            </div>
+          </RevealOnScrollView>
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function FloatingLabelInputPanel() {
+  const [value, setValue] = useState('');
+  return (
+    <div>
+      <Row label="Floating-label input" code={`function Preview() {\n  const [value, setValue] = useState('');\n  return <FloatingLabelInputView label="Workspace name" value={value} onChange={setValue} />;\n}`}>
+        <FloatingLabelInputView label="Workspace name" value={value} onChange={setValue} />
+      </Row>
+    </div>
+  );
+}
+
+export function PulseDotPanel() {
+  return (
+    <div>
+      <Row label="Attention-grabbing pulsing dot" code={`<PulseDotView />`}>
+        <PulseDotView />
+        <PulseDotView color="var(--color-success)" />
+        <PulseDotView color="var(--color-warning)" />
+      </Row>
+    </div>
+  );
+}
+
+// ─── Sprint 7 · Batch M — DUI Signature Series panels ─────────────────────────
+
+export function RequestFlowPanel() {
+  return (
+    <div>
+      <Row label="Animated network waterfall" code={`<RequestFlowView phases={phases} />`} align="flex-start">
+        <RequestFlowView
+          phases={[
+            { id: 'dns', label: 'DNS', duration: 20, color: 'var(--color-primary)' },
+            { id: 'tcp', label: 'TCP', duration: 40, color: 'var(--color-warning)' },
+            { id: 'tls', label: 'TLS', duration: 60, color: 'var(--color-success)' },
+            { id: 'req', label: 'Request', duration: 30, color: 'var(--color-primary)' },
+            { id: 'res', label: 'Response', duration: 90, color: 'var(--color-error)' },
+          ]}
+        />
+      </Row>
+    </div>
+  );
+}
+
+export function LatencyPulsePanel() {
+  return (
+    <div>
+      <Row label="EKG-style live latency pulse" code={`<LatencyPulseView latencyMs={180} />`}>
+        <LatencyPulseView latencyMs={180} />
+        <LatencyPulseView latencyMs={620} />
+      </Row>
+    </div>
+  );
+}
+
+export function AIStreamingTextPanel() {
+  return (
+    <div>
+      <Row label="Token-by-token LLM output renderer" code={`<AIStreamingTextView text="Here's a summary of your API traffic." streaming />`} align="flex-start">
+        <AIStreamingTextView text="Here's a summary of your API traffic." streaming />
+      </Row>
+    </div>
+  );
+}
+
+export function CommandOrbPanel() {
+  const [state, setState] = useState<'idle' | 'thinking' | 'speaking' | 'open'>('idle');
+  return (
+    <div>
+      <Row label="Breathing AI-assistant orb" code={`function Preview() {\n  const [state, setState] = useState('idle');\n  return <CommandOrbView state={state} onClick={() => setState(s => s === 'idle' ? 'thinking' : s === 'thinking' ? 'speaking' : 'idle')} />;\n}`}>
+        <CommandOrbView state={state} onClick={() => setState(s => s === 'idle' ? 'thinking' : s === 'thinking' ? 'speaking' : 'idle')} />
+      </Row>
+    </div>
+  );
+}
+
+export function TimeTravelSliderPanel() {
+  const states = [12, 18, 15, 30, 42, 38, 50];
+  const [index, setIndex] = useState(states.length - 1);
+  return (
+    <div>
+      <Row label="Scrub a playhead across past states" code={`function Preview() {\n  const states = [12, 18, 15, 30, 42, 38, 50];\n  const [index, setIndex] = useState(states.length - 1);\n  return <TimeTravelSliderView states={states} index={index} onScrub={setIndex} toValue={s => s} toLabel={s => 'Value: ' + s} />;\n}`} align="flex-start">
+        <TimeTravelSliderView states={states} index={index} onScrub={setIndex} toValue={s => s} toLabel={s => `Value: ${s}`} />
+      </Row>
+    </div>
+  );
+}
+
+export function DiffMorphPanel() {
+  const [text, setText] = useState('The quick brown fox jumps over the lazy dog');
+  return (
+    <div>
+      <Row label="FLIP-animated text morph diff" code={`function Preview() {\n  const [text, setText] = useState('...');\n  return <DiffMorphView text={text} />;\n}`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <DiffMorphView text={text} />
+          <ButtonView size="sm" style={{ marginTop: 8 }} onClick={() => setText(t => t.includes('red') ? 'The quick brown fox jumps over the lazy dog' : 'The quick red fox leaps over the sleepy dog')}>
+            Edit text
+          </ButtonView>
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function SchemaBlueprintPanel() {
+  return (
+    <div>
+      <Row label="Blueprint-styled schema diagram" code={`<SchemaBlueprintView nodes={nodes} />`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <SchemaBlueprintView
+            nodes={[
+              { id: 'user', title: 'User', fields: [{ name: 'id', type: 'string' }, { name: 'orgId', type: 'ref' }], connectsTo: ['org'] },
+              { id: 'org', title: 'Organization', fields: [{ name: 'id', type: 'string' }, { name: 'name', type: 'string' }] },
+            ]}
+          />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function LiveCursorPresencePanel() {
+  return (
+    <div>
+      <Row label="Collaborative cursor overlay" code={`<LiveCursorPresenceView cursors={cursors}>...</LiveCursorPresenceView>`} align="flex-start">
+        <div style={{ width: '100%' }}>
+          <LiveCursorPresenceView cursors={[{ id: '1', name: 'Jordan', x: 0.3, y: 0.4 }, { id: '2', name: 'Priya', x: 0.7, y: 0.6 }]}>
+            <div style={{ height: 160, border: '1px solid var(--color-surface-border)', borderRadius: 8 }} />
+          </LiveCursorPresenceView>
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function UndoRedoTimelinePanel() {
+  const nodes = [
+    { id: 'a', label: 'Initial' },
+    { id: 'b', label: 'Add header', parentId: 'a' },
+    { id: 'c', label: 'Add auth', parentId: 'b' },
+    { id: 'd', label: 'Revert header', parentId: 'a' },
+  ];
+  const [active, setActive] = useState('c');
+  return (
+    <div>
+      <Row label="Branching git-log-style history" code={`function Preview() {\n  const [active, setActive] = useState('c');\n  return <UndoRedoTimelineView nodes={nodes} activeId={active} onSelect={setActive} />;\n}`} align="flex-start">
+        <UndoRedoTimelineView nodes={nodes} activeId={active} onSelect={setActive} />
+      </Row>
+    </div>
+  );
+}
+
+export function DialKnobInputPanel() {
+  const [value, setValue] = useState(30);
+  return (
+    <div>
+      <Row label="Rotary snap-tick knob input" code={`function Preview() {\n  const [value, setValue] = useState(30);\n  return <DialKnobInputView value={value} onChange={setValue} label="Timeout (s)" />;\n}`}>
+        <DialKnobInputView value={value} onChange={setValue} label="Timeout (s)" />
+      </Row>
+    </div>
+  );
+}
+
+export function HoldToConfirmPanel() {
+  return (
+    <div>
+      <Row label="Press-and-hold destructive confirm" code={`<HoldToConfirmView onConfirm={() => {}}>Hold to delete</HoldToConfirmView>`}>
+        <HoldToConfirmView onConfirm={() => {}}>Hold to delete</HoldToConfirmView>
+      </Row>
+    </div>
+  );
+}
+
+export function MorphingIconButtonPanel() {
+  const [active, setActive] = useState(false);
+  return (
+    <div>
+      <Row label="SVG path-morph icon toggle" code={`function Preview() {\n  const [active, setActive] = useState(false);\n  return <MorphingIconButtonView preset="play-pause" active={active} onClick={() => setActive(a => !a)} />;\n}`}>
+        <MorphingIconButtonView preset="play-pause" active={active} onClick={() => setActive(a => !a)} />
+        <MorphingIconButtonView preset="menu-close" active={active} onClick={() => setActive(a => !a)} />
+        <MorphingIconButtonView preset="sun-moon" active={active} onClick={() => setActive(a => !a)} />
+      </Row>
+    </div>
+  );
+}
+
+export function StackedSwipeCardPanel() {
+  const [items, setItems] = useState(['Request #1', 'Request #2', 'Request #3']);
+  return (
+    <div>
+      <Row label="Swipeable card-stack queue" code={`function Preview() {\n  const [items, setItems] = useState(['Request #1', 'Request #2', 'Request #3']);\n  return (\n    <StackedSwipeCardView\n      items={items}\n      renderItem={item => <div>{item}</div>}\n      onSwipe={item => setItems(prev => prev.filter(i => i !== item))}\n    />\n  );\n}`} align="flex-start">
+        {items.length > 0 ? (
+          <StackedSwipeCardView
+            items={items}
+            renderItem={item => <div style={{ fontWeight: 700 }}>{item}</div>}
+            onSwipe={item => setItems(prev => prev.filter(i => i !== item))}
+          />
+        ) : (
+          <ButtonView size="sm" onClick={() => setItems(['Request #1', 'Request #2', 'Request #3'])}>Reset</ButtonView>
+        )}
+      </Row>
+    </div>
+  );
+}
+
+export function NetworkWeatherPanel() {
+  return (
+    <div>
+      <Row label="Weather metaphor for system health" code={`<NetworkWeatherView condition="stormy" />`}>
+        <NetworkWeatherView condition="sunny" />
+        <NetworkWeatherView condition="cloudy" />
+        <NetworkWeatherView condition="stormy" />
+      </Row>
+    </div>
+  );
+}
+
+export function ConstellationLoaderPanel() {
+  return (
+    <div>
+      <Row label="Drifting constellation loader" code={`<ConstellationLoaderView />`}>
+        <ConstellationLoaderView />
+      </Row>
+    </div>
+  );
+}
+
+export function HoloCardPanel() {
+  return (
+    <div>
+      <Row label="Mouse-reactive holographic card" code={`<HoloCardView>...</HoloCardView>`} align="flex-start">
+        <div style={{ width: 220 }}>
+          <HoloCardView>
+            <div style={{ fontWeight: 700, fontSize: 13 }}>Pro Plan</div>
+            <div style={{ fontSize: 12, color: 'var(--color-text-muted)', marginTop: 4 }}>Move your mouse over this card.</div>
+          </HoloCardView>
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function GhostTypingPlaceholderPanel() {
+  const [value, setValue] = useState('');
+  return (
+    <div>
+      <Row label="Rotating typewriter placeholder" code={`function Preview() {\n  const [value, setValue] = useState('');\n  return <GhostTypingPlaceholderView value={value} onChange={setValue} examples={examples} />;\n}`}>
+        <GhostTypingPlaceholderView
+          value={value}
+          onChange={setValue}
+          examples={['search users by email…', 'filter by status: active…', 'jump to request #4521…']}
+        />
+      </Row>
+    </div>
+  );
+}
+
+export function ConnectionPulseLinePanel() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const fromRef = useRef<HTMLDivElement>(null);
+  const toRef = useRef<HTMLDivElement>(null);
+  return (
+    <div>
+      <Row label="Traveling-pulse connector line" code={`function Preview() {\n  const containerRef = useRef(null);\n  const fromRef = useRef(null);\n  const toRef = useRef(null);\n  return (\n    <div ref={containerRef} style={{ position: 'relative', display: 'flex', justifyContent: 'space-between', height: 60 }}>\n      <div ref={fromRef} style={{ width: 60, height: 32 }} />\n      <div ref={toRef} style={{ width: 60, height: 32 }} />\n      <ConnectionPulseLineView containerRef={containerRef} from={fromRef} to={toRef} />\n    </div>\n  );\n}`} align="flex-start">
+        <div ref={containerRef} style={{ position: 'relative', display: 'flex', justifyContent: 'space-between', width: '100%', height: 60 }}>
+          <div ref={fromRef} style={{ width: 60, height: 32, border: '1px solid var(--color-surface-border)', borderRadius: 6 }} />
+          <div ref={toRef} style={{ width: 60, height: 32, border: '1px solid var(--color-surface-border)', borderRadius: 6 }} />
+          <ConnectionPulseLineView containerRef={containerRef} from={fromRef} to={toRef} />
+        </div>
+      </Row>
+    </div>
+  );
+}
+
+export function StackedToastDeckPanel() {
+  const [toasts, setToasts] = useState([
+    { id: '1', content: 'Deploy succeeded' },
+    { id: '2', content: 'New comment on PR #42' },
+    { id: '3', content: 'Webhook delivered' },
+  ]);
+  return (
+    <div>
+      <Row label="Physically stacked toast deck" code={`function Preview() {\n  const [toasts, setToasts] = useState([{ id: '1', content: 'Deploy succeeded' }]);\n  return <StackedToastDeckView toasts={toasts} onDismiss={id => setToasts(prev => prev.filter(t => t.id !== id))} />;\n}`} align="flex-start">
+        <StackedToastDeckView toasts={toasts} onDismiss={id => setToasts(prev => prev.filter(t => t.id !== id))} />
+      </Row>
+    </div>
+  );
+}
+
+export function PathRevealPanel() {
+  return (
+    <div>
+      <Row label="SVG stroke-draw reveal primitive" code={`<PathRevealView d="M10 50 Q 30 10 50 50 T 90 50" viewBox="0 0 100 100" width={120} height={80} />`}>
+        <PathRevealView d="M10 50 Q 30 10 50 50 T 90 50" viewBox="0 0 100 100" width={120} height={80} />
+      </Row>
+    </div>
+  );
+}
+
+export function SpectrumSliderPanel() {
+  const [value, setValue] = useState(50);
+  return (
+    <div>
+      <Row label="Live-gradient spectrum slider" code={`function Preview() {\n  const [value, setValue] = useState(50);\n  return <SpectrumSliderView value={value} onChange={setValue} />;\n}`}>
+        <SpectrumSliderView value={value} onChange={setValue} />
+      </Row>
+    </div>
+  );
+}
+
+export function BreathingLoaderPanel() {
+  return (
+    <div>
+      <Row label="Meditative breathing-circle loader" code={`<BreathingLoaderView label="Syncing…" />`}>
+        <BreathingLoaderView label="Syncing…" />
       </Row>
     </div>
   );

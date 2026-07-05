@@ -1,0 +1,20 @@
+.dui_diffmorph__token {
+  display: inline-block;
+  transition: transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 220ms ease-out;
+}
+
+.dui_diffmorph__token--added {
+  color: var(--color-success);
+  animation: dui_diffmorph_in 220ms ease-out both;
+}
+
+.dui_diffmorph__token--removed {
+  color: var(--color-error);
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+@keyframes dui_diffmorph_in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

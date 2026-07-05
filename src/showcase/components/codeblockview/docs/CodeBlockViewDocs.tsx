@@ -58,6 +58,15 @@ export function CodeBlockViewDocs() {
       <DocNote type="warning">
         When language is set but not registered with highlight.js, the component falls back to highlightAuto on that specific code string. Unknown language values are silently ignored.
       </DocNote>
-    </div>
+      
+      <DocSection
+        title="DUI Sizing & Theming"
+        description="CodeBlockView does not read size, width, color, or borderRadius from the DuiProvider context — it is not part of the sized-component system and has no size prop to fall back to a provider default."
+      >
+        <DocNote type="info">
+          CodeBlockView is unaffected by <code>{'<DuiProvider>'}</code> size/color context. Style it directly via its own props (and CSS variables where documented above) rather than expecting provider-level sizing to apply.
+        </DocNote>
+      </DocSection>
+      </div>
   );
 }

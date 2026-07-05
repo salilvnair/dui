@@ -139,6 +139,14 @@ export function PlusIcon(props: IconProps) {
   );
 }
 
+export function MinusIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <line x1="5" y1="12" x2="19" y2="12" />
+    </svg>
+  );
+}
+
 export function RenameIcon(props: IconProps) {
   return (
     <svg {...withDefaults(props)}>
@@ -347,6 +355,14 @@ export function ChevronDownIcon(props: IconProps) {
   );
 }
 
+export function ChevronUpIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <polyline points="18 15 12 9 6 15" />
+    </svg>
+  );
+}
+
 export function ChevronRightIcon(props: IconProps) {
   return (
     <svg {...withDefaults(props)}>
@@ -484,6 +500,18 @@ export function ClockIcon(props: IconProps) {
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...rest}>
       <circle cx="12" cy="12" r="10" />
       <polyline points="12 6 12 12 16 14" />
+    </svg>
+  );
+}
+
+export function CalendarIcon(props: IconProps) {
+  const { size = 20, ...rest } = props;
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...rest}>
+      <rect x="3" y="4.5" width="18" height="16" rx="2" />
+      <line x1="16" y1="2.5" x2="16" y2="6.5" />
+      <line x1="8" y1="2.5" x2="8" y2="6.5" />
+      <line x1="3" y1="9.5" x2="21" y2="9.5" />
     </svg>
   );
 }
@@ -805,6 +833,163 @@ export function MoonIcon(props: IconProps) {
   return (
     <svg {...withDefaults({ fill: 'currentColor', stroke: 'none', ...props })}>
       <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+    </svg>
+  );
+}
+
+export function CameraIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" />
+      <circle cx="12" cy="13" r="4" />
+    </svg>
+  );
+}
+
+export function BoldIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M6 4h8a4 4 0 010 8H6z" />
+      <path d="M6 12h9a4 4 0 010 8H6z" />
+    </svg>
+  );
+}
+
+export function ItalicIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <line x1="19" y1="4" x2="10" y2="4" />
+      <line x1="14" y1="20" x2="5" y2="20" />
+      <line x1="15" y1="4" x2="9" y2="20" />
+    </svg>
+  );
+}
+
+export function UnderlineIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M6 3v7a6 6 0 0012 0V3" />
+      <line x1="4" y1="21" x2="20" y2="21" />
+    </svg>
+  );
+}
+
+export function ImageIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <circle cx="8.5" cy="8.5" r="1.5" />
+      <path d="M21 15l-5-5L5 21" />
+    </svg>
+  );
+}
+
+export function VideoIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <polygon points="23 7 16 12 23 17 23 7" />
+      <rect x="1" y="5" width="15" height="14" rx="2" />
+    </svg>
+  );
+}
+
+export function MusicIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M9 18V5l12-2v13" />
+      <circle cx="6" cy="18" r="3" />
+      <circle cx="18" cy="16" r="3" />
+    </svg>
+  );
+}
+
+export function ArchiveIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="2" y="3" width="20" height="5" rx="1" />
+      <path d="M4 8v11a2 2 0 002 2h12a2 2 0 002-2V8" />
+      <line x1="10" y1="12" x2="14" y2="12" />
+    </svg>
+  );
+}
+
+export function VolumeIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+      <path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07" />
+    </svg>
+  );
+}
+
+export function VolumeMuteIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+      <line x1="23" y1="9" x2="17" y2="15" />
+      <line x1="17" y1="9" x2="23" y2="15" />
+    </svg>
+  );
+}
+
+export function ThumbsUpIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M7 10v11" />
+      <path d="M15 6l-1 4h6.5a1.5 1.5 0 011.4 2.1l-3 7A2 2 0 0117 20H7a2 2 0 01-2-2v-8a2 2 0 01.4-1.2L10 3a2 2 0 013.5 1.3z" />
+    </svg>
+  );
+}
+
+export function ThumbsDownIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M17 14V3" />
+      <path d="M9 18l1-4H3.5A1.5 1.5 0 012.1 11.9l3-7A2 2 0 017 4h10a2 2 0 012 2v8a2 2 0 01-.4 1.2L14 21a2 2 0 01-3.5-1.3z" />
+    </svg>
+  );
+}
+
+export function PaperclipIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M21.4 11.1l-9 9a4.5 4.5 0 01-6.4-6.4l9.2-9.2a3 3 0 014.2 4.2l-9.2 9.2a1.5 1.5 0 01-2.1-2.1l8.5-8.5" />
+    </svg>
+  );
+}
+
+export function HeartIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M20.8 4.6c-1.9-1.6-4.7-1.4-6.4.4L12 7.4l-2.4-2.4c-1.7-1.8-4.5-2-6.4-.4-2.1 1.8-2.2 5-.3 6.9L12 21l9.1-9.5c1.9-1.9 1.8-5.1-.3-6.9z" />
+    </svg>
+  );
+}
+
+export function BookmarkIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />
+    </svg>
+  );
+}
+
+export function ColumnsIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <line x1="9" y1="4" x2="9" y2="20" />
+      <line x1="15" y1="4" x2="15" y2="20" />
+    </svg>
+  );
+}
+
+export function MonitorIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="2" y="4" width="20" height="14" rx="2" />
+      <line x1="8" y1="21" x2="16" y2="21" />
+      <line x1="12" y1="18" x2="12" y2="21" />
     </svg>
   );
 }
@@ -2333,6 +2518,3247 @@ export function MegaphoneIcon(props: IconProps) {
       <path d="M3 11v3a1 1 0 001 1h2l3.5 5.5a1 1 0 001.8-.6V4.1a1 1 0 00-1.8-.6L6 8H4a1 1 0 00-1 1z" />
       <path d="M15.5 8a4 4 0 010 8" />
       <path d="M18.5 5a8 8 0 010 14" />
+    </svg>
+  );
+}
+
+// ─── HTTP / API Semantics Icons ──────────────────────────────────────────────
+
+export function HttpPatchIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M12 3l2.5 5 5.5.8-4 3.9.9 5.5-4.9-2.6-4.9 2.6.9-5.5-4-3.9 5.5-.8z" />
+    </svg>
+  );
+}
+
+export function StatusFamily2xxIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M8 12.5l2.5 2.5 5.5-6" />
+    </svg>
+  );
+}
+
+export function StatusFamily3xxIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M9 8l4 4-4 4" />
+      <path d="M14 8l1 4-1 4" />
+    </svg>
+  );
+}
+
+export function StatusFamily4xxIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="9" />
+      <line x1="9" y1="9" x2="15" y2="15" />
+      <line x1="15" y1="9" x2="9" y2="15" />
+    </svg>
+  );
+}
+
+export function StatusFamily5xxIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="9" />
+      <line x1="12" y1="7" x2="12" y2="13" />
+      <circle cx="12" cy="16.5" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function HeadersIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <line x1="3" y1="9" x2="21" y2="9" />
+      <line x1="7" y1="13" x2="17" y2="13" />
+      <line x1="7" y1="16.5" x2="13" y2="16.5" />
+    </svg>
+  );
+}
+
+export function CacheIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <ellipse cx="12" cy="6" rx="8" ry="3" />
+      <path d="M4 6v6c0 1.66 3.58 3 8 3s8-1.34 8-3V6" />
+      <path d="M4 12v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6" />
+    </svg>
+  );
+}
+
+export function RateLimitIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M12 3a9 9 0 100 18 9 9 0 000-18z" />
+      <path d="M12 7v5l3 2" />
+      <path d="M4.2 4.2l1.5 1.5" />
+    </svg>
+  );
+}
+
+export function PaginationIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="2" y="8" width="5" height="8" rx="1" />
+      <rect x="9.5" y="6" width="5" height="12" rx="1" />
+      <rect x="17" y="8" width="5" height="8" rx="1" />
+    </svg>
+  );
+}
+
+export function WebhookBellIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M15 8a4 4 0 10-7.75 1.35" />
+      <path d="M12 12v3a5 5 0 01-5 5" />
+      <circle cx="17" cy="17" r="4" />
+      <path d="M17 15.5v1.8l1.2.9" />
+    </svg>
+  );
+}
+
+export function EndpointIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="4" cy="12" r="2.5" />
+      <circle cx="20" cy="12" r="2.5" />
+      <line x1="6.5" y1="12" x2="17.5" y2="12" strokeDasharray="3 3" />
+    </svg>
+  );
+}
+
+export function PayloadIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M12 2l9 4.5v9L12 20l-9-4.5v-9z" />
+      <path d="M12 11v9" />
+      <path d="M3 6.5l9 4.5 9-4.5" />
+    </svg>
+  );
+}
+
+export function ApiContractIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M8 3H6a2 2 0 00-2 2v14a2 2 0 002 2h2" />
+      <path d="M16 3h2a2 2 0 012 2v14a2 2 0 01-2 2h-2" />
+      <path d="M9 8l-2 2 2 2" />
+      <path d="M15 8l2 2-2 2" />
+      <line x1="11.5" y1="7" x2="10.5" y2="17" />
+    </svg>
+  );
+}
+
+export function MockDataIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <path d="M7 8h.01" />
+      <path d="M7 12h.01" />
+      <path d="M7 16h.01" />
+      <line x1="10.5" y1="8" x2="17" y2="8" strokeDasharray="1.5 2" />
+      <line x1="10.5" y1="12" x2="17" y2="12" strokeDasharray="1.5 2" />
+      <line x1="10.5" y1="16" x2="17" y2="16" strokeDasharray="1.5 2" />
+    </svg>
+  );
+}
+
+export function ProxyIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="2" y="9" width="6" height="6" rx="1" />
+      <rect x="16" y="9" width="6" height="6" rx="1" />
+      <path d="M8 12h3a2 2 0 002-2V8" />
+      <path d="M8 12h3a2 2 0 012 2v2" />
+      <path d="M16 12h-1" />
+    </svg>
+  );
+}
+
+export function GatewayIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M3 21h18" />
+      <path d="M5 21V9l7-6 7 6v12" />
+      <path d="M9 21v-6h6v6" />
+      <path d="M12 3v6" />
+    </svg>
+  );
+}
+
+export function LoadBalancerIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="4" r="2" />
+      <circle cx="5" cy="19" r="2" />
+      <circle cx="12" cy="19" r="2" />
+      <circle cx="19" cy="19" r="2" />
+      <path d="M12 6v6" />
+      <path d="M12 12L5 17" />
+      <path d="M12 12v5" />
+      <path d="M12 12l7 5" />
+    </svg>
+  );
+}
+
+export function CdnIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M18 10h-1.26A8 8 0 108 21h10a5 5 0 000-10z" />
+      <path d="M8 14l2 2 4-4" />
+    </svg>
+  );
+}
+
+export function DnsRecordIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18" />
+      <path d="M12 3a13 13 0 010 18" />
+      <path d="M12 3a13 13 0 000 18" />
+      <path d="M9 9h1" />
+    </svg>
+  );
+}
+
+export function SslLockIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="4" y="11" width="16" height="9" rx="2" />
+      <path d="M8 11V7a4 4 0 018 0v4" />
+      <path d="M12 15v2" />
+    </svg>
+  );
+}
+
+export function SslUnlockedIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="4" y="11" width="16" height="9" rx="2" />
+      <path d="M8 11V7a4 4 0 017.8-1.3" />
+      <path d="M12 15v2" />
+    </svg>
+  );
+}
+
+export function OAuthIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="8" cy="12" r="5" />
+      <path d="M12.5 8.5l7 0" />
+      <path d="M16 8.5v4" />
+      <path d="M19.5 8.5v4" />
+    </svg>
+  );
+}
+
+export function JwtTokenIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="2" y="9" width="6" height="6" rx="1" />
+      <rect x="9" y="9" width="6" height="6" rx="1" />
+      <rect x="16" y="9" width="6" height="6" rx="1" />
+      <path d="M8 12h1" />
+      <path d="M15 12h1" />
+    </svg>
+  );
+}
+
+export function ApiKeyIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="8" cy="8" r="4" />
+      <path d="M8 4V2" />
+      <path d="M10.8 5.2L12.2 3.8" />
+      <path d="M11 11l9 9" />
+      <path d="M16 16l2.5-2.5" />
+      <path d="M18.5 18.5L21 16" />
+    </svg>
+  );
+}
+
+export function ScopeIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="9" />
+      <circle cx="12" cy="12" r="5" />
+      <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function TokenRefreshIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="7" width="18" height="10" rx="2" />
+      <path d="M7 12h3" />
+      <path d="M15 9.5a3 3 0 100 5" />
+      <path d="M18 9v2h-2" />
+    </svg>
+  );
+}
+
+// ─── Data & Files Icons ──────────────────────────────────────────────────────
+
+export function CsvFileIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <path d="M7 17v-4l1.5 2 1.5-2v4" />
+      <path d="M15.5 13.5a1.5 1.5 0 00-1.5-1 1.5 1.5 0 000 3 1.5 1.5 0 001.5-1" />
+    </svg>
+  );
+}
+
+export function JsonFileIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <path d="M9 13a1.5 1.5 0 00-1.5 1.5A1.5 1.5 0 019 16" />
+      <path d="M15 13a1.5 1.5 0 011.5 1.5A1.5 1.5 0 0015 16" />
+    </svg>
+  );
+}
+
+export function XmlFileIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <path d="M7 13l2 3 2-3" />
+      <path d="M13 13l2 3-2 3" />
+      <path d="M17 13l2 3-2 3" />
+    </svg>
+  );
+}
+
+export function YamlFileIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <path d="M7 13l1.5 2v3" />
+      <path d="M10 13l-1.5 2" />
+      <path d="M13 13v5" />
+      <path d="M16 13v3.5a1.5 1.5 0 001.5 1.5H18" />
+    </svg>
+  );
+}
+
+export function SpreadsheetIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <line x1="3" y1="9" x2="21" y2="9" />
+      <line x1="3" y1="15" x2="21" y2="15" />
+      <line x1="9" y1="3" x2="9" y2="21" />
+      <line x1="15" y1="3" x2="15" y2="21" />
+    </svg>
+  );
+}
+
+export function DatabaseTableIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+      <line x1="3" y1="16" x2="21" y2="16" />
+      <line x1="11" y1="4" x2="11" y2="20" />
+    </svg>
+  );
+}
+
+export function DatabaseIndexIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <ellipse cx="12" cy="6" rx="8" ry="3" />
+      <path d="M4 6v12c0 1.66 3.58 3 8 3s8-1.34 8-3V6" />
+      <path d="M9 12h6" />
+      <path d="M9 16h4" />
+    </svg>
+  );
+}
+
+export function MigrationIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <ellipse cx="6" cy="6" rx="4" ry="2.5" />
+      <path d="M2 6v5c0 1.38 1.79 2.5 4 2.5s4-1.12 4-2.5V6" />
+      <path d="M14 14h6" />
+      <path d="M17 11l3 3-3 3" />
+      <ellipse cx="18" cy="18" rx="4" ry="2.5" />
+    </svg>
+  );
+}
+
+export function BackupIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <ellipse cx="12" cy="6" rx="8" ry="3" />
+      <path d="M4 6v6c0 1.66 3.58 3 8 3s8-1.34 8-3V6" />
+      <path d="M4 12v6c0 1.66 3.58 3 8 3 1.06 0 2.07-.13 3-.37" />
+      <path d="M18 15v6" />
+      <path d="M15.5 18.5L18 21l2.5-2.5" />
+    </svg>
+  );
+}
+
+export function ArchiveZipIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <line x1="12" y1="4" x2="12" y2="8" />
+      <line x1="10" y1="8" x2="14" y2="8" />
+      <line x1="12" y1="10" x2="12" y2="12" />
+      <rect x="10" y="12" width="4" height="4" rx="1" />
+    </svg>
+  );
+}
+
+export function CompressionIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M8 4l4 4-4 4" />
+      <path d="M16 20l-4-4 4-4" />
+      <line x1="3" y1="12" x2="9" y2="12" />
+      <line x1="15" y1="12" x2="21" y2="12" />
+    </svg>
+  );
+}
+
+export function EncryptionIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="4" y="11" width="16" height="9" rx="2" />
+      <path d="M8 11V7a4 4 0 018 0v4" />
+      <path d="M10 15l1 1 3-3" />
+    </svg>
+  );
+}
+
+export function DecryptionIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="4" y="11" width="16" height="9" rx="2" />
+      <path d="M8 11V7a4 4 0 017.8-1.3" />
+      <path d="M10 15.5h4" />
+    </svg>
+  );
+}
+
+export function HashGlyphIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="4" y="4" width="16" height="16" rx="2" />
+      <line x1="9" y1="4" x2="9" y2="20" />
+      <line x1="15" y1="4" x2="15" y2="20" />
+      <line x1="4" y1="9" x2="20" y2="9" />
+      <line x1="4" y1="15" x2="20" y2="15" />
+    </svg>
+  );
+}
+
+export function ChecksumIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M9 3H5a2 2 0 00-2 2v14a2 2 0 002 2h4" />
+      <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4" />
+      <path d="M8 12l2.5 2.5L16 9" />
+    </svg>
+  );
+}
+
+export function DiffIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M6 3v18" />
+      <path d="M18 3v18" />
+      <path d="M6 8h5" />
+      <path d="M13 16h5" />
+      <path d="M9 5v6" />
+      <path d="M16 13v6" />
+    </svg>
+  );
+}
+
+export function MergeIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="6" cy="6" r="2" />
+      <circle cx="6" cy="18" r="2" />
+      <circle cx="18" cy="18" r="2" />
+      <path d="M6 8v4a4 4 0 004 4h2" />
+      <path d="M18 16V8a4 4 0 00-4-4h-2" />
+    </svg>
+  );
+}
+
+export function BranchIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="6" cy="6" r="2" />
+      <circle cx="6" cy="18" r="2" />
+      <circle cx="18" cy="9" r="2" />
+      <path d="M6 8v8" />
+      <path d="M6 11a6 6 0 006-6" />
+    </svg>
+  );
+}
+
+export function CommitIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <line x1="3" y1="12" x2="8" y2="12" />
+      <line x1="16" y1="12" x2="21" y2="12" />
+      <circle cx="12" cy="12" r="4" />
+    </svg>
+  );
+}
+
+export function PullRequestIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="6" cy="6" r="2" />
+      <circle cx="6" cy="18" r="2" />
+      <circle cx="18" cy="18" r="2" />
+      <path d="M6 8v8" />
+      <path d="M18 16v-5a4 4 0 00-4-4h-1" />
+      <path d="M11 8l2-2-2-2" />
+    </svg>
+  );
+}
+
+export function TagLabelIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M20.6 12.6L12.6 20.6a2 2 0 01-2.82 0l-7.4-7.4a2 2 0 010-2.82l8-8A2 2 0 0111.8 2H18a2.6 2.6 0 012.6 2.6v6.2a2 2 0 01-.6 1.4z" />
+      <circle cx="15" cy="7" r="1.5" />
+    </svg>
+  );
+}
+
+export function ReleaseIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M12 2l1.5 4.5H18l-3.7 2.7 1.4 4.5-3.7-2.8-3.7 2.8 1.4-4.5L6 6.5h4.5z" />
+      <path d="M6 15v5l2-1.5L10 21l-1-6" />
+      <path d="M18 15v5l-2-1.5L14 21l1-6" />
+    </svg>
+  );
+}
+
+// ─── Dev Tooling Icons ───────────────────────────────────────────────────────
+
+export function TerminalWindowIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="2" y="4" width="20" height="16" rx="2" />
+      <line x1="2" y1="8" x2="22" y2="8" />
+      <circle cx="5" cy="6" r="0.6" fill="currentColor" stroke="none" />
+      <circle cx="7.5" cy="6" r="0.6" fill="currentColor" stroke="none" />
+      <path d="M6 12l3 2-3 2" />
+      <line x1="11" y1="16" x2="15" y2="16" />
+    </svg>
+  );
+}
+
+export function PackageDependencyIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M12 2l9 5v10l-9 5-9-5V7z" />
+      <path d="M3 7l9 5 9-5" />
+      <path d="M12 12v9" />
+      <path d="M7.5 4.5l9 5" />
+    </svg>
+  );
+}
+
+export function BuildIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M14.7 6.3a4 4 0 01-5.4 5.4l-5.6 5.6a1.5 1.5 0 002.1 2.1l5.6-5.6a4 4 0 015.4-5.4l-2.6 2.6-2-2z" />
+    </svg>
+  );
+}
+
+export function DeployIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M12 2l4 4h-3v8h-2V6H8z" />
+      <path d="M5 14v5a2 2 0 002 2h10a2 2 0 002-2v-5" />
+    </svg>
+  );
+}
+
+export function PipelineIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="4" cy="12" r="2" />
+      <circle cx="12" cy="6" r="2" />
+      <circle cx="12" cy="18" r="2" />
+      <circle cx="20" cy="12" r="2" />
+      <path d="M6 12h2a4 4 0 004-4" />
+      <path d="M6 12h2a4 4 0 014 4" />
+      <path d="M14 8a4 4 0 004 4" />
+      <path d="M14 16a4 4 0 004-4" />
+    </svg>
+  );
+}
+
+export function ContainerBoxIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="7" width="18" height="13" rx="1" />
+      <line x1="3" y1="12" x2="21" y2="12" />
+      <line x1="9" y1="7" x2="9" y2="20" />
+      <line x1="15" y1="7" x2="15" y2="20" />
+      <path d="M7 7V5a2 2 0 012-2h6a2 2 0 012 2v2" />
+    </svg>
+  );
+}
+
+export function PodClusterIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="5" r="2" />
+      <circle cx="6" cy="16" r="2" />
+      <circle cx="18" cy="16" r="2" />
+      <path d="M12 7v4" />
+      <path d="M12 11l-6 3" />
+      <path d="M12 11l6 3" />
+      <circle cx="12" cy="11" r="1.5" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function TestTubeIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M9 2v13a3 3 0 006 0V2" />
+      <path d="M7 2h10" />
+      <path d="M9 12h6" />
+    </svg>
+  );
+}
+
+export function TestPassIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M9 2v13a3 3 0 006 0V2" />
+      <path d="M7 2h10" />
+      <path d="M9.5 9.5l1.5 1.5 3-3" />
+    </svg>
+  );
+}
+
+export function TestFailIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M9 2v13a3 3 0 006 0V2" />
+      <path d="M7 2h10" />
+      <line x1="9.5" y1="9" x2="14.5" y2="13" />
+      <line x1="14.5" y1="9" x2="9.5" y2="13" />
+    </svg>
+  );
+}
+
+export function CoverageIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 3a9 9 0 019 9 9 9 0 01-4.5 7.79" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function LintIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M5 20l6-6" />
+      <path d="M11 14l6.5-6.5a2.12 2.12 0 000-3 2.12 2.12 0 00-3 0L8 11" />
+      <path d="M8 11l-1 5 5-1" />
+    </svg>
+  );
+}
+
+export function DebugBugScanIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="7" y="8" width="10" height="10" rx="5" />
+      <path d="M9 8V6a3 3 0 016 0v2" />
+      <line x1="3" y1="10" x2="7" y2="10" />
+      <line x1="17" y1="10" x2="21" y2="10" />
+      <line x1="3" y1="16" x2="7" y2="16" />
+      <line x1="17" y1="16" x2="21" y2="16" />
+      <path d="M12 2v2" />
+    </svg>
+  );
+}
+
+export function DebugBugFixedIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="7" y="8" width="10" height="10" rx="5" />
+      <path d="M9 8V6a3 3 0 016 0v2" />
+      <line x1="3" y1="10" x2="7" y2="10" />
+      <line x1="17" y1="10" x2="21" y2="10" />
+      <path d="M10 13l1.5 1.5 2.5-2.5" />
+    </svg>
+  );
+}
+
+export function ProfilerIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M4 20h16" />
+      <rect x="6" y="14" width="3" height="6" />
+      <rect x="11" y="9" width="3" height="11" />
+      <rect x="16" y="4" width="3" height="16" />
+    </svg>
+  );
+}
+
+export function LogLevelTraceIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" />
+      <circle cx="12" cy="12" r="5" strokeDasharray="2 2" />
+      <circle cx="12" cy="12" r="9" strokeDasharray="2 2" />
+    </svg>
+  );
+}
+
+export function LogLevelDebugIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="7" y="8" width="10" height="9" rx="4.5" />
+      <path d="M9 8V6a3 3 0 016 0v2" />
+      <line x1="12" y1="12" x2="12" y2="14" />
+    </svg>
+  );
+}
+
+export function LogLevelInfoIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="9" />
+      <line x1="12" y1="11" x2="12" y2="16" />
+      <circle cx="12" cy="8" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function LogLevelWarnIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M12 3l10 18H2z" />
+      <line x1="12" y1="9" x2="12" y2="14" />
+      <circle cx="12" cy="17.5" r="0.9" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function LogLevelErrorIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="9" />
+      <line x1="9" y1="9" x2="15" y2="15" />
+      <line x1="15" y1="9" x2="9" y2="15" />
+    </svg>
+  );
+}
+
+export function LogLevelFatalIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M12 3l2 5 5.5.6-4 4 1 5.4-4.5-2.8-4.5 2.8 1-5.4-4-4L10 8z" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function StackTraceIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <line x1="5" y1="5" x2="19" y2="5" />
+      <line x1="7" y1="10" x2="19" y2="10" />
+      <line x1="9" y1="15" x2="19" y2="15" />
+      <line x1="11" y1="20" x2="19" y2="20" />
+    </svg>
+  );
+}
+
+// ─── Collaboration & Workspace Icons ─────────────────────────────────────────
+
+export function TeamIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="9" cy="8" r="3" />
+      <path d="M3 21v-1a6 6 0 016-6h0a6 6 0 016 6v1" />
+      <path d="M16 5.5a3 3 0 010 5.8" />
+      <path d="M20 21v-1a5.5 5.5 0 00-3.5-5.1" />
+    </svg>
+  );
+}
+
+export function OrganizationIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="4" y="10" width="6" height="11" />
+      <rect x="14" y="6" width="6" height="15" />
+      <line x1="6.5" y1="13" x2="6.5" y2="13.01" />
+      <line x1="6.5" y1="16" x2="6.5" y2="16.01" />
+      <line x1="16.5" y1="9" x2="16.5" y2="9.01" />
+      <line x1="16.5" y1="12" x2="16.5" y2="12.01" />
+      <line x1="16.5" y1="15" x2="16.5" y2="15.01" />
+    </svg>
+  );
+}
+
+export function WorkspaceIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="3" width="18" height="14" rx="2" />
+      <line x1="8" y1="21" x2="16" y2="21" />
+      <line x1="12" y1="17" x2="12" y2="21" />
+    </svg>
+  );
+}
+
+export function InviteIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M22 6L12 13 2 6" />
+      <rect x="2" y="4" width="20" height="14" rx="2" />
+      <path d="M17 18l3 3 3-3" fill="none" />
+      <path d="M20 15v6" />
+    </svg>
+  );
+}
+
+export function MentionIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="4" />
+      <path d="M16 12v1.5a2.5 2.5 0 005 0V12a9 9 0 10-4 7.5" />
+    </svg>
+  );
+}
+
+export function ThreadIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M8 9h8" />
+      <path d="M8 13h5" />
+      <path d="M4 4h16v10H9l-4 4v-4H4z" />
+    </svg>
+  );
+}
+
+export function ReplyIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <polyline points="9 10 4 15 9 20" />
+      <path d="M20 19v-3a4 4 0 00-4-4H4" />
+    </svg>
+  );
+}
+
+export function ReactionEmojiIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+      <line x1="9" y1="9" x2="9.01" y2="9" />
+      <line x1="15" y1="9" x2="15.01" y2="9" />
+    </svg>
+  );
+}
+
+export function PinAltIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M12 2l3 3-4 4-3 7 7-3 4-4 3 3" />
+      <line x1="9" y1="15" x2="4" y2="20" />
+    </svg>
+  );
+}
+
+export function StarFavoriteIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 17.8l-6.2 3.3 1.2-6.9-5-4.9 6.9-1z" />
+    </svg>
+  );
+}
+
+export function StarFilledIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 17.8l-6.2 3.3 1.2-6.9-5-4.9 6.9-1z" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function ArchiveFolderIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="6" width="18" height="4" rx="1" />
+      <path d="M4 10v8a2 2 0 002 2h12a2 2 0 002-2v-8" />
+      <line x1="10" y1="14" x2="14" y2="14" />
+    </svg>
+  );
+}
+
+export function TrashEmptyIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M3 6h18" />
+      <path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+      <path d="M6 6l1 14a2 2 0 002 2h6a2 2 0 002-2l1-14" />
+    </svg>
+  );
+}
+
+export function TrashFullIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M3 6h18" />
+      <path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+      <path d="M6 6l1 14a2 2 0 002 2h6a2 2 0 002-2l1-14" />
+      <line x1="9" y1="10" x2="9.5" y2="17" />
+      <line x1="12" y1="10" x2="12" y2="17" />
+      <line x1="15" y1="10" x2="14.5" y2="17" />
+    </svg>
+  );
+}
+
+export function ShareAltIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="18" cy="5" r="3" />
+      <circle cx="6" cy="12" r="3" />
+      <circle cx="18" cy="19" r="3" />
+      <line x1="8.6" y1="10.6" x2="15.4" y2="6.4" />
+      <line x1="8.6" y1="13.4" x2="15.4" y2="17.6" />
+    </svg>
+  );
+}
+
+export function ExportVariantIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M4 15v4a2 2 0 002 2h12a2 2 0 002-2v-4" />
+      <polyline points="16 6 12 2 8 6" />
+      <line x1="12" y1="2" x2="12" y2="14" />
+    </svg>
+  );
+}
+
+export function ImportVariantIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M4 15v4a2 2 0 002 2h12a2 2 0 002-2v-4" />
+      <polyline points="8 10 12 14 16 10" />
+      <line x1="12" y1="14" x2="12" y2="2" />
+    </svg>
+  );
+}
+
+export function TemplateIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <line x1="3" y1="9" x2="21" y2="9" />
+      <line x1="9" y1="9" x2="9" y2="21" />
+    </svg>
+  );
+}
+
+export function WorkflowIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="3" width="6" height="6" rx="1" />
+      <rect x="15" y="3" width="6" height="6" rx="1" />
+      <rect x="9" y="15" width="6" height="6" rx="1" />
+      <path d="M6 9v3a3 3 0 003 3" />
+      <path d="M18 9v3a3 3 0 01-3 3" />
+    </svg>
+  );
+}
+
+export function AutomationIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M13 2L4 14h6l-1 8 9-12h-6z" />
+    </svg>
+  );
+}
+
+export function IntegrationPlugIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M9 3v4" />
+      <path d="M15 3v4" />
+      <path d="M6 7h12v4a6 6 0 01-12 0z" />
+      <path d="M12 17v4" />
+    </svg>
+  );
+}
+
+// ─── UI Chrome & Action Icons ────────────────────────────────────────────────
+
+export function ArrowUpLeftIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <line x1="19" y1="19" x2="5" y2="5" />
+      <polyline points="5 13 5 5 13 5" />
+    </svg>
+  );
+}
+
+export function ArrowDownRightIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <line x1="5" y1="5" x2="19" y2="19" />
+      <polyline points="19 11 19 19 11 19" />
+    </svg>
+  );
+}
+
+export function ArrowLeftIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <line x1="19" y1="12" x2="5" y2="12" />
+      <polyline points="12 19 5 12 12 5" />
+    </svg>
+  );
+}
+
+export function ArrowRightIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <line x1="5" y1="12" x2="19" y2="12" />
+      <polyline points="12 5 19 12 12 19" />
+    </svg>
+  );
+}
+
+export function ChevronDoubleLeftIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <polyline points="18 17 13 12 18 7" />
+      <polyline points="11 17 6 12 11 7" />
+    </svg>
+  );
+}
+
+export function ChevronDoubleRightIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <polyline points="6 17 11 12 6 7" />
+      <polyline points="13 17 18 12 13 7" />
+    </svg>
+  );
+}
+
+export function DragHandleVerticalIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="9" cy="6" r="1" fill="currentColor" stroke="none" />
+      <circle cx="15" cy="6" r="1" fill="currentColor" stroke="none" />
+      <circle cx="9" cy="12" r="1" fill="currentColor" stroke="none" />
+      <circle cx="15" cy="12" r="1" fill="currentColor" stroke="none" />
+      <circle cx="9" cy="18" r="1" fill="currentColor" stroke="none" />
+      <circle cx="15" cy="18" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function ResizeHandleIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M21 15v6h-6" />
+      <path d="M9 9L3 3" />
+      <path d="M21 21l-6-6" />
+      <path d="M3 9V3h6" />
+    </svg>
+  );
+}
+
+export function SplitHorizontalIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <line x1="3" y1="12" x2="21" y2="12" />
+    </svg>
+  );
+}
+
+export function SplitVerticalIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <line x1="12" y1="3" x2="12" y2="21" />
+    </svg>
+  );
+}
+
+export function MaximizeIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M8 3H5a2 2 0 00-2 2v3" />
+      <path d="M16 3h3a2 2 0 012 2v3" />
+      <path d="M21 16v3a2 2 0 01-2 2h-3" />
+      <path d="M3 16v3a2 2 0 002 2h3" />
+    </svg>
+  );
+}
+
+export function MinimizeIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M9 3v3a2 2 0 01-2 2H4" />
+      <path d="M15 3v3a2 2 0 002 2h3" />
+      <path d="M15 21v-3a2 2 0 012-2h3" />
+      <path d="M9 21v-3a2 2 0 00-2-2H4" />
+    </svg>
+  );
+}
+
+export function FullscreenIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M3 8V5a2 2 0 012-2h3" />
+      <path d="M16 3h3a2 2 0 012 2v3" />
+      <path d="M21 16v3a2 2 0 01-2 2h-3" />
+      <path d="M8 21H5a2 2 0 01-2-2v-3" />
+    </svg>
+  );
+}
+
+export function LockOpenIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="11" width="18" height="10" rx="2" />
+      <path d="M7 11V7a5 5 0 019.8-1.5" />
+    </svg>
+  );
+}
+
+export function SortAscendingIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M6 20V4" />
+      <polyline points="3 8 6 4 9 8" />
+      <line x1="11" y1="8" x2="20" y2="8" />
+      <line x1="11" y1="14" x2="17" y2="14" />
+      <line x1="11" y1="20" x2="14" y2="20" />
+    </svg>
+  );
+}
+
+export function SortDescendingIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M6 4v16" />
+      <polyline points="3 16 6 20 9 16" />
+      <line x1="11" y1="8" x2="14" y2="8" />
+      <line x1="11" y1="14" x2="17" y2="14" />
+      <line x1="11" y1="20" x2="20" y2="20" />
+    </svg>
+  );
+}
+
+export function GroupIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="3" width="7" height="7" rx="1" strokeDasharray="2 2" />
+      <rect x="14" y="14" width="7" height="7" rx="1" strokeDasharray="2 2" />
+      <path d="M10 6.5h4a2 2 0 012 2v4" />
+    </svg>
+  );
+}
+
+export function UngroupIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="3" width="7" height="7" rx="1" />
+      <rect x="14" y="14" width="7" height="7" rx="1" />
+    </svg>
+  );
+}
+
+export function AlignLeftIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="4" y1="12" x2="14" y2="12" />
+      <line x1="4" y1="18" x2="17" y2="18" />
+    </svg>
+  );
+}
+
+export function AlignCenterIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="7" y1="12" x2="17" y2="12" />
+      <line x1="6" y1="18" x2="18" y2="18" />
+    </svg>
+  );
+}
+
+export function AlignRightIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="10" y1="12" x2="20" y2="12" />
+      <line x1="7" y1="18" x2="20" y2="18" />
+    </svg>
+  );
+}
+
+export function AlignJustifyIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="4" y1="12" x2="20" y2="12" />
+      <line x1="4" y1="18" x2="20" y2="18" />
+    </svg>
+  );
+}
+
+export function DistributeHorizontalIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <line x1="4" y1="3" x2="4" y2="21" />
+      <line x1="20" y1="3" x2="20" y2="21" />
+      <rect x="8" y="8" width="3" height="8" rx="1" />
+      <rect x="13" y="8" width="3" height="8" rx="1" />
+    </svg>
+  );
+}
+
+export function DistributeVerticalIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <line x1="3" y1="4" x2="21" y2="4" />
+      <line x1="3" y1="20" x2="21" y2="20" />
+      <rect x="8" y="8" width="8" height="3" rx="1" />
+      <rect x="8" y="13" width="8" height="3" rx="1" />
+    </svg>
+  );
+}
+
+export function BringForwardIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="3" width="10" height="10" rx="1" strokeDasharray="2 2" />
+      <rect x="11" y="11" width="10" height="10" rx="1" />
+    </svg>
+  );
+}
+
+export function SendBackwardIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="3" width="10" height="10" rx="1" />
+      <rect x="11" y="11" width="10" height="10" rx="1" strokeDasharray="2 2" />
+    </svg>
+  );
+}
+
+export function ZoomInIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="10.5" cy="10.5" r="7.5" />
+      <line x1="21" y1="21" x2="15.8" y2="15.8" />
+      <line x1="10.5" y1="7" x2="10.5" y2="14" />
+      <line x1="7" y1="10.5" x2="14" y2="10.5" />
+    </svg>
+  );
+}
+
+export function ZoomOutIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="10.5" cy="10.5" r="7.5" />
+      <line x1="21" y1="21" x2="15.8" y2="15.8" />
+      <line x1="7" y1="10.5" x2="14" y2="10.5" />
+    </svg>
+  );
+}
+
+export function ZoomResetIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="10.5" cy="10.5" r="7.5" />
+      <line x1="21" y1="21" x2="15.8" y2="15.8" />
+      <path d="M8 9.5a2.5 2.5 0 015 0" />
+      <line x1="10.5" y1="9.5" x2="10.5" y2="12" />
+    </svg>
+  );
+}
+
+export function CropIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M6 2v14a2 2 0 002 2h14" />
+      <path d="M18 22V8a2 2 0 00-2-2H2" />
+    </svg>
+  );
+}
+
+export function RotateIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M21 12a9 9 0 11-3-6.7" />
+      <polyline points="21 3 21 9 15 9" />
+    </svg>
+  );
+}
+
+export function FlipHorizontalIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M8 3H5a2 2 0 00-2 2v14a2 2 0 002 2h3" />
+      <path d="M16 3h3a2 2 0 012 2v14a2 2 0 01-2 2h-3" />
+      <line x1="12" y1="2" x2="12" y2="22" strokeDasharray="2 2" />
+    </svg>
+  );
+}
+
+export function FlipVerticalIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M3 8V5a2 2 0 012-2h14a2 2 0 012 2v3" />
+      <path d="M3 16v3a2 2 0 002 2h14a2 2 0 002-2v-3" />
+      <line x1="2" y1="12" x2="22" y2="12" strokeDasharray="2 2" />
+    </svg>
+  );
+}
+
+// ─── Status & Feedback Icons ─────────────────────────────────────────────────
+
+export function SpinnerDotsIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="4" cy="12" r="2" fill="currentColor" stroke="none" />
+      <circle cx="12" cy="12" r="2" fill="currentColor" stroke="none" opacity="0.6" />
+      <circle cx="20" cy="12" r="2" fill="currentColor" stroke="none" opacity="0.3" />
+    </svg>
+  );
+}
+
+export function SpinnerArcIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M12 3a9 9 0 019 9" />
+    </svg>
+  );
+}
+
+export function SuccessBadgeIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M12 2l2.6 1.5 3-.1 1.5 2.6 2.6 1.5-.1 3 .1 3-2.6 1.5-1.5 2.6-3-.1L12 22l-2.6-1.5-3 .1-1.5-2.6-2.6-1.5.1-3-.1-3 2.6-1.5 1.5-2.6 3 .1z" />
+      <path d="M8.5 12.5l2.5 2.5 4.5-5" />
+    </svg>
+  );
+}
+
+export function FailBadgeIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M12 2l2.6 1.5 3-.1 1.5 2.6 2.6 1.5-.1 3 .1 3-2.6 1.5-1.5 2.6-3-.1L12 22l-2.6-1.5-3 .1-1.5-2.6-2.6-1.5.1-3-.1-3 2.6-1.5 1.5-2.6 3 .1z" />
+      <line x1="9.5" y1="9.5" x2="14.5" y2="14.5" />
+      <line x1="14.5" y1="9.5" x2="9.5" y2="14.5" />
+    </svg>
+  );
+}
+
+export function WarningBadgeIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M12 2l2.6 1.5 3-.1 1.5 2.6 2.6 1.5-.1 3 .1 3-2.6 1.5-1.5 2.6-3-.1L12 22l-2.6-1.5-3 .1-1.5-2.6-2.6-1.5.1-3-.1-3 2.6-1.5 1.5-2.6 3 .1z" />
+      <line x1="12" y1="8.5" x2="12" y2="13" />
+      <circle cx="12" cy="16" r="0.9" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function InfoBadgeIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M12 2l2.6 1.5 3-.1 1.5 2.6 2.6 1.5-.1 3 .1 3-2.6 1.5-1.5 2.6-3-.1L12 22l-2.6-1.5-3 .1-1.5-2.6-2.6-1.5.1-3-.1-3 2.6-1.5 1.5-2.6 3 .1z" />
+      <line x1="12" y1="11" x2="12" y2="16" />
+      <circle cx="12" cy="8" r="0.9" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function OfflineIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M8.5 16.5a5 5 0 016-7.7" />
+      <path d="M5.5 13.5a8 8 0 013-5.4" />
+      <path d="M12.5 20h.01" />
+      <line x1="2" y1="2" x2="22" y2="22" />
+    </svg>
+  );
+}
+
+export function OnlineIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M5 12.5a10 10 0 0114 0" />
+      <path d="M8.5 16a5 5 0 017 0" />
+      <circle cx="12" cy="19.5" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function SyncIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <polyline points="4 4 4 9 9 9" />
+      <polyline points="20 20 20 15 15 15" />
+      <path d="M5.6 9A8 8 0 0119.4 6.3L20 9" />
+      <path d="M18.4 15A8 8 0 014.6 17.7L4 15" />
+    </svg>
+  );
+}
+
+export function SyncingIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <polyline points="4 4 4 9 9 9" opacity="0.5" />
+      <polyline points="20 20 20 15 15 15" />
+      <path d="M5.6 9A8 8 0 0119.4 6.3L20 9" strokeDasharray="3 2" />
+      <path d="M18.4 15A8 8 0 014.6 17.7L4 15" />
+    </svg>
+  );
+}
+
+export function PausedStatusIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="9" />
+      <line x1="10" y1="9" x2="10" y2="15" />
+      <line x1="14" y1="9" x2="14" y2="15" />
+    </svg>
+  );
+}
+
+export function ScheduledStatusIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="13" r="8" />
+      <path d="M12 9v4l2.5 1.5" />
+      <path d="M9 2h6" />
+    </svg>
+  );
+}
+
+export function ExpiredStatusIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="13" r="8" />
+      <path d="M9 2h6" />
+      <line x1="9" y1="10" x2="15" y2="16" />
+      <line x1="15" y1="10" x2="9" y2="16" />
+    </svg>
+  );
+}
+
+export function VerifiedIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M12 2l2.6 1.5 3-.1 1.5 2.6 2.6 1.5-.1 3 .1 3-2.6 1.5-1.5 2.6-3-.1L12 22l-2.6-1.5-3 .1-1.5-2.6-2.6-1.5.1-3-.1-3 2.6-1.5 1.5-2.6 3 .1z" fill="currentColor" stroke="none" opacity="0.15" />
+      <path d="M12 2l2.6 1.5 3-.1 1.5 2.6 2.6 1.5-.1 3 .1 3-2.6 1.5-1.5 2.6-3-.1L12 22l-2.6-1.5-3 .1-1.5-2.6-2.6-1.5.1-3-.1-3 2.6-1.5 1.5-2.6 3 .1z" />
+      <path d="M8.5 12.5l2.5 2.5 4.5-5" />
+    </svg>
+  );
+}
+
+export function UnverifiedIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M12 2l2.6 1.5 3-.1 1.5 2.6 2.6 1.5-.1 3 .1 3-2.6 1.5-1.5 2.6-3-.1L12 22l-2.6-1.5-3 .1-1.5-2.6-2.6-1.5.1-3-.1-3 2.6-1.5 1.5-2.6 3 .1z" strokeDasharray="2 2" />
+      <line x1="12" y1="10" x2="12" y2="13" />
+      <circle cx="12" cy="16" r="0.7" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function FlaggedIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M5 21V4" />
+      <path d="M5 4h13l-3 4 3 4H5" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function BlockedIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="9" />
+      <line x1="5.5" y1="5.5" x2="18.5" y2="18.5" />
+    </svg>
+  );
+}
+
+export function MutedIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M11 5L6 9H3v6h3l5 4V5z" />
+      <line x1="17" y1="9" x2="22" y2="14" />
+      <line x1="22" y1="9" x2="17" y2="14" />
+    </svg>
+  );
+}
+
+// ─── Devices & Platforms Icons ───────────────────────────────────────────────
+
+export function DesktopDeviceIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="2" y="4" width="20" height="13" rx="2" />
+      <line x1="8" y1="21" x2="16" y2="21" />
+      <line x1="12" y1="17" x2="12" y2="21" />
+    </svg>
+  );
+}
+
+export function LaptopDeviceIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="4" y="4" width="16" height="11" rx="1" />
+      <path d="M2 19h20l-2-4H4z" />
+    </svg>
+  );
+}
+
+export function TabletDeviceIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="4" y="2" width="16" height="20" rx="2" />
+      <line x1="11" y1="18" x2="13" y2="18" />
+    </svg>
+  );
+}
+
+export function MobileDeviceIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="7" y="2" width="10" height="20" rx="2" />
+      <line x1="11" y1="18" x2="13" y2="18" />
+    </svg>
+  );
+}
+
+export function WatchDeviceIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="7" y="7" width="10" height="10" rx="2" />
+      <path d="M9 7V4h6v3" />
+      <path d="M9 17v3h6v-3" />
+      <path d="M12 10v2l1.5 1" />
+    </svg>
+  );
+}
+
+export function BrowserWindowIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="2" y="4" width="20" height="16" rx="2" />
+      <line x1="2" y1="9" x2="22" y2="9" />
+      <circle cx="5" cy="6.5" r="0.6" fill="currentColor" stroke="none" />
+      <circle cx="7.5" cy="6.5" r="0.6" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function BrowserTabIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M3 8a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+    </svg>
+  );
+}
+
+export function WindowControlsIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="2" y="4" width="20" height="16" rx="2" />
+      <line x1="2" y1="8" x2="22" y2="8" />
+      <line x1="16" y1="6" x2="18" y2="6" />
+      <line x1="19.5" y1="6" x2="19.5" y2="6.01" />
+    </svg>
+  );
+}
+
+export function PrintIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <polyline points="6 9 6 2 18 2 18 9" />
+      <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2" />
+      <rect x="6" y="14" width="12" height="8" />
+    </svg>
+  );
+}
+
+export function ScanIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M3 7V5a2 2 0 012-2h2" />
+      <path d="M17 3h2a2 2 0 012 2v2" />
+      <path d="M21 17v2a2 2 0 01-2 2h-2" />
+      <path d="M7 21H5a2 2 0 01-2-2v-2" />
+      <line x1="3" y1="12" x2="21" y2="12" />
+    </svg>
+  );
+}
+
+export function QrCodeIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="3" width="7" height="7" />
+      <rect x="14" y="3" width="7" height="7" />
+      <rect x="3" y="14" width="7" height="7" />
+      <line x1="14" y1="14" x2="14" y2="17" />
+      <line x1="14" y1="20" x2="14" y2="21" />
+      <line x1="17" y1="14" x2="21" y2="14" />
+      <line x1="17" y1="17" x2="19" y2="17" />
+      <line x1="17" y1="20" x2="21" y2="20" />
+      <line x1="21" y1="17" x2="21" y2="17" />
+    </svg>
+  );
+}
+
+export function BarcodeIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <line x1="4" y1="4" x2="4" y2="20" />
+      <line x1="7" y1="4" x2="7" y2="20" />
+      <line x1="10" y1="4" x2="10" y2="20" strokeWidth="3" />
+      <line x1="13" y1="4" x2="13" y2="20" />
+      <line x1="16" y1="4" x2="16" y2="20" strokeWidth="3" />
+      <line x1="19" y1="4" x2="19" y2="20" />
+    </svg>
+  );
+}
+
+export function NfcIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M6 8a6 6 0 016 6" />
+      <path d="M6 4a10 10 0 0110 10" />
+      <circle cx="6" cy="18" r="1.2" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function BluetoothIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M7 7l10 10-5 4V3l5 4L7 17" />
+    </svg>
+  );
+}
+
+export function WifiWeakIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M5 13a13 13 0 0114 0" opacity="0.3" />
+      <path d="M8.5 16.5a7.5 7.5 0 017 0" opacity="0.3" />
+      <circle cx="12" cy="20" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function WifiStrongIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M2 9a16 16 0 0120 0" />
+      <path d="M5 13a13 13 0 0114 0" />
+      <path d="M8.5 16.5a7.5 7.5 0 017 0" />
+      <circle cx="12" cy="20" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function BatteryFullIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="2" y="7" width="18" height="10" rx="2" />
+      <line x1="22" y1="11" x2="22" y2="13" />
+      <rect x="4.5" y="9.5" width="13" height="5" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function BatteryLowIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="2" y="7" width="18" height="10" rx="2" />
+      <line x1="22" y1="11" x2="22" y2="13" />
+      <rect x="4.5" y="9.5" width="3" height="5" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function SignalBarsIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="16" width="3" height="5" fill="currentColor" stroke="none" />
+      <rect x="8" y="12" width="3" height="9" fill="currentColor" stroke="none" />
+      <rect x="13" y="8" width="3" height="13" fill="currentColor" stroke="none" />
+      <rect x="18" y="4" width="3" height="17" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+// ─── People & Identity Icons ─────────────────────────────────────────────────
+
+export function UserSingleIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 21v-1a8 8 0 0116 0v1" />
+    </svg>
+  );
+}
+
+export function UserGroupIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="9" cy="8" r="3" />
+      <circle cx="17" cy="9" r="2.5" />
+      <path d="M3 20v-1a5 5 0 0110 0v1" />
+      <path d="M14 20v-1a4.5 4.5 0 016.5-4" />
+    </svg>
+  );
+}
+
+export function UserAddIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="9" cy="8" r="4" />
+      <path d="M2 21v-1a7 7 0 0114 0v1" />
+      <line x1="19" y1="8" x2="19" y2="14" />
+      <line x1="16" y1="11" x2="22" y2="11" />
+    </svg>
+  );
+}
+
+export function UserRemoveIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="9" cy="8" r="4" />
+      <path d="M2 21v-1a7 7 0 0114 0v1" />
+      <line x1="16" y1="11" x2="22" y2="11" />
+    </svg>
+  );
+}
+
+export function UserCheckIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="9" cy="8" r="4" />
+      <path d="M2 21v-1a7 7 0 0114 0v1" />
+      <path d="M16 12l2 2 4-4" />
+    </svg>
+  );
+}
+
+export function UserXIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="9" cy="8" r="4" />
+      <path d="M2 21v-1a7 7 0 0114 0v1" />
+      <line x1="16.5" y1="9.5" x2="21.5" y2="14.5" />
+      <line x1="21.5" y1="9.5" x2="16.5" y2="14.5" />
+    </svg>
+  );
+}
+
+export function AdminShieldIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M12 2l8 4v6c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V6z" />
+      <circle cx="12" cy="10" r="2" />
+      <path d="M9 15a3 3 0 016 0" />
+    </svg>
+  );
+}
+
+export function RoleBadgeIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="8" r="5" />
+      <path d="M8 12.5L6 21l6-3 6 3-2-8.5" />
+    </svg>
+  );
+}
+
+export function PermissionKeyIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="8" cy="15" r="4" />
+      <path d="M11 12l8-8" />
+      <path d="M16 7l2.5 2.5" />
+      <path d="M19 4l2.5 2.5" />
+    </svg>
+  );
+}
+
+export function FingerprintIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M12 3a7 7 0 00-7 7c0 3 1 4 1 7" />
+      <path d="M12 3a7 7 0 017 7c0 2 -.2 3.3 -.6 4.5" />
+      <path d="M9 10a3 3 0 016 0c0 4 1 6 2 8" />
+      <path d="M9 10c0 5 .5 7.5 2.5 10" />
+      <path d="M15 10c0 3 .3 4.6 1 6" />
+    </svg>
+  );
+}
+
+export function FaceIdIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M3 8V5a2 2 0 012-2h3" />
+      <path d="M16 3h3a2 2 0 012 2v3" />
+      <path d="M21 16v3a2 2 0 01-2 2h-3" />
+      <path d="M8 21H5a2 2 0 01-2-2v-3" />
+      <line x1="9" y1="10" x2="9.01" y2="10" />
+      <line x1="15" y1="10" x2="15.01" y2="10" />
+      <path d="M9 15s1.5 1.5 3 1.5 3-1.5 3-1.5" />
+    </svg>
+  );
+}
+
+// ─── Misc General-Purpose Icons ──────────────────────────────────────────────
+
+export function CalendarDayIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="4" width="18" height="17" rx="2" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <rect x="9" y="13" width="6" height="5" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function CalendarWeekIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="4" width="18" height="17" rx="2" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <line x1="6" y1="14" width="12" x2="18" y2="14" />
+      <rect x="6" y="13" width="12" height="4" fill="currentColor" stroke="none" opacity="0.3" />
+    </svg>
+  );
+}
+
+export function CalendarMonthIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="4" width="18" height="17" rx="2" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <line x1="3" y1="15" x2="21" y2="15" />
+      <line x1="9" y1="10" x2="9" y2="21" />
+      <line x1="15" y1="10" x2="15" y2="21" />
+    </svg>
+  );
+}
+
+export function CalendarEventIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="4" width="18" height="17" rx="2" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <circle cx="12" cy="15" r="2.5" />
+    </svg>
+  );
+}
+
+export function AlarmClockIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="13" r="8" />
+      <path d="M12 9v4l2.5 1.5" />
+      <path d="M5 3L3 5" />
+      <path d="M19 3l2 2" />
+      <line x1="9" y1="21" x2="15" y2="21" />
+    </svg>
+  );
+}
+
+export function TimerIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="13" r="8" />
+      <path d="M12 9v4l2.5 1.5" />
+      <line x1="10" y1="2" x2="14" y2="2" />
+    </svg>
+  );
+}
+
+export function StopwatchIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="14" r="7" />
+      <path d="M12 10v4l2 1.5" />
+      <line x1="12" y1="4" x2="12" y2="6" />
+      <line x1="9" y1="2" x2="15" y2="2" />
+      <line x1="17.5" y1="4.5" x2="19" y2="3" />
+    </svg>
+  );
+}
+
+export function HistoryClockIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M3 12a9 9 0 109-9" />
+      <path d="M3 4v5h5" />
+      <path d="M12 7v5l3 2" />
+    </svg>
+  );
+}
+
+export function MapLocationPinIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M12 21s7-6.6 7-12a7 7 0 10-14 0c0 5.4 7 12 7 12z" />
+      <circle cx="12" cy="9" r="2.5" />
+    </svg>
+  );
+}
+
+export function CompassIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="9" />
+      <polygon points="14.5 9.5 12 14.5 9.5 14.5 12 9.5" />
+      <polygon points="14.5 9.5 12 9.5 9.5 14.5 12 14.5" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function FlagVariantIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M4 22V4" />
+      <path d="M4 4h15l-3.5 4.5L19 13H4" />
+    </svg>
+  );
+}
+
+export function BookmarkVariantIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M6 4a2 2 0 012-2h8a2 2 0 012 2v17l-6-4-6 4z" fill="currentColor" stroke="none" opacity="0.15" />
+      <path d="M6 4a2 2 0 012-2h8a2 2 0 012 2v17l-6-4-6 4z" />
+    </svg>
+  );
+}
+
+export function TagVariantIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M2 12.6V5a2 2 0 012-2h7.6a2 2 0 011.4.6l8.4 8.4a2 2 0 010 2.8l-7.6 7.6a2 2 0 01-2.8 0L2.6 14a2 2 0 01-.6-1.4z" />
+      <circle cx="8" cy="8" r="1.5" />
+    </svg>
+  );
+}
+
+export function FilterVariantIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M4 5h16" />
+      <path d="M7 12h10" />
+      <path d="M10 19h4" />
+    </svg>
+  );
+}
+
+export function SlidersControlIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <line x1="4" y1="21" x2="4" y2="14" />
+      <line x1="4" y1="10" x2="4" y2="3" />
+      <line x1="12" y1="21" x2="12" y2="12" />
+      <line x1="12" y1="8" x2="12" y2="3" />
+      <line x1="20" y1="21" x2="20" y2="16" />
+      <line x1="20" y1="12" x2="20" y2="3" />
+      <line x1="1" y1="14" x2="7" y2="14" />
+      <line x1="9" y1="8" x2="15" y2="8" />
+      <line x1="17" y1="16" x2="23" y2="16" />
+    </svg>
+  );
+}
+
+export function PuzzlePieceIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M10 3h4v2.5a1.5 1.5 0 003 0V3h2a2 2 0 012 2v2h-2.5a1.5 1.5 0 000 3H21v2a2 2 0 01-2 2h-2v-2.5a1.5 1.5 0 00-3 0V16h-4v-2.5a1.5 1.5 0 00-3 0V16H5a2 2 0 01-2-2v-2h2.5a1.5 1.5 0 000-3H3V7a2 2 0 012-2h2v2.5a1.5 1.5 0 003 0z" />
+    </svg>
+  );
+}
+
+export function GiftRewardIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="9" width="18" height="4" />
+      <rect x="4" y="13" width="16" height="8" />
+      <line x1="12" y1="9" x2="12" y2="21" />
+      <path d="M12 9c-1 0-3-1-3-3a2 2 0 014-.5c.4.6.6 1.6.6 2.5" />
+      <path d="M12 9c1 0 3-1 3-3a2 2 0 00-4-.5c-.4.6-.6 1.6-.6 2.5" />
+    </svg>
+  );
+}
+
+export function TrophyAchievementIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M8 4h8v6a4 4 0 01-8 0z" />
+      <path d="M8 5H4v2a4 4 0 004 4" />
+      <path d="M16 5h4v2a4 4 0 01-4 4" />
+      <line x1="12" y1="14" x2="12" y2="18" />
+      <path d="M8 21h8l-1-3H9z" />
+    </svg>
+  );
+}
+
+export function LightbulbIdeaIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M9 18h6" />
+      <path d="M10 21h4" />
+      <path d="M12 3a6 6 0 00-3.6 10.8c.6.5 1.1 1.3 1.1 2.2h5c0-.9.5-1.7 1.1-2.2A6 6 0 0012 3z" />
+    </svg>
+  );
+}
+
+export function TargetGoalIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="9" />
+      <circle cx="12" cy="12" r="5" />
+      <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function RocketLaunchIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M12 2c3 2 5 6 5 10 0 2-1 4-2 5l-3-1-3 1c-1-1-2-3-2-5 0-4 2-8 5-10z" />
+      <circle cx="12" cy="9" r="1.5" />
+      <path d="M9 15l-3 2v3l3-1.5" />
+      <path d="M15 15l3 2v3l-3-1.5" />
+      <path d="M10 19l2 2 2-2" />
+    </svg>
+  );
+}
+
+export function AnchorIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="5" r="2" />
+      <line x1="12" y1="7" x2="12" y2="21" />
+      <path d="M5 12H2a10 10 0 0010 10 10 10 0 0010-10h-3" />
+      <line x1="8" y1="10" x2="16" y2="10" />
+    </svg>
+  );
+}
+
+export function MagnetIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M6 15V9a6 6 0 0112 0v6" />
+      <path d="M2 15h8v4a4 4 0 01-8 0z" />
+      <path d="M14 15h8v4a4 4 0 01-8 0z" />
+    </svg>
+  );
+}
+
+// ─── Additional HTTP Method & Request Icons ──────────────────────────────────
+
+export function HttpGetIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M4 20V4l16 8-16 8z" opacity="0.15" fill="currentColor" stroke="none" />
+      <path d="M4 20V4l16 8z" />
+    </svg>
+  );
+}
+
+export function HttpPostIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <line x1="12" y1="4" x2="12" y2="20" />
+      <line x1="4" y1="12" x2="20" y2="12" />
+    </svg>
+  );
+}
+
+export function HttpPutIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M4 12l6 6L20 6" />
+    </svg>
+  );
+}
+
+export function HttpDeleteIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M3 6h18" />
+      <path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+      <path d="M6 6l1 14a2 2 0 002 2h6a2 2 0 002-2l1-14" />
+    </svg>
+  );
+}
+
+export function HttpHeadIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="8" r="4" />
+      <path d="M6 21v-2a6 6 0 0112 0v2" strokeDasharray="2 2" />
+    </svg>
+  );
+}
+
+export function HttpOptionsIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="5" cy="12" r="2" />
+      <circle cx="12" cy="12" r="2" />
+      <circle cx="19" cy="12" r="2" />
+    </svg>
+  );
+}
+
+export function RequestQueueIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="2" y="9" width="5" height="6" rx="1" />
+      <rect x="9.5" y="9" width="5" height="6" rx="1" />
+      <rect x="17" y="9" width="5" height="6" rx="1" />
+      <path d="M4.5 6v-2" />
+      <path d="M4.5 20v-2" />
+    </svg>
+  );
+}
+
+export function ResponseTimeIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="11" cy="12" r="8" />
+      <path d="M11 8v4l3 2" />
+      <path d="M19 6l2-2" />
+    </svg>
+  );
+}
+
+export function ApiVersionIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="9" cy="9" r="6" />
+      <path d="M9 6v3l2 1.5" />
+      <path d="M15.5 4.5A6 6 0 1119 12" strokeDasharray="2 2" />
+    </svg>
+  );
+}
+
+export function IdempotencyIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="3" width="8" height="8" rx="1" />
+      <rect x="13" y="13" width="8" height="8" rx="1" />
+      <path d="M11 7h4a2 2 0 012 2v4" />
+    </svg>
+  );
+}
+
+export function RequestTimeoutIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" opacity="0.4" />
+      <line x1="5" y1="19" x2="19" y2="5" />
+    </svg>
+  );
+}
+
+export function CircuitBreakerIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <line x1="2" y1="12" x2="8" y2="12" />
+      <path d="M8 12l3-4" />
+      <path d="M13 8l3 4" />
+      <line x1="16" y1="12" x2="22" y2="12" />
+      <circle cx="8" cy="12" r="1.2" fill="currentColor" stroke="none" />
+      <circle cx="16" cy="12" r="1.2" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function RetryIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M4 12a8 8 0 0114-5.3" />
+      <path d="M4 12a8 8 0 008 8" strokeDasharray="2 2" />
+      <polyline points="18 3 18 7 14 7" />
+    </svg>
+  );
+}
+
+// ─── Additional Dev Tooling Icons ────────────────────────────────────────────
+
+export function EnvironmentVariableIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <path d="M8 9l-2 3 2 3" />
+      <path d="M16 9l2 3-2 3" />
+    </svg>
+  );
+}
+
+export function ConfigFileIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <circle cx="12" cy="14" r="1.5" />
+      <path d="M12 11v1" />
+      <path d="M12 16v1" />
+      <path d="M9.5 12.5l.8.5" />
+      <path d="M13.7 15l.8.5" />
+    </svg>
+  );
+}
+
+export function SandboxIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M3 21h18" />
+      <path d="M4 21V10l8-6 8 6v11" />
+      <path d="M9 21v-6h6v6" />
+    </svg>
+  );
+}
+
+export function FeatureFlagIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <line x1="5" y1="21" x2="5" y2="3" />
+      <path d="M5 4h13l-3 4 3 4H5" />
+      <circle cx="18" cy="17" r="2" />
+    </svg>
+  );
+}
+
+export function ApiGatewayRouteIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="4" cy="6" r="2" />
+      <circle cx="4" cy="18" r="2" />
+      <circle cx="20" cy="12" r="2" />
+      <path d="M6 6h6a4 4 0 014 4v0" />
+      <path d="M6 18h6a4 4 0 004-4v0" />
+    </svg>
+  );
+}
+
+export function ServerClusterIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="3" width="8" height="8" rx="1" />
+      <rect x="13" y="3" width="8" height="8" rx="1" />
+      <rect x="3" y="13" width="8" height="8" rx="1" />
+      <rect x="13" y="13" width="8" height="8" rx="1" />
+    </svg>
+  );
+}
+
+export function CronScheduleIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l2.5 2.5" />
+      <path d="M8 3l-2-1" />
+      <path d="M16 3l2-1" />
+    </svg>
+  );
+}
+
+export function EventBusIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="4" cy="6" r="2" />
+      <circle cx="4" cy="18" r="2" />
+      <circle cx="20" cy="6" r="2" />
+      <circle cx="20" cy="18" r="2" />
+      <line x1="6" y1="6" x2="18" y2="6" />
+      <line x1="6" y1="18" x2="18" y2="18" />
+      <line x1="12" y1="6" x2="12" y2="18" />
+    </svg>
+  );
+}
+
+export function MessageQueueIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="2" y="6" width="6" height="12" rx="1" />
+      <rect x="10" y="6" width="6" height="12" rx="1" opacity="0.6" />
+      <path d="M18 9l3 3-3 3" />
+    </svg>
+  );
+}
+
+export function LoadTestIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M4 20h16" />
+      <path d="M6 20V13" />
+      <path d="M10 20V9" />
+      <path d="M14 20V5" />
+      <path d="M18 20V11" />
+      <path d="M18 11l2-2-2-2" />
+    </svg>
+  );
+}
+
+// ─── More UI Chrome Icons ────────────────────────────────────────────────────
+
+export function ArrowsExpandIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <polyline points="15 3 21 3 21 9" />
+      <polyline points="9 21 3 21 3 15" />
+      <line x1="21" y1="3" x2="14" y2="10" />
+      <line x1="3" y1="21" x2="10" y2="14" />
+    </svg>
+  );
+}
+
+export function ArrowsCollapseIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <polyline points="4 9 10 9 10 3" />
+      <polyline points="20 15 14 15 14 21" />
+      <line x1="10" y1="9" x2="3" y2="2" />
+      <line x1="14" y1="15" x2="21" y2="22" />
+    </svg>
+  );
+}
+
+export function PanelTopIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <line x1="3" y1="9" x2="21" y2="9" />
+    </svg>
+  );
+}
+
+export function PanelBottomIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <line x1="3" y1="15" x2="21" y2="15" />
+    </svg>
+  );
+}
+
+export function LayoutGridIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="3" width="7" height="7" />
+      <rect x="14" y="3" width="7" height="18" />
+      <rect x="3" y="14" width="7" height="7" />
+    </svg>
+  );
+}
+
+export function HandleGripIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="7" cy="7" r="1" fill="currentColor" stroke="none" />
+      <circle cx="12" cy="7" r="1" fill="currentColor" stroke="none" />
+      <circle cx="17" cy="7" r="1" fill="currentColor" stroke="none" />
+      <circle cx="7" cy="12" r="1" fill="currentColor" stroke="none" />
+      <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" />
+      <circle cx="17" cy="12" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function CommandKeyIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M9 3a3 3 0 100 6h6a3 3 0 100-6 3 3 0 00-3 3v6a3 3 0 003 3 3 3 0 000-6H9a3 3 0 00-3 3 3 3 0 106 0V9" />
+    </svg>
+  );
+}
+
+export function KeyboardIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="2" y="6" width="20" height="12" rx="2" />
+      <line x1="6" y1="10" x2="6" y2="10.01" />
+      <line x1="9" y1="10" x2="9" y2="10.01" />
+      <line x1="12" y1="10" x2="12" y2="10.01" />
+      <line x1="15" y1="10" x2="15" y2="10.01" />
+      <line x1="18" y1="10" x2="18" y2="10.01" />
+      <line x1="7" y1="14" x2="17" y2="14" />
+    </svg>
+  );
+}
+
+export function CursorPointerIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M4 3l7 17 2-7 7-2z" />
+    </svg>
+  );
+}
+
+export function ContextMenuIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="4" y="3" width="16" height="18" rx="2" />
+      <line x1="7" y1="8" x2="17" y2="8" />
+      <line x1="7" y1="12" x2="17" y2="12" />
+      <line x1="7" y1="16" x2="13" y2="16" />
+    </svg>
+  );
+}
+
+export function BreadcrumbIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M2 12h4l2-4 2 4h4" />
+      <path d="M14 12l2-4 2 4h2" />
+    </svg>
+  );
+}
+
+export function TabsIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M3 8a2 2 0 012-2h4l1.5 2H19a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+      <line x1="10.5" y1="8" x2="10.5" y2="18" />
+    </svg>
+  );
+}
+
+// ─── More Collaboration Icons ────────────────────────────────────────────────
+
+export function AssignUserIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 21v-1a8 8 0 0116 0v1" />
+      <path d="M9 15l2 2 4-4" />
+    </svg>
+  );
+}
+
+export function StatusUpdateIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M4 4h13l3 3v13H4z" />
+      <path d="M8 10h8" />
+      <path d="M8 14h5" />
+    </svg>
+  );
+}
+
+export function PollIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <circle cx="8" cy="8" r="1.5" />
+      <line x1="12" y1="8" x2="18" y2="8" />
+      <circle cx="8" cy="12" r="1.5" fill="currentColor" stroke="none" />
+      <line x1="12" y1="12" x2="18" y2="12" />
+      <circle cx="8" cy="16" r="1.5" />
+      <line x1="12" y1="16" x2="18" y2="16" />
+    </svg>
+  );
+}
+
+export function AnnouncementIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="7" width="14" height="8" rx="1" />
+      <path d="M17 9l4-2v10l-4-2" />
+      <path d="M7 15v3a2 2 0 002 2h1a2 2 0 002-2v-3" />
+    </svg>
+  );
+}
+
+export function HandshakeIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M2 12l4-4 4 2 3-2 3 2 4-2 4 4" />
+      <path d="M6 10l4 6 2-2" />
+      <path d="M18 10l-4 6-2-2" />
+    </svg>
+  );
+}
+
+export function ChecklistIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M3 6l1.5 1.5L7 5" />
+      <line x1="10" y1="6" x2="21" y2="6" />
+      <path d="M3 12l1.5 1.5L7 11" />
+      <line x1="10" y1="12" x2="21" y2="12" />
+      <path d="M3 18l1.5 1.5L7 17" />
+      <line x1="10" y1="18" x2="21" y2="18" />
+    </svg>
+  );
+}
+
+export function NoteStickyIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M4 4h16v11l-5 5H4z" />
+      <path d="M15 20v-5h5" />
+    </svg>
+  );
+}
+
+// ─── More Status Icons ───────────────────────────────────────────────────────
+
+export function HealthCheckIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M3 12h4l2-8 4 16 2-8h6" />
+    </svg>
+  );
+}
+
+export function UptimeMonitorIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M7 12h2l1.5-4 3 8 1.5-4h2" />
+    </svg>
+  );
+}
+
+export function DowntimeIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="9" strokeDasharray="3 2" />
+      <line x1="9" y1="9" x2="15" y2="15" />
+      <line x1="15" y1="9" x2="9" y2="15" />
+    </svg>
+  );
+}
+
+export function LatencyIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M3 17l4-4 3 3 5-6 4 4" />
+      <circle cx="17" cy="10" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function ThrottleIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M4 18a8 8 0 1116 0" />
+      <line x1="12" y1="18" x2="16" y2="12" />
+      <circle cx="12" cy="18" r="1.2" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function QueuedStatusIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="5" cy="12" r="2" />
+      <circle cx="12" cy="12" r="2" />
+      <circle cx="19" cy="12" r="2" opacity="0.4" />
+    </svg>
+  );
+}
+
+export function DeprecatedIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="9" strokeDasharray="4 2" />
+      <line x1="8" y1="8" x2="16" y2="16" />
+    </svg>
+  );
+}
+
+// ─── More Data & File Icons ──────────────────────────────────────────────────
+
+export function FileBinaryIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <path d="M7.5 13h1v4h-1z" />
+      <path d="M10.5 13h1v4h-1z" />
+      <path d="M13.5 13h1v4h-1z" />
+      <path d="M16.5 13h1v4h-1z" />
+    </svg>
+  );
+}
+
+export function FilePdfIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <path d="M7 17v-4h1.2a1 1 0 010 2H7" />
+      <path d="M11 17v-4h1.5a1.5 1.5 0 010 3H11" />
+      <path d="M15.5 17v-4H17" />
+      <path d="M15.5 15H17" />
+    </svg>
+  );
+}
+
+export function FileLockIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <rect x="9" y="14" width="6" height="4.5" rx="1" />
+      <path d="M10.5 14v-1.5a1.5 1.5 0 013 0V14" />
+    </svg>
+  );
+}
+
+export function FileSearchIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h9" />
+      <polyline points="14 2 14 8 20 8" />
+      <circle cx="15" cy="16" r="3" />
+      <line x1="17.3" y1="18.3" x2="20" y2="21" />
+    </svg>
+  );
+}
+
+export function FolderTreeIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M3 5h6l2 2h10v4H3z" />
+      <path d="M5 11v6a2 2 0 002 2h4" />
+      <path d="M5 11v-2" />
+      <rect x="13" y="16" width="8" height="4" rx="1" />
+    </svg>
+  );
+}
+
+export function DataPipelineIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="2" y="4" width="6" height="6" rx="1" />
+      <rect x="16" y="4" width="6" height="6" rx="1" />
+      <rect x="9" y="14" width="6" height="6" rx="1" />
+      <path d="M8 7h8" />
+      <path d="M12 10v4" />
+      <path d="M19 10v4h-4" />
+    </svg>
+  );
+}
+
+export function DataExportIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="4" width="12" height="16" rx="1" />
+      <line x1="6" y1="9" x2="12" y2="9" />
+      <line x1="6" y1="13" x2="12" y2="13" />
+      <path d="M16 12h5" />
+      <polyline points="18 9 21 12 18 15" />
+    </svg>
+  );
+}
+
+export function SchemaValidationIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="3" width="8" height="8" rx="1" />
+      <rect x="13" y="13" width="8" height="8" rx="1" />
+      <path d="M6 11v2a2 2 0 002 2h2" />
+      <path d="M9.5 15.5l1 1 2-2" />
+    </svg>
+  );
+}
+
+export function NullValueIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="9" />
+      <line x1="6" y1="18" x2="18" y2="6" />
+    </svg>
+  );
+}
+
+export function BooleanToggleIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="2" y="8" width="20" height="8" rx="4" />
+      <circle cx="16" cy="12" r="3" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function ArrayBracketsIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M8 3H6a2 2 0 00-2 2v14a2 2 0 002 2h2" />
+      <path d="M16 3h2a2 2 0 012 2v14a2 2 0 01-2 2h-2" />
+      <line x1="9" y1="9" x2="9" y2="9.01" />
+      <line x1="9" y1="12" x2="9" y2="12.01" />
+      <line x1="9" y1="15" x2="9" y2="15.01" />
+    </svg>
+  );
+}
+
+// ─── More Devices Icons ──────────────────────────────────────────────────────
+
+export function ServerRackIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="4" y="3" width="16" height="6" rx="1" />
+      <rect x="4" y="10.5" width="16" height="6" rx="1" />
+      <rect x="4" y="18" width="16" height="3" rx="1" />
+      <circle cx="7" cy="6" r="0.6" fill="currentColor" stroke="none" />
+      <circle cx="7" cy="13.5" r="0.6" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function RouterIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="2" y="13" width="20" height="7" rx="1" />
+      <line x1="6" y1="16.5" x2="6" y2="16.51" />
+      <line x1="9" y1="16.5" x2="9" y2="16.51" />
+      <path d="M8 13V9a4 4 0 018 0v4" />
+    </svg>
+  );
+}
+
+export function GpuChipIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="4" y="6" width="16" height="12" rx="1" />
+      <rect x="7" y="9" width="4" height="6" />
+      <rect x="13" y="9" width="4" height="6" />
+      <line x1="2" y1="9" x2="4" y2="9" />
+      <line x1="2" y1="15" x2="4" y2="15" />
+      <line x1="20" y1="9" x2="22" y2="9" />
+      <line x1="20" y1="15" x2="22" y2="15" />
+    </svg>
+  );
+}
+
+export function UsbIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="4" r="1.5" />
+      <path d="M12 5.5v9" />
+      <path d="M12 9l-4 3" />
+      <path d="M12 9l4 3" />
+      <circle cx="8" cy="14" r="1.5" />
+      <circle cx="16" cy="14" r="1.5" />
+      <path d="M12 14.5v3" />
+      <polygon points="10.5 20 12 17.5 13.5 20" />
+    </svg>
+  );
+}
+
+export function ClipboardCheckIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="6" y="4" width="12" height="16" rx="2" />
+      <path d="M9 4V3a1 1 0 011-1h4a1 1 0 011 1v1" />
+      <path d="M9 12l2 2 4-4" />
+    </svg>
+  );
+}
+
+export function RemoteControlIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="7" y="2" width="10" height="20" rx="3" />
+      <circle cx="12" cy="7" r="1.5" />
+      <line x1="9" y1="12" x2="9" y2="12.01" />
+      <line x1="12" y1="12" x2="12" y2="12.01" />
+      <line x1="15" y1="12" x2="15" y2="12.01" />
+      <line x1="9" y1="16" x2="9" y2="16.01" />
+      <line x1="12" y1="16" x2="12" y2="16.01" />
+      <line x1="15" y1="16" x2="15" y2="16.01" />
+    </svg>
+  );
+}
+
+// ─── More Misc Icons ─────────────────────────────────────────────────────────
+
+export function CloudUploadIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M7 18a4.5 4.5 0 01-1-8.9A5.5 5.5 0 0116.6 8H17a4 4 0 010 8" />
+      <polyline points="9 13 12 10 15 13" />
+      <line x1="12" y1="10" x2="12" y2="20" />
+    </svg>
+  );
+}
+
+export function CloudDownloadIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M7 18a4.5 4.5 0 01-1-8.9A5.5 5.5 0 0116.6 8H17a4 4 0 010 8" />
+      <polyline points="9 16 12 19 15 16" />
+      <line x1="12" y1="19" x2="12" y2="10" />
+    </svg>
+  );
+}
+
+export function CloudSyncIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M7 18a4.5 4.5 0 01-1-8.9A5.5 5.5 0 0116.6 8H17a4 4 0 010 8" />
+      <path d="M10 14a3 3 0 015 -1.5" />
+      <path d="M14 17a3 3 0 01-5 1.5" />
+    </svg>
+  );
+}
+
+export function CloudOfflineIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M7 18a4.5 4.5 0 01-1-8.9A5.5 5.5 0 0116.6 8H17a4 4 0 010 8" opacity="0.4" />
+      <line x1="4" y1="4" x2="20" y2="20" />
+    </svg>
+  );
+}
+
+export function BellRingIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
+      <path d="M13.73 21a2 2 0 01-3.46 0" />
+      <path d="M4 4l-2 2" />
+      <path d="M20 4l2 2" />
+    </svg>
+  );
+}
+
+export function BellOffIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M8.7 3.7A6 6 0 0118 8c0 3.3-.7 5.5-1.4 7" />
+      <path d="M6 8a6 6 0 00-3 9h14" />
+      <path d="M13.73 21a2 2 0 01-3.46 0" />
+      <line x1="2" y1="2" x2="22" y2="22" />
+    </svg>
+  );
+}
+
+export function LifeRingIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="9" />
+      <circle cx="12" cy="12" r="4" />
+      <line x1="5.3" y1="5.3" x2="9.2" y2="9.2" />
+      <line x1="14.8" y1="14.8" x2="18.7" y2="18.7" />
+      <line x1="18.7" y1="5.3" x2="14.8" y2="9.2" />
+      <line x1="9.2" y1="14.8" x2="5.3" y2="18.7" />
+    </svg>
+  );
+}
+
+export function GlobeSearchIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="10" cy="10" r="7" />
+      <path d="M3 10h14" />
+      <path d="M10 3a11 11 0 010 14" />
+      <path d="M10 3a11 11 0 000 14" />
+      <line x1="15" y1="15" x2="20" y2="20" />
+    </svg>
+  );
+}
+
+export function ShieldCheckIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M12 2l8 4v6c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V6z" />
+      <path d="M8.5 12l2.5 2.5 4.5-5" />
+    </svg>
+  );
+}
+
+export function ShieldAlertIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M12 2l8 4v6c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V6z" />
+      <line x1="12" y1="8" x2="12" y2="13" />
+      <circle cx="12" cy="16" r="0.9" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function GaugeHighIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M4 18a8 8 0 1116 0" />
+      <line x1="12" y1="18" x2="17" y2="8" />
+    </svg>
+  );
+}
+
+export function ScaleBalanceIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <line x1="12" y1="3" x2="12" y2="21" />
+      <path d="M5 21h14" />
+      <path d="M12 6l-6 3 3 6h6l3-6z" opacity="0" />
+      <path d="M6 8l-3 5a3 3 0 006 0z" />
+      <path d="M18 8l3 5a3 3 0 01-6 0z" />
+      <line x1="6" y1="8" x2="18" y2="8" />
+    </svg>
+  );
+}
+
+export function InboxIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M22 12h-6l-2 3h-4l-2-3H2" />
+      <path d="M5.5 5h13l3.5 7v7a2 2 0 01-2 2H4a2 2 0 01-2-2v-7z" />
+    </svg>
+  );
+}
+
+export function OutboxIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M22 12h-6l-2 3h-4l-2-3H2" />
+      <path d="M5.5 5h13l3.5 7v7a2 2 0 01-2 2H4a2 2 0 01-2-2v-7z" />
+      <path d="M12 9V3" />
+      <polyline points="9.5 5.5 12 3 14.5 5.5" />
+    </svg>
+  );
+}
+
+export function SandClockIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M6 2h12" />
+      <path d="M6 22h12" />
+      <path d="M6 2c0 5 6 6 6 10s-6 5-6 10" />
+      <path d="M18 2c0 5-6 6-6 10s6 5 6 10" />
+    </svg>
+  );
+}
+
+// ─── Final Round-out Icons ───────────────────────────────────────────────────
+
+export function ApiDocsIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M4 4.5A2.5 2.5 0 016.5 2H20v16H6.5a2.5 2.5 0 000 5H20" />
+      <line x1="9" y1="7" x2="16" y2="7" />
+      <line x1="9" y1="11" x2="16" y2="11" />
+    </svg>
+  );
+}
+
+export function CurlCommandIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="2" y="4" width="20" height="16" rx="2" />
+      <path d="M6 9l3 3-3 3" />
+      <path d="M17 9c1.5 0 2 1 2 3s-.5 3-2 3" />
+    </svg>
+  );
+}
+
+export function AssertionIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M9 4l-5 8 5 8" />
+      <path d="M15 4l5 8-5 8" />
+      <line x1="12" y1="2" x2="12" y2="22" strokeDasharray="1 3" />
+    </svg>
+  );
+}
+
+export function EnvSwitcherIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="4" width="7" height="7" rx="1" />
+      <rect x="14" y="4" width="7" height="7" rx="1" opacity="0.4" />
+      <rect x="3" y="13" width="7" height="7" rx="1" opacity="0.4" />
+      <rect x="14" y="13" width="7" height="7" rx="1" />
+    </svg>
+  );
+}
+
+export function RequestHistoryIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M3 12a9 9 0 109-9" />
+      <path d="M3 4v5h5" />
+      <path d="M8 9l2 3h4" />
+    </svg>
+  );
+}
+
+export function VariablePoolIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="6" cy="6" r="3" />
+      <circle cx="18" cy="6" r="3" />
+      <circle cx="6" cy="18" r="3" />
+      <circle cx="18" cy="18" r="3" />
+      <line x1="9" y1="6" x2="15" y2="6" />
+      <line x1="9" y1="18" x2="15" y2="18" />
+    </svg>
+  );
+}
+
+export function ImportCollectionIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+      <path d="M12 9v6" />
+      <polyline points="9.5 12.5 12 15 14.5 12.5" />
+    </svg>
+  );
+}
+
+export function RunAllTestsIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <polygon points="5 3 5 21 12 17 19 21 19 3" opacity="0" />
+      <path d="M5 4l14 8-14 8z" />
+      <line x1="20" y1="4" x2="20" y2="20" />
+    </svg>
+  );
+}
+
+export function ResponseBodyIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="4" y="3" width="16" height="18" rx="2" />
+      <path d="M8 8h5" />
+      <path d="M8 12h8" />
+      <path d="M8 16h6" />
+    </svg>
+  );
+}
+
+export function AuthBasicIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="7" r="4" />
+      <path d="M5 21v-1a7 7 0 0114 0v1" />
+      <rect x="9" y="10" width="6" height="4" rx="1" />
+    </svg>
+  );
+}
+
+export function EnvironmentGlobeIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 9h18" />
+      <path d="M3 15h18" />
+      <path d="M12 3a13 13 0 010 18" />
+    </svg>
+  );
+}
+
+export function RequestBodyRawIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="4" y="3" width="16" height="18" rx="2" />
+      <path d="M8 8h1" />
+      <path d="M8 12h1" />
+      <path d="M8 16h1" />
+      <path d="M12 8h4" />
+      <path d="M12 12h4" />
+      <path d="M12 16h2" />
+    </svg>
+  );
+}
+
+export function TestSuiteIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M9 2v6l-5 9a2 2 0 002 3h12a2 2 0 002-3l-5-9V2" />
+      <path d="M7 2h10" />
+      <path d="M9 14h6" />
+    </svg>
+  );
+}
+
+// ─── Extra Coverage Icons ────────────────────────────────────────────────────
+
+export function StatusPendingDotIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="9" />
+      <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none" opacity="0.6" />
+    </svg>
+  );
+}
+
+export function DataMappingIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="2" y="5" width="6" height="4" rx="1" />
+      <rect x="2" y="15" width="6" height="4" rx="1" />
+      <rect x="16" y="10" width="6" height="4" rx="1" />
+      <path d="M8 7h4a4 4 0 014 4" />
+      <path d="M8 17h4a4 4 0 004-4" />
+    </svg>
+  );
+}
+
+export function RequestChainIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="9" width="7" height="6" rx="2" />
+      <rect x="14" y="9" width="7" height="6" rx="2" />
+      <path d="M10 12h4" />
+    </svg>
+  );
+}
+
+export function SecretVaultIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <circle cx="12" cy="12" r="4" />
+      <line x1="12" y1="10" x2="12" y2="10.01" />
+      <path d="M12 12v2" />
+    </svg>
+  );
+}
+
+export function TrafficLightIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="8" y="2" width="8" height="20" rx="4" />
+      <circle cx="12" cy="7" r="1.5" fill="currentColor" stroke="none" />
+      <circle cx="12" cy="12" r="1.5" />
+      <circle cx="12" cy="17" r="1.5" />
+    </svg>
+  );
+}
+
+export function ApiThrottleGaugeIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M4 18a8 8 0 1116 0" />
+      <line x1="12" y1="18" x2="9" y2="12" />
+      <circle cx="12" cy="18" r="1.2" fill="currentColor" stroke="none" />
+      <line x1="4" y1="18" x2="2" y2="18" />
+      <line x1="20" y1="18" x2="22" y2="18" />
+    </svg>
+  );
+}
+
+export function BulkImportIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="3" width="7" height="7" rx="1" />
+      <rect x="3" y="14" width="7" height="7" rx="1" />
+      <path d="M14 6.5h7" />
+      <path d="M14 17.5h7" />
+      <polyline points="18 3.5 21 6.5 18 9.5" />
+      <polyline points="18 14.5 21 17.5 18 20.5" />
+    </svg>
+  );
+}
+
+export function VersionTagIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M20.6 12.6L12.6 20.6a2 2 0 01-2.82 0l-7.4-7.4a2 2 0 010-2.82l8-8A2 2 0 0111.8 2H18a2.6 2.6 0 012.6 2.6v6.2a2 2 0 01-.6 1.4z" />
+      <path d="M13 7l2 2 3-3" />
+    </svg>
+  );
+}
+
+export function MockResponseIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="4" width="18" height="16" rx="2" strokeDasharray="3 2" />
+      <path d="M8 10h8" />
+      <path d="M8 14h5" />
+    </svg>
+  );
+}
+
+export function ApiTestRunIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M10 8l6 4-6 4z" />
+    </svg>
+  );
+}
+
+export function GraphNodeIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="5" r="2.5" />
+      <circle cx="5" cy="19" r="2.5" />
+      <circle cx="19" cy="19" r="2.5" />
+      <line x1="12" y1="7.5" x2="6.5" y2="17" />
+      <line x1="12" y1="7.5" x2="17.5" y2="17" />
+    </svg>
+  );
+}
+
+export function DataFlowIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="4" cy="12" r="2" />
+      <circle cx="20" cy="6" r="2" />
+      <circle cx="20" cy="18" r="2" />
+      <path d="M6 12h4a4 4 0 004-4" />
+      <path d="M6 12h4a4 4 0 014 4" />
+      <path d="M14 8h4" />
+      <path d="M14 16h4" />
     </svg>
   );
 }

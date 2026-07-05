@@ -1,0 +1,27 @@
+@keyframes dui_weather_rain {
+  0%   { transform: translateY(-4px); opacity: 0; }
+  20%  { opacity: 1; }
+  100% { transform: translateY(24px); opacity: 0; }
+}
+
+@keyframes dui_weather_flash {
+  0%, 92%, 100% { opacity: 0; }
+  94%, 97% { opacity: 1; }
+}
+
+@keyframes dui_weather_drift {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(10px); }
+}
+
+.dui_weather__drop {
+  animation: dui_weather_rain 900ms linear infinite;
+}
+
+.dui_weather__bolt {
+  animation: dui_weather_flash 2.4s ease-in-out infinite;
+}
+
+.dui_weather__cloud {
+  animation: dui_weather_drift 4s ease-in-out infinite alternate;
+}

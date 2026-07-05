@@ -1,0 +1,12 @@
+@keyframes dui_requestflow_particle {
+  0%   { offset-distance: 0%;   opacity: 0; }
+  8%   { opacity: 1; }
+  92%  { opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+
+.dui_requestflow__particle {
+  animation-name: dui_requestflow_particle;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}

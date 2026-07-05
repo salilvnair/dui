@@ -1,0 +1,4 @@
+@media (max-width: 640px) {
+  .dui_navbar__links { display: none !important; }
+  .dui_navbar__burger { display: flex !important; }
+}

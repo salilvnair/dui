@@ -1,4 +1,4 @@
-import { DocSection, PropTable, FeatureGrid, EnumTable, DocNote, SizeReference, VariantRow } from '../../../shared/DocComponents';
+import { DocSection, PropTable, FeatureGrid, EnumTable, DocNote, SizeReference, VariantRow, RadiusReference } from '../../../shared/DocComponents';
 
 export function IconButtonViewDocs() {
   return (
@@ -65,6 +65,30 @@ export function IconButtonViewDocs() {
       <DocNote type="tip">
         Use the active prop for toggle-style icon buttons (e.g. a mute button, a filter toggle). The active state shifts the icon color to accentColor and adds a tinted background so the state is visually obvious.
       </DocNote>
-    </div>
+      
+      <DocSection
+        title="DUI Sizing & Theming"
+        description="IconButtonView reads <code>size</code>, <code>color</code>, and related style props directly from the DuiProvider context via useDui() rather than through a shared category base hook. Omitting a local size or color prop falls back to the nearest <DuiProvider> value."
+      >
+        <FeatureGrid features={[
+          { label: 'useDui() context read', color: 'var(--color-primary)' },
+          { label: 'Falls back to DuiProvider context', color: 'var(--color-success)' },
+          { label: 'size / color overrides', color: 'var(--color-info)' },
+        ]} />
+        <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginTop: 4, marginBottom: 8 }}>
+          Border radius presets, resolved via the <code>borderRadius</code> prop:
+        </div>
+        <RadiusReference radii={[
+          { radius: 'none', value: '0px' },
+          { radius: 'sm', value: '3px' },
+          { radius: 'md', value: '4px' },
+          { radius: 'lg', value: '6px' },
+          { radius: 'full', value: 'full' },
+        ]} />
+        <DocNote type="info">
+          IconButtonView derives its own local size map from the resolved <code>size</code> value rather than sharing one of the category base hooks (e.g. useInputBase, useButtonBase). Behavior is still provider-aware: change <code>{'<DuiProvider size="...">'}</code> to restyle this component along with the rest of the tree.
+        </DocNote>
+      </DocSection>
+      </div>
   );
 }

@@ -22,7 +22,7 @@ export interface HiddenKeyValueItemViewProps {
 /**
  * Read-only hidden/system-managed key-value row.
  * Ditto the lock-icon + dashed-border pattern from ComputedHeaderList —
- * "Hidden" is Postman's terminology; Daakia's visual style is kept.
+ * "Hidden" describes system-managed/locked fields; Daakia's visual style is kept.
  */
 export function HiddenKeyValueItemView({
   keyValue,

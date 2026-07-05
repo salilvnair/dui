@@ -82,6 +82,7 @@ export function CodeBlockView({
       className={className}
       style={{
         position: 'relative',
+        minWidth: 320,
         background: 'var(--color-codeblock-bg)',
         border: '1px solid var(--color-codeblock-border)',
         borderRadius: '6px',

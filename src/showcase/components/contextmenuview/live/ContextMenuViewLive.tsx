@@ -51,7 +51,7 @@ const COLLECTION_ITEMS: ContextMenuItem[] = [
         children: [
           { id: 'export-curl',    label: 'cURL',         onClick: () => alert('cURL') },
           { id: 'export-har',     label: 'HAR',          onClick: () => alert('HAR') },
-          { id: 'export-postman', label: 'Postman v2.1', onClick: () => alert('Postman') },
+          { id: 'export-collection', label: 'Collection v2.1', onClick: () => alert('Export') },
         ],
       },
     ],
@@ -94,7 +94,7 @@ export function ContextMenuViewLive() {
         <span style={{ fontSize: '11px', color: 'var(--color-text-muted)' }}>Hover "Export as…" for JSON / cURL / HAR submenu</span>
       </Row>
 
-      <Row label="Collection tree — 3-level nested submenu (right-click a row)" noPad code={`// 3-level nesting: New Folder > GraphQL Collection > With Introspection\n// Export as… > More formats… > cURL / HAR / Postman\nconst COLLECTION_ITEMS: ContextMenuItem[] = [\n  { id: 'new-folder', label: 'New Folder', icon: <FolderIcon />,\n    children: [\n      { id: 'folder-gql', label: 'GraphQL Collection',\n        children: [\n          { id: 'gql-introspect', label: 'With Introspection', onClick: handleCreate },\n        ],\n      },\n    ],\n  },\n];`}>
+      <Row label="Collection tree — 3-level nested submenu (right-click a row)" noPad code={`// 3-level nesting: New Folder > GraphQL Collection > With Introspection\n// Export as… > More formats… > cURL / HAR / Collection\nconst COLLECTION_ITEMS: ContextMenuItem[] = [\n  { id: 'new-folder', label: 'New Folder', icon: <FolderIcon />,\n    children: [\n      { id: 'folder-gql', label: 'GraphQL Collection',\n        children: [\n          { id: 'gql-introspect', label: 'With Introspection', onClick: handleCreate },\n        ],\n      },\n    ],\n  },\n];`}>
         <div style={{ width: '100%' }}>
           {treeItems.map(item => (
             <div

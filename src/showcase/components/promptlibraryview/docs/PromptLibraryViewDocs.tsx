@@ -73,6 +73,15 @@ export function PromptLibraryViewDocs() {
           Variables are detected by the regex <code>{'{{varName}}'}</code> or <code>{'{varName}'}</code>. In preview mode they render as colored inline pills. In edit mode the textarea uses a backdrop overlay to highlight them without breaking cursor position.
         </DocNote>
       </DocSection>
-    </div>
+      
+      <DocSection
+        title="DUI Sizing & Theming"
+        description="PromptLibraryListView does not read size, width, color, or borderRadius from the DuiProvider context — it is not part of the sized-component system and has no size prop to fall back to a provider default."
+      >
+        <DocNote type="info">
+          PromptLibraryListView is unaffected by <code>{'<DuiProvider>'}</code> size/color context. Style it directly via its own props (and CSS variables where documented above) rather than expecting provider-level sizing to apply.
+        </DocNote>
+      </DocSection>
+      </div>
   );
 }

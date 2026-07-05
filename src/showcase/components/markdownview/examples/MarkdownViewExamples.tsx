@@ -81,7 +81,7 @@ const README_CONTENT = `# daakia-client
 ![Version](https://img.shields.io/badge/version-2.1.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-A powerful API client for VS Code.
+A powerful API client for your code editor.
 
 ## Features
 
@@ -92,7 +92,7 @@ A powerful API client for VS Code.
 
 ## Quick Start
 
-1. Install the extension from the VS Code Marketplace
+1. Install the extension from your editor's extension marketplace
 2. Open the Command Palette → **Daakia: New Request**
 3. Enter your endpoint and press **Send**
 

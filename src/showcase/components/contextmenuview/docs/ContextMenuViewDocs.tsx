@@ -68,6 +68,15 @@ export function ContextMenuViewDocs() {
       <DocNote type="warning">
         Items with children (submenus) do not fire onClick — clicking them opens the submenu instead. Add onClick only to leaf items.
       </DocNote>
-    </div>
+      
+      <DocSection
+        title="DUI Sizing & Theming"
+        description="ContextMenuView does not read size, width, color, or borderRadius from the DuiProvider context — it is not part of the sized-component system and has no size prop to fall back to a provider default."
+      >
+        <DocNote type="info">
+          ContextMenuView is unaffected by <code>{'<DuiProvider>'}</code> size/color context. Style it directly via its own props (and CSS variables where documented above) rather than expecting provider-level sizing to apply.
+        </DocNote>
+      </DocSection>
+      </div>
   );
 }

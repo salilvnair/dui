@@ -8,6 +8,11 @@ export interface LoaderViewProps {
   label?: string;
   fullscreen?: boolean;
   progress?: number; // 0–100 for progress-bar only
+  /** skeleton only: renders a single placeholder bar of this exact size
+   * instead of the default 3-line paragraph shape — for mimicking a
+   * specific piece of UI (a stat number, a table cell, a title). */
+  width?: number | string;
+  height?: number | string;
   className?: string;
 }
 
@@ -55,7 +60,22 @@ function Dots({ size, accent }: { size: LoaderSize; accent: string }) {
   );
 }
 
-function Skeleton({ size }: { size: LoaderSize }) {
+function Skeleton({ size, width, height }: { size: LoaderSize; width?: number | string; height?: number | string }) {
+  if (width !== undefined || height !== undefined) {
+    return (
+      <span
+        className="animate-pulse"
+        style={{
+          display: 'block',
+          height: height ?? (size === 'sm' ? 10 : size === 'md' ? 12 : 14),
+          width: width ?? '100%',
+          borderRadius: 4,
+          background: 'var(--color-loader-track)',
+        }}
+      />
+    );
+  }
+
   const heights = size === 'sm' ? [10, 10, 6] : size === 'md' ? [12, 12, 8] : [14, 14, 10];
   const widths = ['100%', '80%', '60%'];
   return (
@@ -123,6 +143,8 @@ export function LoaderView({
   label,
   fullscreen = false,
   progress,
+  width,
+  height,
   className = '',
 }: LoaderViewProps) {
   const accent = accentColor || 'var(--color-loader-accent)';
@@ -135,12 +157,13 @@ export function LoaderView({
         flexDirection: variant === 'progress-bar' ? 'column' : 'row',
         alignItems: 'center',
         gap: '8px',
-        width: variant === 'skeleton' || variant === 'progress-bar' ? '100%' : 'auto',
+        width: width ?? (variant === 'skeleton' || variant === 'progress-bar' ? '100%' : 'auto'),
+        height: variant === 'skeleton' ? height : undefined,
       }}
     >
       {variant === 'spinner'      && <Spinner size={size} accent={accent} />}
       {variant === 'dots'         && <Dots size={size} accent={accent} />}
-      {variant === 'skeleton'     && <Skeleton size={size} />}
+      {variant === 'skeleton'     && <Skeleton size={size} width={width} height={height} />}
       {variant === 'pulse'        && <Pulse size={size} accent={accent} />}
       {variant === 'progress-bar' && <ProgressBar size={size} accent={accent} progress={progress} />}
       {label && variant !== 'skeleton' && (

@@ -28,6 +28,17 @@ export interface NetworkGraphViewProps {
   sizeBy?: (node: NetworkGraphNode, degree: number, maxDegree: number) => number;
   className?: string;
   style?: React.CSSProperties;
+  /** Auto-cluster nodes by communityId on load; double-click a cluster to expand it,
+   *  double-click a leaf node to re-collapse its community. Off by default. */
+  enableClustering?: boolean;
+  /** Dim non-neighbor nodes/edges while hovering a node. Off by default. */
+  enableHoverDim?: boolean;
+  /** Small corner overview canvas with a draggable/clickable viewport rectangle. Off by default. */
+  enableMinimap?: boolean;
+  /** Drives cluster-label color/background so it stays legible in both
+   *  themes — canvas can't resolve CSS variables, so the resolved theme
+   *  name is passed in explicitly. Defaults to 'dark'. */
+  theme?: 'dark' | 'light';
 }
 
 /**

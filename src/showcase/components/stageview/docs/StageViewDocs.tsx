@@ -52,6 +52,15 @@ export function StageViewDocs() {
           <strong>StageSpin</strong> uses a 0.9s linear CSS keyframe rotation applied to an SVG circle with a 270° dasharray. <strong>StagePulse</strong> uses a 1.6s ease-out keyframe that simultaneously pulses an outer ring (opacity/scale) and an inner dot (scale). Both animations are defined in <code>StageView.css</code>.
         </DocNote>
       </DocSection>
-    </div>
+      
+      <DocSection
+        title="DUI Sizing & Theming"
+        description="StageView does not read size, width, color, or borderRadius from the DuiProvider context — it is not part of the sized-component system and has no size prop to fall back to a provider default."
+      >
+        <DocNote type="info">
+          StageView is unaffected by <code>{'<DuiProvider>'}</code> size/color context. Style it directly via its own props (and CSS variables where documented above) rather than expecting provider-level sizing to apply.
+        </DocNote>
+      </DocSection>
+      </div>
   );
 }

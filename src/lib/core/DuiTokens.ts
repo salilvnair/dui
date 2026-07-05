@@ -28,6 +28,31 @@ export const DUI_CHIP_HEIGHT: Record<DuiSize, number> = {
   xxs: 10, xs: 12, sm: 16, md: 20, lg: 24, xl: 28, xxl: 32, xxxl: 38,
 };
 
+/** Calendar day-cell square size (px) — CalendarView, DateRangePickerView */
+export const DUI_CELL_SIZE: Record<DuiSize, number> = {
+  xxs: 18, xs: 22, sm: 26, md: 30, lg: 34, xl: 38, xxl: 44, xxxl: 50,
+};
+
+/** Circular ring diameter (px) — CountdownRingView, ProgressRingView, and future ring/gauge components */
+export const DUI_RING_DIAMETER: Record<DuiSize, number> = {
+  xxs: 40, xs: 52, sm: 64, md: 80, lg: 100, xl: 120, xxl: 144, xxxl: 168,
+};
+
+/** Progress bar/ring stroke thickness (px) — ProgressBarView, ProgressRingView */
+export const DUI_THICKNESS: Record<DuiSize, number> = {
+  xxs: 2, xs: 3, sm: 4, md: 5, lg: 6, xl: 8, xxl: 10, xxxl: 12,
+};
+
+/** Avatar circle diameter (px) — AvatarView, AvatarGroupView, AvatarUploadView */
+export const DUI_AVATAR_DIAMETER: Record<DuiSize, number> = {
+  xxs: 16, xs: 20, sm: 24, md: 32, lg: 40, xl: 48, xxl: 56, xxxl: 72,
+};
+
+/** Presence/status dot diameter (px) — PresenceDotView, and the status dot on AvatarView */
+export const DUI_DOT_SIZE: Record<DuiSize, number> = {
+  xxs: 6, xs: 7, sm: 8, md: 10, lg: 12, xl: 14, xxl: 16, xxxl: 20,
+};
+
 /** Toggle track dimensions (trackW, trackH, thumb) */
 export const DUI_TOGGLE: Record<DuiSize, { trackW: number; trackH: number; thumb: number }> = {
   xxs:  { trackW: 18, trackH: 10, thumb: 8  },

@@ -65,6 +65,19 @@ export function KeyValueTableViewDocs() {
           Pinned rows are ideal for computed/auto-generated headers (e.g. Content-Type derived from the request body). Show them only when the user clicks the eye icon to avoid visual clutter.
         </DocNote>
       </DocSection>
-    </div>
+      
+      <DocSection
+        title="DUI Sizing & Theming"
+        description="KeyValueTableView accepts a local size prop but forwards it down to the nested DUI primitives it composes (inputs / buttons / cells), rather than resolving sizing itself. Those inner primitives fall back to the nearest <DuiProvider> context value when size is omitted."
+      >
+        <FeatureGrid features={[
+          { label: 'Delegates sizing to nested primitives', color: 'var(--color-primary)' },
+          { label: 'Falls back to DuiProvider context', color: 'var(--color-success)' },
+        ]} />
+        <DocNote type="info">
+          There is no dedicated size reference table for KeyValueTableView itself — its visual size comes from whichever DUI input/button/cell primitives it renders internally, each following its own category base hook.
+        </DocNote>
+      </DocSection>
+      </div>
   );
 }

@@ -1,0 +1,30 @@
+.dui_combobox__menu {
+  background: var(--color-surface-bg, var(--color-elevated));
+  border: 1px solid var(--color-surface-border);
+  border-radius: 8px;
+  padding: 4px;
+  max-height: 220px;
+  overflow-y: auto;
+  box-shadow: 0 12px 40px rgba(0,0,0,.35);
+  animation: dui-combobox-in 120ms ease-out;
+}
+@keyframes dui-combobox-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.dui_combobox__item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 6px 10px;
+  margin-bottom: 2px;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--color-text-primary);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 100ms;
+}
+.dui_combobox__item:hover { background: color-mix(in srgb, var(--color-primary) 10%, transparent); }

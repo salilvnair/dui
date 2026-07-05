@@ -1,0 +1,42 @@
+.dui_comparisonslider__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+.dui_comparisonslider__handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #fff;
+  transform: translateX(-50%);
+  cursor: ew-resize;
+  box-shadow: 0 0 6px rgba(0,0,0,.4);
+}
+
+.dui_comparisonslider__grip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,.3);
+}
+
+.dui_comparisonslider__tag {
+  position: absolute;
+  top: 8px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  background: rgba(0,0,0,0.55);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  pointer-events: none;
+}

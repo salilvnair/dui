@@ -1,0 +1,11 @@
+.dui_typing__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  display: inline-block;
+  animation: dui-typing-bounce 1.2s ease-in-out infinite;
+}
+@keyframes dui-typing-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+  30%           { transform: translateY(-4px); opacity: 1; }
+}

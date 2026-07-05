@@ -51,12 +51,21 @@ export function FormDataTableViewDocs() {
 
       <DocSection title="File handling">
         <DocNote type="info">
-          By default, FormDataTableView reads files to base64 internally using FileReader. The base64 data is stored in <code>row.fileData</code>. Provide <code>onFileSelect</code> to handle file reading yourself (e.g. via VS Code webview messaging).
+          By default, FormDataTableView reads files to base64 internally using FileReader. The base64 data is stored in <code>row.fileData</code>. Provide <code>onFileSelect</code> to handle file reading yourself (e.g. via an embedded webview messaging bridge).
         </DocNote>
         <DocNote type="tip">
           The download button appears when <code>row.fileData</code> is populated. It reconstructs the file from base64 and triggers a browser download via a temporary object URL.
         </DocNote>
       </DocSection>
-    </div>
+      
+      <DocSection
+        title="DUI Sizing & Theming"
+        description="FormDataTableView does not read size, width, color, or borderRadius from the DuiProvider context — it is not part of the sized-component system and has no size prop to fall back to a provider default."
+      >
+        <DocNote type="info">
+          FormDataTableView is unaffected by <code>{'<DuiProvider>'}</code> size/color context. Style it directly via its own props (and CSS variables where documented above) rather than expecting provider-level sizing to apply.
+        </DocNote>
+      </DocSection>
+      </div>
   );
 }

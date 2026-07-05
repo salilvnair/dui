@@ -1,0 +1,28 @@
+@keyframes dui_glowborder_spin {
+  to { --dui-glow-angle: 360deg; }
+}
+
+@property --dui-glow-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.dui_glowborder {
+  position: relative;
+  isolation: isolate;
+}
+
+.dui_glowborder::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(from var(--dui-glow-angle), var(--dui-glow-c1), var(--dui-glow-c2), var(--dui-glow-c1));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: dui_glowborder_spin 3s linear infinite;
+  z-index: -1;
+}

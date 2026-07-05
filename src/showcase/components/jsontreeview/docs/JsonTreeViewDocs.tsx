@@ -43,6 +43,15 @@ export function JsonTreeViewDocs() {
           When a node is collapsed, JsonTreeView shows a compact inline preview: objects show up to 3 key-value pairs (<code>{'{ name: "x", age: 5, … }'}</code>), arrays show up to 4 items (<code>(10) [1, 2, 3, 4, …]</code>). String values longer than 60 characters are truncated with an ellipsis.
         </DocNote>
       </DocSection>
-    </div>
+      
+      <DocSection
+        title="DUI Sizing & Theming"
+        description="JsonTreeView does not read size, width, color, or borderRadius from the DuiProvider context — it is not part of the sized-component system and has no size prop to fall back to a provider default."
+      >
+        <DocNote type="info">
+          JsonTreeView is unaffected by <code>{'<DuiProvider>'}</code> size/color context. Style it directly via its own props (and CSS variables where documented above) rather than expecting provider-level sizing to apply.
+        </DocNote>
+      </DocSection>
+      </div>
   );
 }

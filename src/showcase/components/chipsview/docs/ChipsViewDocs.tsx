@@ -57,6 +57,30 @@ export function ChipsViewDocs() {
       <DocNote type="info">
         When color is a CSS variable like var(--color-primary), the background is automatically derived as a 12% translucent mix. You can override the background independently with the bg prop without affecting text or border color.
       </DocNote>
-    </div>
+      
+      <DocSection
+        title="DUI Sizing & Theming"
+        description="ChipView reads its dimensions from the shared chip category base hook (useChipBase). Omitting size, borderRadius, or color on ChipView falls back to the nearest <DuiProvider> context value, so a single provider-level change can restyle every chip-category component at once."
+      >
+        <FeatureGrid features={[
+          { label: 'useChipBase', color: 'var(--color-primary)' },
+          { label: 'Falls back to DuiProvider context', color: 'var(--color-success)' },
+          { label: 'size / borderRadius / color', color: 'var(--color-info)' },
+        ]} />
+        <SizeReference sizes={[
+          { size: 'xxs', height: '10px', font: '12px', desc: 'padX 11px, radius full' },
+          { size: 'xs', height: '12px', font: '12px', desc: 'padX 11px, radius full' },
+          { size: 'sm', height: '16px', font: '9px', desc: 'padX 5px, radius full' },
+          { size: 'md', height: '20px', font: '10px', desc: 'padX 7px, radius full' },
+          { size: 'lg', height: '24px', font: '11px', desc: 'padX 9px, radius full' },
+          { size: 'xl', height: '28px', font: '12px', desc: 'padX 11px, radius full' },
+          { size: 'xxl', height: '32px', font: '12px', desc: 'padX 11px, radius full' },
+          { size: 'xxxl', height: '38px', font: '12px', desc: 'padX 11px, radius full' },
+        ]} />
+        <DocNote type="info">
+          These values come from the Chip category tokens in <code>DuiTokens.ts</code>. Set a local <code>size</code> prop to override the provider default for this instance only, or change <code>{'<DuiProvider size="...">'}</code> to restyle every chip-category component in the tree.
+        </DocNote>
+      </DocSection>
+      </div>
   );
 }

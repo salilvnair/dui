@@ -1,12 +1,17 @@
 /**
- * SegmentedControlView — industry-standard segmented control (toggle group).
- * Named after Mantine's SegmentedControl / iOS UISegmentedControl.
+ * SegmentedControlView — pill-shaped segmented control (toggle group) with a
+ * solid sliding indicator and a springy "bounce" transition between segments.
  *
- * Uses DUI TabBase for sizing so heights match SelectInputView and ButtonView at every size.
+ * Uses DUI TabBase for sizing so heights match SelectInputView and ButtonView
+ * at every size, and inherits width/borderRadius/color from DuiProvider like
+ * every other DUI component.
  */
-import { useRef, useEffect, useState, type ReactNode } from 'react';
-import type { DuiSize } from '../../core/DuiTypes';
+import { useRef, useEffect, useState, useCallback, type ReactNode } from 'react';
+import type { DuiSize, DuiRadius, DuiWidth } from '../../core/DuiTypes';
 import { useTabBase } from '../../core/TabBase';
+import './SegmentedControlView.css';
+
+export type SegmentedControlVariant = 'pill' | 'rounded' | 'pointy';
 
 export interface SegmentedControlOption {
   value: string;
@@ -20,63 +25,124 @@ export interface SegmentedControlViewProps {
   value: string;
   onChange: (value: string) => void;
   size?: DuiSize;
-  /** Accent color for the active segment indicator and text */
+  /** Shape of the track/indicator. 'pill' = fully rounded ends (iOS default), 'rounded' = size-based radius, 'pointy' = sharp square corners. Default 'pill'. */
+  variant?: SegmentedControlVariant;
+  /** Solid fill color of the active indicator. */
   accentColor?: string;
-  /** Stretch to fill container width */
+  /** Stretch to fill container width, segments share it equally. */
   fullWidth?: boolean;
+  width?: DuiWidth;
+  /** Explicit radius override — takes precedence over `variant`. */
+  borderRadius?: DuiRadius | number;
+  /** Inactive label text color override. */
+  color?: string;
+  disabled?: boolean;
+  className?: string;
+  style?: React.CSSProperties;
 }
 
-/**
- * Segmented control with a sliding animated indicator.
- * Active segment text color shifts to accentColor; inactive stays text-secondary.
- */
+const VARIANT_RADIUS: Record<SegmentedControlVariant, DuiRadius> = {
+  pill: 'full',
+  rounded: 'md',
+  pointy: 'none',
+};
+
 export function SegmentedControlView({
   options,
   value,
   onChange,
   size,
+  variant = 'pill',
   accentColor = 'var(--color-primary)',
   fullWidth,
+  width,
+  borderRadius,
+  color,
+  disabled = false,
+  className = '',
+  style,
 }: SegmentedControlViewProps) {
-  const base = useTabBase(size);
+  const resolvedRadius = borderRadius ?? VARIANT_RADIUS[variant];
+  const base = useTabBase(size, { width, borderRadius: resolvedRadius, color });
   const containerRef = useRef<HTMLDivElement>(null);
   const [indicator, setIndicator] = useState<{ left: number; width: number }>({ left: 0, width: 0 });
+  const [bounce, setBounce] = useState(false);
+  const mounted = useRef(false);
 
   const activeIdx = options.findIndex(o => o.value === value);
 
-  // Measure the active button after every value/options change
-  useEffect(() => {
+  const measure = useCallback(() => {
     const container = containerRef.current;
     if (!container) return;
     const btns = container.querySelectorAll<HTMLButtonElement>('button[data-seg]');
     const btn = btns[activeIdx];
     if (!btn) return;
     setIndicator({ left: btn.offsetLeft, width: btn.offsetWidth });
+  }, [activeIdx]);
+
+  useEffect(() => {
+    measure();
+    if (mounted.current) {
+      setBounce(true);
+      const t = setTimeout(() => setBounce(false), 360);
+      return () => clearTimeout(t);
+    }
+    mounted.current = true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, activeIdx, options.length]);
 
-  const TRACK_PADDING = 2;
-  const trackBr = `calc(${base.borderRadius} + ${TRACK_PADDING}px)`;
+  useEffect(() => {
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [measure]);
+
+  const handleKey = useCallback((e: React.KeyboardEvent) => {
+    if (disabled) return;
+    const enabled = options.filter(o => !o.disabled);
+    if (!enabled.length) return;
+    const curIdx = enabled.findIndex(o => o.value === value);
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      onChange(enabled[(curIdx + 1) % enabled.length].value);
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      onChange(enabled[(curIdx - 1 + enabled.length) % enabled.length].value);
+    }
+  }, [disabled, options, value, onChange]);
+
+  const TRACK_PADDING = 3;
+  const trackRadius = variant === 'pointy'
+    ? base.borderRadius
+    : `calc(${base.borderRadius} + ${TRACK_PADDING}px)`;
 
   return (
     <div
       ref={containerRef}
+      role="tablist"
+      tabIndex={disabled ? -1 : 0}
+      onKeyDown={handleKey}
+      className={`dui_segctrl ${className}`}
       style={{
         display: 'inline-flex',
         position: 'relative',
         height: base.height,
         padding: TRACK_PADDING,
-        borderRadius: trackBr,
-        backgroundColor: 'var(--color-pilltab-track-bg, var(--color-surface))',
+        borderRadius: trackRadius,
+        backgroundColor: 'var(--color-surface)',
         border: '1px solid var(--color-surface-border)',
-        width: fullWidth ? '100%' : undefined,
+        width: fullWidth ? '100%' : base.width,
         boxSizing: 'border-box',
         flexShrink: 0,
+        opacity: disabled ? 0.5 : 1,
+        pointerEvents: disabled ? 'none' : 'auto',
+        outline: 'none',
+        ...style,
       }}
     >
-      {/* Sliding indicator */}
       {indicator.width > 0 && (
         <div
           aria-hidden="true"
+          className={`dui_segctrl__indicator${bounce ? ' dui_segctrl__indicator--bounce' : ''}`}
           style={{
             position: 'absolute',
             top: TRACK_PADDING,
@@ -84,23 +150,24 @@ export function SegmentedControlView({
             width: indicator.width,
             height: `calc(100% - ${TRACK_PADDING * 2}px)`,
             borderRadius: base.borderRadius,
-            backgroundColor: `color-mix(in srgb, ${accentColor} 12%, transparent)`,
-            border: `1px solid color-mix(in srgb, ${accentColor} 28%, transparent)`,
-            transition: 'left 0.14s ease, width 0.14s ease',
-            pointerEvents: 'none',
+            backgroundColor: accentColor,
+            boxShadow: `0 2px 8px color-mix(in srgb, ${accentColor} 35%, transparent)`,
           }}
         />
       )}
 
-      {options.map((opt) => {
+      {options.map(opt => {
         const isActive = opt.value === value;
         return (
           <button
             key={opt.value}
             data-seg="1"
             type="button"
+            role="tab"
+            aria-selected={isActive}
             disabled={opt.disabled}
-            onClick={() => !opt.disabled && onChange(opt.value)}
+            onClick={() => !opt.disabled && opt.value !== value && onChange(opt.value)}
+            className="dui_segctrl__seg"
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -109,18 +176,16 @@ export function SegmentedControlView({
               paddingLeft: base.paddingX,
               paddingRight: base.paddingX,
               fontSize: base.fontSize,
-              fontWeight: 500,
+              fontWeight: isActive ? 700 : 500,
               height: '100%',
-              borderRadius: base.borderRadius,
               border: 'none',
               background: 'transparent',
-              color: isActive ? accentColor : 'var(--color-text-secondary)',
+              color: isActive ? 'var(--color-btn-primary-text, #fff)' : (base.color ?? 'var(--color-text-secondary)'),
               cursor: opt.disabled ? 'not-allowed' : 'pointer',
               opacity: opt.disabled ? 0.35 : 1,
               position: 'relative',
               zIndex: 1,
               whiteSpace: 'nowrap',
-              transition: 'color 0.14s ease',
               flex: fullWidth ? 1 : undefined,
               userSelect: 'none',
             }}

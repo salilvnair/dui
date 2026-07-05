@@ -1,0 +1,5 @@
+.dui_phoneinput__select > button {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}

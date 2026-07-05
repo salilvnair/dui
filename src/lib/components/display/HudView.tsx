@@ -92,7 +92,8 @@ export function HudView({
   const onDragMouseDown = useCallback((e: React.MouseEvent) => {
     if (!rootRef.current) return;
     e.preventDefault();
-    const rect = rootRef.current.getBoundingClientRect();
+    const el = rootRef.current;
+    const rect = el.getBoundingClientRect();
     dragState.current = {
       dragging: true,
       startX: e.clientX,
@@ -100,9 +101,20 @@ export function HudView({
       originLeft: rect.left,
       originTop: rect.top,
     };
-    rootRef.current.style.left = `${rect.left}px`;
-    rootRef.current.style.top = `${rect.top}px`;
-    rootRef.current.style.transform = 'none';
+    // `getBoundingClientRect()` is always viewport-absolute, but `left`/`top`
+    // only mean "viewport pixels" when `position` is fixed/absolute — for
+    // `contained` mode (position: relative in CSS) they mean "offset from
+    // normal flow position", so writing rect.left/top straight in there
+    // shoves the element by its own screen position on the very first move.
+    // Force `position: fixed` here (regardless of `contained`) so the
+    // coordinate system is always self-consistent for the drag, and the HUD
+    // undocks into a free-floating overlay it can move in any direction —
+    // matching the rect we just measured, so there's no visual jump.
+    el.style.position = 'fixed';
+    el.style.left = `${rect.left}px`;
+    el.style.top = `${rect.top}px`;
+    el.style.transform = 'none';
+    el.style.zIndex = '9999';
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   }, [onMouseMove, onMouseUp]);

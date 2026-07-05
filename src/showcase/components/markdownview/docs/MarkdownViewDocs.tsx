@@ -46,6 +46,15 @@ export function MarkdownViewDocs() {
           All MarkdownView styles live in a single CSS file scoped to <code>.mdv-root</code>. Override specific elements by adding rules targeting <code>.mdv-root p</code>, <code>.mdv-root pre</code>, etc. in your app stylesheet.
         </DocNote>
       </DocSection>
-    </div>
+      
+      <DocSection
+        title="DUI Sizing & Theming"
+        description="MarkdownView does not read size, width, color, or borderRadius from the DuiProvider context — it is not part of the sized-component system and has no size prop to fall back to a provider default."
+      >
+        <DocNote type="info">
+          MarkdownView is unaffected by <code>{'<DuiProvider>'}</code> size/color context. Style it directly via its own props (and CSS variables where documented above) rather than expecting provider-level sizing to apply.
+        </DocNote>
+      </DocSection>
+      </div>
   );
 }
