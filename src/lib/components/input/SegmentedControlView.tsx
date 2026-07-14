@@ -91,7 +91,22 @@ export function SegmentedControlView({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, activeIdx, options.length]);
 
+  // The indicator must re-measure whenever the CONTAINER's size changes for
+  // any reason, not just a literal browser-window resize — a SplitPanelView
+  // drag, a popover repositioning, a sidebar collapse/expand, or a parent
+  // flex reflow all resize this control without ever firing `window`'s
+  // resize event, which previously left the sliding pill positioned from a
+  // stale measurement (visibly floating between two segments after any such
+  // reflow). ResizeObserver catches all of these; the window listener stays
+  // as a cheap fallback for environments without it.
   useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    if (typeof ResizeObserver !== 'undefined') {
+      const ro = new ResizeObserver(() => measure());
+      ro.observe(container);
+      return () => ro.disconnect();
+    }
     window.addEventListener('resize', measure);
     return () => window.removeEventListener('resize', measure);
   }, [measure]);
@@ -150,8 +165,12 @@ export function SegmentedControlView({
             width: indicator.width,
             height: `calc(100% - ${TRACK_PADDING * 2}px)`,
             borderRadius: base.borderRadius,
-            backgroundColor: accentColor,
-            boxShadow: `0 2px 8px color-mix(in srgb, ${accentColor} 35%, transparent)`,
+            // Translucent accent wash + hairline, not a solid block — the
+            // active segment should read as highlighted, not glow like a CTA.
+            backgroundColor: `color-mix(in srgb, ${accentColor} 22%, transparent)`,
+            border: `1px solid color-mix(in srgb, ${accentColor} 45%, transparent)`,
+            boxSizing: 'border-box',
+            boxShadow: `0 1px 4px color-mix(in srgb, ${accentColor} 15%, transparent)`,
           }}
         />
       )}
@@ -180,18 +199,42 @@ export function SegmentedControlView({
               height: '100%',
               border: 'none',
               background: 'transparent',
-              color: isActive ? 'var(--color-btn-primary-text, #fff)' : (base.color ?? 'var(--color-text-secondary)'),
+              // Accent-tinted label on the translucent indicator — readable on
+              // both themes without the white-on-solid-accent glare.
+              color: isActive ? accentColor : (base.color ?? 'var(--color-text-secondary)'),
               cursor: opt.disabled ? 'not-allowed' : 'pointer',
               opacity: opt.disabled ? 0.35 : 1,
               position: 'relative',
               zIndex: 1,
-              whiteSpace: 'nowrap',
-              flex: fullWidth ? 1 : undefined,
+              // Flex items default to `min-width: auto`, which resolves to
+              // their unwrapped content width — at `flex: 1` that silently
+              // overrides flex-shrink and lets the whole row (and its
+              // longest label, e.g. "Intermediate"/"Advanced") overflow the
+              // control's own width instead of shrinking to fit, so a
+              // narrower parent (a popover, a collapsed sidebar, a phone
+              // viewport) clipped the tail of the last segment against
+              // whatever ancestor had `overflow: hidden`. `minWidth: 0`
+              // is the standard fix — it lets flex-shrink actually apply.
+              minWidth: 0,
               userSelect: 'none',
             }}
           >
             {opt.icon}
-            {opt.label}
+            {/* overflow/textOverflow live on this span, not the button —
+                the button needs `display:flex` for icon+label centering,
+                and text-overflow only applies to block/inline-block boxes.
+                `minWidth: 0` here too: nested flex/block children need
+                their own opt-out of the same auto-min-content floor. */}
+            <span
+              style={{
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                minWidth: 0,
+              }}
+            >
+              {opt.label}
+            </span>
           </button>
         );
       })}

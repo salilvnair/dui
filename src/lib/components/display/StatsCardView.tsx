@@ -37,12 +37,22 @@ export function StatsCardView({
   const trendChar = trend === 'up' ? '↑' : trend === 'down' ? '↓' : '→';
 
   const labelRow = (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-      <span style={{ fontSize: '10px', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+    // `justify-content: space-between` alone gave no minimum spacing between
+    // the label text and the icon — a long label (e.g. "TOTAL NODES") in a
+    // narrow compact card ran right up against (or under) the icon with zero
+    // gap. `gap` guarantees breathing room; `minWidth: 0` + ellipsis lets the
+    // label truncate instead of overlapping when space is tight; `flexShrink:
+    // 0` keeps the icon from being squeezed into the overlap in the first place.
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '6px' }}>
+      <span style={{
+        fontSize: '10px', fontWeight: 600, color: 'var(--color-text-muted)',
+        textTransform: 'uppercase', letterSpacing: '0.06em',
+        overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', minWidth: 0,
+      }}>
         {label}
       </span>
       {icon && layout === 'label-top' && (
-        <span style={{ color: accent, opacity: 0.7 }}>{icon}</span>
+        <span style={{ color: accent, opacity: 0.7, flexShrink: 0 }}>{icon}</span>
       )}
     </div>
   );

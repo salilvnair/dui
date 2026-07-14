@@ -1,6 +1,7 @@
-import { useState, type CSSProperties, type DragEvent } from 'react';
+import { useState, type CSSProperties, type DragEvent, type ReactNode } from 'react';
 import type { DuiSize } from '../../core/DuiTypes';
 import { CheckboxView } from '../input/CheckboxView';
+import { DragHandleIcon, LockIcon } from '../../../icons';
 import './RearrangeView.css';
 
 export interface RearrangeItem {
@@ -10,8 +11,8 @@ export interface RearrangeItem {
   label?: string;
   /** Enabled state — shows a checkbox when `selectable` is on. */
   enabled?: boolean;
-  /** Optional leading glyph / emoji. */
-  icon?: string;
+  /** Optional leading glyph — pass a DUI icon component, never an emoji. */
+  icon?: ReactNode;
   /** Optional custom row content (overrides label). */
   render?: () => React.ReactNode;
   /** Lock this row from being reordered or toggled. */
@@ -85,7 +86,7 @@ export function RearrangeView({
             onDragEnd={() => { setDragId(null); setOverId(null); }}
           >
             <span className="dui-rearrange-handle" aria-hidden title={item.locked ? 'Locked' : 'Drag to reorder'}>
-              {item.locked ? '🔒' : '⠿'}
+              {item.locked ? <LockIcon size={13} /> : <DragHandleIcon size={13} />}
             </span>
 
             {selectable && (

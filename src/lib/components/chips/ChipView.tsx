@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import type { DuiSize } from '../../core/DuiTypes';
 import { useChipBase } from '../../core/ChipBase';
 
@@ -7,6 +7,9 @@ export type ChipViewSize = 'xs' | DuiSize;
 
 export interface ChipViewProps {
   label: string;
+  /** Leading glyph — pass a DUI icon component (e.g. `<TargetGoalIcon size={12} />`),
+   *  never an emoji. Sized/colored by the caller; the chip just positions it. */
+  icon?: ReactNode;
   /** CSS variable or raw color value — drives text, border, and auto-derived bg */
   color?: string;
   /** Override background explicitly instead of deriving from color */
@@ -26,6 +29,7 @@ const XS = { height: '16px', px: '5px', fontSize: '9px' };
 
 export function ChipView({
   label,
+  icon,
   color,
   bg,
   size,
@@ -59,6 +63,7 @@ export function ChipView({
         height,
         paddingLeft: px,
         paddingRight: px,
+        gap: icon ? '5px' : 0,
         fontSize,
         borderRadius,
         background,
@@ -71,6 +76,7 @@ export function ChipView({
       }}
       onClick={onClick}
     >
+      {icon && <span style={{ display: 'inline-flex', flexShrink: 0 }}>{icon}</span>}
       {label}
     </span>
   );

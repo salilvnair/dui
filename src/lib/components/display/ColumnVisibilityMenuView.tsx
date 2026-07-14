@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, type CSSProperties } from 'react';
+import { useState, useRef, useEffect, type CSSProperties, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import type { DuiSize } from '../../core/DuiTypes';
 import { useMenuBase } from '../../core/MenuBase';
@@ -19,9 +19,17 @@ export interface ColumnVisibilityMenuViewProps {
   color?: string;
   className?: string;
   style?: CSSProperties;
+  /** Trigger button text — defaults to "Columns". Override to reuse this
+   * same checkbox-menu-in-a-portal pattern for other multi-select filters
+   * (e.g. a project-scope picker) without duplicating the positioning/
+   * outside-click logic. */
+  label?: string;
+  /** Trigger button icon — defaults to ColumnsIcon. */
+  icon?: ReactNode;
 }
 
-/** Checkbox menu to toggle table column visibility. */
+/** Checkbox menu to toggle table column visibility (or any other named
+ * multi-select set — see `label`/`icon` to repurpose it). */
 export function ColumnVisibilityMenuView({
   columns,
   visible,
@@ -30,6 +38,8 @@ export function ColumnVisibilityMenuView({
   color,
   className = '',
   style,
+  label = 'Columns',
+  icon,
 }: ColumnVisibilityMenuViewProps) {
   const base = useMenuBase(size, { color });
   const [open, setOpen] = useState(false);
@@ -71,8 +81,8 @@ export function ColumnVisibilityMenuView({
           fontSize: base.fontSize, color: 'var(--color-text-secondary)',
         }}
       >
-        <ColumnsIcon size={base.iconSize} />
-        Columns
+        {icon ?? <ColumnsIcon size={base.iconSize} />}
+        {label}
         <ChevronDownIcon size={10} style={{ transition: 'transform 140ms', transform: open ? 'rotate(180deg)' : 'none' }} />
       </button>
 

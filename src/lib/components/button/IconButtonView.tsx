@@ -3,7 +3,7 @@ import type { DuiRadius } from '../../core/DuiTypes';
 import { useDui, resolveBorderRadius } from '../../core/DuiContext';
 import './IconButtonView.css';
 
-export type IconButtonSize = 'default' | 'sm' | 'md' | 'lg' | 'xl';
+export type IconButtonSize = 'default' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 export type IconButtonVariant = 'ghost' | 'filled';
 
 export interface IconButtonViewProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -27,6 +27,7 @@ export interface IconButtonViewProps extends ButtonHTMLAttributes<HTMLButtonElem
 
 const SIZE_PX: Record<IconButtonSize, string> = {
   default: '26px',
+  xs:      '20px',
   sm:      '22px',
   md:      '28px',
   lg:      '32px',

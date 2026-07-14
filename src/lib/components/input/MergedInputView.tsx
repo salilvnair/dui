@@ -15,6 +15,7 @@ export interface MergedSelectOption {
   value: string;
   label: string;
   color?: string;
+  icon?: React.ReactNode;
 }
 
 export type MergedInputSegment =
@@ -129,6 +130,7 @@ function SegSelect({ seg, dims, accent, disabled }: SegSelectProps) {
           borderRadius: '5px 0 0 5px',
         }}
       >
+        {selected?.icon}
         <span style={{ flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {selected?.label ?? seg.value}
         </span>
@@ -177,6 +179,7 @@ function SegSelect({ seg, dims, accent, disabled }: SegSelectProps) {
                   background: isSel ? `color-mix(in srgb, ${accent} 12%, transparent)` : 'transparent',
                 }}
               >
+                {opt.icon}
                 <span style={{ flex: 1 }}>{opt.label}</span>
                 {isSel && <CheckIcon size={11} style={{ color: accent, flexShrink: 0 }} />}
               </div>

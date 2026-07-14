@@ -19,7 +19,7 @@ export interface ModalViewProps {
   onClose: () => void;
   title?: string;
   /** Secondary text shown below the title in the header */
-  subtitle?: string;
+  subtitle?: React.ReactNode;
   /** Node rendered to the left of the title block — e.g. a coloured icon circle */
   headerIcon?: React.ReactNode;
   children?: React.ReactNode;
@@ -45,6 +45,15 @@ export interface ModalViewProps {
   mode?: ModalMode;
   /** Override the default 85vh max-height of the modal card */
   maxHeight?: string;
+  /**
+   * Explicit height for the modal card (e.g. '82vh'). Without this the card
+   * shrink-wraps to its content — maxHeight only caps growth, it doesn't force
+   * it — so a body relying on `flex: 1` (or a percentage height) to fill real
+   * viewport space has no free space to grow into and collapses toward 0.
+   * Set this whenever body content needs a real, non-content-driven height
+   * (e.g. an embedded chart/iframe/canvas).
+   */
+  height?: string;
   /** Extra styles merged onto the body div (e.g. flex column layout for nested flex children) */
   bodyStyle?: React.CSSProperties;
 }
@@ -74,6 +83,7 @@ export function ModalView({
   elevated = false,
   mode = 'popout',
   maxHeight,
+  height,
   bodyStyle,
 }: ModalViewProps) {
   // Stable layer index per component instance — never decrements so no duplicate z-values
@@ -97,7 +107,7 @@ export function ModalView({
         border: '1px solid var(--color-surface-border)',
         borderRadius: '10px',
         width: '100%',
-        ...(mode === 'popout' ? { maxWidth: SIZE_MAP[size], maxHeight: maxHeight ?? '85vh' } : {}),
+        ...(mode === 'popout' ? { maxWidth: SIZE_MAP[size], maxHeight: maxHeight ?? '85vh', ...(height ? { height } : {}) } : {}),
         display: 'flex',
         flexDirection: 'column',
         boxShadow: '0 20px 60px rgba(0,0,0,0.5)',

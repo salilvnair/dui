@@ -8,7 +8,8 @@ import './DataTableView.css';
 
 export interface DataTableColumn<T = Record<string, unknown>> {
   key: string;
-  label: string;
+  /** Usually plain text; accepts a ReactNode for e.g. a select-all checkbox header. */
+  label: React.ReactNode;
   width?: string | number;
   sortable?: boolean;
   renderCell?: (row: T, value: unknown) => React.ReactNode;

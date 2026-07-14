@@ -22,6 +22,19 @@ export interface NetworkGraphViewProps {
   edges: NetworkGraphEdge[];
   onNodeClick?: (node: NetworkGraphNode) => void;
   selectedId?: string | null;
+  /** Bump this (e.g. a counter incremented on each click) to re-fit the
+   *  camera to show every node — the "reset zoom" affordance a host app
+   *  shows after a selectedId focus has zoomed in. Ignored if unset;
+   *  each change fits once, same one-shot-trigger pattern as selectedId. */
+  fitTrigger?: number;
+  /** Fires once the physics layout has fully settled (including the
+   *  cluster-separation burst when enableClustering finds 2+ communities)
+   *  and the camera has been positioned — the point at which the canvas
+   *  looks intentional rather than mid-reflow. A host app can keep a
+   *  skeleton/loading overlay on top of this component until onReady
+   *  fires, instead of showing nodes and labels visibly settling into
+   *  place. Fires on every mount/rebuild (new nodes/edges), not just once. */
+  onReady?: () => void;
   /** Overrides the communityId-based default palette */
   colorBy?: (node: NetworkGraphNode) => string;
   /** Overrides the degree-based default sizing (10–40px) */

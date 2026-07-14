@@ -24,7 +24,7 @@ let dkLibRegistered = false;
 const EXT_MAP: Partial<Record<EditorLanguage, string>> = {
   javascript: '.js', typescript: '.ts', json: '.json', xml: '.xml',
   html: '.html', css: '.css', graphql: '.graphql', python: '.py',
-  yaml: '.yaml', sql: '.sql', markdown: '.md', plaintext: '.txt',
+  yaml: '.yaml', sql: '.sql', markdown: '.md', plaintext: '.txt', proto: '.proto',
 };
 
 function formatXml(xml: string): string {
@@ -90,14 +90,14 @@ function EditorViewSimple({
     };
   }, []);
 
-  useEffect(() => {
-    if (!readOnly) return;
-    const editor = editorRef.current;
-    if (!editor) return;
-    const model = editor.getModel();
-    if (!model || model.getValue() === value) return;
-    model.setValue(value);
-  }, [value, readOnly]);
+  // No manual model.setValue() sync here — the controlled `value` prop on
+  // <Editor> below already keeps the model in sync on every change (that's
+  // what "controlled" means for @monaco-editor/react, readOnly or not). A
+  // redundant manual setValue() bypass used to live here; it fired in a
+  // separate, later effect than the library's own internal sync, triggering
+  // a second, out-of-band re-tokenization pass — which is what caused
+  // readOnly editors (e.g. Daakia's response JSON viewer) to briefly render
+  // monochrome and only pick up real syntax colors a moment later.
 
   const handleMount: OnMount = (editor, monacoInstance) => {
     editorRef.current = editor;
@@ -159,14 +159,9 @@ function EditorViewDebug({
     };
   }, []);
 
-  useEffect(() => {
-    if (!readOnly) return;
-    const editor = editorRef.current;
-    if (!editor) return;
-    const model = editor.getModel();
-    if (!model || model.getValue() === value) return;
-    model.setValue(value);
-  }, [value, readOnly]);
+  // See EditorViewSimple above — no manual model.setValue() sync needed;
+  // the controlled `value` prop on <Editor> below already handles it, and a
+  // redundant bypass here caused the same delayed-tokenization symptom.
 
   useEffect(() => {
     if (!navigateLine || !editorRef.current || !breakpoints) return;

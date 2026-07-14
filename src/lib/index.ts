@@ -65,6 +65,9 @@ export type { TextInputViewProps, TextInputSize } from './components/input/TextI
 export { MultilineInputView } from './components/input/MultilineInputView';
 export type { MultilineInputViewProps } from './components/input/MultilineInputView';
 
+export { InlineEditTextView } from './components/input/InlineEditTextView';
+export type { InlineEditTextViewProps } from './components/input/InlineEditTextView';
+
 export { SelectInputView } from './components/input/SelectInputView';
 export type { SelectInputViewProps, SelectOption, SelectInputSize } from './components/input/SelectInputView';
 
@@ -649,6 +652,9 @@ export type { CheckboxViewProps, CheckboxSize } from './components/input/Checkbo
 export { RearrangeView } from './components/rearrange/RearrangeView';
 export type { RearrangeViewProps, RearrangeItem } from './components/rearrange/RearrangeView';
 
+export { SortableView } from './components/rearrange/SortableView';
+export type { SortableViewProps, SortableRow } from './components/rearrange/SortableView';
+
 export { SliderView } from './components/input/SliderView';
 export type { SliderViewProps } from './components/input/SliderView';
 
@@ -818,6 +824,9 @@ export type { CalendarViewProps, CalendarMode, CalendarRangeStyle, IsoDate } fro
 
 export { DateInputView } from './components/input/DateInputView';
 export type { DateInputViewProps } from './components/input/DateInputView';
+
+export { DateTimeInputView } from './components/input/DateTimeInputView';
+export type { DateTimeInputViewProps, IsoDateTime } from './components/input/DateTimeInputView';
 
 export { DateRangePickerView, DEFAULT_DATE_RANGE_PRESETS } from './components/input/DateRangePickerView';
 export type { DateRangePickerViewProps, DateRangePreset, DateRangePickerVariant } from './components/input/DateRangePickerView';

@@ -59,6 +59,7 @@ export function EditorViewDocs() {
           { value: 'markdown',    description: 'Markdown text' },
           { value: 'plaintext',   description: 'No highlighting' },
           { value: 'java',        description: 'Java source' },
+          { value: 'proto',       description: 'Protocol Buffers (.proto)' },
         ]} />
       </DocSection>
 

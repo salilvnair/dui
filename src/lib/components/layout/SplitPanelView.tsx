@@ -74,8 +74,16 @@ export function SplitPanelView({
   const [dragging, setDragging] = useState(false);
   const [hovered, setHovered] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const firstPaneRef = useRef<HTMLDivElement>(null);
   const dragActiveRef = useRef(false);
   const hasMovedRef = useRef(false);
+  // Live split during a drag. Pointermove writes the first pane's size
+  // DIRECTLY to the DOM (second pane is flex:1 and follows) instead of
+  // setState — a per-mousemove setState re-rendered BOTH pane subtrees on
+  // every pixel, which is visibly laggy when a pane hosts a canvas
+  // (vis-network/ReactFlow redraw on resize). React state is committed
+  // once, on pointerup.
+  const dragSplitRef = useRef<number | null>(null);
   const isHoriz = direction === 'horizontal';
   const accent = accentColor || 'var(--color-primary)';
   const pillActive = dragging || hovered;
@@ -85,7 +93,11 @@ export function SplitPanelView({
     if (splitProp !== undefined) setInternalSplit(splitProp);
   }, [splitProp]);
 
-  const currentSplit = splitProp !== undefined ? splitProp : internalSplit;
+  // If something re-renders mid-drag (e.g. hover state), use the live drag
+  // position — otherwise the render would rewrite the pane size from stale
+  // state and visibly snap the divider back under the pointer.
+  const baseSplit = splitProp !== undefined ? splitProp : internalSplit;
+  const currentSplit = dragging && dragSplitRef.current != null ? dragSplitRef.current : baseSplit;
 
   const handlePointerDown = (e: React.PointerEvent) => {
     e.preventDefault();
@@ -108,7 +120,11 @@ export function SplitPanelView({
       minFirstP,
       Math.min(100 - minSecondP, (pos / total) * 100),
     );
-    setInternalSplit(pct);
+    dragSplitRef.current = pct;
+    if (firstPaneRef.current) {
+      if (isHoriz) firstPaneRef.current.style.width = `${pct}%`;
+      else firstPaneRef.current.style.height = `${pct}%`;
+    }
     onResize?.(pct);
   };
 
@@ -119,7 +135,11 @@ export function SplitPanelView({
     if (!hasMovedRef.current) {
       onHandleClick?.();
     } else {
-      onResizeEnd?.(internalSplit);
+      // Commit the drag's final position to React state exactly once.
+      const finalSplit = dragSplitRef.current ?? internalSplit;
+      dragSplitRef.current = null;
+      setInternalSplit(finalSplit);
+      onResizeEnd?.(finalSplit);
     }
   };
 
@@ -156,7 +176,7 @@ export function SplitPanelView({
         ...style,
       }}
     >
-      <div style={firstStyle}>{first}</div>
+      <div ref={firstPaneRef} style={firstStyle}>{first}</div>
 
       {/* Drag handle */}
       <div

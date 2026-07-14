@@ -63,6 +63,59 @@
   color: var(--color-text-muted);
 }
 
+/* Minimize button — sits right after the drag grip */
+.dui_hud__minimize {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 20px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-right: 2px;
+  border-radius: 4px;
+  transition: background 100ms;
+}
+
+.dui_hud__minimize:hover {
+  background: var(--color-surface-hover);
+}
+
+.dui_hud__minimize-dash {
+  display: block;
+  width: 8px;
+  height: 1.5px;
+  background: currentColor;
+  color: var(--color-text-muted);
+  opacity: 0.7;
+}
+
+/* Minimized (orb) state — the whole HUD collapses to a small draggable
+   circle; click restores it, drag repositions it (see movedRef in
+   HudView.tsx for the click-vs-drag distinction). */
+.dui_hud--orb {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 50%;
+  cursor: grab;
+  align-items: center;
+  justify-content: center;
+}
+
+.dui_hud--orb:active {
+  cursor: grabbing;
+}
+
+.dui_hud__orb-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--dui-hud-accent, var(--color-primary));
+}
+
 /* Buttons */
 .dui_hud__btn {
   display: flex;

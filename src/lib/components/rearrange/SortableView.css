@@ -1,0 +1,39 @@
+/* SortableView — headless reorder rows: hover handle in the left gutter,
+   accent drop-indicator line, ghosted while dragging. */
+.dui-sortable-row {
+  position: relative;
+  transition: opacity 120ms ease;
+}
+.dui-sortable-row.is-dragging { opacity: 0.35; }
+.dui-sortable-row.is-over::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: -2px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--dui-sortable-accent);
+  pointer-events: none;
+}
+
+.dui-sortable-handle {
+  position: absolute;
+  left: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  color: var(--color-text-muted, #6b7280);
+  cursor: grab;
+  opacity: 0;
+  transition: opacity 120ms ease, color 120ms ease, background 120ms ease;
+}
+.dui-sortable-row:hover > .dui-sortable-handle { opacity: 1; }
+.dui-sortable-handle:hover {
+  color: var(--dui-sortable-accent);
+  background: color-mix(in srgb, var(--dui-sortable-accent) 12%, transparent);
+}
+.dui-sortable-handle:active { cursor: grabbing; }

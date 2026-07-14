@@ -102,6 +102,7 @@ export function EditorViewExamples() {
     { value: 'yaml',       label: 'YAML' },
     { value: 'javascript', label: 'JavaScript' },
     { value: 'xml',        label: 'XML' },
+    { value: 'proto',      label: 'Protocol Buffers' },
     { value: 'plaintext',  label: 'Plain Text' },
   ];
 

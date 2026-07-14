@@ -206,8 +206,7 @@ export function PinIcon(props: IconProps) {
   return (
     <svg {...withDefaults(props)}>
       <line x1="12" y1="17" x2="12" y2="22" />
-      <path d="M5 12H2a10 10 0 0 0 20 0h-3" />
-      <circle cx="12" cy="7" r="5" />
+      <path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z" />
     </svg>
   );
 }
@@ -216,8 +215,7 @@ export function UnpinIcon(props: IconProps) {
   return (
     <svg {...withDefaults(props)}>
       <line x1="12" y1="17" x2="12" y2="22" />
-      <path d="M5 12H2a10 10 0 0 0 20 0h-3" />
-      <circle cx="12" cy="7" r="5" />
+      <path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z" />
       <line x1="2" y1="2" x2="22" y2="22" />
     </svg>
   );
@@ -5759,6 +5757,233 @@ export function DataFlowIcon(props: IconProps) {
       <path d="M6 12h4a4 4 0 014 4" />
       <path d="M14 8h4" />
       <path d="M14 16h4" />
+    </svg>
+  );
+}
+
+// ─── Chart Drawing Tool Icons ───────────────────────────────────────────────
+
+export function TrendLineToolIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="5" cy="18" r="1.5" fill="currentColor" stroke="none" />
+      <circle cx="19" cy="6" r="1.5" fill="currentColor" stroke="none" />
+      <line x1="5" y1="18" x2="19" y2="6" />
+    </svg>
+  );
+}
+
+export function HorizontalLineToolIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="5" cy="12" r="1.5" fill="currentColor" stroke="none" />
+      <circle cx="19" cy="12" r="1.5" fill="currentColor" stroke="none" />
+      <line x1="5" y1="12" x2="19" y2="12" />
+    </svg>
+  );
+}
+
+export function RectangleToolIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="4" y="6" width="16" height="12" rx="1" />
+    </svg>
+  );
+}
+
+export function FibonacciToolIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <line x1="3" y1="5" x2="21" y2="5" />
+      <line x1="3" y1="10" x2="21" y2="10" opacity="0.75" />
+      <line x1="3" y1="14" x2="21" y2="14" opacity="0.5" />
+      <line x1="3" y1="19" x2="21" y2="19" opacity="0.75" />
+      <line x1="4" y1="4" x2="18" y2="20" strokeDasharray="2 2" />
+    </svg>
+  );
+}
+
+export function ChannelToolIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <line x1="4" y1="17" x2="16" y2="5" />
+      <line x1="8" y1="19" x2="20" y2="7" />
+    </svg>
+  );
+}
+
+export function RsiIndicatorIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M3 12h3l2 7 4-14 2 7h3" />
+      <line x1="3" y1="5" x2="21" y2="5" strokeDasharray="1 3" opacity="0.6" />
+      <line x1="3" y1="19" x2="21" y2="19" strokeDasharray="1 3" opacity="0.6" />
+    </svg>
+  );
+}
+
+export function ChartCandlestickIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <line x1="5" y1="3" x2="5" y2="8" />
+      <rect x="3" y="8" width="4" height="7" rx="0.5" />
+      <line x1="5" y1="15" x2="5" y2="21" />
+      <line x1="12" y1="6" x2="12" y2="10" />
+      <rect x="10" y="10" width="4" height="9" rx="0.5" />
+      <line x1="12" y1="19" x2="12" y2="21" />
+      <line x1="19" y1="3" x2="19" y2="11" />
+      <rect x="17" y="11" width="4" height="5" rx="0.5" />
+      <line x1="19" y1="16" x2="19" y2="21" />
+    </svg>
+  );
+}
+
+export function CoinIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <circle cx="12" cy="12" r="9" />
+      <circle cx="12" cy="12" r="6" />
+      <path d="M13.4 9.3c-.4-.3-1-.5-1.6-.5-1.2 0-2 .6-2 1.4 0 .9.8 1.2 2 1.4 1.2.2 2 .5 2 1.4 0 .8-.8 1.4-2 1.4-.7 0-1.3-.2-1.7-.5" />
+      <line x1="12" y1="7.8" x2="12" y2="16.2" />
+    </svg>
+  );
+}
+
+// ─── Country Flag Icons ───────────────────────────────────────────────────────
+// Fixed national colors (not currentColor) — same convention as the AI
+// Provider Brand Icons above. Schematic, not pixel-accurate: legible at the
+// small inline sizes (14-24px) these render at next to text/chips.
+
+/** USA flag — red/white stripes, blue canton with simplified stars */
+export function UsFlagIcon({ size = 16 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <clipPath id="daakia-us-flag-clip">
+          <rect x="1" y="4" width="22" height="16" rx="2" />
+        </clipPath>
+      </defs>
+      <g clipPath="url(#daakia-us-flag-clip)">
+        <rect x="1" y="4" width="22" height="16" fill="#B22234" />
+        <rect x="1" y="6.29" width="22" height="2.29" fill="#fff" />
+        <rect x="1" y="10.86" width="22" height="2.29" fill="#fff" />
+        <rect x="1" y="15.43" width="22" height="2.29" fill="#fff" />
+        <rect x="1" y="4" width="10" height="9.14" fill="#3C3B6E" />
+        <g fill="#fff">
+          <circle cx="3.4" cy="6" r="0.5" />
+          <circle cx="6" cy="6" r="0.5" />
+          <circle cx="8.6" cy="6" r="0.5" />
+          <circle cx="4.7" cy="8" r="0.5" />
+          <circle cx="7.3" cy="8" r="0.5" />
+          <circle cx="3.4" cy="10" r="0.5" />
+          <circle cx="6" cy="10" r="0.5" />
+          <circle cx="8.6" cy="10" r="0.5" />
+          <circle cx="4.7" cy="12" r="0.5" />
+          <circle cx="7.3" cy="12" r="0.5" />
+        </g>
+      </g>
+      <rect x="1" y="4" width="22" height="16" rx="2" fill="none" stroke="rgba(0,0,0,0.12)" />
+    </svg>
+  );
+}
+
+/** India flag — saffron/white/green bands with a simplified Ashoka Chakra */
+export function IndiaFlagIcon({ size = 16 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <clipPath id="daakia-in-flag-clip">
+          <rect x="1" y="4" width="22" height="16" rx="2" />
+        </clipPath>
+      </defs>
+      <g clipPath="url(#daakia-in-flag-clip)">
+        <rect x="1" y="4" width="22" height="5.33" fill="#FF9933" />
+        <rect x="1" y="9.33" width="22" height="5.33" fill="#fff" />
+        <rect x="1" y="14.67" width="22" height="5.33" fill="#138808" />
+        <g stroke="#000080" strokeWidth="0.5" strokeLinecap="round">
+          <circle cx="12" cy="12" r="2.2" fill="none" />
+          <line x1="12" y1="9.8" x2="12" y2="10.8" />
+          <line x1="12" y1="13.2" x2="12" y2="14.2" />
+          <line x1="9.8" y1="12" x2="10.8" y2="12" />
+          <line x1="13.2" y1="12" x2="14.2" y2="12" />
+          <line x1="10.35" y1="10.35" x2="11.07" y2="11.07" />
+          <line x1="13.65" y1="13.65" x2="12.93" y2="12.93" />
+          <line x1="13.65" y1="10.35" x2="12.93" y2="11.07" />
+          <line x1="10.35" y1="13.65" x2="11.07" y2="12.93" />
+        </g>
+        <circle cx="12" cy="12" r="0.5" fill="#000080" />
+      </g>
+      <rect x="1" y="4" width="22" height="16" rx="2" fill="none" stroke="rgba(0,0,0,0.12)" />
+    </svg>
+  );
+}
+
+// ─── Brand & Career Icons ─────────────────────────────────────────────────────
+
+/** GitHub "Octocat" mark (octicons mark-github, filled) — brand-accurate, not a
+ *  generic outline, so it reads as unmistakably GitHub next to other glyphs. */
+export function GithubMarkIcon({ size = 16, className }: { size?: number; className?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" fill="currentColor" className={className}>
+      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+    </svg>
+  );
+}
+
+/** LinkedIn "in" mark (brand-accurate filled square) — matches GithubMarkIcon's
+ *  convention of a recognizable brand glyph rather than a generic stroke shape. */
+export function LinkedinMarkIcon({ size = 16, className }: { size?: number; className?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
+      <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.03-1.85-3.03-1.85 0-2.14 1.45-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z" />
+    </svg>
+  );
+}
+
+export function MicrophoneIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="9" y="2" width="6" height="12" rx="3" />
+      <path d="M5 10a7 7 0 0 0 14 0" />
+      <line x1="12" y1="19" x2="12" y2="22" />
+      <line x1="8" y1="22" x2="16" y2="22" />
+    </svg>
+  );
+}
+
+export function BriefcaseIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="2" y="7" width="20" height="14" rx="2" />
+      <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+      <line x1="2" y1="13" x2="22" y2="13" />
+    </svg>
+  );
+}
+
+export function ZapIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <polygon points="13 2 3 14 11 14 11 22 21 10 13 10 13 2" />
+    </svg>
+  );
+}
+
+export function WrenchToolIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+    </svg>
+  );
+}
+
+/** Leadership / seniority marker — used wherever copy calls out a senior or
+ *  leadership-oriented tone. */
+export function CrownIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M2 18h20" />
+      <path d="M3 18l1.5-9L9 13l3-8 3 8 4.5-4L21 18" />
     </svg>
   );
 }

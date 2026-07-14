@@ -31,6 +31,8 @@ export interface SideNavViewProps {
   defaultOpenIds?: string[];
   width?: number;
   collapsedWidth?: number;
+  /** When true, fills 100% of the parent's width instead of a fixed pixel `width` — for use inside a resizable container like SplitPanelView, which controls sizing itself. */
+  fillContainer?: boolean;
   accentColor?: string;
   /** Render a search box above the nav items */
   searchable?: boolean;
@@ -76,6 +78,7 @@ export function SideNavView({
   defaultOpenIds,
   width = 200,
   collapsedWidth = 44,
+  fillContainer = false,
   accentColor,
   searchable = false,
   searchPlaceholder = 'Search…',
@@ -129,6 +132,7 @@ export function SideNavView({
         key={item.id}
         title={collapsed ? item.label : undefined}
         onClick={() => onSelect?.(item.id)}
+        data-nav-id={item.id}
         className={`dui_side-nav__item${isActive ? ' dui_side-nav__item--active' : ''}`}
         style={collapsed ? {
           display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -230,8 +234,8 @@ export function SideNavView({
     <div
       className={className}
       style={{
-        width: collapsed ? collapsedWidth : width,
-        minWidth: collapsed ? collapsedWidth : width,
+        width: collapsed ? collapsedWidth : (fillContainer ? '100%' : width),
+        minWidth: collapsed ? collapsedWidth : (fillContainer ? undefined : width),
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
@@ -258,7 +262,7 @@ export function SideNavView({
               onChange={e => setSearch(e.target.value)}
               placeholder={searchPlaceholder}
               style={{
-                flex: 1, border: 'none', outline: 'none', background: 'transparent',
+                flex: 1, minWidth: 0, border: 'none', outline: 'none', background: 'transparent',
                 fontSize: '11px', color: 'var(--color-text-primary)', fontFamily: 'inherit',
               }}
             />

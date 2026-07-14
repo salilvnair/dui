@@ -1192,9 +1192,9 @@ input[type="number"] {
   line-height: 1.3;
   color: var(--color-text-primary, #f4f4f5);
 }
-.dui-mdv-root h1 { font-size: 1.22em; border-bottom: 1px solid rgba(255,255,255,0.07); padding-bottom: 0.3em; }
+.dui-mdv-root h1 { font-size: 1.22em; border-bottom: 1px solid color-mix(in srgb, var(--color-text-primary, #fff) 8%, transparent); padding-bottom: 0.3em; }
 .dui-mdv-root h2 { font-size: 1.1em; }
-.dui-mdv-root h3 { font-size: 1em; color: #c4b5fd; }
+.dui-mdv-root h3 { font-size: 1em; color: var(--color-primary, #c4b5fd); }
 .dui-mdv-root h4 { font-size: 0.9em; opacity: 0.8; }
 .dui-mdv-root h5 { font-size: 0.85em; opacity: 0.7; }
 
@@ -1237,8 +1237,8 @@ input[type="number"] {
 }
 
 /* ── Bold / italic / strikethrough ─────────────────────────────────── */
-.dui-mdv-root strong { font-weight: 650; color: #f4f4f5; }
-.dui-mdv-root em     { font-style: italic; color: #d4d4d8; }
+.dui-mdv-root strong { font-weight: 650; color: var(--color-text-primary, #f4f4f5); }
+.dui-mdv-root em     { font-style: italic; color: var(--color-text-secondary, #d4d4d8); }
 .dui-mdv-root del    { text-decoration: line-through; opacity: 0.55; }
 
 /* ── Links ──────────────────────────────────────────────────────────── */
@@ -1251,7 +1251,7 @@ input[type="number"] {
 .dui-mdv-root a:hover { opacity: 0.8; }
 
 /* ── Horizontal rule ────────────────────────────────────────────────── */
-.dui-mdv-root hr { border: none; border-top: 1px solid rgba(255,255,255,0.09); margin: 0.9em 0; }
+.dui-mdv-root hr { border: none; border-top: 1px solid color-mix(in srgb, var(--color-text-primary, #fff) 9%, transparent); margin: 0.9em 0; }
 
 /* ── Lists ──────────────────────────────────────────────────────────── */
 .dui-mdv-root ul, .dui-mdv-root ol {
@@ -1291,7 +1291,7 @@ input[type="number"] {
   font-size: 0.9em;
   border-radius: 6px;
   overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid color-mix(in srgb, var(--color-text-primary, #fff) 8%, transparent);
 }
 .dui-mdv-root th {
   background: rgba(139,92,246,0.14);
@@ -1306,10 +1306,10 @@ input[type="number"] {
 }
 .dui-mdv-root td {
   padding: 4px 11px;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-text-primary, #fff) 5%, transparent);
   color: var(--color-text-primary, #e4e4e7);
 }
-.dui-mdv-root tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+.dui-mdv-root tr:nth-child(even) td { background: color-mix(in srgb, var(--color-text-primary, #fff) 2%, transparent); }
 .dui-mdv-root tr:last-child td { border-bottom: none; }
 .dui-mdv-root tr:hover td { background: rgba(139,92,246,0.06); transition: background 0.1s; }
 
@@ -1390,37 +1390,48 @@ input[type="number"] {
   word-break: break-word;
 }
 
-/* ── hljs atom-one-dark colour palette ─────────────────────────────── */
-.dui-mdv-root .hljs                                     { color: #abb2bf; }
-.dui-mdv-root .hljs-comment, .dui-mdv-root .hljs-quote      { color: #5c6370; font-style: italic; }
-.dui-mdv-root .hljs-keyword, .dui-mdv-root .hljs-selector-tag,
-.dui-mdv-root .hljs-built_in                            { color: #c678dd; }
-.dui-mdv-root .hljs-string, .dui-mdv-root .hljs-regexp,
-.dui-mdv-root .hljs-addition, .dui-mdv-root .hljs-attribute { color: #98c379; }
-.dui-mdv-root .hljs-number, .dui-mdv-root .hljs-literal,
-.dui-mdv-root .hljs-variable, .dui-mdv-root .hljs-template-variable,
-.dui-mdv-root .hljs-meta                                { color: #56b6c2; }
-.dui-mdv-root .hljs-title, .dui-mdv-root .hljs-section,
-.dui-mdv-root .hljs-name, .dui-mdv-root .hljs-selector-id   { color: #61aeee; }
-.dui-mdv-root .hljs-type, .dui-mdv-root .hljs-class .hljs-title,
-.dui-mdv-root .hljs-attr                                { color: #e6c07b; }
-.dui-mdv-root .hljs-tag, .dui-mdv-root .hljs-deletion,
-.dui-mdv-root .hljs-subst                               { color: #e06c75; }
-.dui-mdv-root .hljs-link                                { color: #61aeee; text-decoration: underline; }
-.dui-mdv-root .hljs-emphasis                            { font-style: italic; }
-.dui-mdv-root .hljs-strong                              { font-weight: 700; }
-.dui-mdv-root .hljs-punctuation                         { color: #abb2bf; }
-.dui-mdv-root .hljs-property                            { color: #e06c75; }
-.dui-mdv-root .hljs-operator                            { color: #56b6c2; }
-.dui-mdv-root .hljs-params                              { color: #abb2bf; }
-.dui-mdv-root .hljs-function                            { color: #61aeee; }
-.dui-mdv-root .hljs-class                               { color: #e6c07b; }
-.dui-mdv-root .hljs-doctag                              { color: #c678dd; }
-.dui-mdv-root .hljs-formula                             { background: rgba(255,255,255,0.04); }
-.dui-mdv-root .hljs-selector-class                      { color: #d19a66; }
-.dui-mdv-root .hljs-selector-pseudo                     { color: #56b6c2; }
-.dui-mdv-root .hljs-template-tag                        { color: #c678dd; }
-.dui-mdv-root .hljs-symbol                              { color: #98c379; }
+/* ── hljs palette — driven by the host app's own --color-* theme tokens,
+   so syntax highlighting stays legible and "in brand" in both light and
+   dark themes instead of a fixed dark-editor palette. Shared by MdViewer
+   (.dui-mdv-root) and CodeBlockView (.dui-hljs, applied to the <code> tag
+   itself). Fallback hex values kept as the var() 2nd arg for hosts that
+   don't define these tokens. ─────────────────────────────────────────── */
+.dui-mdv-root .hljs, .dui-hljs                                     { color: var(--color-text-primary, #abb2bf); }
+.dui-mdv-root .hljs-comment, .dui-mdv-root .hljs-quote,
+.dui-hljs .hljs-comment, .dui-hljs .hljs-quote              { color: var(--color-text-muted, #5c6370); font-style: italic; }
+.dui-mdv-root .hljs-keyword, .dui-mdv-root .hljs-selector-tag, .dui-mdv-root .hljs-built_in,
+.dui-hljs .hljs-keyword, .dui-hljs .hljs-selector-tag, .dui-hljs .hljs-built_in
+                                                         { color: var(--color-primary, #c678dd); }
+.dui-mdv-root .hljs-string, .dui-mdv-root .hljs-regexp, .dui-mdv-root .hljs-addition, .dui-mdv-root .hljs-attribute,
+.dui-hljs .hljs-string, .dui-hljs .hljs-regexp, .dui-hljs .hljs-addition, .dui-hljs .hljs-attribute
+                                                         { color: var(--color-success, #98c379); }
+.dui-mdv-root .hljs-number, .dui-mdv-root .hljs-literal, .dui-mdv-root .hljs-variable,
+.dui-mdv-root .hljs-template-variable, .dui-mdv-root .hljs-meta,
+.dui-hljs .hljs-number, .dui-hljs .hljs-literal, .dui-hljs .hljs-variable,
+.dui-hljs .hljs-template-variable, .dui-hljs .hljs-meta                 { color: var(--color-info, #56b6c2); }
+.dui-mdv-root .hljs-title, .dui-mdv-root .hljs-section, .dui-mdv-root .hljs-name, .dui-mdv-root .hljs-selector-id,
+.dui-hljs .hljs-title, .dui-hljs .hljs-section, .dui-hljs .hljs-name, .dui-hljs .hljs-selector-id
+                                                         { color: var(--color-primary, #61aeee); }
+.dui-mdv-root .hljs-type, .dui-mdv-root .hljs-class .hljs-title, .dui-mdv-root .hljs-attr,
+.dui-hljs .hljs-type, .dui-hljs .hljs-class .hljs-title, .dui-hljs .hljs-attr
+                                                         { color: var(--color-warning, #e6c07b); }
+.dui-mdv-root .hljs-tag, .dui-mdv-root .hljs-deletion, .dui-mdv-root .hljs-subst,
+.dui-hljs .hljs-tag, .dui-hljs .hljs-deletion, .dui-hljs .hljs-subst    { color: var(--color-error, #e06c75); }
+.dui-mdv-root .hljs-link, .dui-hljs .hljs-link                         { color: var(--color-primary, #61aeee); text-decoration: underline; }
+.dui-mdv-root .hljs-emphasis, .dui-hljs .hljs-emphasis                  { font-style: italic; }
+.dui-mdv-root .hljs-strong, .dui-hljs .hljs-strong                     { font-weight: 700; }
+.dui-mdv-root .hljs-punctuation, .dui-hljs .hljs-punctuation           { color: var(--color-text-primary, #abb2bf); }
+.dui-mdv-root .hljs-property, .dui-hljs .hljs-property                 { color: var(--color-error, #e06c75); }
+.dui-mdv-root .hljs-operator, .dui-hljs .hljs-operator                 { color: var(--color-info, #56b6c2); }
+.dui-mdv-root .hljs-params, .dui-hljs .hljs-params                     { color: var(--color-text-primary, #abb2bf); }
+.dui-mdv-root .hljs-function, .dui-hljs .hljs-function                 { color: var(--color-primary, #61aeee); }
+.dui-mdv-root .hljs-class, .dui-hljs .hljs-class                       { color: var(--color-warning, #e6c07b); }
+.dui-mdv-root .hljs-doctag, .dui-hljs .hljs-doctag                     { color: var(--color-primary, #c678dd); }
+.dui-mdv-root .hljs-formula, .dui-hljs .hljs-formula                   { background: color-mix(in srgb, var(--color-text-primary, #fff) 4%, transparent); }
+.dui-mdv-root .hljs-selector-class, .dui-hljs .hljs-selector-class     { color: var(--color-warning, #d19a66); }
+.dui-mdv-root .hljs-selector-pseudo, .dui-hljs .hljs-selector-pseudo   { color: var(--color-info, #56b6c2); }
+.dui-mdv-root .hljs-template-tag, .dui-hljs .hljs-template-tag         { color: var(--color-primary, #c678dd); }
+.dui-mdv-root .hljs-symbol, .dui-hljs .hljs-symbol                     { color: var(--color-success, #98c379); }
 
 /* ── Compact MdViewer in Daakia AI chat bubbles ──────────────────────────────── */
 .dui-daakia-chat-md .dui-mdv-root { line-height: 1.5; }

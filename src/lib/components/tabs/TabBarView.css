@@ -9,8 +9,23 @@
   background: var(--color-surface-hover);
 }
 
-.dui_tab-bar__close-btn { transition: opacity 120ms, background 120ms; }
-.dui_tab-bar__close-btn:hover { background: var(--color-icon-hover-bg); }
+/* Hover-reveal: invisible at rest, fades in when the tab row is hovered,
+   zooms slightly on direct hover of the × itself. `--always` (settings /
+   mock-server / alwaysShowClose tabs) skips the reveal and stays visible. */
+.dui_tab-bar__close-btn {
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 120ms, background 120ms, transform 120ms;
+}
+.dui_tab-bar__tab:hover .dui_tab-bar__close-btn,
+.dui_tab-bar__close-btn--always {
+  opacity: 1;
+  transform: scale(1);
+}
+.dui_tab-bar__close-btn:hover {
+  background: var(--color-icon-hover-bg);
+  transform: scale(1.18);
+}
 
 .dui_tab-bar__add-btn { transition: background 120ms; }
 .dui_tab-bar__add-btn:hover { background: var(--color-surface-hover); }

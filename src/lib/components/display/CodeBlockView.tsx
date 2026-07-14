@@ -9,7 +9,25 @@ import css from 'highlight.js/lib/languages/css';
 import bash from 'highlight.js/lib/languages/bash';
 import yaml from 'highlight.js/lib/languages/yaml';
 import python from 'highlight.js/lib/languages/python';
-import 'highlight.js/styles/atom-one-dark.css';
+import sql from 'highlight.js/lib/languages/sql';
+import powershell from 'highlight.js/lib/languages/powershell';
+import ini from 'highlight.js/lib/languages/ini';
+import java from 'highlight.js/lib/languages/java';
+import http from 'highlight.js/lib/languages/http';
+// No fixed hljs theme stylesheet here — `.dui-hljs` token colours are defined
+// in index.css against the host app's own `--color-*` theme vars, so syntax
+// highlighting stays legible in both light and dark themes instead of always
+// forcing a dark-editor palette.
+//
+// IMPORTANT for consumer apps: `highlight.js` is a regular dependency here,
+// not a peerDependency — Vite bundles dui's own copy into dist/index.js, so
+// it is a SEPARATE module instance from whatever `highlight.js/lib/core` a
+// host app imports directly. Calling `hljs.registerLanguage(...)` from
+// consumer code (e.g. ns9-ui's NodeCard.tsx used to) registers onto THAT
+// app's own copy and never reaches the instance CodeBlockView actually
+// calls `.highlight()` on — the added language silently never highlights,
+// with no error (canHighlight just stays false). Any language this
+// component needs to support must be registered HERE instead.
 
 hljs.registerLanguage('javascript', javascript);
 hljs.registerLanguage('js', javascript);
@@ -28,6 +46,17 @@ hljs.registerLanguage('yaml', yaml);
 hljs.registerLanguage('yml', yaml);
 hljs.registerLanguage('python', python);
 hljs.registerLanguage('py', python);
+hljs.registerLanguage('sql', sql);
+hljs.registerLanguage('powershell', powershell);
+hljs.registerLanguage('ps1', powershell);
+// hljs's ini grammar covers KEY=VALUE and [section] files — exactly what
+// .env and TOML snippets need, so alias all three to it.
+hljs.registerLanguage('ini', ini);
+hljs.registerLanguage('env', ini);
+hljs.registerLanguage('toml', ini);
+hljs.registerLanguage('properties', ini);
+hljs.registerLanguage('java', java);
+hljs.registerLanguage('http', http);
 
 export interface CodeBlockViewProps {
   code: string;
@@ -56,16 +85,23 @@ export function CodeBlockView({
   const [copied, setCopied] = useState(false);
   const accent = accentColor || 'var(--color-primary)';
 
+  // Only highlight when the caller names a language we actually registered
+  // above. Plain prose (language="text"/"plaintext", or no language at all)
+  // is rendered as-is — auto-detection on non-code text (e.g. an LLM system
+  // prompt) reliably misfires, painting random English words as keywords.
+  const canHighlight = !!(language && hljs.getLanguage(language));
+
   const highlighted = useMemo(() => {
+    if (!canHighlight) return null;
     try {
-      if (language && hljs.getLanguage(language)) {
-        return hljs.highlight(code, { language });
-      }
-      return hljs.highlightAuto(code);
+      return hljs.highlight(code, { language: language! });
     } catch {
       return null;
     }
-  }, [code, language]);
+  }, [code, language, canHighlight]);
+
+  const escapeHtml = (s: string) =>
+    s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
   const handleCopy = async () => {
     try {
@@ -153,7 +189,9 @@ export function CodeBlockView({
                 </span>
                 <code
                   className="dui-hljs"
-                  dangerouslySetInnerHTML={{ __html: hljs.highlight(line, { language: language || 'plaintext' }).value }}
+                  dangerouslySetInnerHTML={{
+                    __html: canHighlight ? hljs.highlight(line, { language: language! }).value : escapeHtml(line),
+                  }}
                   style={{ background: 'transparent', padding: 0, flex: 1 }}
                 />
               </div>

@@ -10,7 +10,7 @@ export type AIButtonAction = 'generate' | 'fuzz' | 'explain' | 'fix' | 'ask' | '
 export interface AIButtonViewProps {
   action?: AIButtonAction;
   label?: string;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   loading?: boolean;
   disabled?: boolean;
   /** Falls back to DuiProvider size when omitted. */

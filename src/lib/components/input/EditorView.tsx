@@ -120,7 +120,7 @@ export interface EditorOptions {
 
 export type EditorLanguage =
   | 'javascript' | 'typescript' | 'json' | 'xml' | 'html'
-  | 'css' | 'graphql' | 'python' | 'yaml' | 'sql' | 'plaintext' | 'markdown' | 'java';
+  | 'css' | 'graphql' | 'python' | 'yaml' | 'sql' | 'plaintext' | 'markdown' | 'java' | 'proto';
 
 export interface EditorViewProps {
   value: string;
