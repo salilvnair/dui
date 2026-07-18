@@ -47,6 +47,9 @@ export { DUI_CELL_SIZE, DUI_RING_DIAMETER, DUI_THICKNESS, DUI_AVATAR_DIAMETER, D
 export { ChipView } from './components/chips/ChipView';
 export type { ChipViewProps, ChipViewSize } from './components/chips/ChipView';
 
+export { CommandChipView } from './components/chips/CommandChipView';
+export type { CommandChipViewProps } from './components/chips/CommandChipView';
+
 export { ButtonView } from './components/button/ButtonView';
 export type { ButtonViewProps, ButtonVariant, ButtonSize } from './components/button/ButtonView';
 

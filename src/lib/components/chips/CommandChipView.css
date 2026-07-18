@@ -1,0 +1,7 @@
+.dui_command_chip {
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.dui_command_chip.cursor-pointer:hover {
+  border-color: color-mix(in srgb, currentColor 40%, transparent);
+  background: var(--color-elevated-hover, var(--color-btn-secondary-hover, #1f2937));
+}

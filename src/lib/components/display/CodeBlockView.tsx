@@ -66,6 +66,18 @@ export interface CodeBlockViewProps {
   showCopyButton?: boolean;
   showLineNumbers?: boolean;
   maxHeight?: string;
+  /**
+   * Stretch to fill the height of a flex/grid parent instead of sizing to
+   * content — for callers embedding this in a flex-1 container that should
+   * be fully spanned (e.g. a detail panel's sole content block) rather than
+   * left with empty space below a content-sized box. Switches the root to
+   * `display:flex, flexDirection:column, height:100%` and the scrollable
+   * code area to `flex:1` instead of relying on `maxHeight` alone — `
+   * maxHeight` only caps growth, it can't force a short block to grow, which
+   * is exactly what "span available height" needs. `maxHeight` is ignored
+   * when this is set.
+   */
+  fill?: boolean;
   accentColor?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -78,6 +90,7 @@ export function CodeBlockView({
   showCopyButton = true,
   showLineNumbers = false,
   maxHeight = '300px',
+  fill = false,
   accentColor,
   className = '',
   style,
@@ -122,6 +135,7 @@ export function CodeBlockView({
         background: 'var(--color-codeblock-bg)',
         border: '1px solid var(--color-codeblock-border)',
         borderRadius: '6px',
+        ...(fill ? { display: 'flex', flexDirection: 'column' as const, height: '100%' } : {}),
         ...style,
         overflow: 'hidden',
         fontSize: '12px',
@@ -175,7 +189,7 @@ export function CodeBlockView({
       </div>
 
       {/* Code — hljs highlighted, word-wrapped */}
-      <div style={{ overflowY: 'auto', maxHeight }}>
+      <div style={fill ? { overflowY: 'auto', flex: 1, minHeight: 0 } : { overflowY: 'auto', maxHeight }}>
         {showLineNumbers ? (
           <pre style={{ margin: 0, padding: '10px 0', lineHeight: 1.55, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
             {lines.map((line, i) => (

@@ -105,6 +105,8 @@ function EditorViewSimple({
     mountCommon(editor, monacoInstance, { language, value, placeholder, onEditorMount, contextMenuMode });
   };
 
+  const resolvedTheme = theme === 'light' ? 'daakia-light' : 'daakia-dark';
+
   return (
     <EditorShell bordered={bordered} containerHeight={containerHeight} contextMenuMode={contextMenuMode} contextMenuItems={contextMenuItems} accentColor={accentColor}>
       <Editor
@@ -112,10 +114,10 @@ function EditorViewSimple({
         language={language}
         path={modelPath}
         value={value}
-        theme={theme === 'light' ? 'daakia-light' : 'daakia-dark'}
+        theme={resolvedTheme}
         onChange={v => onChange?.(v ?? '')}
         onMount={handleMount}
-        options={buildOptions({ readOnly, fontSize: resolvedFontSize, wordWrap, glyphMargin: false, contextMenuMode, editorOptions })}
+        options={buildOptions({ readOnly, fontSize: resolvedFontSize, wordWrap, glyphMargin: false, contextMenuMode, editorOptions, theme: resolvedTheme })}
       />
     </EditorShell>
   );
@@ -179,6 +181,8 @@ function EditorViewDebug({
     mountCommon(editor, monacoInstance, { language, value, placeholder, onEditorMount, contextMenuMode });
   };
 
+  const resolvedTheme = theme === 'light' ? 'daakia-light' : 'daakia-dark';
+
   return (
     <EditorShell bordered={bordered} containerHeight={containerHeight} contextMenuMode={contextMenuMode} contextMenuItems={contextMenuItems} accentColor={accentColor}>
       <Editor
@@ -186,10 +190,10 @@ function EditorViewDebug({
         language={language}
         path={modelPath}
         value={value}
-        theme={theme === 'light' ? 'daakia-light' : 'daakia-dark'}
+        theme={resolvedTheme}
         onChange={v => onChange?.(v ?? '')}
         onMount={handleMount}
-        options={buildOptions({ readOnly, fontSize: resolvedFontSize, wordWrap, glyphMargin: !!onToggleBreakpoint, contextMenuMode, editorOptions })}
+        options={buildOptions({ readOnly, fontSize: resolvedFontSize, wordWrap, glyphMargin: !!onToggleBreakpoint, contextMenuMode, editorOptions, theme: resolvedTheme })}
       />
     </EditorShell>
   );
@@ -204,16 +208,23 @@ export function EditorViewMonacoImpl({ debugSupported = false, className = '', .
 
 // ─── Shared Monaco options builder ───────────────────────────────────────────
 
-function buildOptions({ readOnly, fontSize, wordWrap, glyphMargin, contextMenuMode = 'native', editorOptions }: {
+function buildOptions({ readOnly, fontSize, wordWrap, glyphMargin, contextMenuMode = 'native', editorOptions, theme }: {
   readOnly: boolean;
   fontSize: number;
   wordWrap: boolean;
   glyphMargin: boolean;
   contextMenuMode?: EditorContextMenuMode;
   editorOptions?: EditorOptions;
+  theme: string;
 }) {
   const o = editorOptions ?? {};
   return {
+    // Baked into construction options (not just the top-level <Editor theme=""> prop)
+    // so Monaco applies it before its first paint — @monaco-editor/react creates the
+    // editor first and only calls the global setTheme() afterward as a separate step,
+    // which is what caused a flash of the default white 'vs' theme on every remount
+    // (tab switch, subtab switch, new-tab-then-close) before this fix.
+    theme,
     // ── Consumer-overridable defaults ────────────────────────────────────────
     lineNumbers: (o.lineNumbers ?? 'on') as 'on' | 'off' | 'relative' | 'interval',
     minimap: { enabled: o.minimap ?? false },

@@ -32,6 +32,12 @@ export function DiffEditorViewMonacoImpl({
       options={{
         readOnly,
         renderSideBySide,
+        // Monaco silently drops to inline/unified rendering below its own
+        // width threshold regardless of renderSideBySide — this diff editor
+        // is often mounted inside narrow panels (e.g. Merkle's expanded
+        // table row), so pin side-by-side explicitly instead of letting it
+        // auto-collapse.
+        useInlineViewWhenSpaceIsLimited: false,
         wordWrap: wordWrap ? 'on' : 'off',
         fontSize,
         automaticLayout: true,

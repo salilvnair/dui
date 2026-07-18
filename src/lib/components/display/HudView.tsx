@@ -243,7 +243,22 @@ export function HudView({
               onClick={item.onClick}
               disabled={item.disabled}
               title={item.title}
-              style={isLegendItem ? { opacity: item.active === false ? 0.4 : 1 } : undefined}
+              style={
+                isLegendItem
+                  ? {
+                      // disabled must win over the active/inactive dim —
+                      // this inline style previously only branched on
+                      // `active`, so a disabled-but-active legend item (e.g.
+                      // a zero-count layer that's still toggled "on") kept
+                      // rendering at full opacity: the CSS `:disabled` rule
+                      // sets opacity too, but an inline style always beats a
+                      // stylesheet rule for the same property, so it was
+                      // silently overridden.
+                      opacity: item.disabled ? 0.35 : item.active === false ? 0.4 : 1,
+                      filter: item.disabled ? 'grayscale(1)' : undefined,
+                    }
+                  : undefined
+              }
             >
               {item.dotColor && (
                 <span

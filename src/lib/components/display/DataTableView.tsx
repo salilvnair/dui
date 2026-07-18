@@ -130,9 +130,12 @@ export function DataTableView<T extends Record<string, unknown>>({
               cursor: col.sortable ? 'pointer' : 'default',
               display: 'flex',
               alignItems: 'center',
+              // text-align has no effect on a flex item — justify-content is
+              // the actual axis-alignment property for a flex container's
+              // children, which is what col.align needs to drive here.
+              justifyContent: col.align === 'right' ? 'flex-end' : col.align === 'center' ? 'center' : 'flex-start',
               gap: '4px',
               userSelect: 'none',
-              textAlign: col.align ?? 'left',
             }}
           >
             {col.label}
@@ -206,7 +209,10 @@ export function DataTableView<T extends Record<string, unknown>>({
                         color: 'var(--color-text-secondary)',
                         display: 'flex',
                         alignItems: 'center',
-                        textAlign: col.align ?? 'left',
+                        // Same as the header cell — text-align is a no-op on
+                        // a flex item, justify-content is what actually
+                        // positions it along the row axis.
+                        justifyContent: col.align === 'right' ? 'flex-end' : col.align === 'center' ? 'center' : 'flex-start',
                         overflow: 'hidden',
                         whiteSpace: 'nowrap',
                         textOverflow: 'ellipsis',
