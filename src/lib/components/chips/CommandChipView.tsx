@@ -41,7 +41,7 @@ export function CommandChipView({
 }: CommandChipViewProps) {
   const base = useButtonBase(size);
   const [copied, setCopied] = useState(false);
-  const timer = useRef<ReturnType<typeof setTimeout>>();
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const copy = () => {
     if (!copyable) return;

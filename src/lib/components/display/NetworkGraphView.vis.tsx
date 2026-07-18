@@ -333,7 +333,7 @@ export function NetworkGraphViewImpl({
         // 'continuous' recomputes bezier control points per edge per draw —
         // the most expensive of vis-network's smooth types. Straight lines
         // above the threshold; edges are hidden during zoom either way.
-        smooth: isLargeGraph ? { enabled: false } : { enabled: true, type: 'continuous', roundness: 0.25 },
+        smooth: isLargeGraph ? false : { enabled: true, type: 'continuous', roundness: 0.25 },
         shadow: { enabled: !isLargeGraph, color: 'rgba(0,0,0,0.12)', size: 3, x: 0, y: 1 },
       },
     };
