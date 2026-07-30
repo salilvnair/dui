@@ -76,3 +76,31 @@
   vertical-align: middle;
   white-space: nowrap;
 }
+
+/* Suggestion portal items — identical to SelectTextInputView's dropdown rows
+   so every protocol's URL bar (REST/SOAP via SelectTextInputView, everything
+   else via this component) renders the same rounded, accent-colored hover. */
+.dui-stiv-sugg-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  margin-bottom: 2px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--color-text-primary);
+  transition: background 80ms;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+}
+.dui-stiv-sugg-item:hover,
+.dui-stiv-sugg-item--active {
+  background: color-mix(in srgb, var(--dui-stiv-accent, var(--color-primary)) 13%, transparent);
+}
