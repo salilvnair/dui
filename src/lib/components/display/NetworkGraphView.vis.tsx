@@ -20,6 +20,30 @@ const LARGE_GRAPH_NODE_THRESHOLD = 300;
 // their own always-legible member-count badge natively (see
 // clusterCommunity) instead of a DOM chip, so they're unaffected either way.
 const LABEL_ZOOM_THRESHOLD = 0.45;
+// Label chips are RECYCLED, never created per graph element. The overlay
+// holds a small fixed pool of chip elements; each frame the pool is handed
+// to whichever nodes/edges are currently on screen and worth labelling.
+//
+// This is the whole performance story. Creating one DOM element per node
+// and per edge is what made a 3,000-element graph unusable: every chip had
+// to be re-positioned against the camera on each redraw, so the cost of a
+// pan or zoom scaled with the size of the entire graph rather than with
+// what you could actually see. Pooling caps that work at "one screenful"
+// forever — the graph can hold a million nodes and a frame still costs the
+// same. It also keeps the nice look: real DOM chips can be rounded, tinted
+// and padded like dui's ChipView, and stay a constant on-screen size at any
+// zoom, neither of which vis-network's canvas `font.background` can do (it
+// is a hard-edged rectangle that balloons as you zoom in).
+//
+// Budgets are per-kind and deliberately generous — they only bite when the
+// screen is genuinely crowded, at which point the most connected nodes win
+// (they are the useful landmarks; the rest would be an unreadable smear).
+const NODE_LABEL_BUDGET = 220;
+const EDGE_LABEL_BUDGET = 120;
+// Screen-space bucket size for the chip collision grid (see makeChipGrid).
+// Roughly one chip-width — big enough that a chip spans only 2-3 cells,
+// small enough that a cell holds very few chips.
+const CHIP_GRID_CELL = 96;
 
 // Canvas can't resolve CSS custom properties (`var(--color-text-primary)`
 // etc. only resolve against a real DOM element's computed style), so the
@@ -53,6 +77,54 @@ interface Rect {
   bottom: number;
 }
 
+const rectsOverlap = (a: Rect, b: Rect) =>
+  a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+
+/**
+ * Screen-space uniform grid for chip collision tests.
+ *
+ * The obvious implementation — keep one flat array of placed rects and
+ * `.some()` over it per candidate — is O(n²): every chip scans every chip
+ * placed before it, and with a nudge search that inner scan runs several
+ * times per chip. At a few thousand chips that is tens of millions of rect
+ * tests per pass, which is precisely how a smooth graph turns into a stuck
+ * one.
+ *
+ * Bucketing by screen cell makes it O(1) amortised instead: a candidate
+ * only ever tests against rects sharing one of the 2-3 cells it covers, so
+ * total work grows linearly with chip count and not at all with how
+ * crowded the rest of the canvas is. Same structure Sigma.js uses for its
+ * label grid.
+ */
+function makeChipGrid() {
+  const cells = new Map<number, Rect[]>();
+  // Cantor-ish pairing into a single number key — cheaper than building a
+  // `${cx},${cy}` string per cell per lookup in the hot path.
+  const key = (cx: number, cy: number) => cx * 73856093 ^ cy * 19349663;
+  const forEachCell = (r: Rect, fn: (k: number) => void) => {
+    const cx0 = Math.floor(r.left / CHIP_GRID_CELL), cx1 = Math.floor(r.right / CHIP_GRID_CELL);
+    const cy0 = Math.floor(r.top / CHIP_GRID_CELL), cy1 = Math.floor(r.bottom / CHIP_GRID_CELL);
+    for (let cx = cx0; cx <= cx1; cx++) for (let cy = cy0; cy <= cy1; cy++) fn(key(cx, cy));
+  };
+  return {
+    collides(r: Rect): boolean {
+      let hit = false;
+      forEachCell(r, k => {
+        if (hit) return;
+        const bucket = cells.get(k);
+        if (bucket) for (let i = 0; i < bucket.length; i++) if (rectsOverlap(r, bucket[i])) { hit = true; return; }
+      });
+      return hit;
+    },
+    insert(r: Rect): void {
+      forEachCell(r, k => {
+        const bucket = cells.get(k);
+        if (bucket) bucket.push(r); else cells.set(k, [r]);
+      });
+    },
+  };
+}
+
 interface ChipStyle {
   color: string;
   bg: string;
@@ -62,25 +134,36 @@ interface ChipStyle {
   padding: string;
 }
 
-/** Creates one dui-ChipView-styled label chip (rounded pill, color-mix
- *  background/border, colored text) inside the labels overlay. Shared by
- *  node, cluster, and edge chips — only the palette/size differ. */
-function createChipElement(overlay: HTMLDivElement | null, text: string, s: ChipStyle): HTMLDivElement {
+/** Creates one empty pooled chip element. Only the properties that never
+ *  change for the life of the chip are set here — text and palette are
+ *  assigned per frame by applyChip(), since a pooled chip is reused by
+ *  whichever node/edge currently needs it. */
+function createChipElement(overlay: HTMLDivElement | null): HTMLDivElement {
   const el = document.createElement('div');
-  el.textContent = text;
   el.style.position = 'absolute';
-  el.style.padding = s.padding;
   el.style.borderRadius = '9999px';
-  el.style.fontSize = `${s.fontSize}px`;
-  el.style.fontWeight = String(s.fontWeight);
   el.style.letterSpacing = '0.01em';
   el.style.whiteSpace = 'nowrap';
   el.style.pointerEvents = 'none';
-  el.style.background = s.bg;
-  el.style.border = `1px solid ${s.border}`;
-  el.style.color = s.color;
+  el.style.display = 'none';
   overlay?.appendChild(el);
   return el;
+}
+
+/** Points a pooled chip at new content. Every write is guarded by a
+ *  comparison: during a pan the same chips usually keep the same text, and
+ *  assigning an identical string to `textContent` would still dirty layout. */
+function applyChip(el: HTMLDivElement, text: string, s: ChipStyle): void {
+  if (el.textContent !== text) el.textContent = text;
+  if (el.style.padding !== s.padding) el.style.padding = s.padding;
+  const fontSize = `${s.fontSize}px`;
+  if (el.style.fontSize !== fontSize) el.style.fontSize = fontSize;
+  const fontWeight = String(s.fontWeight);
+  if (el.style.fontWeight !== fontWeight) el.style.fontWeight = fontWeight;
+  if (el.style.background !== s.bg) el.style.background = s.bg;
+  const border = `1px solid ${s.border}`;
+  if (el.style.border !== border) el.style.border = border;
+  if (el.style.color !== s.color) el.style.color = s.color;
 }
 
 function nodeChipStyle(color: string): ChipStyle {
@@ -198,8 +281,21 @@ export function NetworkGraphViewImpl({
   // collide at high zoom), these stay a fixed on-screen size regardless of
   // zoom level.
   const labelsOverlayRef = useRef<HTMLDivElement>(null);
-  const nodeChipsRef = useRef<Map<string, HTMLDivElement>>(new Map());
-  const edgeChipsRef = useRef<Map<string | number, HTMLDivElement>>(new Map());
+  // Recycled pools, grown lazily up to their budget — see the budget
+  // constants. Index in the array is the only identity a chip has; which
+  // node or edge it represents changes from frame to frame.
+  const nodeChipPoolRef = useRef<HTMLDivElement[]>([]);
+  const edgeChipPoolRef = useRef<HTMLDivElement[]>([]);
+  // Chip dimensions cached per (kind, text) — the size of a chip depends
+  // only on its string and its kind's fixed font/padding, so the same label
+  // is measured exactly once for the life of the view no matter how many
+  // times it is assigned to a pooled element.
+  //
+  // This cache is what keeps layout thrashing out of the hot path. Reading
+  // `offsetWidth` right after writing `style.left/top` forces a synchronous
+  // layout recalculation, and doing that per chip per redraw was the single
+  // most expensive thing in this component.
+  const chipTextSizeRef = useRef<Map<string, { w: number; h: number }>>(new Map());
   // Kept current every render (not via its own effect — just needs to be
   // readable-without-a-stale-closure from inside the settle callbacks
   // below, which are registered once per network instance via `.once()`).
@@ -263,6 +359,10 @@ export function NetworkGraphViewImpl({
       return {
         id: n.id,
         title: n.label,
+        // No `label` here on purpose: every label is a pooled DOM chip
+        // positioned by syncAllChipPositions. Collapsed community nodes are
+        // the one exception and set their own label natively — see
+        // clusterCommunity.
         // Selection keeps the node's own fill and flags it with a themed
         // border instead — the old highlight swapped the fill to the theme
         // text color, which read as a jarring near-black circle in light
@@ -295,6 +395,19 @@ export function NetworkGraphViewImpl({
     const isLargeGraph = nodes.length > LARGE_GRAPH_NODE_THRESHOLD;
 
     const options: Options = {
+      // vis-network defaults `layout.improvedLayout` to true, which runs a
+      // Kamada-Kawai pre-positioning pass whenever the graph exceeds its
+      // internal clusterThreshold (150 nodes). On graphs with many
+      // uneven-sized communities that pass regularly fails to reduce the
+      // graph within its own iteration budget: it logs "This network could
+      // not be positioned by this version of the improved layout
+      // algorithm" and falls back to leaving most nodes near their default
+      // circular starting positions with a ±35px jitter — the stray ring of
+      // dots around the outside that physics then can't pull in within its
+      // stabilization budget. Skipping the pre-pass (vis's own documented
+      // suggestion, printed in that same message) lets forceAtlas2Based
+      // position everything from a clean random start instead.
+      layout: { improvedLayout: false },
       physics: {
         enabled: true,
         solver: 'forceAtlas2Based',
@@ -390,17 +503,51 @@ export function NetworkGraphViewImpl({
     };
 
     // ── Label chips (nodes, edges — NOT clusters, see clusterCommunity) ────
-    // Node chips are created once up front (one per dataset node); their
-    // visibility (declutter / absorbed-into-a-cluster) is decided every
-    // sync, not at creation time.
-    for (const n of nodes) {
-      nodeChipsRef.current.set(n.id, createChipElement(labelsOverlayRef.current, n.label, nodeChipStyle(nodeColors.get(n.id) ?? '#6B7280')));
-    }
-    edges.forEach((e, i) => {
-      if (!e.type) return;
-      const id = e.id ?? i;
-      edgeChipsRef.current.set(id, createChipElement(labelsOverlayRef.current, e.type, edgeChipStyle(themeTokens)));
-    });
+    // Nothing is created up front. Pools grow on demand, capped by the
+    // budgets, and are handed out per frame by syncAllChipPositions.
+
+    // Node positions live in canvas space, so panning and zooming don't
+    // change them at all — only dragging a node or (de)clustering does.
+    // Cached so the per-frame path never pays for a full getPositions().
+    let canvasPositions: { [id: string]: { x: number; y: number } } | null = null;
+    const invalidatePositions = () => { canvasPositions = null; };
+
+    // Hover-dim state. A pooled chip has no fixed owner, so "dim everything
+    // that isn't a neighbour of the hovered node" can't be applied to chips
+    // by id up front — instead the hover handler records what should stay
+    // lit and the sync applies it to whichever chip currently shows that
+    // node. `null` means nothing is hovered and everything is lit.
+    let dimKeepNodes: Set<string> | null = null;
+    let dimKeepEdges: Set<string | number> | null = null;
+
+    const edgeTypeById = new Map<string | number, string>();
+    edges.forEach((e, i) => { if (e.type) edgeTypeById.set(e.id ?? i, e.type); });
+
+    /** Pooled chip at `index`, created on first use. */
+    const chipAt = (pool: HTMLDivElement[], index: number): HTMLDivElement => {
+      let el = pool[index];
+      if (!el) { el = createChipElement(labelsOverlayRef.current); pool[index] = el; }
+      return el;
+    };
+
+    /** Size of `text` rendered as `kind`, measured at most once ever. The
+     *  single `offsetWidth` read here happens only on a cache miss, i.e. the
+     *  first time a given label is ever shown — never on a steady-state pan. */
+    const chipSize = (el: HTMLDivElement, kind: 'n' | 'e', text: string) => {
+      const key = `${kind} ${text}`;
+      let size = chipTextSizeRef.current.get(key);
+      if (!size) {
+        size = { w: el.offsetWidth, h: el.offsetHeight };
+        chipTextSizeRef.current.set(key, size);
+      }
+      return size;
+    };
+
+    const hidePoolFrom = (pool: HTMLDivElement[], from: number) => {
+      for (let i = from; i < pool.length; i++) {
+        if (pool[i].style.display !== 'none') pool[i].style.display = 'none';
+      }
+    };
 
     /**
      * Positions every (non-cluster — see clusterCommunity) chip and decides
@@ -416,93 +563,139 @@ export function NetworkGraphViewImpl({
      *    either), when fully zoomed out, OR when they'd visually overlap a
      *    node chip (node identity wins over relationship labels).
      */
-    const rectsOverlap = (a: Rect, b: Rect) =>
-      a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
-
     const syncAllChipPositions = () => {
-      const declutter = network.getScale() < LABEL_ZOOM_THRESHOLD;
-      const reserved: Rect[] = [];
-      const MAX_NUDGES = 12; // 4 rows × 3 columns (center/left/right per row)
+      const nodePool = nodeChipPoolRef.current;
+      const edgePool = edgeChipPoolRef.current;
+      const viewW = containerRef.current?.clientWidth ?? 0;
+      const viewH = containerRef.current?.clientHeight ?? 0;
 
-      for (const [id, el] of nodeChipsRef.current) {
-        if (declutter || network.findNode(id).length !== 1) {
-          // Zoomed out, or this node is currently absorbed into a collapsed
-          // community — nothing to position, just hide.
-          el.style.display = 'none';
-          continue;
-        }
-        const box = network.getBoundingBox(id);
+      // Fully zoomed out: chips would collide into noise. Collapsed
+      // community nodes keep their own canvas-drawn member-count badge, so
+      // nothing important disappears here.
+      if (network.getScale() < LABEL_ZOOM_THRESHOLD || !viewW || !viewH) {
+        hidePoolFrom(nodePool, 0);
+        hidePoolFrom(edgePool, 0);
+        return;
+      }
+
+      if (!canvasPositions) canvasPositions = network.getPositions();
+      const tl = network.DOMtoCanvas({ x: 0, y: 0 });
+      const br = network.DOMtoCanvas({ x: viewW, y: viewH });
+
+      // Everything on screen is a candidate. Only if the screen is crowded
+      // past the budget do we rank — and then by degree, so the landmarks
+      // survive and the anonymous leaves are the ones dropped. Zooming in
+      // shrinks the candidate set, which is what makes zoom the natural
+      // "reveal more detail" gesture rather than a fixed global cutoff.
+      const candidates: { id: string; deg: number }[] = [];
+      for (const id in canvasPositions) {
+        const p = canvasPositions[id];
+        if (p.x < tl.x || p.x > br.x || p.y < tl.y || p.y > br.y) continue;
+        // Cluster super-nodes carry their own badge — never chip them.
+        if (!nodesById.current.has(id)) continue;
+        candidates.push({ id, deg: degree[id] ?? 0 });
+      }
+      if (candidates.length > NODE_LABEL_BUDGET) {
+        candidates.sort((a, b) => b.deg - a.deg);
+        candidates.length = NODE_LABEL_BUDGET;
+      }
+
+      const grid = makeChipGrid();
+      const MAX_NUDGES = 12; // 4 rows × 3 columns (center/left/right per row)
+      let used = 0;
+
+      for (const cand of candidates) {
+        const node = nodesById.current.get(cand.id);
+        if (!node?.label) continue;
+        // Absorbed into a collapsed community since positions were cached.
+        if (network.findNode(cand.id).length !== 1) continue;
+
+        const box = network.getBoundingBox(cand.id);
+        if (!box) continue;
         const domPos = network.canvasToDOM({ x: (box.left + box.right) / 2, y: box.bottom });
-        el.style.display = '';
-        const w = el.offsetWidth, h = el.offsetHeight;
-        const baseLeft = domPos.x - w / 2;
-        const baseTop = domPos.y + 6;
+
+        const el = chipAt(nodePool, used);
+        applyChip(el, node.label, nodeChipStyle(nodeColors.get(cand.id) ?? '#6B7280'));
+        if (el.style.display !== '') el.style.display = '';
+        const opacity = !dimKeepNodes || dimKeepNodes.has(cand.id) ? '1' : String(DIMMED_OPACITY);
+        if (el.style.opacity !== opacity) el.style.opacity = opacity;
+        const { w, h } = chipSize(el, 'n', node.label);
+
         // Grid search, not a straight-down stack: two overlapping chips are
         // just as often side-by-side (adjacent communities at similar
         // height) as stacked, and a pure vertical nudge never resolves a
         // horizontal collision. Each attempt tries center/left/right at a
         // given row before dropping to the next row down.
+        const baseLeft = domPos.x - w / 2;
+        const baseTop = domPos.y + 6;
         let left = baseLeft, top = baseTop;
         for (let n = 0; n < MAX_NUDGES; n++) {
           const row = Math.floor(n / 3);
           const col = (n % 3) - 1; // -1, 0, 1
           left = baseLeft + col * (w + 6);
           top = baseTop + row * (h + 3);
-          if (!reserved.some(r => rectsOverlap({ left, top, right: left + w, bottom: top + h }, r))) break;
+          if (!grid.collides({ left, top, right: left + w, bottom: top + h })) break;
         }
         el.style.left = `${left}px`;
         el.style.top = `${top}px`;
-        reserved.push({ left, top, right: left + w, bottom: top + h });
+        grid.insert({ left, top, right: left + w, bottom: top + h });
+        used++;
       }
+      hidePoolFrom(nodePool, used);
 
-      for (const [id, el] of edgeChipsRef.current) {
-        const e = edgesData.get(id) as VisEdge | null;
-        const fromChain = e ? network.findNode(e.from as string) : [];
-        const toChain = e ? network.findNode(e.to as string) : [];
-        const bothVisible = fromChain.length === 1 && toChain.length === 1;
-        if (declutter || !e || !bothVisible) {
-          el.style.display = 'none';
-          continue;
-        }
-        const positions = network.getPositions([e.from as string, e.to as string]);
-        const from = positions[e.from as string];
-        const to = positions[e.to as string];
-        if (!from || !to) {
-          el.style.display = 'none';
-          continue;
-        }
-        const domPos = network.canvasToDOM({ x: (from.x + to.x) / 2, y: (from.y + to.y) / 2 });
-        const w = el.offsetWidth, h = el.offsetHeight;
+      // Edge chips: same budget treatment, and they always lose a collision
+      // against a node chip — relationship labels are secondary to identity.
+      let edgeUsed = 0;
+      for (const [edgeId, type] of edgeTypeById) {
+        if (edgeUsed >= EDGE_LABEL_BUDGET) break;
+        const e = edgesData.get(edgeId) as VisEdge | null;
+        if (!e) continue;
+        const from = canvasPositions[e.from as string];
+        const to = canvasPositions[e.to as string];
+        if (!from || !to) continue;
+        const mid = { x: (from.x + to.x) / 2, y: (from.y + to.y) / 2 };
+        if (mid.x < tl.x || mid.x > br.x || mid.y < tl.y || mid.y > br.y) continue;
+        if (network.findNode(e.from as string).length !== 1) continue;
+        if (network.findNode(e.to as string).length !== 1) continue;
+
+        const domPos = network.canvasToDOM(mid);
+        const el = chipAt(edgePool, edgeUsed);
+        applyChip(el, type, edgeChipStyle(themeTokens));
+        if (el.style.display !== '') el.style.display = '';
+        const eOpacity = !dimKeepEdges || dimKeepEdges.has(edgeId) ? '1' : String(DIMMED_OPACITY);
+        if (el.style.opacity !== eOpacity) el.style.opacity = eOpacity;
+        const { w, h } = chipSize(el, 'e', type);
         const rect: Rect = { left: domPos.x - w / 2, top: domPos.y - h / 2, right: domPos.x + w / 2, bottom: domPos.y + h / 2 };
-
-        // Collision check against every node/cluster chip (and every
-        // earlier-placed edge chip) already reserved this frame — an edge's
-        // relationship label loses to a node's identity label.
-        if (reserved.some(r => rectsOverlap(rect, r))) {
-          el.style.display = 'none';
-          continue;
-        }
-        el.style.display = '';
+        if (grid.collides(rect)) { el.style.display = 'none'; continue; }
         el.style.left = `${rect.left}px`;
         el.style.top = `${rect.top}px`;
-        reserved.push(rect);
+        grid.insert(rect);
+        edgeUsed++;
       }
+      hidePoolFrom(edgePool, edgeUsed);
     };
 
-    let lastChipSync = 0;
-    const syncAllChipPositionsThrottled = () => {
-      // A network.focus()/moveTo() camera animation is running — chips will
+    const syncOverlays = syncAllChipPositions;
+
+    // Coalesce to at most one sync per animation frame, and run it aligned
+    // with paint rather than on a wall-clock timer. A fixed 100ms throttle
+    // is both too slow (chips visibly lag the canvas mid-drag) and too fast
+    // (a pass that takes longer than the interval just queues the next one
+    // immediately, so the main thread never gets a gap). rAF self-limits:
+    // if a pass is slow, frames drop and the sync rate drops with them
+    // instead of piling up.
+    let syncRafHandle: number | null = null;
+    const syncOverlaysThrottled = () => {
+      // A network.focus()/moveTo() camera animation is running — overlays
       // get one full, non-throttled sync the instant it lands (see the
       // 'animationFinished' listener below). Skipping them mid-flight is
       // what actually fixes the large-graph "slow motion" click-to-zoom.
       if (isCameraAnimatingRef.current) return;
-      const now = Date.now();
-      // ~10 syncs/second — with up to a few hundred chips, an unthrottled
-      // per-frame sync (every canvas redraw during a drag/zoom gesture) was
-      // a measurable jank contributor, same lesson as the minimap below.
-      if (now - lastChipSync < 100) return;
-      lastChipSync = now;
-      syncAllChipPositions();
+      if (syncRafHandle !== null) return;
+      syncRafHandle = requestAnimationFrame(() => {
+        syncRafHandle = null;
+        syncOverlays();
+      });
     };
 
     network.once('stabilizationIterationsDone', () => {
@@ -520,7 +713,10 @@ export function NetworkGraphViewImpl({
           network.once('stabilizationIterationsDone', () => {
             network.setOptions({ physics: { enabled: false } });
             drawMinimap();
-            syncAllChipPositions();
+            // Physics + clustering just moved everything — the cached
+            // canvas positions are stale.
+            invalidatePositions();
+            syncOverlays();
             // A selectedId set before this rebuild's stabilization finished
             // (e.g. a filter change that just made the selected node visible
             // again) needs to be (re-)applied here — the standalone
@@ -550,7 +746,9 @@ export function NetworkGraphViewImpl({
       const scale = network.getScale();
       if (scale > 0) network.moveTo({ scale: scale * 0.92 });
       drawMinimap();
-      syncAllChipPositions();
+      // Stabilization (and any clustering above) just moved every node.
+      invalidatePositions();
+      syncOverlays();
       if (!willRunClusterSeparationBurst) {
         // See the matching comment in the nested cluster-separation settle
         // callback above — re-apply a pre-set selectedId here since this is
@@ -565,8 +763,8 @@ export function NetworkGraphViewImpl({
       }
     });
 
-    network.on('afterDrawing', syncAllChipPositionsThrottled);
-    network.on('dragEnd', syncAllChipPositions);
+    network.on('afterDrawing', syncOverlaysThrottled);
+    network.on('dragEnd', () => { invalidatePositions(); syncOverlays(); });
 
     // vis-network's own animation-driven redraws (focus()/moveTo() with
     // animation: true) are what 'animationFinished' marks the end of — see
@@ -574,7 +772,7 @@ export function NetworkGraphViewImpl({
     // skipped while one is in flight.
     network.on('animationFinished', () => {
       isCameraAnimatingRef.current = false;
-      syncAllChipPositions();
+      syncOverlays();
       if (enableMinimap) drawMinimap();
     });
 
@@ -608,7 +806,9 @@ export function NetworkGraphViewImpl({
           if (n?.communityId != null) clusterCommunity(network, n.communityId, nodes);
         }
         drawMinimap();
-        syncAllChipPositions();
+        // Opening/collapsing a cluster changes which nodes exist.
+        invalidatePositions();
+        syncOverlays();
       });
     }
 
@@ -666,16 +866,12 @@ export function NetworkGraphViewImpl({
         }
         if (edgeUpdates.length) edgesData.update(edgeUpdates);
 
-        for (const [id, el] of nodeChipsRef.current) {
-          if (keepNodes.has(id) !== prevKeptNodeIds.has(id)) {
-            el.style.opacity = keepNodes.has(id) ? '1' : String(DIMMED_OPACITY);
-          }
-        }
-        for (const [id, el] of edgeChipsRef.current) {
-          if (keepEdges.has(id) !== prevKeptEdgeIds.has(id)) {
-            el.style.opacity = keepEdges.has(id) ? '1' : String(DIMMED_OPACITY);
-          }
-        }
+        // Chips are pooled, so they can't be dimmed by id here — record the
+        // lit sets and let the sync apply them to whichever chip currently
+        // represents each node/edge.
+        dimKeepNodes = keepNodes;
+        dimKeepEdges = keepEdges;
+        syncOverlays();
 
         prevKeptNodeIds = keepNodes;
         prevKeptEdgeIds = keepEdges;
@@ -740,14 +936,18 @@ export function NetworkGraphViewImpl({
 
     return () => {
       if (blurRestoreTimer !== null) clearTimeout(blurRestoreTimer);
+      // A queued sync would otherwise fire after destroy() and touch a
+      // torn-down network — same hazard as blurRestoreTimer above.
+      if (syncRafHandle !== null) cancelAnimationFrame(syncRafHandle);
       network.destroy();
       networkRef.current = null;
       nodesDataRef.current = null;
       edgesDataRef.current = null;
-      for (const el of nodeChipsRef.current.values()) el.remove();
-      nodeChipsRef.current.clear();
-      for (const el of edgeChipsRef.current.values()) el.remove();
-      edgeChipsRef.current.clear();
+      for (const el of nodeChipPoolRef.current) el.remove();
+      nodeChipPoolRef.current = [];
+      for (const el of edgeChipPoolRef.current) el.remove();
+      edgeChipPoolRef.current = [];
+      chipTextSizeRef.current.clear();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nodes, edges, enableClustering, enableHoverDim, enableMinimap, theme]);
