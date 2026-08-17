@@ -31,3 +31,20 @@
 .dui-stiv-sugg-item--active {
   background: color-mix(in srgb, var(--dui-stiv-accent, var(--color-primary)) 13%, transparent);
 }
+
+/* Editable URL/text portion of the method+URL pill. Same reasoning as
+   .dui_highlighted-input__editor: centre the line box with align-content on a BLOCK
+   container, never flex — flex makes each text run and {{var}} chip its own flex item,
+   and clicking the empty space past the text then hit-tests to the wrong item and puts
+   the caret after the token instead of where you clicked. */
+.dui_select-text__editor {
+  display: block;
+  align-content: center;
+}
+
+@supports not (align-content: center) {
+  .dui_select-text__editor {
+    display: flex;
+    align-items: center;
+  }
+}

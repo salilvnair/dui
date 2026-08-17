@@ -7,6 +7,10 @@ export interface LoaderViewProps {
   accentColor?: string;
   label?: string;
   fullscreen?: boolean;
+  /** Centre the loader horizontally in whatever space the parent gives it.
+   *  Off by default because a bare loader is `width: auto` and often sits
+   *  inline beside a control; panel/page-level loading states want this. */
+  center?: boolean;
   progress?: number; // 0–100 for progress-bar only
   /** skeleton only: renders a single placeholder bar of this exact size
    * instead of the default 3-line paragraph shape — for mimicking a
@@ -204,6 +208,7 @@ export function LoaderView({
   accentColor,
   label,
   fullscreen = false,
+  center = false,
   progress,
   width,
   height,
@@ -238,6 +243,14 @@ export function LoaderView({
       )}
     </div>
   );
+
+  if (center && !fullscreen) {
+    return (
+      <div style={{ display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center', padding: '24px 0' }}>
+        {inner}
+      </div>
+    );
+  }
 
   if (fullscreen) {
     return (

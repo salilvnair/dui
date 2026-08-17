@@ -8,6 +8,9 @@ export type CommandOrbState = 'idle' | 'thinking' | 'speaking' | 'open';
 export interface CommandOrbViewProps {
   state: CommandOrbState;
   onClick?: () => void;
+  /** Glyph rendered inside the orb itself. Shown while `idle`/`open` — the
+   *  `thinking` ripple and `speaking` waveform own the orb interior instead. */
+  icon?: ReactNode;
   /** Rendered inside an expanded panel below the orb when `state === 'open'`. */
   panel?: ReactNode;
   size?: DuiSize;
@@ -24,6 +27,7 @@ const DIAMETER: Record<DuiSize, number> = {
 export function CommandOrbView({
   state,
   onClick,
+  icon,
   panel,
   size,
   color,
@@ -47,6 +51,14 @@ export function CommandOrbView({
           boxShadow: `0 4px 16px color-mix(in srgb, ${accent} 40%, transparent)`,
         }}
       >
+        {/* No rotate-on-open here: the glyph is caller-supplied and arbitrary,
+            and spinning e.g. a lightning bolt just makes it unreadable. A
+            gentle scale reads as "active" for any glyph. */}
+        {icon && (state === 'idle' || state === 'open') && (
+          <span className="dui_orb__icon" style={{ transform: state === 'open' ? 'scale(0.88)' : undefined }}>
+            {icon}
+          </span>
+        )}
         {state === 'thinking' && <span className="dui_orb__ripple" />}
         {state === 'speaking' && (
           <span style={{ display: 'flex', alignItems: 'center', gap: 2, height: diameter * 0.4 }}>

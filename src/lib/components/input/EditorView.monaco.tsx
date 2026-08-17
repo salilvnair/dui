@@ -21,6 +21,172 @@ import { useDebugStore } from '../../../store/debug-store';
 
 let dkLibRegistered = false;
 
+// Monaco's language configuration and completion providers are GLOBAL per
+// language id, not per editor — registering them inside every mount stacked a
+// fresh provider on each remount (N editors open → the same suggestion N times).
+const tagLangConfigured = new Set<string>();
+const plainLangConfigured = new Set<string>();
+
+// HTML elements that never take a closing tag. XML has no such concept — every
+// element there is closed or self-closed — so this only applies to language 'html'.
+const VOID_TAGS = new Set([
+  'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input',
+  'link', 'meta', 'param', 'source', 'track', 'wbr',
+]);
+
+// An opening tag ending exactly at the caret. The attribute group tolerates
+// quoted '>' (e.g. <a title="a > b">) by consuming whole quoted strings first.
+const OPEN_TAG_AT_CARET = /<([_:a-zA-Z][-_:.\w]*)((?:"[^"]*"|'[^']*'|[^'">])*)>$/;
+const ANY_TAG = /<\/?([_:a-zA-Z][-_:.\w]*)((?:"[^"]*"|'[^']*'|[^'">])*)>/g;
+
+function escapeRe(s: string) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+/** Innermost still-open tag in `text`, or null. Used to complete `</`. */
+function innermostOpenTag(text: string): string | null {
+  const scrubbed = text.replace(/<!--[\s\S]*?-->/g, '').replace(/<!\[CDATA\[[\s\S]*?\]\]>/g, '');
+  const stack: string[] = [];
+  ANY_TAG.lastIndex = 0;
+  let m: RegExpExecArray | null;
+  while ((m = ANY_TAG.exec(scrubbed)) !== null) {
+    const [full, name, attrs] = m;
+    if (full.startsWith('</')) {
+      const at = stack.lastIndexOf(name);
+      if (at !== -1) stack.length = at; else stack.pop();
+    } else if (!attrs.trimEnd().endsWith('/')) {
+      stack.push(name);
+    }
+  }
+  return stack.length ? stack[stack.length - 1] : null;
+}
+
+function configureTagLanguage(monacoInstance: any, langId: 'xml' | 'html') {
+  if (tagLangConfigured.has(langId)) return;
+  tagLangConfigured.add(langId);
+  const config = {
+    // Deliberately no { open: '<', close: '>' } here — matching VS Code's own
+    // html/xml language configuration. Auto-inserting '>' would mean the user's
+    // own '>' keystroke merely skips over it, producing no model change, and
+    // tag auto-closing (which is what people actually expect) could never fire.
+    autoClosingPairs: [
+      { open: '{', close: '}' }, { open: '[', close: ']' }, { open: '(', close: ')' },
+      { open: '"', close: '"', notIn: ['string'] },
+      { open: "'", close: "'", notIn: ['string', 'comment'] },
+      { open: '<!--', close: '-->', notIn: ['comment', 'string'] },
+    ],
+    brackets: [['{', '}'], ['[', ']'], ['(', ')'], ['<', '>']],
+    surroundingPairs: [
+      { open: '{', close: '}' }, { open: '[', close: ']' }, { open: '(', close: ')' },
+      { open: '"', close: '"' }, { open: "'", close: "'" }, { open: '<', close: '>' },
+    ],
+    comments: { blockComment: ['<!--', '-->'] },
+    onEnterRules: [
+      {
+        // Enter between <a>|</a> — open the pair onto three lines, caret indented.
+        beforeText: /<([_:\w][_:\w\-.\d]*)([^/>]*(?!\/)>)\s*$/i,
+        afterText: /^<\/([_:\w][_:\w\-.\d]*)\s*>$/i,
+        action: { indentAction: monacoInstance.languages.IndentAction.IndentOutdent },
+      },
+      {
+        beforeText: /<([_:\w][_:\w\-.\d]*)([^/>]*(?!\/)>)\s*$/i,
+        action: { indentAction: monacoInstance.languages.IndentAction.Indent },
+      },
+    ],
+    wordPattern: /(-?\d*\.\d\w*)|([^\`\~\!\@\#\$\%\^\&\*\(\)\-\=\+\[\{\]\}\\\|\;\:\'\"\,\.\<\>\/\?\s]+)/g,
+  };
+
+  // Monaco registers its own xml/html language configuration from a LAZILY
+  // IMPORTED module, and among equal-priority registrations the last one wins.
+  // A plain synchronous call here therefore loses the race and their config —
+  // which auto-closes '<' with '>' — stays in force, so typing '<' produced
+  // '<>' and a completed '</tag' left a stray '>' behind. Re-apply on a short
+  // bounded schedule (disposing the previous registration so only one of ours
+  // is ever live) to land after their import resolves, whenever that is.
+  let live = monacoInstance.languages.setLanguageConfiguration(langId, config);
+  for (const delay of [50, 250, 1000]) {
+    setTimeout(() => {
+      const next = monacoInstance.languages.setLanguageConfiguration(langId, config);
+      live?.dispose?.();
+      live = next;
+    }, delay);
+  }
+}
+
+/**
+ * VS Code-style tag auto-closing for XML/HTML.
+ *
+ * Monaco's basic-languages XML support has no tag awareness at all — that lives
+ * in VS Code's HTML language service, which isn't bundled here. So we do it
+ * ourselves: typing '>' completes the element, and typing '/' after '<' fills
+ * in the innermost open tag. Both are plain model edits, so undo/redo and the
+ * {{var}} decorations keep working normally.
+ *
+ * This relies on '<' NOT being an auto-closing pair (see configureTagLanguage):
+ * if Monaco auto-inserted '>', typing '>' would only skip over the existing one
+ * and produce no content change for us to react to.
+ */
+function installTagAutoClose(editor: any, monacoInstance: any) {
+  let reentrant = false;
+  const sub = editor.onDidChangeModelContent((e: any) => {
+    if (reentrant || e.isUndoing || e.isRedoing) return;
+    const model = editor.getModel();
+    if (!model) return;
+    const langId = model.getLanguageId();
+    if (langId !== 'xml' && langId !== 'html') return;
+    // Only react to a single typed character — never to paste, multi-cursor or
+    // a programmatic setValue, where guessing the user's intent is wrong.
+    if (e.changes.length !== 1) return;
+    const change = e.changes[0];
+    if (change.text !== '>' && change.text !== '/') return;
+
+    const line = change.range.startLineNumber;
+    const column = change.range.startColumn + change.text.length;
+    const before = model.getValueInRange({
+      startLineNumber: 1, startColumn: 1, endLineNumber: line, endColumn: column,
+    });
+
+    let insert: string;
+    let caretShift: number;
+    let consumeNext = 0;   // characters after the caret this edit should replace
+
+    if (change.text === '>') {
+      const open = OPEN_TAG_AT_CARET.exec(before);
+      if (!open) return;
+      if (open[2].trimEnd().endsWith('/')) return;                       // <br/> — already self-closed
+      if (langId === 'html' && VOID_TAGS.has(open[1].toLowerCase())) return;
+      const rest = model.getValueInRange({
+        startLineNumber: line, startColumn: column,
+        endLineNumber: line, endColumn: model.getLineMaxColumn(line),
+      });
+      if (new RegExp(`^\\s*</${escapeRe(open[1])}\\s*>`).test(rest)) return;   // closing tag already sits here
+      insert = `</${open[1]}>`;
+      caretShift = 0;                                                    // caret stays between the tags
+    } else {
+      if (!/<\/$/.test(before)) return;
+      const tag = innermostOpenTag(before.slice(0, -2));
+      if (!tag) return;
+      insert = `${tag}>`;
+      caretShift = insert.length;                                        // caret lands after the completed tag
+      // Swallow a '>' sitting right at the caret. It can only be one Monaco
+      // auto-inserted when '<' was typed — '</>' is not valid markup — and
+      // leaving it behind produced '</tag>>'. Defensive: the language config
+      // above normally prevents that pair from existing at all.
+      if (model.getLineContent(line).charAt(column - 1) === '>') consumeNext = 1;
+    }
+
+    reentrant = true;
+    try {
+      editor.executeEdits(
+        'daakia.autoCloseTag',
+        [{ range: new monacoInstance.Range(line, column, line, column + consumeNext), text: insert, forceMoveMarkers: false }],
+        [new monacoInstance.Selection(line, column + caretShift, line, column + caretShift)],
+      );
+    } finally {
+      reentrant = false;
+    }
+  });
+  editor.onDidDispose(() => sub.dispose());
+}
+
 const EXT_MAP: Partial<Record<EditorLanguage, string>> = {
   javascript: '.js', typescript: '.ts', json: '.json', xml: '.xml',
   html: '.html', css: '.css', graphql: '.graphql', python: '.py',
@@ -89,6 +255,13 @@ function EditorViewSimple({
       if (editor) { const m = editor.getModel(); if (m) m.dispose(); }
     };
   }, []);
+
+  // Placeholder is otherwise only applied inside mountCommon, i.e. once at mount — so a
+  // parent that swaps it later (e.g. changing Content Type from JSON to form-urlencoded)
+  // kept showing the original example. Keep it in sync with the prop.
+  useEffect(() => {
+    editorRef.current?.updateOptions({ placeholder } as any);
+  }, [placeholder]);
 
   // No manual model.setValue() sync here — the controlled `value` prop on
   // <Editor> below already keeps the model in sync on every change (that's
@@ -160,6 +333,13 @@ function EditorViewDebug({
       if (editor) { const m = editor.getModel(); if (m) m.dispose(); }
     };
   }, []);
+
+  // Placeholder is otherwise only applied inside mountCommon, i.e. once at mount — so a
+  // parent that swaps it later (e.g. changing Content Type from JSON to form-urlencoded)
+  // kept showing the original example. Keep it in sync with the prop.
+  useEffect(() => {
+    editorRef.current?.updateOptions({ placeholder } as any);
+  }, [placeholder]);
 
   // See EditorViewSimple above — no manual model.setValue() sync needed;
   // the controlled `value` prop on <Editor> below already handles it, and a
@@ -424,71 +604,17 @@ function mountCommon(
     run: () => editor.getAction('editor.action.startFindReplaceAction')?.run(),
   });
 
-  // Auto-closing config per language
+  // Auto-closing config. XML/HTML is registered unconditionally rather than
+  // only when the editor currently holds that language — a Content Type switch
+  // (JSON → application/xml) swaps the model in place without re-running mount,
+  // so a lazily-registered xml config would never arrive.
+  configureTagLanguage(monacoInstance, 'xml');
+  configureTagLanguage(monacoInstance, 'html');
   const model = editor.getModel();
   if (model) {
     const langId = model.getLanguageId();
-    if (langId === 'xml' || langId === 'html') {
-      monacoInstance.languages.setLanguageConfiguration(langId, {
-        autoClosingPairs: [
-          { open: '{', close: '}' }, { open: '[', close: ']' }, { open: '(', close: ')' },
-          { open: '"', close: '"', notIn: ['string'] },
-          { open: "'", close: "'", notIn: ['string', 'comment'] },
-          { open: '<', close: '>', notIn: ['string'] },
-        ],
-        brackets: [['{', '}'], ['[', ']'], ['(', ')'], ['<', '>']],
-        surroundingPairs: [
-          { open: '{', close: '}' }, { open: '[', close: ']' }, { open: '(', close: ')' },
-          { open: '"', close: '"' }, { open: "'", close: "'" }, { open: '<', close: '>' },
-        ],
-        onEnterRules: [
-          {
-            beforeText: /<([_:\w][_:\w\-.\d]*)([^/>]*(?!\/)>)\s*$/i,
-            afterText: /^<\/([_:\w][_:\w\-.\d]*)\s*>$/i,
-            action: { indentAction: monacoInstance.languages.IndentAction.IndentOutdent },
-          },
-          {
-            beforeText: /<([_:\w][_:\w\-.\d]*)([^/>]*(?!\/)>)\s*$/i,
-            action: { indentAction: monacoInstance.languages.IndentAction.Indent },
-          },
-        ],
-        wordPattern: /(-?\d*\.\d\w*)|([^\`\~\!\@\#\$\%\^\&\*\(\)\-\=\+\[\{\]\}\\\|\;\:\'\"\,\.\<\>\/\?\s]+)/g,
-      });
-      monacoInstance.languages.registerCompletionItemProvider(langId, {
-        triggerCharacters: ['/'],
-        provideCompletionItems: (mdl: any, position: any) => {
-          const textUntilPosition = mdl.getValueInRange({
-            startLineNumber: 1, startColumn: 1,
-            endLineNumber: position.lineNumber, endColumn: position.column,
-          });
-          const match = textUntilPosition.match(/<\/\s*$/);
-          if (match) {
-            const openTags: string[] = [];
-            const tagRegex = /<\/?([_:\w][_:\w\-.\d]*)[^>]*\/?>/g;
-            let m;
-            while ((m = tagRegex.exec(textUntilPosition.slice(0, -2))) !== null) {
-              if (m[0].startsWith('</')) openTags.pop();
-              else if (!m[0].endsWith('/>')) openTags.push(m[1]);
-            }
-            const lastOpen = openTags[openTags.length - 1];
-            if (lastOpen) {
-              return {
-                suggestions: [{
-                  label: `/${lastOpen}>`,
-                  kind: monacoInstance.languages.CompletionItemKind.Keyword,
-                  insertText: `${lastOpen}>`,
-                  range: {
-                    startLineNumber: position.lineNumber, startColumn: position.column,
-                    endLineNumber: position.lineNumber, endColumn: position.column,
-                  },
-                }],
-              };
-            }
-          }
-          return { suggestions: [] };
-        },
-      });
-    } else {
+    if (langId !== 'xml' && langId !== 'html' && !plainLangConfigured.has(langId)) {
+      plainLangConfigured.add(langId);
       monacoInstance.languages.setLanguageConfiguration(langId, {
         autoClosingPairs: [
           { open: '{', close: '}' }, { open: '[', close: ']' }, { open: '(', close: ')' },
@@ -503,6 +629,7 @@ function mountCommon(
       });
     }
   }
+  installTagAutoClose(editor, monacoInstance);
 
   // GraphQL tokenizer + completion
   const langs = monacoInstance.languages.getLanguages();

@@ -1,9 +1,10 @@
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { DropdownArrowIcon, CheckIcon, SearchIcon, ServerIcon } from '../../../icons';
 import type { DuiSize, DuiRadius, DuiWidth, DuiFontStyle } from '../../core/DuiTypes';
 import { useInputBase } from '../../core/InputBase';
 import { useDui } from '../../core/DuiContext';
+import { buildHighlightedHTML, getCaretOffset, setCaretOffset, createEditableHistory, isUndoKey, isRedoKey } from '../../core/VariableToken';
 import './SelectTextInputView.css';
 
 export interface SelectTextOption {
@@ -39,7 +40,7 @@ export interface SelectTextInputViewProps {
   mockServers?: MockServerSuggestion[];
   /** Called when user picks a mock server entry (in addition to onInputChange) */
   onMockServerSelect?: (url: string) => void;
-  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: React.KeyboardEvent) => void;
   /** Minimum width (px) for the suggestions dropdown — useful when the input is narrow */
   suggestionMinWidth?: number;
   /** z-index for the suggestions dropdown portal (default: 9998) */
@@ -86,6 +87,19 @@ export function SelectTextInputView({
   const selWidth = selectWidth ?? SELECT_WIDTH[resolvedSize];
   const accent = accentColor ?? 'var(--color-primary)';
 
+  // Vertical centring for the editable, done with real padding rather than only
+  // `align-content`. An EMPTY block container has no line box at all, so align-content has
+  // nothing to distribute and the caret would sit at the content-box top — visibly higher
+  // than the placeholder. Padding moves the content-box origin itself, so the caret is
+  // centred whether or not any text exists. `align-content` stays on as a safety net for
+  // any sub-pixel remainder once text is present.
+  // Floor of 16px = the rendered height of a .dui-var-token chip (12px text + its 1px
+  // borders). If the line box were shorter than the chip, the chip would overflow it and
+  // get baseline-aligned instead of centred, sitting a couple of px high.
+  const editorLineHeight = Math.max(Math.round(parseFloat(base.fontSize) * 1.2 * 10) / 10, 16);
+  // -2: the pill's own 1px top/bottom border, which the editable sits inside.
+  const editorPadY = Math.max(0, (parseFloat(base.height) - 2 - editorLineHeight) / 2);
+
   const [methodOpen, setMethodOpen] = useState(false);
   const [focused, setFocused] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -93,13 +107,87 @@ export function SelectTextInputView({
 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLDivElement>(null);
   const suppressRef = useRef(false);
+  const composingRef = useRef(false);
+  // Set when our keydown handler already serviced an undo/redo, so the matching
+  // beforeinput only has to block the browser's native pass, not re-apply.
+  const historyHandledRef = useRef(false);
+  const lastValueRef = useRef<string | null>(null);
+  // Own undo stack — rewriting innerHTML per keystroke destroys the native one.
+  const historyRef = useRef(createEditableHistory());
   const [methodDropPos, setMethodDropPos] = useState({ top: 0, left: 0, width: 0 });
   const [suggDropPos, setSuggDropPos] = useState({ top: 0, left: 0, width: 0 });
 
   const selectedOpt = selectOptions.find(o => o.value === selectValue);
   const selectColor = selectedOpt?.color ?? 'var(--color-text-primary)';
+
+  // ── Highlighted contentEditable text field (same {{var}} token engine as
+  //    HighlightedInputView, so REST/SOAP's unified method+URL bar colors variable
+  //    references identically to every other protocol's URL bar) ─────────────
+
+  useEffect(() => {
+    const el = inputRef.current;
+    if (!el) return;
+    el.innerHTML = buildHighlightedHTML(inputValue);
+    lastValueRef.current = inputValue;
+    historyRef.current.reset(inputValue, inputValue.length);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    const el = inputRef.current;
+    if (!el || lastValueRef.current === inputValue) return;
+    lastValueRef.current = inputValue;
+    const isFocused = document.activeElement === el;
+    const offset = isFocused ? getCaretOffset(el) : -1;
+    el.innerHTML = buildHighlightedHTML(inputValue);
+    if (isFocused && offset >= 0) setCaretOffset(el, offset);
+    // Externally-driven change (suggestion pick, tab switch, saved request load) —
+    // record it so undo can step back past it too.
+    historyRef.current.push(inputValue, offset >= 0 ? offset : inputValue.length);
+  }, [inputValue]);
+
+  /** Write a value straight into the DOM + caret, bypassing the history recorder. */
+  const applyValue = useCallback((text: string, caret: number) => {
+    const el = inputRef.current;
+    if (!el) return;
+    el.innerHTML = buildHighlightedHTML(text);
+    setCaretOffset(el, Math.min(caret, text.length));
+    lastValueRef.current = text;
+    onInputChange(text);
+  }, [onInputChange]);
+
+  const handleEditorInput = useCallback(() => {
+    if (composingRef.current) return;
+    const el = inputRef.current;
+    if (!el) return;
+    const text = el.innerText.replace(/\n/g, '');
+    const offset = getCaretOffset(el);
+    el.innerHTML = buildHighlightedHTML(text);
+    setCaretOffset(el, offset);
+    lastValueRef.current = text;
+    historyRef.current.push(text, offset);
+    onInputChange(text);
+  }, [onInputChange]);
+
+  // preventDefault() on keydown does NOT reliably stop a contentEditable's native undo
+  // (the Edit menu and some key routes bypass it). When it slips through, the browser
+  // splices the old DOM back in *on top of* the value we just wrote, which is what
+  // duplicated the text. beforeinput/historyUndo is the authoritative place to block it.
+  const handleBeforeInput = (e: React.FormEvent<HTMLDivElement>) => {
+    const inputType = (e.nativeEvent as InputEvent).inputType;
+    if (inputType !== 'historyUndo' && inputType !== 'historyRedo') return;
+    e.preventDefault();
+    if (historyHandledRef.current) { historyHandledRef.current = false; return; }
+    const entry = inputType === 'historyUndo' ? historyRef.current.undo() : historyRef.current.redo();
+    if (entry) applyValue(entry.text, entry.caret);
+  };
+
+  const handleEditorPaste = (e: React.ClipboardEvent) => {
+    e.preventDefault();
+    const text = e.clipboardData.getData('text/plain');
+    document.execCommand('insertText', false, text);
+  };
 
   // ── Filtered suggestions ──────────────────────────────────────────────────
 
@@ -210,7 +298,20 @@ export function SelectTextInputView({
     ...filteredSuggestions,
   ], [filteredMockServers, filteredSuggestions]);
 
-  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleInputKeyDown = (e: React.KeyboardEvent) => {
+    // Undo/redo must be handled by us: repainting innerHTML per keystroke wiped the
+    // browser's native history, so letting the default through replays a stale DOM and
+    // corrupts the text (see createEditableHistory).
+    if (isUndoKey(e) || isRedoKey(e)) {
+      e.preventDefault();
+      historyHandledRef.current = true;
+      const entry = isUndoKey(e) ? historyRef.current.undo() : historyRef.current.redo();
+      if (entry) applyValue(entry.text, entry.caret);
+      return;
+    }
+    // contentEditable inserts a <div>/<br> on Enter by default — this is a single-line
+    // field, so always suppress that; the suggestion-select branch below still runs.
+    if (e.key === 'Enter') e.preventDefault();
     if (showSuggestions && allItems.length > 0) {
       if (e.key === 'ArrowDown') { e.preventDefault(); setHighlightedIdx(i => Math.min(i + 1, allItems.length - 1)); return; }
       if (e.key === 'ArrowUp')   { e.preventDefault(); setHighlightedIdx(i => Math.max(i - 1, -1)); return; }
@@ -277,25 +378,64 @@ export function SelectTextInputView({
         {/* Divider */}
         <div style={{ width: 1, alignSelf: 'stretch', background: 'var(--color-input-border)', flexShrink: 0, margin: '4px 0' }} />
 
-        {/* URL text input */}
-        <input
-          ref={inputRef}
-          value={inputValue}
-          onChange={e => onInputChange(e.target.value)}
-          placeholder={placeholder}
-          disabled={disabled}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setTimeout(() => setFocused(false), 120)}
-          onKeyDown={handleInputKeyDown}
-          style={{
-            flex: 1, height: '100%', padding: `0 ${base.paddingX}`,
-            border: 'none', outline: 'none', background: 'transparent',
-            fontSize: base.fontSize,
-            color: base.color ?? 'var(--color-text-primary)',
-            fontFamily: 'inherit',
-            fontStyle: base.fontStyle,
-          }}
-        />
+        {/* URL text field — contentEditable so {{var}} tokens can render as colored
+            chips inline, same engine as HighlightedInputView (GraphQL/gRPC/MCP/AI/
+            WS/SSE/SIO/MQTT), just laid out inside this component's single bordered
+            method+URL pill instead of a second separate box. */}
+        <div style={{ flex: 1, minWidth: 0, position: 'relative', height: '100%' }}>
+          {/* Hidden while focused — same reason as HighlightedInputView: this overlay is
+              positioned, so it paints above the editor's caret and made the cursor look
+              dimmed/behind the grey placeholder text. */}
+          {!inputValue && !focused && placeholder && (
+            <span
+              className="dui_select-text__placeholder"
+              style={{
+                position: 'absolute', left: base.paddingX, top: 0, right: base.paddingX,
+                lineHeight: base.height,
+                pointerEvents: 'none',
+                fontSize: base.fontSize,
+                color: 'var(--color-text-muted)',
+                whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+              }}
+            >
+              {placeholder}
+            </span>
+          )}
+          <div
+            ref={inputRef}
+            contentEditable={!disabled}
+            suppressContentEditableWarning
+            spellCheck={false}
+            onInput={handleEditorInput}
+            onBeforeInput={handleBeforeInput}
+            onPaste={handleEditorPaste}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setTimeout(() => setFocused(false), 120)}
+            onKeyDown={handleInputKeyDown}
+            onCompositionStart={() => { composingRef.current = true; }}
+            onCompositionEnd={() => { composingRef.current = false; handleEditorInput(); }}
+            className="dui_select-text__editor"
+            style={{
+              height: '100%', width: '100%',
+              padding: `${editorPadY}px ${base.paddingX}`,
+              boxSizing: 'border-box',
+              // display/align-content live in SelectTextInputView.css (block, never flex)
+              // so they can carry an @supports fallback — see the note there.
+              outline: 'none', background: 'transparent',
+              fontSize: base.fontSize,
+              // An explicit small line-height, never the field height: a full-height line
+              // box would make the selection highlight and caret span the whole field.
+              // Paired with editorPadY above, which is what actually centres it.
+              lineHeight: `${editorLineHeight}px`,
+              color: base.color ?? 'var(--color-text-primary)',
+              fontFamily: 'inherit',
+              fontStyle: base.fontStyle,
+              whiteSpace: 'nowrap', overflow: 'hidden',
+              cursor: disabled ? 'not-allowed' : 'text',
+              caretColor: base.color ?? 'var(--color-text-primary)',
+            }}
+          />
+        </div>
       </div>
 
       {/* Method dropdown portal */}

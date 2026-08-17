@@ -33,9 +33,28 @@
   outline: none;
   caret-color: var(--color-text-primary);
   box-sizing: border-box;
+  /* Vertical centring WITHOUT a flex formatting context. Flex turns every text run and
+     token span into a separate flex item, and the free space to the right of the text
+     then belongs to no item at all — so clicking past the end of the text hit-tested to
+     the wrong item and dropped the caret after the token instead of where you clicked
+     (arrow keys were fine because they walk the DOM, not hit-testing). `align-content`
+     on a block container centres the line box while leaving the children in normal
+     inline flow, so caret placement behaves like any ordinary input.
+     A tall `line-height` is NOT an option here: it would inflate the selection
+     highlight and the caret to the field's full height. */
   display: block;
-  align-items: center;
+  align-content: center;
   cursor: text;
+}
+
+/* Pre-2024 engines without block-container align-content: keep it centred rather than
+   letting the text sit against the top edge. Reintroduces the click quirk above, but a
+   visibly broken field is worse than a quirky one. */
+@supports not (align-content: center) {
+  .dui_highlighted-input__editor {
+    display: flex;
+    align-items: center;
+  }
 }
 
 .dui_highlighted-input__editor:hover {
@@ -47,23 +66,43 @@
   box-shadow: none;
 }
 
-/* Element: {{variable}} token chip */
-.dui_highlighted-input__token {
+/* Element: {{variable}} token chip — same purple var-pill language used by
+   PromptLibraryEditorView/AgentPromptEditor, so every "{{var}}"-carrying field in
+   the app (URL bars, prompt editors) reads as the same visual token, not a
+   per-component reinterpretation. Shared with SelectTextInputView.css. */
+.dui-var-token {
   display: inline-block;
-  color: var(--color-primary);
+  color: var(--color-var-pill-text, #c084fc);
   font-size: 12px;
   font-weight: 600;
-  background: color-mix(in srgb, var(--color-primary) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--color-primary) 28%, transparent);
+  background: var(--color-var-pill-bg, rgba(139, 92, 246, 0.18));
+  border: 1px solid var(--color-var-pill-border, rgba(139, 92, 246, 0.38));
   border-radius: 4px;
   padding: 0 2px;
-  line-height: 17px;
-  vertical-align: middle;
+  /* Compact and size-independent on purpose. The editor centers this span via
+     flex (see .dui_highlighted-input__editor), so this never needs to inherit or
+     guess the field's overall height — a `line-height: normal` box just tall
+     enough for its own 12px text is exactly what should be centered. (Earlier
+     attempts either hardcoded 17px, which fought vertical-align at most sizes, or
+     inherited the field's full line-height, which — combined with this box's own
+     border/padding — made the chip taller than the field itself.) */
+  line-height: normal;
   white-space: nowrap;
 }
 
-/* Modifier: escape token (warning color) */
-.dui_highlighted-input__token--escape {
+/* Dragging a text selection across the token's own translucent background blends
+   with the browser's default selection color, so the token reads as a different,
+   muddier hue than the plain text on either side of it during a drag — looks like
+   two different things got selected. Force the same selection color the rest of
+   the field would use so a selection spanning a token + plain text reads as one
+   uniform highlight, not two. */
+.dui-var-token::selection {
+  background: var(--vscode-editor-selectionBackground, rgba(58, 132, 255, 0.4));
+  color: inherit;
+}
+
+/* Modifier: escape token (warning color) — same line-height fix as .dui-var-token above */
+.dui-var-token--escape {
   display: inline-block;
   color: var(--color-warning);
   font-size: 12px;
@@ -72,9 +111,20 @@
   border: 1px solid color-mix(in srgb, var(--color-warning) 28%, transparent);
   border-radius: 4px;
   padding: 0 2px;
-  line-height: 17px;
-  vertical-align: middle;
+  /* Compact and size-independent on purpose. The editor centers this span via
+     flex (see .dui_highlighted-input__editor), so this never needs to inherit or
+     guess the field's overall height — a `line-height: normal` box just tall
+     enough for its own 12px text is exactly what should be centered. (Earlier
+     attempts either hardcoded 17px, which fought vertical-align at most sizes, or
+     inherited the field's full line-height, which — combined with this box's own
+     border/padding — made the chip taller than the field itself.) */
+  line-height: normal;
   white-space: nowrap;
+}
+
+.dui-var-token--escape::selection {
+  background: var(--vscode-editor-selectionBackground, rgba(58, 132, 255, 0.4));
+  color: inherit;
 }
 
 /* Suggestion portal items — identical to SelectTextInputView's dropdown rows

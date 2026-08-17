@@ -185,6 +185,9 @@ export type { FabViewProps, FabAction } from './components/button/FabView';
 export { DockView } from './components/layout/DockView';
 export type { DockViewProps, DockItem } from './components/layout/DockView';
 
+export { FanStackView } from './components/layout/FanStackView';
+export type { FanStackViewProps, FanStackItem } from './components/layout/FanStackView';
+
 export { BreadcrumbView } from './components/layout/BreadcrumbView';
 export type { BreadcrumbViewProps, BreadcrumbItem } from './components/layout/BreadcrumbView';
 

@@ -1,0 +1,110 @@
+/* Zero-size anchor: the fan is measured from its parent's centre and must
+   never take part in layout, so tiles can arc over surrounding content. */
+.dui_fanstack {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Sized to the tile ALONE. The label is taken out of flow below, because a
+   label inside the box would widen it and `translate(-50%)` would then centre
+   tile+label together — visibly knocking every tile off the anchor axis. */
+.dui_fanstack__item {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+  white-space: nowrap;
+  animation: dui-fanstack-in 260ms cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+}
+
+/* Tiles fly out from the anchor rather than fading in place — the arc should
+   read as "unstacking", the way Finder's fan does. */
+@keyframes dui-fanstack-in {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.3); }
+}
+
+/* ...and fold back into the anchor on close, instead of blinking out. The
+   implicit `from` is each tile's own resting transform, so this collapses
+   along the exact path it opened on. */
+@keyframes dui-fanstack-out {
+  to { opacity: 0; transform: translate(-50%, -50%) scale(0.3); }
+}
+
+/* Same specificity as .dui_fanstack__item, so this wins on source order.
+   `pointer-events: none` both blocks clicks on a tile that's collapsing away
+   and drops any :hover, so the tile/label hover states unwind on their own. */
+.dui_fanstack__item--closing {
+  animation: dui-fanstack-out var(--dui-fanstack-exit, 200ms) cubic-bezier(0.4, 0, 0.9, 0.4) forwards;
+  pointer-events: none;
+}
+
+.dui_fanstack__tile {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--dui-fan-accent) 45%, transparent);
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.34),
+    inset 0 0 0 1px color-mix(in srgb, var(--dui-fan-accent) 12%, transparent);
+  backdrop-filter: blur(12px);
+  transition: transform 150ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 150ms, background 150ms;
+}
+
+.dui_fanstack__item:hover .dui_fanstack__tile {
+  transform: scale(1.18);
+  background: color-mix(in srgb, var(--dui-fan-accent) 20%, var(--color-surface));
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.42),
+    0 0 0 3px color-mix(in srgb, var(--dui-fan-accent) 26%, transparent);
+}
+
+.dui_fanstack__item:active .dui_fanstack__tile { transform: scale(1.04); }
+
+.dui_fanstack__label {
+  position: absolute;
+  top: 50%;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  color: var(--color-text-primary, #fff);
+  background: color-mix(in srgb, var(--color-elevated, #1f2430) 92%, transparent);
+  border: 1px solid color-mix(in srgb, var(--dui-fan-accent) 32%, transparent);
+  padding: 3px 9px;
+  border-radius: 999px;
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  transition: opacity 150ms, transform 150ms;
+}
+
+/* Labels sit on the side the stack leans away from, so they can't run off
+   whichever screen edge the anchor is parked against. */
+.dui_fanstack--left .dui_fanstack__label {
+  right: calc(100% + 10px);
+  transform: translateY(-50%) translateX(6px);
+}
+.dui_fanstack--right .dui_fanstack__label {
+  left: calc(100% + 10px);
+  transform: translateY(-50%) translateX(-6px);
+}
+
+/* Label rides in on hover, so a resting stack stays clean — same as Finder. */
+.dui_fanstack--left .dui_fanstack__item:hover .dui_fanstack__label,
+.dui_fanstack--left .dui_fanstack__item:focus-visible .dui_fanstack__label,
+.dui_fanstack--right .dui_fanstack__item:hover .dui_fanstack__label,
+.dui_fanstack--right .dui_fanstack__item:focus-visible .dui_fanstack__label {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}

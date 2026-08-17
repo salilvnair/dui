@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { SearchIcon, ServerIcon } from '../../../icons';
 import type { DuiSize } from '../../core/DuiTypes';
 import { useInputBase } from '../../core/InputBase';
+import { buildHighlightedHTML, getCaretOffset, setCaretOffset, createEditableHistory, isUndoKey, isRedoKey } from '../../core/VariableToken';
 import './HighlightedInputView.css';
 
 export interface MockServerSuggestion {
@@ -31,48 +32,6 @@ export interface HighlightedInputViewProps {
   className?: string;
 }
 
-const TOKEN_RE   = /(\{\{[\w.\-]+\}\}|\$\{[\w.\-]+\})/g;
-const ESCAPE_RE  = /(\$daakia_\{[\w.\-]+\}_\$)/g;
-
-function buildHTML(text: string): string {
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(ESCAPE_RE, '<span class="dui_highlighted-input__token--escape">$1</span>')
-    .replace(TOKEN_RE,  '<span class="dui_highlighted-input__token">$1</span>');
-}
-
-function getCaretOffset(el: HTMLElement): number {
-  const sel = window.getSelection();
-  if (!sel || sel.rangeCount === 0) return 0;
-  const range = sel.getRangeAt(0);
-  const pre = range.cloneRange();
-  pre.selectNodeContents(el);
-  pre.setEnd(range.endContainer, range.endOffset);
-  return pre.toString().length;
-}
-
-function setCaretOffset(el: HTMLElement, offset: number): void {
-  const sel = window.getSelection();
-  if (!sel) return;
-  const range = document.createRange();
-  let remaining = offset;
-  const walk = (node: Node): boolean => {
-    if (node.nodeType === Node.TEXT_NODE) {
-      const len = node.textContent?.length ?? 0;
-      if (remaining <= len) { range.setStart(node, remaining); range.collapse(true); return true; }
-      remaining -= len;
-      return false;
-    }
-    for (const child of Array.from(node.childNodes)) { if (walk(child)) return true; }
-    return false;
-  };
-  if (!walk(el)) { range.selectNodeContents(el); range.collapse(false); }
-  sel.removeAllRanges();
-  sel.addRange(range);
-}
-
 export function HighlightedInputView({
   value,
   onChange,
@@ -91,10 +50,25 @@ export function HighlightedInputView({
 }: HighlightedInputViewProps) {
   const base = useInputBase(size);
   const resolvedHeight = height ?? parseInt(base.height, 10);
+
+  // Vertical centring via real padding, not `align-content` alone. An EMPTY block container
+  // has no line box for align-content to distribute, so the caret would sit at the
+  // content-box top — visibly above the centred placeholder. Padding moves the content-box
+  // origin itself, so the caret is centred with or without text. See HighlightedInputView.css.
+  // 13px is the editor's font-size from that stylesheet; -2 is its own 1px top/bottom border.
+  // Floor of 16px = the rendered height of a .dui-var-token chip (12px text + its 1px
+  // borders); a shorter line box would baseline-align the chip instead of centring it.
+  const editorLineHeight = Math.max(Math.round(13 * 1.2 * 10) / 10, 16);
+  const editorPadY = Math.max(0, (resolvedHeight - 2 - editorLineHeight) / 2);
   const resolvedBorderRadius = borderRadius ?? base.borderRadius;
   const editorRef  = useRef<HTMLDivElement>(null);
   const composing  = useRef(false);
   const lastValue  = useRef<string | null>(null);
+  // Own undo stack — rewriting innerHTML per keystroke destroys the native one.
+  const historyRef = useRef(createEditableHistory());
+  // Set when keydown already serviced an undo/redo, so the matching beforeinput only has
+  // to block the browser's native pass rather than apply a second one.
+  const historyHandledRef = useRef(false);
   const [focused,     setFocused]     = useState(false);
   const [selectedIdx, setSelectedIdx] = useState(0);
   const [dropPos,     setDropPos]     = useState({ top: 0, left: 0, width: 0 });
@@ -105,8 +79,9 @@ export function HighlightedInputView({
   useEffect(() => {
     const el = editorRef.current;
     if (!el) return;
-    el.innerHTML = buildHTML(value);
+    el.innerHTML = buildHighlightedHTML(value);
     lastValue.current = value;
+    historyRef.current.reset(value, value.length);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Sync when value is changed externally by parent
@@ -116,9 +91,22 @@ export function HighlightedInputView({
     lastValue.current = value;
     const isFocused = document.activeElement === el;
     const offset = isFocused ? getCaretOffset(el) : -1;
-    el.innerHTML = buildHTML(value);
+    el.innerHTML = buildHighlightedHTML(value);
     if (isFocused && offset >= 0) setCaretOffset(el, offset);
+    // External change (suggestion pick, tab switch, saved request) — record so undo can
+    // step back past it too.
+    historyRef.current.push(value, offset >= 0 ? offset : value.length);
   }, [value]);
+
+  /** Write a value straight into the DOM + caret, bypassing the history recorder. */
+  const applyValue = useCallback((text: string, caret: number) => {
+    const el = editorRef.current;
+    if (!el) return;
+    el.innerHTML = buildHighlightedHTML(text);
+    setCaretOffset(el, Math.min(caret, text.length));
+    lastValue.current = text;
+    onChange(text);
+  }, [onChange]);
 
   const filtered = useMemo(() => {
     if (!focused || !suggestions.length) return [];
@@ -146,7 +134,7 @@ export function HighlightedInputView({
   const handleSelect = (url: string) => {
     const el = editorRef.current;
     if (el) {
-      el.innerHTML = buildHTML(url);
+      el.innerHTML = buildHighlightedHTML(url);
       const range = document.createRange();
       range.selectNodeContents(el);
       range.collapse(false);
@@ -165,9 +153,10 @@ export function HighlightedInputView({
     if (!el) return;
     const text = el.innerText.replace(/\n/g, '');
     const offset = getCaretOffset(el);
-    el.innerHTML = buildHTML(text);
+    el.innerHTML = buildHighlightedHTML(text);
     setCaretOffset(el, offset);
     lastValue.current = text;
+    historyRef.current.push(text, offset);
     onChange(text);
   }, [onChange]);
 
@@ -177,6 +166,15 @@ export function HighlightedInputView({
   ], [filteredMockServers, filtered]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
+    // We must own undo/redo: repainting innerHTML per keystroke wiped the browser's
+    // native history, so the default would replay a stale DOM and corrupt the text.
+    if (isUndoKey(e) || isRedoKey(e)) {
+      e.preventDefault();
+      historyHandledRef.current = true;
+      const entry = isUndoKey(e) ? historyRef.current.undo() : historyRef.current.redo();
+      if (entry) applyValue(entry.text, entry.caret);
+      return;
+    }
     if (e.key === 'Enter') e.preventDefault();
     if (allDropItems.length > 0) {
       if (e.key === 'ArrowDown') { e.preventDefault(); setSelectedIdx(i => (i + 1) % allDropItems.length); return; }
@@ -185,6 +183,17 @@ export function HighlightedInputView({
       if (e.key === 'Escape')    { setFocused(false); return; }
     }
     onKeyDown?.(e);
+  };
+
+  // Authoritative block for the browser's own undo — keydown preventDefault alone lets it
+  // through on some paths, and it then re-inserts the old DOM on top of ours (duplicated text).
+  const handleBeforeInput = (e: React.FormEvent<HTMLDivElement>) => {
+    const inputType = (e.nativeEvent as InputEvent).inputType;
+    if (inputType !== 'historyUndo' && inputType !== 'historyRedo') return;
+    e.preventDefault();
+    if (historyHandledRef.current) { historyHandledRef.current = false; return; }
+    const entry = inputType === 'historyUndo' ? historyRef.current.undo() : historyRef.current.redo();
+    if (entry) applyValue(entry.text, entry.caret);
   };
 
   const handlePaste = (e: React.ClipboardEvent) => {
@@ -197,7 +206,12 @@ export function HighlightedInputView({
 
   return (
     <div className={`dui_highlighted-input ${className}`} style={style}>
-      {!value && placeholder && (
+      {/* Hidden while focused: the placeholder is an absolutely-positioned overlay, and a
+          positioned element paints above the static editor's inline content — including the
+          caret — so a focused empty field showed the cursor dimmed behind grey placeholder
+          text. Raising the editor instead is not an option here: its background is opaque
+          and would hide the placeholder entirely. */}
+      {!value && !focused && placeholder && (
         <span className="dui_highlighted-input__placeholder" style={{ lineHeight: `${resolvedHeight}px` }}>
           {placeholder}
         </span>
@@ -208,6 +222,7 @@ export function HighlightedInputView({
         suppressContentEditableWarning
         spellCheck={false}
         onInput={handleInput}
+        onBeforeInput={handleBeforeInput}
         onKeyDown={handleKeyDown}
         onPaste={handlePaste}
         onFocus={() => setFocused(true)}
@@ -215,7 +230,19 @@ export function HighlightedInputView({
         onCompositionStart={() => { composing.current = true; }}
         onCompositionEnd={() => { composing.current = false; handleInput(); }}
         className={`dui_highlighted-input__editor${disabled ? ' opacity-60' : ''}`}
-        style={{ height: resolvedHeight, lineHeight: `${resolvedHeight}px`, borderRadius: resolvedBorderRadius, borderColor: focused ? accent : undefined }}
+        // lineHeight 'normal' on purpose: the editor is a flex container that already
+        // centers its children, so a full-height line-height's only visible effect is
+        // inflating the text-selection highlight and caret to the field's entire
+        // height — a floor-to-ceiling block that touches the border and reads as
+        // "everything got selected". Normal = native-input-like text-height selection.
+        style={{
+          height: resolvedHeight,
+          lineHeight: `${editorLineHeight}px`,
+          paddingTop: editorPadY,
+          paddingBottom: editorPadY,
+          borderRadius: resolvedBorderRadius,
+          borderColor: focused ? accent : undefined,
+        }}
       />
       {showDrop && createPortal(
         <div

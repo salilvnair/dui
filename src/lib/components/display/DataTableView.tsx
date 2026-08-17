@@ -104,7 +104,16 @@ export function DataTableView<T extends Record<string, unknown>>({
         borderRadius: '6px',
         overflow: 'hidden',
         minWidth: 360,
-        ...(pushMode ? {} : { maxHeight, display: 'flex', flexDirection: 'column' }),
+        // flexShrink: 0 — when this table is itself a child of some OTHER
+        // flex-column container (e.g. a page's scrollable content area),
+        // that ancestor's default flex-shrink:1 + this box's own overflow:
+        // hidden (which resolves its automatic min-height to 0, per the flex
+        // spec) let the ancestor squeeze it down toward 0 to avoid its own
+        // scroll — confirmed via measurement (collapsed to ~35-63px instead
+        // of its real ~170-214px content height) — instead of the page
+        // scrolling normally like every other settings panel. Refusing to
+        // shrink here restores that normal behavior.
+        ...(pushMode ? {} : { maxHeight, display: 'flex', flexDirection: 'column', flexShrink: 0 }),
       }}
     >
       {/* Header */}
@@ -148,8 +157,15 @@ export function DataTableView<T extends Record<string, unknown>>({
         ))}
       </div>
 
-      {/* Body — push mode: natural flow so expanded rows push siblings; scroll mode: body scrolls within maxHeight */}
-      <div style={pushMode ? {} : { flex: 1, overflowY: 'auto' }}>
+      {/* Body — push mode: natural flow so expanded rows push siblings; scroll mode:
+          body scrolls within maxHeight. `flex: 1` (flex-basis: 0%) would force this
+          to collapse to its min-content height regardless of actual row content —
+          confirmed via measurement (needed 170px, given 35px) — since the outer
+          container's height is itself content-derived (maxHeight only caps it, it
+          doesn't stretch it), so there's no "extra space" for flex-grow to hand out.
+          flex-basis: auto sizes the body to its content first; flex-shrink: 1 still
+          lets it yield to overflow-y: auto once actual content exceeds maxHeight. */}
+      <div style={pushMode ? {} : { flex: '1 1 auto', overflowY: 'auto' }}>
         {sorted.length === 0 ? (
           <EmptyStateView title={emptyTitle} message={emptyMessage} compact />
         ) : (
