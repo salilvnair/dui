@@ -17,6 +17,13 @@ export interface DropDownButtonViewProps {
   items: ContextMenuItem[];
   accentColor?: string;
   disabled?: boolean;
+  /**
+   * Disables only the primary (label) half, leaving the chevron and its menu usable.
+   * For the common case where the main action needs valid input but the dropdown holds
+   * the very items that get you there (import, reset, clear) — `disabled` would trap
+   * the user, this wouldn't.
+   */
+  primaryDisabled?: boolean;
   onPrimaryClick?: () => void;
   className?: string;
   /** Dropdown alignment. 'right' keeps menu right-edge aligned with button (opens leftward). */
@@ -32,6 +39,7 @@ export function DropDownButtonView({
   items,
   accentColor,
   disabled = false,
+  primaryDisabled = false,
   onPrimaryClick,
   className = '',
   align = 'auto',
@@ -44,6 +52,9 @@ export function DropDownButtonView({
   const text = base.fontSize;
   const px = base.paddingX;
   const radius = rounded ? base.borderRadius : '0px';
+
+  // The label half is off when the whole control is off, or when only it was singled out.
+  const primaryOff = disabled || primaryDisabled;
 
   const isPrimary = variant === 'primary';
   const isDanger  = variant === 'danger';
@@ -78,7 +89,7 @@ export function DropDownButtonView({
         {/* Primary label side */}
         <button
           type="button"
-          disabled={disabled}
+          disabled={primaryOff}
           onClick={onPrimaryClick}
           className="dui_dropdown-button__label"
           style={{
@@ -87,7 +98,11 @@ export function DropDownButtonView({
             display: 'flex', alignItems: 'center', gap: base.gap,
             fontSize: text, fontWeight: 500,
             border: 'none', color: 'inherit',
-            cursor: disabled ? 'default' : 'pointer', fontFamily: 'inherit',
+            // The wrapper already dims when the whole control is disabled — dim just this
+            // half when it's the only part that's off, so the chevron still reads as live.
+            opacity: primaryDisabled && !disabled ? 0.5 : 1,
+            transition: 'opacity 120ms',
+            cursor: primaryOff ? 'default' : 'pointer', fontFamily: 'inherit',
           }}
         >
           {icon && (

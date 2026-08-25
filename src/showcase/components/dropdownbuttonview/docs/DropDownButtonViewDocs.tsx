@@ -33,6 +33,7 @@ export function DropDownButtonViewDocs() {
           { name: 'rounded', type: 'boolean', default: 'true', description: 'true = token border-radius on the outer wrapper and dropdown. false = 0px square.' },
           { name: 'accentColor', type: 'string', description: 'Override the accent color for the primary variant background.' },
           { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables both the primary button and the chevron. Reduces opacity to 50%.' },
+          { name: 'primaryDisabled', type: 'boolean', default: 'false', description: 'Disables only the primary button, dimming that half while the chevron and its menu stay usable. Use when the main action needs valid input but the menu holds the items that fix it.' },
           { name: 'onPrimaryClick', type: '() => void', description: 'Called when the user clicks the label/icon section (not the chevron).' },
           { name: 'align', type: "'auto' | 'left' | 'right'", default: "'auto'", description: "Dropdown alignment relative to the button. 'right' keeps the menu right-edge aligned with the button (opens leftward)." },
           { name: 'className', type: 'string', description: 'Additional class names for the outer wrapper div.' },
