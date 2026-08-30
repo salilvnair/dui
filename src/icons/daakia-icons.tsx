@@ -74,6 +74,35 @@ export function SelectAllIcon(props: IconProps) {
   );
 }
 
+/**
+ * A ticked checkbox — the multi-select mark.
+ *
+ * Distinct from CheckCircleIcon, which is a circle and reads as "done", and
+ * from ChecklistIcon, which is a to-do list. This is the shape of an actual
+ * checkbox, so it belongs on any control that turns checkboxes on.
+ */
+export function CheckSquareIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      {/* The tick breaks out of the box's top-right corner, which is what
+          separates a ticked checkbox from a box with a tick sealed inside it
+          at small sizes — below about 14px the closed version reads as a
+          filled square. */}
+      <path d="M20 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h10" />
+      <polyline points="8.5 11.5 11.5 14.5 21 4.5" />
+    </svg>
+  );
+}
+
+/** The same mark, empty — for "nothing selected" next to CheckSquareIcon. */
+export function EmptySquareIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <rect x="3" y="4" width="17" height="17" rx="2" />
+    </svg>
+  );
+}
+
 export function SaveIcon(props: IconProps) {
   return (
     <svg {...withDefaults(props)}>
