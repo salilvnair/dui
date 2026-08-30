@@ -315,9 +315,13 @@ export function CalendarView({
                 <span
                   className="dui_calendar__rangebar"
                   style={{
+                    // Endpoints were a fully saturated accent block against an
+                    // 18% wash for the middle, so the two ends of a range
+                    // shouted while the span between them whispered. Same
+                    // family, one step stronger.
                     background: state === 'in-range'
                       ? `color-mix(in srgb, ${accent} 18%, transparent)`
-                      : accent,
+                      : `color-mix(in srgb, ${accent} 42%, transparent)`,
                     borderTopLeftRadius: connectLeft ? 0 : barRadius,
                     borderBottomLeftRadius: connectLeft ? 0 : barRadius,
                     borderTopRightRadius: connectRight ? 0 : barRadius,

@@ -146,6 +146,15 @@ export function SegmentedControlView({
         backgroundColor: 'var(--color-surface)',
         border: '1px solid var(--color-surface-border)',
         width: fullWidth ? '100%' : base.width,
+        // `fullWidth={false}` means "size to my content", and it has to hold
+        // even when the control is a flex item. An inline-flex box placed in a
+        // flex container is blockified, and the container's default
+        // `align-items: stretch` then pulls it to the full cross-axis width —
+        // so a control in an ordinary `flex flex-col` field wrapper rendered
+        // with its border drawn around a wide empty tail after the last
+        // segment. Opting out of the stretch makes the prop mean what it says;
+        // callers who want it stretched have `fullWidth`.
+        alignSelf: fullWidth ? 'stretch' : 'flex-start',
         boxSizing: 'border-box',
         flexShrink: 0,
         opacity: disabled ? 0.5 : 1,
