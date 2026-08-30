@@ -127,6 +127,13 @@ export function SideNavView({
 
   const renderLeafItem = (item: SideNavItem) => {
     const isActive = item.id === activeId;
+    // An accent given to this nav should tint its active row. Without this the
+    // row fell back to the app-wide sidenav token, so a section-coloured nav
+    // still highlighted in some other colour and `accentColor` looked broken.
+    const activeBg = accentColor
+      ? `color-mix(in srgb, ${accentColor} 18%, transparent)`
+      : 'var(--color-sidenav-active-bg)';
+    const activeFg = accentColor ?? 'var(--color-sidenav-active-text)';
     return (
       <div
         key={item.id}
@@ -138,15 +145,15 @@ export function SideNavView({
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           width: iconSquare, height: iconSquare, borderRadius: 8, margin: '1px auto',
           cursor: 'pointer',
-          background: isActive ? 'var(--color-sidenav-active-bg)' : 'transparent',
-          color: isActive ? 'var(--color-sidenav-active-text)' : 'var(--color-text-secondary)',
+          background: isActive ? activeBg : 'transparent',
+          color: isActive ? activeFg : 'var(--color-text-secondary)',
         } : {
           display: 'flex', alignItems: 'center', gap: base.gap,
           height: base.itemHeight, borderRadius: base.borderRadius,
           padding: `0 8px 0 ${base.paddingX}`,
           cursor: 'pointer', marginBottom: 1,
-          background: isActive ? 'var(--color-sidenav-active-bg)' : 'transparent',
-          color: isActive ? 'var(--color-sidenav-active-text)' : 'var(--color-text-secondary)',
+          background: isActive ? activeBg : 'transparent',
+          color: isActive ? activeFg : 'var(--color-text-secondary)',
         }}
       >
         {item.icon && (
