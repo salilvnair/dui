@@ -493,6 +493,21 @@ export type { KanbanBoardViewProps, KanbanColumn, KanbanCard } from './component
 export { SparklineView } from './components/display/SparklineView';
 export type { SparklineViewProps } from './components/display/SparklineView';
 
+// Hierarchical charts — the profiler idioms. Layout maths in hierarchy-layout,
+// which is exported so a caller can lay out without rendering.
+export { SunburstView } from './components/display/SunburstView';
+export type { SunburstViewProps } from './components/display/SunburstView';
+export { DonutView } from './components/display/DonutView';
+export type { DonutViewProps } from './components/display/DonutView';
+export { FlameGraphView } from './components/display/FlameGraphView';
+export type { FlameGraphViewProps } from './components/display/FlameGraphView';
+export {
+  sunburstLayout, flameLayout, donutLayout, totalOf, arcPath,
+} from './components/display/hierarchy-layout';
+export type {
+  HierarchyNode, SunburstSlice, FlameCell, DonutSlice,
+} from './components/display/hierarchy-layout';
+
 export { HeatmapCalendarView } from './components/display/HeatmapCalendarView';
 export type { HeatmapCalendarViewProps, HeatmapDay } from './components/display/HeatmapCalendarView';
 

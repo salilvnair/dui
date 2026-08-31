@@ -67,7 +67,8 @@
     "build": "vite build",
     "build:lib": "vite build --config vite.publish.config.ts",
     "prepublishOnly": "npm run build:lib",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run"
   },
   "dependencies": {
     "highlight.js": "^11.10.0",
@@ -110,6 +111,7 @@
     "vis-data": "^7.1.10",
     "vis-network": "^9.1.13",
     "vite": "^6.0.0",
-    "vite-plugin-dts": "^5.0.3"
+    "vite-plugin-dts": "^5.0.3",
+    "vitest": "^4.1.11"
   }
 }
