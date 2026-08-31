@@ -501,6 +501,18 @@ export { DonutView } from './components/display/DonutView';
 export type { DonutViewProps } from './components/display/DonutView';
 export { FlameGraphView } from './components/display/FlameGraphView';
 export type { FlameGraphViewProps } from './components/display/FlameGraphView';
+
+// Diagnostics — a finding, and the two lane charts it is usually read beside.
+export { FindingCardView } from './components/display/FindingCardView';
+export type { FindingCardViewProps, FindingSeverity } from './components/display/FindingCardView';
+export { SwimlaneChartView } from './components/display/SwimlaneChartView';
+export type {
+  SwimlaneChartViewProps, SwimlaneRow, SwimlaneSegment, SwimlaneMarker,
+} from './components/display/SwimlaneChartView';
+export { LaneChartView } from './components/display/LaneChartView';
+export type { LaneChartViewProps, LaneSeries, LaneMarker } from './components/display/LaneChartView';
+export { windowOf, place, placeAt, polyline, pathFor, areaFor } from './components/display/lane-scale';
+export type { Span, PlacedSpan } from './components/display/lane-scale';
 export {
   sunburstLayout, flameLayout, donutLayout, totalOf, arcPath,
 } from './components/display/hierarchy-layout';
