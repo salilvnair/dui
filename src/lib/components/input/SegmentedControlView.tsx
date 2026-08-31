@@ -36,6 +36,16 @@ export interface SegmentedControlViewProps {
   borderRadius?: DuiRadius | number;
   /** Inactive label text color override. */
   color?: string;
+  /**
+   * How much room the control takes.
+   *
+   * `compact` is for a strip that sits in a dense toolbar beside a filename and
+   * a set of stats — a view switcher rather than a primary choice. It tightens
+   * every metric and, more importantly, recesses the track: a control that is
+   * carved INTO the toolbar reads as navigation, while one raised out of it
+   * competes with the buttons either side.
+   */
+  density?: 'comfortable' | 'compact';
   disabled?: boolean;
   className?: string;
   style?: React.CSSProperties;
@@ -58,10 +68,12 @@ export function SegmentedControlView({
   width,
   borderRadius,
   color,
+  density = 'comfortable',
   disabled = false,
   className = '',
   style,
 }: SegmentedControlViewProps) {
+  const compact = density === 'compact';
   const resolvedRadius = borderRadius ?? VARIANT_RADIUS[variant];
   const base = useTabBase(size, { width, borderRadius: resolvedRadius, color });
   const containerRef = useRef<HTMLDivElement>(null);
@@ -125,10 +137,17 @@ export function SegmentedControlView({
     }
   }, [disabled, options, value, onChange]);
 
-  const TRACK_PADDING = 3;
+  const TRACK_PADDING = compact ? 2 : 3;
+  /*
+    Concentric: the track's radius is the segment's plus the padding between
+    them, so the two curves nest instead of fighting. Compact pins the segment
+    to 4px rather than inheriting the size token's larger radius — at 26px tall
+    a pill-shaped segment reads as a chip, which is a different control.
+  */
+  const segRadius = compact ? '4px' : base.borderRadius;
   const trackRadius = variant === 'pointy'
-    ? base.borderRadius
-    : `calc(${base.borderRadius} + ${TRACK_PADDING}px)`;
+    ? segRadius
+    : `calc(${segRadius} + ${TRACK_PADDING}px)`;
 
   return (
     <div
@@ -140,10 +159,15 @@ export function SegmentedControlView({
       style={{
         display: 'inline-flex',
         position: 'relative',
-        height: base.height,
+        height: compact ? 26 : base.height,
         padding: TRACK_PADDING,
         borderRadius: trackRadius,
-        backgroundColor: 'var(--color-surface)',
+        // Recessed, not raised. `--color-input-bg` is the token for a surface
+        // the UI is cut into; falling back to the panel keeps it sane in
+        // themes that do not define one.
+        backgroundColor: compact
+          ? 'var(--color-input-bg, var(--color-panel))'
+          : 'var(--color-surface)',
         border: '1px solid var(--color-surface-border)',
         width: fullWidth ? '100%' : base.width,
         // `fullWidth={false}` means "size to my content", and it has to hold
@@ -173,7 +197,7 @@ export function SegmentedControlView({
             left: indicator.left,
             width: indicator.width,
             height: `calc(100% - ${TRACK_PADDING * 2}px)`,
-            borderRadius: base.borderRadius,
+            borderRadius: segRadius,
             // Translucent accent wash + hairline, not a solid block — the
             // active segment should read as highlighted, not glow like a CTA.
             backgroundColor: `color-mix(in srgb, ${accentColor} 22%, transparent)`,
@@ -201,9 +225,9 @@ export function SegmentedControlView({
               alignItems: 'center',
               justifyContent: 'center',
               gap: base.gap,
-              paddingLeft: base.paddingX,
-              paddingRight: base.paddingX,
-              fontSize: base.fontSize,
+              paddingLeft: compact ? 9 : base.paddingX,
+              paddingRight: compact ? 9 : base.paddingX,
+              fontSize: compact ? 11 : base.fontSize,
               fontWeight: isActive ? 700 : 500,
               height: '100%',
               border: 'none',
