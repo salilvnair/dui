@@ -182,8 +182,9 @@ export function SplitPanelView({
       <div
         style={{
           flexShrink: 0,
-          width: isHoriz ? 6 : '100%',
-          height: isHoriz ? '100%' : 6,
+          // 8px: the line is 1px, and a 1px drag target is a frustration.
+          width: isHoriz ? 8 : '100%',
+          height: isHoriz ? '100%' : 8,
           cursor: isHoriz ? 'col-resize' : 'row-resize',
           position: 'relative',
           userSelect: 'none',
@@ -197,6 +198,29 @@ export function SplitPanelView({
         onDoubleClick={handleDoubleClick}
         aria-label="Resize panels"
       >
+        {/*
+          The divider itself — a continuous line the full length of the split.
+
+          There was only ever the pill: a 44px lozenge floating in the middle
+          of an otherwise invisible 6px gap, which reads as a stray handle
+          rather than as an edge between two panels. A pane needs a boundary
+          whether or not you intend to drag it, and the pill then sits ON that
+          boundary as the part you grab.
+        */}
+        <div
+          style={{
+            position: 'absolute',
+            ...(isHoriz
+              ? { left: '50%', top: 0, bottom: 0, width: 1, transform: 'translateX(-50%)' }
+              : { top: '50%', left: 0, right: 0, height: 1, transform: 'translateY(-50%)' }),
+            background: pillActive
+              ? `color-mix(in srgb, ${accent} 55%, transparent)`
+              : 'var(--color-surface-border)',
+            transition: 'background 150ms ease',
+            pointerEvents: 'none',
+          }}
+        />
+
         {/* Pill indicator */}
         <div
           style={{
