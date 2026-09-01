@@ -3,6 +3,7 @@ import { useRef, useMemo, useEffect } from 'react';
 import { useAppTheme } from '../../../hooks/useAppTheme';
 import { getDkCompletions, DK_TYPE_DEFS } from '../../../services/dk-repl';
 import { initGraphQLCompletionProvider } from '../../../services/graphql-completion';
+import { jsonPathAt, xPathAt } from './doc-path';
 import { useEditorBase } from '../../core/EditorBase';
 import { EditorShell } from './EditorView.shell';
 import type { EditorViewProps, EditorLanguage, EditorOptions, EditorContextMenuMode } from './EditorView';
@@ -475,6 +476,73 @@ function buildOptions({ readOnly, fontSize, wordWrap, glyphMargin, contextMenuMo
 
 // ─── Shared mount logic (everything that isn't debug-specific) ────────────────
 
+/*
+  Copy the path to whatever is under the cursor.
+
+  Reading a value out of a document and then writing the expression that
+  selects it is a transcription job: you can see `id` on screen and still have
+  to count array indices and retype four ancestor names to say where it lives.
+
+  Registered here, in the shared mount, so every editor gets it — request
+  bodies, responses, schema views, the debug variant — and none of them can
+  drift into having it or not.
+
+  In Monaco's own menu rather than a DUI one, because this belongs beside Copy:
+  replacing the native menu would cost Cut, Paste, Go to Definition and the
+  command palette in order to add one item to them.
+*/
+function addPathActions(editor: any) {
+  const add = (
+    id: string,
+    label: string,
+    langId: string,
+    pathAt: (text: string, offset: number) => string | undefined,
+    order: number,
+  ) => editor.addAction({
+    id,
+    label,
+    /*
+      Offered only in the language it can answer for.
+
+      Monaco evaluates this against the model's language, so a JSON body shows
+      "Copy JSON Path" and an XML one shows "Copy XPath" — and a YAML or
+      plaintext editor shows neither, rather than an item that returns nothing.
+    */
+    /*
+      Unquoted on purpose.
+
+      Monaco's context-key parser reads the right-hand side as a bare token, so
+      `editorLangId == 'json'` compares the language against a string that
+      still has its quotes and is never equal to anything. The action stays
+      registered and runnable — which is how this hid: it worked when invoked
+      directly and simply never appeared in the menu.
+    */
+    precondition: `editorLangId == ${langId}`,
+    /*
+      Its own group, not `9_cutcopypaste`.
+
+      Monaco renders `9_cutcopypaste` as the icon bar across the top of the
+      menu, so a label-only action added to it is invisible — the item was
+      registered, enabled and firing, and simply had nowhere to draw itself.
+      A custom group id fared no better. `navigation` is the group Monaco
+      always draws as text, alongside Go to Symbol, and an order below 1 puts
+      this at the top of it.
+    */
+    contextMenuGroupId: 'navigation',
+    contextMenuOrder: order,
+    run: (ed: any) => {
+      const model = ed.getModel();
+      const position = ed.getPosition();
+      if (!model || !position) return;
+      const path = pathAt(model.getValue(), model.getOffsetAt(position));
+      if (path) void navigator.clipboard?.writeText(path);
+    },
+  });
+
+  add('dui.copyJsonPath', 'Copy JSON Path', 'json', jsonPathAt, 0.1);
+  add('dui.copyXPath', 'Copy XPath', 'xml', xPathAt, 0.2);
+}
+
 function mountCommon(
   editor: any,
   monacoInstance: any,
@@ -503,6 +571,8 @@ function mountCommon(
     autoClosingBrackets: 'always', autoClosingQuotes: 'always',
     autoClosingDelete: 'always', autoSurround: 'languageDefined', autoIndent: 'full',
   });
+
+  addPathActions(editor);
 
   // Clipboard overrides — modern Clipboard API (webview-compatible)
   const KM = monacoInstance.KeyMod;
