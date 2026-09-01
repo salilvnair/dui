@@ -47,16 +47,39 @@ function resolveWidth(w: ContextMenuWidth | undefined): string {
   return WIDTH_MAP[w] || 'max-content';
 }
 
+/** Where a submenu stops growing when nothing else decides for it. */
+const SUBMENU_FALLBACK_MAX = 288;
+
+/**
+ * How wide a submenu may get.
+ *
+ * A submenu is `max-content`, which has no opinion about how wide is too wide:
+ * one whose items carry descriptions grows to the longest sentence in it and
+ * lays every entry out on a single long line. Capping it makes the text wrap.
+ *
+ * The cap follows the parent rather than being a constant, because a submenu
+ * noticeably wider than the menu it came from reads as a different surface
+ * rather than a continuation of one. A little slack, since a submenu carries a
+ * chevron's worth of indent the parent does not.
+ */
+function submenuMaxWidth(w: ContextMenuWidth | undefined): number {
+  if (typeof w === 'number') return Math.round(w * 1.07);
+  return SUBMENU_FALLBACK_MAX;
+}
+
 // ─── MenuList — manages which sibling submenu is open ────────────────────────
 
 function MenuList({
   items,
   onClose,
   rounded,
+  subMax,
 }: {
   items: ContextMenuItem[];
   onClose: () => void;
   rounded: boolean;
+  /** Ceiling for any submenu opened from this list. */
+  subMax: number;
 }) {
   const [activeSubId, setActiveSubId] = useState<string | null>(null);
   return (
@@ -67,6 +90,7 @@ function MenuList({
           item={item}
           onClose={onClose}
           rounded={rounded}
+          subMax={subMax}
           activeSubId={activeSubId}
           onSubOpen={setActiveSubId}
         />
@@ -81,12 +105,14 @@ function MenuItemRow({
   item,
   onClose,
   rounded,
+  subMax,
   activeSubId,
   onSubOpen,
 }: {
   item: ContextMenuItem;
   onClose: () => void;
   rounded: boolean;
+  subMax: number;
   activeSubId: string | null;
   onSubOpen: (id: string | null) => void;
 }) {
@@ -210,10 +236,19 @@ function MenuItemRow({
             padding: '4px',
             minWidth: '200px',
             width: 'max-content',
+            /*
+              Capped, because `max-content` has no opinion about how wide is
+              too wide. A submenu of plain labels never reaches this; one whose
+              items carry descriptions would otherwise grow to the longest
+              sentence in it and lay every entry out on a single long line.
+              With a ceiling, the text wraps instead.
+            */
+            maxWidth: `${subMax}px`,
             boxShadow: '0 12px 40px rgba(0,0,0,.35)',
           }}
         >
-          <MenuList items={item.children!} onClose={onClose} rounded={rounded} />
+          <MenuList items={item.children!} onClose={onClose} rounded={rounded}
+                    subMax={subMax} />
         </div>,
         document.body
       )}
@@ -337,7 +372,8 @@ export function ContextMenuView({
         animation: 'dui_menu-in 120ms ease-out',
       }}
     >
-      <MenuList items={items} onClose={onClose} rounded={rounded} />
+      <MenuList items={items} onClose={onClose} rounded={rounded}
+                subMax={submenuMaxWidth(width)} />
     </div>,
     document.body
   );
