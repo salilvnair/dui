@@ -6,6 +6,15 @@ import './ContextMenuView.css';
 export interface ContextMenuItem {
   id: string;
   label: string;
+  /**
+   * A line under the label, for a menu whose entries need explaining.
+   *
+   * Most items do not want one — a menu of verbs reads faster without a
+   * paragraph under each. It earns its place where choosing wrongly costs
+   * something and the label alone cannot say so: an action that pauses a
+   * process, or one that is unavailable and owes the reader a reason.
+   */
+  description?: string;
   icon?: React.ReactNode;
   iconColor?: string;
   shortcut?: string;
@@ -141,28 +150,49 @@ function MenuItemRow({
         className={`dui_ctx-menu__item${danger ? ' dui_ctx-menu__item--danger' : ''}${item.disabled ? ' dui_ctx-menu__item--disabled' : ''}`}
         style={{
           display: 'flex',
-          alignItems: 'center',
+          // A described item is two lines, so the icon and chevron align to the
+          // label rather than floating against the middle of the block.
+          alignItems: item.description ? 'flex-start' : 'center',
           gap: '8px',
           padding: '8px 10px',
           borderRadius: rounded ? '5px' : '0px',
           fontSize: '12px',
           fontWeight: 500,
           cursor: item.disabled ? 'default' : 'pointer',
-          opacity: item.disabled ? 0.45 : 1,
+          // A disabled item that explains itself has to stay readable: the
+          // reason is the reason it is disabled, and dimming it to 45% makes
+          // the one thing worth reading the hardest thing to read.
+          opacity: item.disabled ? (item.description ? 0.75 : 0.45) : 1,
           color: danger ? 'var(--color-error)' : 'var(--color-text-secondary)',
           userSelect: 'none',
         }}
       >
         {item.icon && (
-          <span style={{ width: '14px', display: 'flex', alignItems: 'center', flexShrink: 0, color: item.iconColor ?? (danger ? 'var(--color-error)' : 'var(--color-text-muted)') }}>
+          <span style={{ width: '14px', display: 'flex', alignItems: 'center', flexShrink: 0, marginTop: item.description ? '1px' : 0, color: item.iconColor ?? (danger ? 'var(--color-error)' : 'var(--color-text-muted)') }}>
             {item.icon}
           </span>
         )}
-        <span style={{ flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.label}</span>
-        {item.shortcut && !hasSubmenu && (
-          <span style={{ fontSize: '10px', color: 'var(--color-text-muted)', marginLeft: '12px', flexShrink: 0 }}>{item.shortcut}</span>
+        {item.description ? (
+          <span style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: '2px' }}>
+            <span style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+              <span style={{ flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.label}</span>
+              {item.shortcut && !hasSubmenu && (
+                <span style={{ fontSize: '10px', color: 'var(--color-text-muted)', flexShrink: 0 }}>{item.shortcut}</span>
+              )}
+            </span>
+            <span style={{ fontSize: '10.5px', fontWeight: 400, lineHeight: 1.45, color: 'var(--color-text-muted)', whiteSpace: 'normal' }}>
+              {item.description}
+            </span>
+          </span>
+        ) : (
+          <>
+            <span style={{ flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.label}</span>
+            {item.shortcut && !hasSubmenu && (
+              <span style={{ fontSize: '10px', color: 'var(--color-text-muted)', marginLeft: '12px', flexShrink: 0 }}>{item.shortcut}</span>
+            )}
+          </>
         )}
-        {hasSubmenu && <ChevronRightIcon size={10} style={{ color: 'var(--color-text-muted)', flexShrink: 0, marginLeft: '8px' }} />}
+        {hasSubmenu && <ChevronRightIcon size={10} style={{ color: 'var(--color-text-muted)', flexShrink: 0, marginLeft: '8px', marginTop: item.description ? '3px' : 0 }} />}
       </div>
 
       {/* Recursive submenu — portalled; each level has its own sibling-coordination state via MenuList */}

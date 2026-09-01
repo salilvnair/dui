@@ -26,6 +26,21 @@ export interface SplitPanelViewProps {
   /** Fired when the handle is clicked without dragging (e.g. to collapse/expand) */
   onHandleClick?: () => void;
   /**
+   * Show only the first panel — no second panel, no handle, no divider.
+   *
+   * The reason to use this instead of rendering `first` on its own is that the
+   * tree keeps its shape. `first` stays the same element in the same position
+   * whether or not the second panel is showing, so React reconciles it rather
+   * than unmounting it.
+   *
+   * A caller that instead swaps between `<>{content}</>` and
+   * `<SplitPanelView first={content} />` moves that subtree to a new position
+   * on every toggle, so React tears it down and builds it again — and any
+   * state inside it goes with it: a parsed file, a scroll position, a
+   * half-filled form. It looks like a layout prop and behaves like a data one.
+   */
+  collapsed?: boolean;
+  /**
    * Tooltip shown on pill hover. Pass `null` to suppress.
    * Defaults to "Double-click to reset Alt+/ / Drag to resize" with a styled kbd badge.
    */
@@ -67,6 +82,7 @@ export function SplitPanelView({
   onResizeEnd,
   onHandleClick,
   pillTooltip = DEFAULT_PILL_TOOLTIP,
+  collapsed = false,
   style,
   className = '',
 }: SplitPanelViewProps) {
@@ -149,10 +165,14 @@ export function SplitPanelView({
     onResizeEnd?.(defaultSplit);
   };
 
+  // Collapsed, the first panel is the whole container — and its min size stops
+  // applying, since there is no second panel left for it to be squeezed by.
   const firstStyle: React.CSSProperties = isHoriz
-    ? { width: `${currentSplit}%`, minWidth: minFirst, height: '100%', overflow: 'hidden',
+    ? { width: collapsed ? '100%' : `${currentSplit}%`,
+        minWidth: collapsed ? 0 : minFirst, height: '100%', overflow: 'hidden',
         transition: dragging ? 'none' : `width 180ms ${EASE}` }
-    : { height: `${currentSplit}%`, minHeight: minFirst, width: '100%', overflow: 'hidden',
+    : { height: collapsed ? '100%' : `${currentSplit}%`,
+        minHeight: collapsed ? 0 : minFirst, width: '100%', overflow: 'hidden',
         transition: dragging ? 'none' : `height 180ms ${EASE}` };
 
   const secondStyle: React.CSSProperties = isHoriz
@@ -178,9 +198,12 @@ export function SplitPanelView({
     >
       <div ref={firstPaneRef} style={firstStyle}>{first}</div>
 
-      {/* Drag handle */}
+      {/* Drag handle. Hidden rather than removed when collapsed — it holds no
+          caller content, so there is nothing to preserve either way, and this
+          keeps the panels' positions in the tree fixed. */}
       <div
         style={{
+          display: collapsed ? 'none' : undefined,
           flexShrink: 0,
           // 8px: the line is 1px, and a 1px drag target is a frustration.
           width: isHoriz ? 8 : '100%',
@@ -264,7 +287,10 @@ export function SplitPanelView({
         )}
       </div>
 
-      <div style={secondStyle}>{second}</div>
+      {/* The second panel IS unmounted when collapsed — unlike the handle it
+          holds the caller's content, and a hidden pane that keeps running is
+          not what "collapsed" promises. */}
+      {!collapsed && <div style={secondStyle}>{second}</div>}
     </div>
   );
 }
