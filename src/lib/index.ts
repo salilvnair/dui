@@ -658,6 +658,7 @@ export type { TabViewProps, TabItem, TabVariant } from './components/input/TabVi
 
 export { EditorView, EditorLineNumbers, EditorWordWrap, EditorCursorStyle, EditorCursorBlinking, EditorRenderWhitespace, EditorFoldingControls, EditorMatchBrackets, EditorAutoIndent, EditorAcceptSuggestion } from './components/input/EditorView';
 export type { EditorViewProps, EditorLanguage, EditorContextMenuMode, EditorOptions } from './components/input/EditorView';
+export { jsonPathAt, jsonPathLevels, xPathAt, xPathLevels } from './components/input/doc-path';
 
 export { DebugEditorView } from './components/input/DebugEditorView';
 export type { DebugEditorViewProps, DebugEditorAdapter } from './components/input/DebugEditorView';
