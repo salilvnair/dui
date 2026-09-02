@@ -17,7 +17,14 @@ export type ModalMode = 'popout' | 'inline';
 export interface ModalViewProps {
   open: boolean;
   onClose: () => void;
-  title?: string;
+  /**
+   * Rendered in the header at title weight.
+   *
+   * A node rather than a string, so a header can carry two registers on one
+   * line — a subject and a quieter label for what you are doing to it — which
+   * a single styled string cannot express.
+   */
+  title?: React.ReactNode;
   /** Secondary text shown below the title in the header */
   subtitle?: React.ReactNode;
   /** Node rendered to the left of the title block — e.g. a coloured icon circle */
