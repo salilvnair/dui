@@ -860,6 +860,11 @@ export { DateInputView } from './components/input/DateInputView';
 export type { DateInputViewProps } from './components/input/DateInputView';
 
 export { DateTimeInputView } from './components/input/DateTimeInputView';
+export {
+  TimeZoneSelectView, localTimeZone, timeZoneList, zoneOffsetMs,
+  zonedToUtcMs, utcMsToZoned, offsetLabel,
+} from './components/input/TimeZoneSelectView';
+export type { TimeZoneSelectViewProps } from './components/input/TimeZoneSelectView';
 export type { DateTimeInputViewProps, IsoDateTime } from './components/input/DateTimeInputView';
 
 export { DateRangePickerView, DEFAULT_DATE_RANGE_PRESETS } from './components/input/DateRangePickerView';
