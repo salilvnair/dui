@@ -678,19 +678,22 @@ function mountCommon(
     },
   });
 
-  editor.addAction({
-    id: 'daakia.clipboard.paste', label: 'Paste',
-    keybindings: [KM.CtrlCmd | KC.KeyV],
-    run: async (ed: any) => {
-      try {
-        const text = await navigator.clipboard.readText();
-        if (text) {
-          const sel = ed.getSelection();
-          if (sel) ed.executeEdits('paste', [{ range: sel, text, forceMoveMarkers: true }]);
-        }
-      } catch { /* clipboard permission denied */ }
-    },
-  });
+  /*
+    Ctrl+V is deliberately NOT bound.
+
+    It was, to an action calling `navigator.clipboard.readText()` — which needs
+    the `clipboard-read` permission, and a webview denies it. The read threw,
+    an empty catch swallowed it, and paste did nothing at all: no error, no
+    text, no way to tell it apart from an empty clipboard. Binding the key also
+    preempted the browser's own paste, so the one mechanism that does work was
+    the one being replaced.
+
+    A real Ctrl+V is a user gesture that carries the clipboard contents with
+    it, so Monaco's built-in handling needs no permission and always works.
+    Reading the clipboard out of band is the thing that needs privileges, and
+    it is only worth attempting where there is no gesture to ride on — which
+    is why the context menu still tries it, with a fallback.
+  */
 
   editor.addAction({
     id: 'daakia.clipboard.selectAll', label: 'Select All',
