@@ -3,9 +3,10 @@ import { useRef, useMemo, useEffect } from 'react';
 import { useAppTheme } from '../../../hooks/useAppTheme';
 import { getDkCompletions, DK_TYPE_DEFS } from '../../../services/dk-repl';
 import { initGraphQLCompletionProvider } from '../../../services/graphql-completion';
-import { jsonPathAt, xPathAt } from './doc-path';
+import { jsonPathLevels, xPathLevels } from './doc-path';
 import { useEditorBase } from '../../core/EditorBase';
 import { EditorShell } from './EditorView.shell';
+import type { ContextMenuItem } from '../modal/ContextMenuView';
 import type { EditorViewProps, EditorLanguage, EditorOptions, EditorContextMenuMode } from './EditorView';
 
 // ─── Debug-only imports — only loaded when debugSupported=true ─────────────────
@@ -282,7 +283,8 @@ function EditorViewSimple({
   const resolvedTheme = theme === 'light' ? 'daakia-light' : 'daakia-dark';
 
   return (
-    <EditorShell bordered={bordered} containerHeight={containerHeight} contextMenuMode={contextMenuMode} contextMenuItems={contextMenuItems} accentColor={accentColor}>
+    <EditorShell bordered={bordered} containerHeight={containerHeight} contextMenuMode={contextMenuMode} contextMenuItems={contextMenuItems}
+                 itemsAt={(x, y) => menuItemsAt(editorRef.current, x, y, !!readOnly)} accentColor={accentColor}>
       <Editor
         height="100%"
         language={language}
@@ -365,7 +367,8 @@ function EditorViewDebug({
   const resolvedTheme = theme === 'light' ? 'daakia-light' : 'daakia-dark';
 
   return (
-    <EditorShell bordered={bordered} containerHeight={containerHeight} contextMenuMode={contextMenuMode} contextMenuItems={contextMenuItems} accentColor={accentColor}>
+    <EditorShell bordered={bordered} containerHeight={containerHeight} contextMenuMode={contextMenuMode} contextMenuItems={contextMenuItems}
+                 itemsAt={(x, y) => menuItemsAt(editorRef.current, x, y, !!readOnly)} accentColor={accentColor}>
       <Editor
         height="100%"
         language={language}
@@ -477,70 +480,134 @@ function buildOptions({ readOnly, fontSize, wordWrap, glyphMargin, contextMenuMo
 // ─── Shared mount logic (everything that isn't debug-specific) ────────────────
 
 /*
-  Copy the path to whatever is under the cursor.
+  Copy the path to whatever was right-clicked.
 
   Reading a value out of a document and then writing the expression that
   selects it is a transcription job: you can see `id` on screen and still have
   to count array indices and retype four ancestor names to say where it lives.
 
-  Registered here, in the shared mount, so every editor gets it — request
-  bodies, responses, schema views, the debug variant — and none of them can
-  drift into having it or not.
+  ── Why this is a menu item and not a Monaco action ──
 
-  In Monaco's own menu rather than a DUI one, because this belongs beside Copy:
-  replacing the native menu would cost Cut, Paste, Go to Definition and the
-  command palette in order to add one item to them.
+  It was an `editor.addAction`, which registers cleanly and runs correctly, and
+  never appeared in Monaco's context menu — not in `9_cutcopypaste`, which
+  draws as an icon bar and has nowhere to put a label; not in a group of its
+  own; not in `navigation`. The action was enabled and invocable the whole
+  time, which is exactly what made it hard to see: nothing was broken except
+  the one thing that mattered.
+
+  DUI's own menu renders it, and gets something Monaco's could not offer
+  anyway — a submenu, so every enclosing level is one click away rather than
+  only the leaf you happened to hit.
 */
-function addPathActions(editor: any) {
-  const add = (
-    id: string,
-    label: string,
-    langId: string,
-    pathAt: (text: string, offset: number) => string | undefined,
-    order: number,
-  ) => editor.addAction({
-    id,
-    label,
-    /*
-      Offered only in the language it can answer for.
+function pathItemsAt(editor: any, x: number, y: number): ContextMenuItem[] {
+  const model = editor?.getModel?.();
+  const position = editor?.getTargetAtClientPoint?.(x, y)?.position;
+  if (!model || !position) return [];
 
-      Monaco evaluates this against the model's language, so a JSON body shows
-      "Copy JSON Path" and an XML one shows "Copy XPath" — and a YAML or
-      plaintext editor shows neither, rather than an item that returns nothing.
-    */
-    /*
-      Unquoted on purpose.
+  const language = model.getLanguageId();
+  const text = model.getValue();
+  const offset = model.getOffsetAt(position);
 
-      Monaco's context-key parser reads the right-hand side as a bare token, so
-      `editorLangId == 'json'` compares the language against a string that
-      still has its quotes and is never equal to anything. The action stays
-      registered and runnable — which is how this hid: it worked when invoked
-      directly and simply never appeared in the menu.
-    */
-    precondition: `editorLangId == ${langId}`,
-    /*
-      Its own group, not `9_cutcopypaste`.
+  const levels = language === 'json' ? jsonPathLevels(text, offset)
+    : language === 'xml' ? xPathLevels(text, offset)
+      : [];
+  if (!levels.length) return [];
 
-      Monaco renders `9_cutcopypaste` as the icon bar across the top of the
-      menu, so a label-only action added to it is invisible — the item was
-      registered, enabled and firing, and simply had nowhere to draw itself.
-      A custom group id fared no better. `navigation` is the group Monaco
-      always draws as text, alongside Go to Symbol, and an order below 1 puts
-      this at the top of it.
-    */
-    contextMenuGroupId: 'navigation',
-    contextMenuOrder: order,
-    run: (ed: any) => {
-      const model = ed.getModel();
-      const position = ed.getPosition();
-      if (!model || !position) return;
-      const path = pathAt(model.getValue(), model.getOffsetAt(position));
-      if (path) void navigator.clipboard?.writeText(path);
+  /*
+    Innermost first. The thing you clicked is the thing you asked about, so it
+    is the first entry and every ancestor follows it outward — the reverse
+    reads as a list you have to scan to the end of.
+  */
+  const inner = [...levels].reverse();
+  return [{
+    id: 'dui.copyPath',
+    label: language === 'json' ? 'Copy JSON path' : 'Copy XPath',
+    children: inner.map((path, i) => ({
+      id: `dui.copyPath.${i}`,
+      label: path,
+      // The one you are most likely to want, named as such rather than left
+      // to be inferred from its position.
+      description: i === 0 ? 'what you clicked' : undefined,
+      onClick: () => { void navigator.clipboard?.writeText(path); },
+    })),
+  }];
+}
+
+/*
+  The editing basics, so choosing DUI's menu is not a downgrade.
+
+  Monaco's own menu carries cut, copy, paste and select-all for free; a
+  consumer that switches to the DUI menu to gain the path submenu would
+  otherwise lose them, and a right-click that cannot copy is a worse menu than
+  the one it replaced.
+*/
+function editItemsAt(editor: any, readOnly: boolean): ContextMenuItem[] {
+  const model = editor?.getModel?.();
+  if (!model) return [];
+  const selection = editor.getSelection?.();
+  const selected = selection && !selection.isEmpty() ? model.getValueInRange(selection) : '';
+
+  const items: ContextMenuItem[] = [
+    {
+      id: 'dui.copy',
+      label: 'Copy',
+      shortcut: 'Ctrl+C',
+      disabled: !selected,
+      onClick: () => { if (selected) void navigator.clipboard?.writeText(selected); },
     },
-  });
+    {
+      id: 'dui.selectAll',
+      label: 'Select all',
+      shortcut: 'Ctrl+A',
+      onClick: () => {
+        editor.setSelection(model.getFullModelRange());
+        editor.focus();
+      },
+    },
+  ];
 
-  add('dui.copyJsonPath', 'Copy JSON Path', 'json', jsonPathAt, 0.1);
-  add('dui.copyXPath', 'Copy XPath', 'xml', xPathAt, 0.2);
+  if (!readOnly) {
+    items.unshift({
+      id: 'dui.cut',
+      label: 'Cut',
+      shortcut: 'Ctrl+X',
+      disabled: !selected,
+      onClick: () => {
+        if (!selected) return;
+        void navigator.clipboard?.writeText(selected);
+        editor.executeEdits('dui.cut', [{ range: selection, text: '' }]);
+        editor.focus();
+      },
+    });
+    items.push({
+      id: 'dui.paste',
+      label: 'Paste',
+      shortcut: 'Ctrl+V',
+      onClick: async () => {
+        const text = await navigator.clipboard?.readText?.();
+        if (text == null) return;
+        const range = editor.getSelection() ?? model.getFullModelRange();
+        editor.executeEdits('dui.paste', [{ range, text }]);
+        editor.focus();
+      },
+    });
+  }
+  return items;
+}
+
+/*
+  Everything the DUI menu shows: what you clicked on, then the basics.
+
+  `readOnly` comes from the component's own prop rather than from
+  `editor.getOption(...)`, whose option ids are a numeric enum that shifts
+  between Monaco releases — pinning one here would silently offer Paste on a
+  response viewer the day the enum moved.
+*/
+function menuItemsAt(editor: any, x: number, y: number, readOnly: boolean): ContextMenuItem[] {
+  const path = pathItemsAt(editor, x, y);
+  const edit = editItemsAt(editor, readOnly);
+  if (!path.length) return edit;
+  return [...path, { id: 'dui.sep', label: '', separator: true }, ...edit];
 }
 
 function mountCommon(
@@ -571,8 +638,6 @@ function mountCommon(
     autoClosingBrackets: 'always', autoClosingQuotes: 'always',
     autoClosingDelete: 'always', autoSurround: 'languageDefined', autoIndent: 'full',
   });
-
-  addPathActions(editor);
 
   // Clipboard overrides — modern Clipboard API (webview-compatible)
   const KM = monacoInstance.KeyMod;

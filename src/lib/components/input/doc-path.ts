@@ -72,6 +72,32 @@ function renderJson(stack: JsonFrame[]): string {
  * question.
  */
 export function jsonPathAt(text: string, offset: number): string | undefined {
+  const stack = jsonStackAt(text, offset);
+  return stack && renderJson(stack);
+}
+
+/**
+ * Every level from the root down to the cursor.
+ *
+ * The innermost path is the one usually wanted and not the one always wanted:
+ * standing on `id` you may want the object that holds it, or the array, or the
+ * collection above that — and each is a different assertion to write. Offering
+ * the whole chain costs one submenu and saves re-deriving an ancestor by hand.
+ */
+export function jsonPathLevels(text: string, offset: number): string[] {
+  const stack = jsonStackAt(text, offset);
+  if (!stack) return [];
+  const out: string[] = [];
+  for (let i = 0; i <= stack.length; i++) {
+    const path = renderJson(stack.slice(0, i));
+    // A frame contributes nothing until its key is read — between a brace and
+    // the first key, say — and a level identical to its parent is not a level.
+    if (path !== out[out.length - 1]) out.push(path);
+  }
+  return out;
+}
+
+function jsonStackAt(text: string, offset: number): JsonFrame[] | undefined {
   if (!text) return undefined;
   const at = Math.max(0, Math.min(offset, text.length));
   const stack: JsonFrame[] = [];
@@ -90,7 +116,7 @@ export function jsonPathAt(text: string, offset: number): string | undefined {
       if (text[j] === ':' && top?.kind === 'object') top.key = value;
       // The cursor inside this token means the answer is the stack as it
       // stands, with the key above already applied if it was one.
-      if (at <= end) return renderJson(stack);
+      if (at <= end) return stack;
       i = end + 1;
       continue;
     }
@@ -110,7 +136,7 @@ export function jsonPathAt(text: string, offset: number): string | undefined {
     i++;
   }
 
-  return renderJson(stack);
+  return stack;
 }
 
 // ── XML ─────────────────────────────────────────────────────────────────────
@@ -147,6 +173,23 @@ function skipTo(text: string, from: number, close: string): number {
  * to check before pasting.
  */
 export function xPathAt(text: string, offset: number): string | undefined {
+  const stack = xmlStackAt(text, offset);
+  return stack?.length ? renderXml(stack) : undefined;
+}
+
+/**
+ * Every enclosing element, outermost first.
+ *
+ * The same reason as JSON, and more often wanted: an XPath is usually written
+ * against a container — `/order/items` — rather than against the leaf you
+ * happened to right-click.
+ */
+export function xPathLevels(text: string, offset: number): string[] {
+  const stack = xmlStackAt(text, offset) ?? [];
+  return stack.map((_, i) => renderXml(stack.slice(0, i + 1)));
+}
+
+function xmlStackAt(text: string, offset: number): XmlFrame[] | undefined {
   if (!text) return undefined;
   const at = Math.max(0, Math.min(offset, text.length));
   const stack: XmlFrame[] = [];
@@ -178,7 +221,7 @@ export function xPathAt(text: string, offset: number): string | undefined {
     if (inner.startsWith('/')) {
       // A closing tag containing the cursor still belongs to its element, so
       // the path is reported before the pop.
-      if (at <= close) return renderXml(stack);
+      if (at <= close) return stack;
       stack.pop();
       i = close + 1;
       continue;
@@ -197,10 +240,10 @@ export function xPathAt(text: string, offset: number): string | undefined {
 
     // The cursor inside the opening tag — on the name or an attribute — is on
     // this element, which has just been pushed.
-    if (at <= close) return renderXml(stack);
+    if (at <= close) return stack;
     if (selfClosing) stack.pop();
     i = close + 1;
   }
 
-  return stack.length ? renderXml(stack) : undefined;
+  return stack;
 }

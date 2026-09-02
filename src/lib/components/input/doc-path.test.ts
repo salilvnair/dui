@@ -7,7 +7,7 @@
  * a named one, and a document that is half-typed.
  */
 import { describe, it, expect } from 'vitest';
-import { jsonPathAt, xPathAt } from './doc-path';
+import { jsonPathAt, jsonPathLevels, xPathAt, xPathLevels } from './doc-path';
 
 /** Path at the first occurrence of `needle`, which is how it reads on screen. */
 const atJson = (text: string, needle: string, offset = 1) =>
@@ -210,5 +210,63 @@ describe('xPathAt', () => {
   it('gives nothing outside any element', () => {
     expect(xPathAt('', 0)).toBeUndefined();
     expect(xPathAt('<a></a>', 7)).toBeUndefined();
+  });
+});
+
+/*
+  Every level, not only the innermost.
+
+  Standing on a leaf you may want the object that holds it, the array above
+  that, or the collection above that — each a different assertion to write.
+*/
+describe('levels', () => {
+  const body = `{ "data": { "items": [ { "id": 11 }, { "id": 22 } ] } }`;
+
+  it('walks JSON from the root down to the cursor', () => {
+    expect(jsonPathLevels(body, body.indexOf('"id": 22') + 1)).toEqual([
+      '$',
+      '$.data',
+      '$.data.items',
+      '$.data.items[1]',
+      '$.data.items[1].id',
+    ]);
+  });
+
+  it('collapses a level that adds nothing', () => {
+    // Between a brace and its first key no member is named yet, so that frame
+    // would repeat its parent's path.
+    const levels = jsonPathLevels('{ "a": { ', 8);
+    expect(new Set(levels).size).toBe(levels.length);
+  });
+
+  it('gives the root alone at the top of a document', () => {
+    expect(jsonPathLevels('{ "a": 1 }', 1)).toEqual(['$']);
+  });
+
+  it('walks XML from the root down to the cursor', () => {
+    const xml = '<order><items><item/><item><qty>7</qty></item></items></order>';
+    expect(xPathLevels(xml, xml.indexOf('7'))).toEqual([
+      '/order',
+      '/order/items',
+      '/order/items/item[2]',
+      '/order/items/item[2]/qty',
+    ]);
+  });
+
+  it('is empty outside any element', () => {
+    expect(xPathLevels('<a></a>', 7)).toEqual([]);
+    expect(jsonPathLevels('', 0)).toEqual([]);
+  });
+
+  it('ends each list with what the single-path function returns', () => {
+    // The submenu's last entry and the plain action must never disagree.
+    const at = body.indexOf('"id": 22') + 1;
+    const levels = jsonPathLevels(body, at);
+    expect(levels[levels.length - 1]).toBe(jsonPathAt(body, at));
+
+    const xml = '<a><b><c>1</c></b></a>';
+    const xat = xml.indexOf('1');
+    const xl = xPathLevels(xml, xat);
+    expect(xl[xl.length - 1]).toBe(xPathAt(xml, xat));
   });
 });
