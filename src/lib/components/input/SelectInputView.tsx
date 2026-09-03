@@ -18,6 +18,14 @@ export interface SelectOption {
 /** Backward-compatible size alias — accepts all DuiSize values plus legacy "default" (maps to "md"). */
 export type SelectInputSize = DuiSize | 'default';
 
+/**
+ * Never collapse to a sliver.
+ *
+ * A trigger a few pixels from an edge has almost no room on that side, and a
+ * 12px menu is unusable — better to overlap slightly and stay readable.
+ */
+const MIN_MENU_H = 120;
+
 export interface SelectInputViewProps {
   options: SelectOption[];
   value: string;
@@ -94,13 +102,32 @@ export function SelectInputView({
       const M = 8; // viewport margin
       menu.style.minWidth = r.width + 'px';
 
-      // ── Vertical: flip up when there isn't room below ──
-      const menuH = menu.scrollHeight || 200;
-      const spaceBelow = window.innerHeight - r.bottom;
-      if (spaceBelow < menuH + 12 && r.top > menuH + 12) {
-        menu.style.top = (r.top - menuH - 4) + 'px';
-      } else {
+      /*
+        ── Vertical: flip up when there is more room above, and never overflow ──
+
+        The decision has to use the height the menu will ACTUALLY be, not the
+        height of its contents. `scrollHeight` for a few hundred options is
+        many thousands of pixels, so `spaceBelow < menuH` was always true and
+        `r.top > menuH` always false — every long list fell through to opening
+        downward and ran off the bottom of the screen. The longer the list, the
+        more certain it was to do the wrong thing, which is exactly backwards.
+
+        So: clamp to the cap first, then choose the side with room, then clamp
+        again to the room that side actually has. The menu scrolls internally
+        rather than past the edge of the window.
+      */
+      const cap = Math.min(380, window.innerHeight * 0.7);
+      const wanted = Math.min(menu.scrollHeight || 200, cap);
+      const spaceBelow = window.innerHeight - r.bottom - M;
+      const spaceAbove = r.top - M;
+
+      if (spaceBelow >= wanted || spaceBelow >= spaceAbove) {
         menu.style.top = (r.bottom + 4) + 'px';
+        menu.style.maxHeight = Math.max(MIN_MENU_H, spaceBelow - 4) + 'px';
+      } else {
+        const h = Math.max(MIN_MENU_H, Math.min(wanted, spaceAbove - 4));
+        menu.style.top = (r.top - h - 4) + 'px';
+        menu.style.maxHeight = h + 'px';
       }
 
       // ── Horizontal: draw left→right, but flip to right→left (align the menu's
