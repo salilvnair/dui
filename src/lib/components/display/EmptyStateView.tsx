@@ -6,8 +6,16 @@ export interface EmptyStateAction {
 }
 
 export interface EmptyStateHint {
-  /** The gesture or control — rendered in mono, like a key cap. */
-  key: string;
+  /**
+   * The control this describes.
+   *
+   * A node rather than a string so it can be the ACTUAL icon. Naming a glyph
+   * in words — "eye", "arrow" — asks the reader to translate a description
+   * back into the thing they will click, which is exactly the work the icon
+   * was supposed to save. A key name like `Ctrl+K` is still fine here; the
+   * point is that the hint shows whatever the button shows.
+   */
+  key: React.ReactNode;
   /** What it does. */
   text: string;
 }
@@ -116,12 +124,16 @@ export function EmptyStateView({
           display: 'flex', flexDirection: 'column', gap: 5,
           marginTop: compact ? 2 : 6, textAlign: 'left',
         }}>
-          {hints.map(h => (
-            <div key={h.key + h.text} style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+          {hints.map((h, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <span style={{
-                flexShrink: 0, minWidth: 52, textAlign: 'right',
+                flexShrink: 0, width: 26, height: 20,
+                display: 'grid', placeItems: 'center',
+                borderRadius: 5, color: accent,
+                background: `color-mix(in srgb, ${accent} 12%, transparent)`,
+                border: `1px solid color-mix(in srgb, ${accent} 26%, transparent)`,
                 fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-                fontSize: 10, fontWeight: 600, color: accent,
+                fontSize: 9.5, fontWeight: 600,
               }}>{h.key}</span>
               <span style={{
                 fontSize: 11, lineHeight: 1.5, color: 'var(--color-emptystate-desc)',
