@@ -221,6 +221,19 @@ export function FileBrowserView({
     return () => cancelAnimationFrame(id);
   }, [highlightId, entries]);
 
+  /*
+    Which row is allowed to take its time changing colour.
+
+    The half-second transition exists so the arriving amber visibly SETTLES
+    into the selection rather than cutting to it. Applied to every row it also
+    slowed down an ordinary click, which wants the opposite — you already know
+    which row you hit, and half a second of fade reads as lag. Only the row
+    that was flashed gets the slow one, and it keeps it after the flash clears,
+    which is exactly when the settle happens.
+  */
+  const settling = useRef<string | undefined>(undefined);
+  if (highlightId) settling.current = highlightId;
+
   const head: CSSProperties = {
     fontSize: 9, fontWeight: 600, letterSpacing: '.07em', textTransform: 'uppercase',
     color: 'var(--color-text-muted)', opacity: 0.8,
@@ -306,13 +319,9 @@ export function FileBrowserView({
                 // single most common reason a list feels dead.
                 cursor: disabled ? 'default' : (onSelect || onOpen) ? 'pointer' : 'default',
                 opacity: disabled ? 0.62 : 1,
-                /*
-                  Slow enough that the amber visibly settles into the grey
-                  rather than cutting to it. The hand-off is what tells you the
-                  row you were sent to is the row that is now selected; a jump
-                  reads as two unrelated things happening to two rows.
-                */
-                transition: 'background .5s ease, box-shadow .5s ease',
+                transition: entry.id === settling.current
+                  ? 'background .5s ease, box-shadow .5s ease'
+                  : 'background .12s ease, box-shadow .12s ease',
                 userSelect: 'none',
               }}
             >
