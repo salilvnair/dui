@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 import type { DuiSize } from '../../core/DuiTypes';
 import { useDisplayBase } from '../../core/DisplayBase';
@@ -126,9 +127,9 @@ function Badge({ text, tone = 'info', dense }: {
   const c = TONE[tone];
   return (
     <span style={{
-      fontSize: dense ? 7.5 : 9, fontWeight: 700, letterSpacing: '.04em',
+      fontSize: dense ? 7 : 9, fontWeight: 700, letterSpacing: '.03em',
       textTransform: 'uppercase',
-      padding: dense ? '1px 4px' : '1.5px 6px',
+      padding: dense ? '0.5px 3.5px' : '1.5px 6px',
       borderRadius: 3, whiteSpace: 'nowrap', flexShrink: 0,
       color: c,
       background: `color-mix(in srgb, ${c} 14%, transparent)`,
@@ -160,6 +161,33 @@ export function FileBrowserView({
   const base = useDisplayBase(size);
   const accent = accentColor ?? 'var(--color-primary)';
 
+  /*
+    Bring the highlighted row into view.
+
+    Marking a row that is four hundred pixels below the fold tells the reader
+    nothing — they arrived here BECAUSE they did not know where the file was,
+    so leaving them to scroll for it undoes the whole point of the jump.
+    `nearest` rather than `center` so a row already on screen does not lurch.
+  */
+  const highlightRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!highlightId) return;
+    const el = highlightRef.current;
+    if (!el) return;
+    const reduced = typeof window !== 'undefined'
+      && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    // A frame's grace: the row has to exist and be laid out before it can be
+    // scrolled to, and on arrival this runs in the same tick as the listing.
+    const id = requestAnimationFrame(() => {
+      el.scrollIntoView({
+        behavior: reduced ? 'auto' : 'smooth',
+        block: 'nearest',
+        inline: 'nearest',
+      });
+    });
+    return () => cancelAnimationFrame(id);
+  }, [highlightId, entries]);
+
   const head: CSSProperties = {
     fontSize: 9, fontWeight: 600, letterSpacing: '.07em', textTransform: 'uppercase',
     color: 'var(--color-text-muted)', opacity: 0.8,
@@ -179,7 +207,7 @@ export function FileBrowserView({
           <span style={{ ...head, flex: 1, minWidth: 0 }}>name</span>
           {showSize && <span style={{ ...head, width: 88, textAlign: 'right' }}>size</span>}
           {showModified && <span style={{ ...head, width: 132, textAlign: 'right' }}>modified</span>}
-          {actions.length > 0 && <span style={{ width: actions.length * 29 }} />}
+          {actions.length > 0 && <span style={{ width: actions.length * (dense ? 21 : 29) }} />}
         </div>
       )}
 
@@ -217,6 +245,7 @@ export function FileBrowserView({
           return (
             <div
               key={entry.id}
+              ref={highlighted ? highlightRef : undefined}
               onClick={!disabled && onSelect ? () => onSelect(entry) : undefined}
               onDoubleClick={!disabled && onOpen ? () => onOpen(entry) : undefined}
               title={entry.disabledReason ?? entry.name}
@@ -311,8 +340,8 @@ export function FileBrowserView({
 
               {actions.length > 0 && (
                 <span style={{
-                  width: actions.length * 29, flexShrink: 0,
-                  display: 'flex', justifyContent: 'flex-end', gap: 4,
+                  width: actions.length * (dense ? 21 : 29), flexShrink: 0,
+                  display: 'flex', justifyContent: 'flex-end', gap: dense ? 3 : 4,
                 }}>
                   {rowActions.map(a => (
                     <button
@@ -324,15 +353,28 @@ export function FileBrowserView({
                       onClick={() => onAction?.(a.id, entry)}
                       style={{
                         display: 'grid', placeItems: 'center',
-                        width: 25, height: 20, borderRadius: 5, padding: 0,
+                        width: dense ? 18 : 25, height: dense ? 16 : 20,
+                        borderRadius: dense ? 3 : 5, padding: 0,
                         cursor: disabled ? 'default' : 'pointer',
                         color: TONE[a.tone ?? 'neutral'],
-                        background: a.tone && a.tone !== 'neutral'
-                          ? `color-mix(in srgb, ${TONE[a.tone]} 13%, transparent)`
-                          : 'var(--color-surface)',
-                        border: `1px solid ${a.tone && a.tone !== 'neutral'
+                        /*
+                          Dense rows drop the button chrome entirely.
+
+                          A box around every icon on every row is more border
+                          than content — the chip repeated forty times down a
+                          list stops reading as a control and starts reading as
+                          texture. Bare glyphs, with the hover state doing the
+                          work the border was doing.
+                        */
+                        background: dense
+                          ? 'transparent'
+                          : a.tone && a.tone !== 'neutral'
+                            ? `color-mix(in srgb, ${TONE[a.tone]} 13%, transparent)`
+                            : 'var(--color-surface)',
+                        border: dense ? 'none' : `1px solid ${a.tone && a.tone !== 'neutral'
                           ? `color-mix(in srgb, ${TONE[a.tone]} 34%, transparent)`
                           : 'var(--color-surface-border)'}`,
+                        opacity: dense ? 0.85 : 1,
                       }}
                     >{a.icon}</button>
                   ))}
