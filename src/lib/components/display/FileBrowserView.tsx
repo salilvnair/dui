@@ -90,6 +90,16 @@ export interface FileBrowserViewProps {
   /** Offer a `..` row. Omit `onParent` at the root rather than disabling it. */
   onParent?: () => void;
   selectedId?: string;
+  /**
+   * The wash on the selected row. Defaults to the neutral one below.
+   *
+   * Selection is a state, not an event, so it does not take the view's accent:
+   * a list where the selected row wears the same colour as every meaningful
+   * badge on it has nowhere left to go when something actually needs saying.
+   */
+  selectionColor?: string;
+  /** The wash on the arriving row. Defaults to the amber below. */
+  flashColor?: string;
   /** Shown in place of the rows when there are none. */
   emptyText?: ReactNode;
   /** A summary line under the rows — counts, the command that ran. */
@@ -100,6 +110,27 @@ export interface FileBrowserViewProps {
   className?: string;
   style?: CSSProperties;
 }
+
+/*
+  Two row states, two hues, and neither is the accent.
+
+  Both are written as a colour mixed into `transparent` rather than a flat
+  fill, which is what makes one pair of values work in both themes: the mix
+  composites over whatever surface the row is actually sitting on, so the same
+  16% lands as a slate wash on a dark ground and a pale one on a light ground.
+  A literal hex here would need a second literal under a media query, and the
+  two would drift the first time either was touched.
+
+  The selected row is a deep, saturated blue-slate — dark enough that the file
+  name still reads over it, strong enough that you can pick the row out of a
+  screenful without hunting. The arriving row is a bright yellow-amber, a hue
+  that appears nowhere else in the list, because it has one job: be findable in
+  the second before the eye gives up. That it then fades to the
+  neutral is the whole point — the loud colour announces the row, the quiet
+  one keeps it.
+*/
+const SELECTED = 'var(--dui-row-selected, #4d7d94)';
+const FLASH = 'var(--dui-row-flash, #f0a500)';
 
 const TONE: Record<FileBrowserTone, string> = {
   neutral: 'var(--color-text-muted)',
@@ -150,6 +181,8 @@ export function FileBrowserView({
   onAction,
   onParent,
   selectedId,
+  selectionColor = SELECTED,
+  flashColor = FLASH,
   emptyText = 'Nothing here.',
   footer,
   showHeader = true,
@@ -254,24 +287,32 @@ export function FileBrowserView({
                 gap: dense ? 8 : 12,
                 padding: dense ? '2px 10px' : '4px 12px',
                 /*
-                  Selection, then the arriving highlight, then nothing. The
-                  highlight is louder because it has to be found across a
-                  screenful; the selection only has to be remembered.
+                  Highlight, then selection, then nothing — and a row that is
+                  both draws the highlight, because the flash is temporary and
+                  the selection underneath it is what it decays into.
                 */
                 background: highlighted
-                  ? `color-mix(in srgb, ${accent} 26%, transparent)`
+                  ? `color-mix(in srgb, ${flashColor} 34%, transparent)`
                   : selected
-                    ? `color-mix(in srgb, ${accent} 13%, transparent)`
+                    ? `color-mix(in srgb, ${selectionColor} 24%, transparent)`
                     : 'transparent',
                 boxShadow: highlighted
-                  ? `inset 2px 0 0 ${accent}`
-                  : selected ? `inset 2px 0 0 color-mix(in srgb, ${accent} 55%, transparent)` : undefined,
+                  ? `inset 2px 0 0 ${flashColor}`
+                  : selected
+                    ? `inset 2px 0 0 color-mix(in srgb, ${selectionColor} 60%, transparent)`
+                    : undefined,
                 // A row that responds to a click has to look like it will.
                 // The default text caret says "select this string" and is the
                 // single most common reason a list feels dead.
                 cursor: disabled ? 'default' : (onSelect || onOpen) ? 'pointer' : 'default',
                 opacity: disabled ? 0.62 : 1,
-                transition: 'background .18s ease',
+                /*
+                  Slow enough that the amber visibly settles into the grey
+                  rather than cutting to it. The hand-off is what tells you the
+                  row you were sent to is the row that is now selected; a jump
+                  reads as two unrelated things happening to two rows.
+                */
+                transition: 'background .5s ease, box-shadow .5s ease',
                 userSelect: 'none',
               }}
             >
