@@ -190,6 +190,8 @@ export type { FanStackViewProps, FanStackItem } from './components/layout/FanSta
 
 export { BreadcrumbView } from './components/layout/BreadcrumbView';
 export type { BreadcrumbViewProps, BreadcrumbItem } from './components/layout/BreadcrumbView';
+export { PathBreadcrumbView, splitPath } from './components/layout/PathBreadcrumbView';
+export type { PathBreadcrumbViewProps } from './components/layout/PathBreadcrumbView';
 
 export { PaginationView } from './components/layout/PaginationView';
 export type { PaginationViewProps } from './components/layout/PaginationView';
@@ -466,6 +468,11 @@ export type { FileIconViewProps } from './components/display/FileIconView';
 
 export { FileListView } from './components/display/FileListView';
 export type { FileListViewProps, FileListEntry } from './components/display/FileListView';
+export { FileBrowserView, formatSize } from './components/display/FileBrowserView';
+export type {
+  FileBrowserViewProps, FileBrowserEntry, FileBrowserAction,
+  FileBrowserKind, FileBrowserTone,
+} from './components/display/FileBrowserView';
 
 export { DragHandleView } from './components/display/DragHandleView';
 export type { DragHandleViewProps } from './components/display/DragHandleView';
