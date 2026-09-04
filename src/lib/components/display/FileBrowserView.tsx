@@ -64,6 +64,24 @@ export interface FileBrowserAction {
 
 export interface FileBrowserViewProps {
   entries: FileBrowserEntry[];
+  /** Selecting a row. Single click, the way a file manager behaves. */
+  onSelect?: (entry: FileBrowserEntry) => void;
+  /**
+   * Briefly mark one row.
+   *
+   * For arriving from somewhere else — a search result, a deep link — where
+   * the row you came for is one of forty and the eye has no idea which. The
+   * caller clears it; a highlight that never fades becomes a second, competing
+   * selection.
+   */
+  highlightId?: string;
+  /** Hide the size column. A search hit has no size to show, and a column of
+   *  em dashes is worse than no column. */
+  showSize?: boolean;
+  /** Hide the modified column, for the same reason. */
+  showModified?: boolean;
+  /** Tighter rows and smaller chips, for a list inside a dialog. */
+  dense?: boolean;
   /** A folder was opened, or a file activated. */
   onOpen?: (entry: FileBrowserEntry) => void;
   actions?: FileBrowserAction[];
@@ -102,12 +120,16 @@ export function formatSize(bytes?: number): string {
   return `${v < 10 ? v.toFixed(1) : Math.round(v)} ${units[i]}`;
 }
 
-function Badge({ text, tone = 'info' }: { text: string; tone?: FileBrowserTone }) {
+function Badge({ text, tone = 'info', dense }: {
+  text: string; tone?: FileBrowserTone; dense?: boolean;
+}) {
   const c = TONE[tone];
   return (
     <span style={{
-      fontSize: 9, fontWeight: 700, letterSpacing: '.05em', textTransform: 'uppercase',
-      padding: '1.5px 6px', borderRadius: 4, whiteSpace: 'nowrap', flexShrink: 0,
+      fontSize: dense ? 7.5 : 9, fontWeight: 700, letterSpacing: '.04em',
+      textTransform: 'uppercase',
+      padding: dense ? '1px 4px' : '1.5px 6px',
+      borderRadius: 3, whiteSpace: 'nowrap', flexShrink: 0,
       color: c,
       background: `color-mix(in srgb, ${c} 14%, transparent)`,
       border: `1px solid color-mix(in srgb, ${c} 30%, transparent)`,
@@ -118,6 +140,11 @@ function Badge({ text, tone = 'info' }: { text: string; tone?: FileBrowserTone }
 export function FileBrowserView({
   entries,
   onOpen,
+  onSelect,
+  highlightId,
+  showSize = true,
+  showModified = true,
+  dense = false,
   actions = [],
   onAction,
   onParent,
@@ -150,8 +177,8 @@ export function FileBrowserView({
           borderBottom: '1px solid var(--color-surface-border)',
         }}>
           <span style={{ ...head, flex: 1, minWidth: 0 }}>name</span>
-          <span style={{ ...head, width: 88, textAlign: 'right' }}>size</span>
-          <span style={{ ...head, width: 132, textAlign: 'right' }}>modified</span>
+          {showSize && <span style={{ ...head, width: 88, textAlign: 'right' }}>size</span>}
+          {showModified && <span style={{ ...head, width: 132, textAlign: 'right' }}>modified</span>}
           {actions.length > 0 && <span style={{ width: actions.length * 29 }} />}
         </div>
       )}
@@ -184,20 +211,39 @@ export function FileBrowserView({
           const disabled = !!entry.disabledReason;
           const isDir = entry.kind === 'dir';
           const selected = entry.id === selectedId;
+          const highlighted = entry.id === highlightId;
           const rowActions = actions.filter(a => !a.show || a.show(entry));
 
           return (
             <div
               key={entry.id}
+              onClick={!disabled && onSelect ? () => onSelect(entry) : undefined}
               onDoubleClick={!disabled && onOpen ? () => onOpen(entry) : undefined}
               title={entry.disabledReason ?? entry.name}
               style={{
-                display: 'flex', alignItems: 'center', gap: 12,
-                padding: '4px 12px',
-                background: selected
-                  ? `color-mix(in srgb, ${accent} 9%, transparent)`
-                  : 'transparent',
+                display: 'flex', alignItems: 'center',
+                gap: dense ? 8 : 12,
+                padding: dense ? '2px 10px' : '4px 12px',
+                /*
+                  Selection, then the arriving highlight, then nothing. The
+                  highlight is louder because it has to be found across a
+                  screenful; the selection only has to be remembered.
+                */
+                background: highlighted
+                  ? `color-mix(in srgb, ${accent} 26%, transparent)`
+                  : selected
+                    ? `color-mix(in srgb, ${accent} 13%, transparent)`
+                    : 'transparent',
+                boxShadow: highlighted
+                  ? `inset 2px 0 0 ${accent}`
+                  : selected ? `inset 2px 0 0 color-mix(in srgb, ${accent} 55%, transparent)` : undefined,
+                // A row that responds to a click has to look like it will.
+                // The default text caret says "select this string" and is the
+                // single most common reason a list feels dead.
+                cursor: disabled ? 'default' : (onSelect || onOpen) ? 'pointer' : 'default',
                 opacity: disabled ? 0.62 : 1,
+                transition: 'background .18s ease',
+                userSelect: 'none',
               }}
             >
               {/* name */}
@@ -217,7 +263,8 @@ export function FileBrowserView({
                     onClick={() => onOpen(entry)}
                     style={{
                       border: 'none', background: 'transparent', padding: 0,
-                      cursor: 'pointer', font: 'inherit', fontSize: base.fontSize,
+                      cursor: 'pointer', font: 'inherit',
+                      fontSize: dense ? 10 : base.fontSize,
                       fontFamily: 'ui-monospace, monospace', color: accent,
                       fontWeight: 500, minWidth: 0,
                       overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
@@ -225,7 +272,8 @@ export function FileBrowserView({
                   >{entry.name}</button>
                 ) : (
                   <span style={{
-                    fontFamily: 'ui-monospace, monospace', fontSize: base.fontSize,
+                    fontFamily: 'ui-monospace, monospace',
+                    fontSize: dense ? 10 : base.fontSize,
                     color: disabled ? 'var(--color-text-muted)' : 'var(--color-text-primary)',
                     minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap',
@@ -239,10 +287,11 @@ export function FileBrowserView({
                   }}>→ {entry.linkTarget}</span>
                 )}
 
-                {entry.badge && <Badge text={entry.badge} tone={entry.badgeTone} />}
+                {entry.badge && <Badge text={entry.badge} tone={entry.badgeTone} dense={dense} />}
               </span>
 
               {/* size, or the folder's own count */}
+              {showSize && (
               <span style={{
                 width: 88, textAlign: 'right', flexShrink: 0,
                 fontFamily: 'ui-monospace, monospace', fontSize: base.fontSize,
@@ -250,12 +299,15 @@ export function FileBrowserView({
               }}>
                 {entry.detail ?? (isDir ? '—' : formatSize(entry.size))}
               </span>
+              )}
 
+              {showModified && (
               <span style={{
                 width: 132, textAlign: 'right', flexShrink: 0,
                 fontFamily: 'ui-monospace, monospace', fontSize: base.fontSize,
                 fontVariantNumeric: 'tabular-nums', color: 'var(--color-text-muted)',
               }}>{entry.modified ?? '—'}</span>
+              )}
 
               {actions.length > 0 && (
                 <span style={{
