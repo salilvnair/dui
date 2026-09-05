@@ -121,16 +121,23 @@ export interface FileBrowserViewProps {
   A literal hex here would need a second literal under a media query, and the
   two would drift the first time either was touched.
 
-  The selected row is a deep, saturated blue-slate — dark enough that the file
-  name still reads over it, strong enough that you can pick the row out of a
-  screenful without hunting. The arriving row is a bright yellow-amber, a hue
-  that appears nowhere else in the list, because it has one job: be findable in
-  the second before the eye gives up. That it then fades to the
+  Both hues are pure and both mixes are strong, because a vivid colour laid on
+  thin is not a subtle version of itself — it is mud. A saturated yellow at a
+  third of its strength over a dark ground lands as brown, which is how the
+  flash ended up reading as pale: the hue was right and the mix was starving
+  it. Strength is what carries saturation here, so these percentages are part
+  of the colour, not a dial to soften it.
+
+  The selected row is a saturated blue — strong enough to pick out of a
+  screenful, dark enough after the mix that the file name still reads over it.
+  The arriving row is a bright golden yellow, a hue that appears nowhere else
+  in the list, because it has one job: be findable in the second before the eye
+  gives up. That it then fades to the
   neutral is the whole point — the loud colour announces the row, the quiet
   one keeps it.
 */
-const SELECTED = 'var(--dui-row-selected, #4d7d94)';
-const FLASH = 'var(--dui-row-flash, #f0a500)';
+const SELECTED = 'var(--dui-row-selected, #1e9be0)';
+const FLASH = 'var(--dui-row-flash, #ffc400)';
 
 const TONE: Record<FileBrowserTone, string> = {
   neutral: 'var(--color-text-muted)',
@@ -305,9 +312,9 @@ export function FileBrowserView({
                   the selection underneath it is what it decays into.
                 */
                 background: highlighted
-                  ? `color-mix(in srgb, ${flashColor} 34%, transparent)`
+                  ? `color-mix(in srgb, ${flashColor} 50%, transparent)`
                   : selected
-                    ? `color-mix(in srgb, ${selectionColor} 24%, transparent)`
+                    ? `color-mix(in srgb, ${selectionColor} 38%, transparent)`
                     : 'transparent',
                 boxShadow: highlighted
                   ? `inset 2px 0 0 ${flashColor}`
