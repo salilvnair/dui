@@ -811,6 +811,10 @@ export type { LiveColorCustomizerProps, LiveColorVar } from './components/displa
 
 export { SearchFieldView } from './components/input/SearchFieldView';
 export type { SearchFieldViewProps } from './components/input/SearchFieldView';
+export { TERMINAL_PALETTES, resolveTerminalTheme, groundMode } from './core/TerminalPalette';
+export type { TerminalPalette, TerminalAnsi } from './core/TerminalPalette';
+export { SwatchPickerView } from './components/input/SwatchPickerView';
+export type { SwatchPickerViewProps, SwatchOption } from './components/input/SwatchPickerView';
 export { IconSize } from './core/IconSize';
 export type { IconRole } from './core/IconSize';
 export { TableSkeletonView } from './components/display/TableSkeletonView';
