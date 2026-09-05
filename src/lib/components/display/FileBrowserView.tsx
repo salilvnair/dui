@@ -96,6 +96,15 @@ export interface FileBrowserViewProps {
   match?: string;
   /** A folder was opened, or a file activated. */
   onOpen?: (entry: FileBrowserEntry) => void;
+  /**
+   * Right-click on a row.
+   *
+   * The row actions are the two or three verbs worth a permanent icon; a file
+   * manager has always had more than that, and putting the rest on every row
+   * would bury the ones people use. The caller gets the entry and the event so
+   * it can put a menu where the pointer is.
+   */
+  onContextMenu?: (entry: FileBrowserEntry, e: React.MouseEvent) => void;
   actions?: FileBrowserAction[];
   onAction?: (actionId: string, entry: FileBrowserEntry) => void;
   /** Offer a `..` row. Omit `onParent` at the root rather than disabling it. */
@@ -251,6 +260,7 @@ function Badge({ text, tone = 'info', dense }: {
 export function FileBrowserView({
   entries,
   onOpen,
+  onContextMenu,
   onSelect,
   highlightId,
   showSize = true,
@@ -393,6 +403,16 @@ export function FileBrowserView({
               ref={highlighted ? highlightRef : undefined}
               onClick={!disabled && onSelect ? () => onSelect(entry) : undefined}
               onDoubleClick={!disabled && onOpen ? () => onOpen(entry) : undefined}
+              /*
+                Right-clicking selects too. Acting on a row the menu is open
+                over, while a different row is highlighted, is how people
+                delete the wrong file.
+              */
+              onContextMenu={onContextMenu ? e => {
+                e.preventDefault();
+                onSelect?.(entry);
+                onContextMenu(entry, e);
+              } : undefined}
               title={entry.disabledReason ?? entry.name}
               style={{
                 display: 'flex', alignItems: 'center',
