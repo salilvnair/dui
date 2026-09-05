@@ -128,15 +128,17 @@ export interface FileBrowserViewProps {
   it. Strength is what carries saturation here, so these percentages are part
   of the colour, not a dial to soften it.
 
-  The selected row is a saturated blue — strong enough to pick out of a
-  screenful, dark enough after the mix that the file name still reads over it.
-  The arriving row is a bright golden yellow, a hue that appears nowhere else
+  The two states do not want the same treatment, which is why only one of them
+  is loud. The selected row is a muted blue-slate at a low mix: it is on screen
+  for as long as the file stays open, and a saturated selection stops reading
+  as "this row" and starts reading as a bar of colour. The arriving row is a
+  bright golden yellow, a hue that appears nowhere else
   in the list, because it has one job: be findable in the second before the eye
   gives up. That it then fades to the
   neutral is the whole point — the loud colour announces the row, the quiet
   one keeps it.
 */
-const SELECTED = 'var(--dui-row-selected, #1e9be0)';
+const SELECTED = 'var(--dui-row-selected, #4d7d94)';
 const FLASH = 'var(--dui-row-flash, #ffc400)';
 
 const TONE: Record<FileBrowserTone, string> = {
@@ -314,7 +316,7 @@ export function FileBrowserView({
                 background: highlighted
                   ? `color-mix(in srgb, ${flashColor} 50%, transparent)`
                   : selected
-                    ? `color-mix(in srgb, ${selectionColor} 38%, transparent)`
+                    ? `color-mix(in srgb, ${selectionColor} 24%, transparent)`
                     : 'transparent',
                 boxShadow: highlighted
                   ? `inset 2px 0 0 ${flashColor}`
