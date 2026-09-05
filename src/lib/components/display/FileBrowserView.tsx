@@ -388,8 +388,18 @@ export function FileBrowserView({
           </button>
         )}
 
-        {entries.length === 0 && !onParent && (
+        {entries.length === 0 && (
           /*
+            Shown whenever there are no entries, `..` row or not.
+
+            It used to be suppressed as soon as a parent row existed, on the
+            reasoning that the list was not really empty — but `..` is
+            navigation, not content. The effect was that every directory below
+            the root lost its empty state: an empty one showed a lone `..` and
+            nothing to say why, and a loading one had nowhere to put a
+            skeleton, which is how a caller's placeholder can be wired
+            correctly and still never appear.
+
             Centred in the space it actually has, not padded down from the top.
 
             A fixed top padding puts the placeholder just under the header in a
