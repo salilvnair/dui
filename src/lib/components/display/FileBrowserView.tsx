@@ -421,8 +421,19 @@ export function FileBrowserView({
         )}
 
         {entries.length === 0 && !onParent && (
+          /*
+            Centred in the space it actually has, not padded down from the top.
+
+            A fixed top padding puts the placeholder just under the header in a
+            tall list, which reads as content that failed to fill rather than
+            as a screen waiting to be used — and the taller the container, the
+            worse it looks. `height: 100%` on a flex child that already has
+            `flex: 1` is what gives the grid something to centre within.
+          */
           <div style={{
-            padding: '26px 12px', textAlign: 'center',
+            height: '100%', minHeight: 120,
+            display: 'grid', placeItems: 'center',
+            padding: '12px', textAlign: 'center',
             color: 'var(--color-text-muted)', fontSize: base.fontSize,
           }}>{emptyText}</div>
         )}

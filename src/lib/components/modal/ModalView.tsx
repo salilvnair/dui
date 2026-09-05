@@ -6,7 +6,7 @@ import './ModalView.css';
 // layer so that modals opened later always stack above earlier ones regardless of DOM order.
 let _mountLayer = 0;
 
-export type ModalSize = 'sm' | 'md' | 'lg' | 'xl';
+export type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 
 /**
  * 'popout' — centered overlay with backdrop, portalled to document.body (default)
@@ -70,6 +70,16 @@ const SIZE_MAP: Record<ModalSize, string> = {
   md: '560px',
   lg: '720px',
   xl: '920px',
+  /*
+    For a dialog whose content is a table of long strings.
+
+    920px was the top of the scale, and a list of absolute filesystem paths
+    truncates most of its rows at that width — the dialog is not big because
+    there is a lot of content, it is big because each ROW is wide and there is
+    nothing useful to do with a truncated path. Capped as a percentage as well,
+    so it never outgrows a narrow window.
+  */
+  xxl: 'min(1150px, 85vw)',
 };
 
 export function ModalView({
