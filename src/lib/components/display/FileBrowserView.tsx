@@ -361,7 +361,18 @@ export function FileBrowserView({
         does the whole job.
       */}
       <div
-        style={{ overflowY: 'auto', minHeight: 0, flex: 1, padding: '6px 4px' }}
+        /*
+          A flex column, so the empty state can take the space that is LEFT.
+
+          It used to be `height: 100%` on the placeholder, which is the height
+          of the scroll container — but the `..` row is in there too, so the
+          content came to one row taller than the box and every empty directory
+          below the root grew a scrollbar over nothing.
+        */
+        style={{
+          overflowY: 'auto', minHeight: 0, flex: 1, padding: '6px 4px',
+          display: 'flex', flexDirection: 'column',
+        }}
         /*
           Only when the click did not land on a row. A row has its own menu and
           the event bubbles, so without the check the background menu replaced
@@ -404,6 +415,13 @@ export function FileBrowserView({
         {entries.length === 0 && loading && (
           <TableSkeletonView
             rowHeight={dense ? 20 : 24}
+            /*
+              Part of the space, not all of it. A placeholder filling the
+              panel to its last pixel claims the directory is exactly as long
+              as the window, which it will not be — and the moment the real
+              rows are fewer, the list appears to collapse.
+            */
+            fill={0.6}
             leadingIcon
             columns={[
               { width: 'flex', fill: 0.45 },
@@ -437,7 +455,7 @@ export function FileBrowserView({
             `flex: 1` is what gives the grid something to centre within.
           */
           <div style={{
-            height: '100%', minHeight: 120,
+            flex: 1, minHeight: 120,
             display: 'grid', placeItems: 'center',
             padding: '12px', textAlign: 'center',
             color: 'var(--color-text-muted)', fontSize: base.fontSize,

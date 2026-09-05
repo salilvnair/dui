@@ -42,6 +42,15 @@ export interface TableSkeletonViewProps {
   rows?: number;
   /** A small square before the first column — a file or status icon. */
   leadingIcon?: boolean;
+  /**
+   * Fraction of the measured height to fill. Default 1.
+   *
+   * A placeholder that reaches the last pixel of the panel is claiming the
+   * list is exactly as long as the window, and when the real rows turn out to
+   * be fewer the whole thing appears to collapse. Filling part of the space
+   * says "a list is coming" without promising how much of one.
+   */
+  fill?: number;
   className?: string;
   style?: CSSProperties;
 }
@@ -61,6 +70,7 @@ export function TableSkeletonView({
   rowHeight = 22,
   rows,
   leadingIcon,
+  fill = 1,
   className,
   style,
 }: TableSkeletonViewProps) {
@@ -75,14 +85,14 @@ export function TableSkeletonView({
       const h = el.clientHeight;
       // One fewer than fits, so the last row is never a half-row clipped by
       // the container — a cut-off placeholder reads as a rendering fault.
-      if (h > 0) setMeasured(Math.max(3, Math.floor(h / rowHeight) - 1));
+      if (h > 0) setMeasured(Math.max(3, Math.floor((h * fill) / rowHeight) - 1));
     };
     read();
     if (typeof ResizeObserver === 'undefined') return;
     const ro = new ResizeObserver(read);
     ro.observe(el);
     return () => ro.disconnect();
-  }, [rows, rowHeight]);
+  }, [rows, rowHeight, fill]);
 
   const count = rows ?? measured ?? 6;
 
@@ -92,7 +102,7 @@ export function TableSkeletonView({
       className={className}
       aria-busy="true"
       aria-label="loading"
-      style={{ width: '100%', height: '100%', overflow: 'hidden', ...style }}
+      style={{ width: '100%', flex: 1, minHeight: 0, overflow: 'hidden', ...style }}
     >
       {Array.from({ length: count }, (_, r) => (
         <div key={r} style={{
