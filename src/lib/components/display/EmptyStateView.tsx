@@ -127,7 +127,15 @@ export function EmptyStateView({
           {hints.map((h, i) => (
             <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <span style={{
-                flexShrink: 0, width: 26, height: 20,
+                /*
+                  Sizes to its content past the square.
+
+                  A fixed 26px is right for the icon this usually holds and
+                  wrong for the short word it sometimes holds: a wider key
+                  overflowed its box and ran under the text beside it. The
+                  square is now a minimum, not a width.
+                */
+                flexShrink: 0, minWidth: 26, height: 20, padding: '0 5px',
                 display: 'grid', placeItems: 'center',
                 borderRadius: 5, color: accent,
                 background: `color-mix(in srgb, ${accent} 12%, transparent)`,

@@ -39,6 +39,16 @@ export interface PathBreadcrumbViewProps {
    * it has to be told which of the two it is currently holding.
    */
   onEditingChange?: (editing: boolean) => void;
+  /**
+   * Drive editing from outside, for a caller that owns a bigger hit area.
+   *
+   * The chain is as wide as its segments, which leaves most of the bar it sits
+   * in dead to a double-click — you have to hit the text. A caller that wants
+   * the whole strip to arm editing needs to be able to say so, and this makes
+   * the control optionally controlled: pass it and you own the state, omit it
+   * and it keeps its own.
+   */
+  editing?: boolean;
   /** Label for the leading `/`. Some filesystems want a share or drive name. */
   rootLabel?: string;
   /** Collapse the middle into `…` past this many segments. Default 5. */
@@ -55,6 +65,7 @@ export function PathBreadcrumbView({
   onNavigate,
   onSubmit,
   onEditingChange,
+  editing: editingProp,
   rootLabel = '/',
   maxVisible = 5,
   size,
@@ -65,7 +76,8 @@ export function PathBreadcrumbView({
   const base = useNavBase(size, { activeColor: color });
   const accent = base.activeColor ?? 'var(--color-primary)';
 
-  const [editing, setEditingRaw] = useState(false);
+  const [editingOwn, setEditingRaw] = useState(false);
+  const editing = editingProp ?? editingOwn;
   const setEditing = (v: boolean) => { setEditingRaw(v); onEditingChange?.(v); };
   const [draft, setDraft] = useState(path);
   const [expanded, setExpanded] = useState(false);
