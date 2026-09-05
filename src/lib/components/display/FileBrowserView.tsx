@@ -83,6 +83,17 @@ export interface FileBrowserViewProps {
   showModified?: boolean;
   /** Tighter rows and smaller chips, for a list inside a dialog. */
   dense?: boolean;
+  /**
+   * The literal a search matched on, highlighted wherever it appears.
+   *
+   * Pass the plain text, not the glob or the regex that was typed — this is
+   * for the eye, and `*invoice*` highlighted literally would find nothing.
+   * When a row's name is a whole path, the directory in front of the filename
+   * dims at the same time: three weights on one line — dim ancestry, the
+   * matched run, the rest of the name — say WHY this row is a result, which a
+   * uniform grey path never does.
+   */
+  match?: string;
   /** A folder was opened, or a file activated. */
   onOpen?: (entry: FileBrowserEntry) => void;
   actions?: FileBrowserAction[];
@@ -121,12 +132,12 @@ export interface FileBrowserViewProps {
   A literal hex here would need a second literal under a media query, and the
   two would drift the first time either was touched.
 
-  Both hues are pure and both mixes are strong, because a vivid colour laid on
-  thin is not a subtle version of itself — it is mud. A saturated yellow at a
-  third of its strength over a dark ground lands as brown, which is how the
-  flash ended up reading as pale: the hue was right and the mix was starving
-  it. Strength is what carries saturation here, so these percentages are part
-  of the colour, not a dial to soften it.
+  Both hues are pure, and the strength of the mix is what decides whether a
+  pure hue reads as itself or as mud. Too thin and a saturated yellow over a
+  dark ground composites to brown; too strong and it stops being a highlight
+  and becomes a painted bar. The flash sits at just over a third — bright
+  enough to find across a screenful, transparent enough that the filename
+  underneath still reads as text rather than as something written on a label.
 
   The two states do not want the same treatment, which is why only one of them
   is loud. The selected row is a muted blue-slate at a low mix: it is on screen
@@ -140,6 +151,8 @@ export interface FileBrowserViewProps {
 */
 const SELECTED = 'var(--dui-row-selected, #4d7d94)';
 const FLASH = 'var(--dui-row-flash, #ffc400)';
+/** The matched run in a name. The flash hue, at full strength on text. */
+const MATCH = 'var(--dui-row-flash, #ffc400)';
 
 const TONE: Record<FileBrowserTone, string> = {
   neutral: 'var(--color-text-muted)',
@@ -161,19 +174,76 @@ export function formatSize(bytes?: number): string {
   return `${v < 10 ? v.toFixed(1) : Math.round(v)} ${units[i]}`;
 }
 
+/**
+ * A name in up to three weights: the directory, the matched run, the rest.
+ *
+ * Case-insensitive, because `find -iname` is, and a highlight that disagreed
+ * with the search that produced it would be worse than none. Every occurrence
+ * is marked rather than only the first — a path can match in the directory as
+ * well as the filename, and marking one and not the other implies the other is
+ * not why this row is here.
+ */
+function renderName(name: string, match?: string): ReactNode {
+  const cut = name.lastIndexOf('/');
+  const dir = cut >= 0 ? name.slice(0, cut + 1) : '';
+  const base = cut >= 0 ? name.slice(cut + 1) : name;
+
+  const head = dir && (
+    <span style={{ color: 'var(--color-text-muted)' }}>{dir}</span>
+  );
+
+  const needle = match?.trim();
+  if (!needle) return <>{head}{base}</>;
+
+  const hay = base.toLowerCase();
+  const low = needle.toLowerCase();
+  const parts: ReactNode[] = [];
+  let at = 0;
+  for (;;) {
+    const i = hay.indexOf(low, at);
+    if (i < 0) break;
+    if (i > at) parts.push(base.slice(at, i));
+    parts.push(
+      <span key={i} style={{ color: MATCH, fontWeight: 600 }}>
+        {base.slice(i, i + low.length)}
+      </span>,
+    );
+    at = i + low.length;
+  }
+  if (!parts.length) return <>{head}{base}</>;
+  if (at < base.length) parts.push(base.slice(at));
+  return <>{head}{parts}</>;
+}
+
 function Badge({ text, tone = 'info', dense }: {
   text: string; tone?: FileBrowserTone; dense?: boolean;
 }) {
   const c = TONE[tone];
   return (
     <span style={{
-      fontSize: dense ? 7 : 9, fontWeight: 700, letterSpacing: '.03em',
+      /*
+        inline-flex with a flat line-height, because the text has to sit in the
+        middle of the pill and uppercase text does not: it has no descenders, so
+        the glyphs ride high in a line box sized for letters that do, and the
+        chip reads as bottom-heavy however carefully the padding is balanced.
+        Centring the box is the fix; nudging the padding only moves the problem.
+      */
+      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+      lineHeight: 1,
+      fontSize: dense ? 7.5 : 8.5, fontWeight: 700, letterSpacing: '.06em',
       textTransform: 'uppercase',
-      padding: dense ? '0.5px 3.5px' : '1.5px 6px',
-      borderRadius: 3, whiteSpace: 'nowrap', flexShrink: 0,
+      padding: dense ? '2px 4.5px' : '3px 6.5px',
+      borderRadius: 4, whiteSpace: 'nowrap', flexShrink: 0,
       color: c,
-      background: `color-mix(in srgb, ${c} 14%, transparent)`,
-      border: `1px solid color-mix(in srgb, ${c} 30%, transparent)`,
+      background: `color-mix(in srgb, ${c} 15%, transparent)`,
+      border: `1px solid color-mix(in srgb, ${c} 32%, transparent)`,
+      /*
+        One hairline of the tone along the top edge. It is the whole difference
+        between a flat tinted rectangle and something that looks pressed into
+        the row — the same trick the plan's chips use, and cheap enough that
+        every badge can carry it.
+      */
+      boxShadow: `inset 0 1px 0 color-mix(in srgb, ${c} 22%, transparent)`,
     }}>{text}</span>
   );
 }
@@ -190,6 +260,7 @@ export function FileBrowserView({
   onAction,
   onParent,
   selectedId,
+  match,
   selectionColor = SELECTED,
   flashColor = FLASH,
   emptyText = 'Nothing here.',
@@ -266,7 +337,15 @@ export function FileBrowserView({
         </div>
       )}
 
-      <div style={{ overflowY: 'auto', minHeight: 0, flex: 1 }}>
+      {/*
+        The rows want a margin off every edge.
+
+        A list flush to its container reads as clipped rather than contained —
+        the first row touches the header rule, the last touches the footer, and
+        the names start hard against the left border. The inset is small and
+        does the whole job.
+      */}
+      <div style={{ overflowY: 'auto', minHeight: 0, flex: 1, padding: '6px 4px' }}>
         {onParent && (
           <button
             type="button"
@@ -278,7 +357,18 @@ export function FileBrowserView({
               color: accent, fontSize: base.fontSize,
             }}
           >
-            <ArrowToLeftIcon size={14} style={{ flexShrink: 0 }} />
+            {/*
+              The plan's glyph, drawn rather than typed.
+
+              `..` is not "back" — it is the directory above this one, and a
+              back arrow says the wrong thing next to it. A filled right-angle
+              triangle in the accent reads as a corner turned upward, which is
+              what the row does.
+            */}
+            <svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"
+                 style={{ flexShrink: 0 }}>
+              <polygon points="11,1 11,11 1,11" fill={accent} />
+            </svg>
             <span style={{ fontFamily: 'ui-monospace, monospace' }}>..</span>
           </button>
         )}
@@ -314,7 +404,7 @@ export function FileBrowserView({
                   the selection underneath it is what it decays into.
                 */
                 background: highlighted
-                  ? `color-mix(in srgb, ${flashColor} 50%, transparent)`
+                  ? `color-mix(in srgb, ${flashColor} 36%, transparent)`
                   : selected
                     ? `color-mix(in srgb, ${selectionColor} 24%, transparent)`
                     : 'transparent',
@@ -365,7 +455,7 @@ export function FileBrowserView({
                     color: disabled ? 'var(--color-text-muted)' : 'var(--color-text-primary)',
                     minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap',
-                  }}>{entry.name}</span>
+                  }}>{renderName(entry.name, match)}</span>
                 )}
 
                 {entry.linkTarget && (

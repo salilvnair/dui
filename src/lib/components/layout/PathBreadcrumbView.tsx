@@ -31,6 +31,14 @@ export interface PathBreadcrumbViewProps {
    * advertised.
    */
   onSubmit?: (path: string) => void;
+  /**
+   * Editing started or stopped.
+   *
+   * The chain sizes itself to its segments; the text field wants room to type
+   * a path into. Only the layout around this control can give it that room, so
+   * it has to be told which of the two it is currently holding.
+   */
+  onEditingChange?: (editing: boolean) => void;
   /** Label for the leading `/`. Some filesystems want a share or drive name. */
   rootLabel?: string;
   /** Collapse the middle into `…` past this many segments. Default 5. */
@@ -46,6 +54,7 @@ export function PathBreadcrumbView({
   path,
   onNavigate,
   onSubmit,
+  onEditingChange,
   rootLabel = '/',
   maxVisible = 5,
   size,
@@ -56,7 +65,8 @@ export function PathBreadcrumbView({
   const base = useNavBase(size, { activeColor: color });
   const accent = base.activeColor ?? 'var(--color-primary)';
 
-  const [editing, setEditing] = useState(false);
+  const [editing, setEditingRaw] = useState(false);
+  const setEditing = (v: boolean) => { setEditingRaw(v); onEditingChange?.(v); };
   const [draft, setDraft] = useState(path);
   const [expanded, setExpanded] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
