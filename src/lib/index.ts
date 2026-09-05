@@ -813,6 +813,12 @@ export { SearchFieldView } from './components/input/SearchFieldView';
 export type { SearchFieldViewProps } from './components/input/SearchFieldView';
 export { TERMINAL_PALETTES, resolveTerminalTheme, groundMode } from './core/TerminalPalette';
 export type { TerminalPalette, TerminalAnsi } from './core/TerminalPalette';
+export {
+  parseTerminalThemes, serializeTerminalThemes, terminalThemeTemplate,
+  isTerminalColor, TERMINAL_ANSI_KEYS, TERMINAL_THEME_FORMAT,
+  TERMINAL_THEME_VERSION, MAX_THEMES_PER_IMPORT, MAX_THEMES_STORED,
+} from './core/TerminalPaletteFile';
+export type { TerminalThemeFile, TerminalThemeParse } from './core/TerminalPaletteFile';
 export { SwatchPickerView } from './components/input/SwatchPickerView';
 export type { SwatchPickerViewProps, SwatchOption } from './components/input/SwatchPickerView';
 export { IconSize } from './core/IconSize';
