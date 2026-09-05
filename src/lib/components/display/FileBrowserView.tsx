@@ -105,6 +105,15 @@ export interface FileBrowserViewProps {
    * it can put a menu where the pointer is.
    */
   onContextMenu?: (entry: FileBrowserEntry, e: React.MouseEvent) => void;
+  /**
+   * Right-click on the list itself, away from any row.
+   *
+   * The empty area below the last row is still the directory, and a file
+   * manager has always let you act on it there — "search here", "refresh",
+   * "download all of this". Without a handler the browser's own menu appears
+   * instead, offering Copy and Select All over a list that has neither.
+   */
+  onEmptyContextMenu?: (e: React.MouseEvent) => void;
   actions?: FileBrowserAction[];
   onAction?: (actionId: string, entry: FileBrowserEntry) => void;
   /** Offer a `..` row. Omit `onParent` at the root rather than disabling it. */
@@ -275,6 +284,7 @@ export function FileBrowserView({
   entries,
   onOpen,
   onContextMenu,
+  onEmptyContextMenu,
   onSelect,
   highlightId,
   showSize = true,
@@ -369,7 +379,20 @@ export function FileBrowserView({
         the names start hard against the left border. The inset is small and
         does the whole job.
       */}
-      <div style={{ overflowY: 'auto', minHeight: 0, flex: 1, padding: '6px 4px' }}>
+      <div
+        style={{ overflowY: 'auto', minHeight: 0, flex: 1, padding: '6px 4px' }}
+        /*
+          Only when the click did not land on a row. A row has its own menu and
+          the event bubbles, so without the check the background menu replaced
+          the row menu everywhere — the row's own handler having already
+          stopped nothing.
+        */
+        onContextMenu={onEmptyContextMenu ? e => {
+          if ((e.target as HTMLElement).closest('[data-file-row]')) return;
+          e.preventDefault();
+          onEmptyContextMenu(e);
+        } : undefined}
+      >
         {onParent && (
           <button
             type="button"
@@ -414,6 +437,7 @@ export function FileBrowserView({
           return (
             <div
               key={entry.id}
+              data-file-row=""
               ref={highlighted ? highlightRef : undefined}
               onClick={!disabled && onSelect ? () => onSelect(entry) : undefined}
               onDoubleClick={!disabled && onOpen ? () => onOpen(entry) : undefined}
