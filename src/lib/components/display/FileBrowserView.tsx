@@ -3,7 +3,7 @@ import type { CSSProperties, ReactNode } from 'react';
 import type { DuiSize } from '../../core/DuiTypes';
 import { useDisplayBase } from '../../core/DisplayBase';
 import {
-  FolderIcon, FileTextIcon, LockIcon, ExternalLinkIcon, ArrowToLeftIcon,
+  FolderIcon, FileTextIcon, LockIcon, LinkIcon, ArrowToLeftIcon,
 } from '../../../icons';
 
 /**
@@ -165,7 +165,14 @@ const MATCH = 'var(--dui-row-flash, #ffc400)';
 
 const TONE: Record<FileBrowserTone, string> = {
   neutral: 'var(--color-text-muted)',
-  info: 'var(--color-info, #3fb9cc)',
+  /*
+    The view's own accent, not a fixed cyan.
+
+    A type badge is the view speaking about its own rows, so it should be the
+    colour the view is — a hard-coded hue made every file list in the product
+    wear the same blue whatever accent the panel around it was using.
+  */
+  info: 'var(--dui-file-badge, var(--color-info, #3fb9cc))',
   success: 'var(--color-success)',
   warning: 'var(--color-warning)',
   danger: 'var(--color-error)',
@@ -244,15 +251,22 @@ function Badge({ text, tone = 'info', dense }: {
       padding: dense ? '2px 4.5px' : '3px 6.5px',
       borderRadius: 4, whiteSpace: 'nowrap', flexShrink: 0,
       color: c,
-      background: `color-mix(in srgb, ${c} 15%, transparent)`,
-      border: `1px solid color-mix(in srgb, ${c} 32%, transparent)`,
+      background: `color-mix(in srgb, ${c} 20%, transparent)`,
+      border: `1px solid color-mix(in srgb, ${c} 42%, transparent)`,
       /*
-        One hairline of the tone along the top edge. It is the whole difference
-        between a flat tinted rectangle and something that looks pressed into
-        the row — the same trick the plan's chips use, and cheap enough that
-        every badge can carry it.
+        Three shadows, which is what stops it reading as a flat rectangle.
+
+        A hairline of the tone along the TOP edge is the light catching a
+        raised surface; a darker one along the bottom INSIDE is the far edge
+        falling away; and a soft drop below lifts the whole thing off the row.
+        Any one of them alone still reads as a coloured box — it is the pair of
+        opposing inner edges that makes it a physical object.
       */
-      boxShadow: `inset 0 1px 0 color-mix(in srgb, ${c} 22%, transparent)`,
+      boxShadow: [
+        `inset 0 1px 0 color-mix(in srgb, ${c} 45%, transparent)`,
+        `inset 0 -1px 0 rgba(0,0,0,.28)`,
+        `0 1px 2px rgba(0,0,0,.35)`,
+      ].join(', '),
     }}>{text}</span>
   );
 }
@@ -451,7 +465,11 @@ export function FileBrowserView({
                 <span style={{ display: 'flex', flexShrink: 0, color: iconColour(entry) }}>
                   {disabled ? <LockIcon size={14} />
                     : isDir ? <FolderIcon size={14} />
-                      : entry.kind === 'link' ? <ExternalLinkIcon size={14} />
+                      /* A chain, not an arrow-out-of-a-box: this row points at
+                       something else in the same filesystem, it does not open
+                       somewhere else, which is what the external-link mark
+                       says everywhere it appears. */
+                    : entry.kind === 'link' ? <LinkIcon size={14} />
                         : <FileTextIcon size={14} />}
                 </span>
 
