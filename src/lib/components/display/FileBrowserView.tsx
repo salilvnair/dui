@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { BadgeChipView } from './BadgeChipView';
 import type { CSSProperties, ReactNode } from 'react';
 import type { DuiSize } from '../../core/DuiTypes';
 import { useDisplayBase } from '../../core/DisplayBase';
@@ -240,44 +241,11 @@ function renderName(name: string, match?: string): ReactNode {
   return <>{head}{parts}</>;
 }
 
+/** The row's type mark, on the shared chip. */
 function Badge({ text, tone = 'info', dense }: {
   text: string; tone?: FileBrowserTone; dense?: boolean;
 }) {
-  const c = TONE[tone];
-  return (
-    <span style={{
-      /*
-        inline-flex with a flat line-height, because the text has to sit in the
-        middle of the pill and uppercase text does not: it has no descenders, so
-        the glyphs ride high in a line box sized for letters that do, and the
-        chip reads as bottom-heavy however carefully the padding is balanced.
-        Centring the box is the fix; nudging the padding only moves the problem.
-      */
-      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-      lineHeight: 1,
-      fontSize: dense ? 7.5 : 8.5, fontWeight: 700, letterSpacing: '.06em',
-      textTransform: 'uppercase',
-      padding: dense ? '2px 4.5px' : '3px 6.5px',
-      borderRadius: 4, whiteSpace: 'nowrap', flexShrink: 0,
-      color: c,
-      background: `color-mix(in srgb, ${c} 20%, transparent)`,
-      border: `1px solid color-mix(in srgb, ${c} 42%, transparent)`,
-      /*
-        Three shadows, which is what stops it reading as a flat rectangle.
-
-        A hairline of the tone along the TOP edge is the light catching a
-        raised surface; a darker one along the bottom INSIDE is the far edge
-        falling away; and a soft drop below lifts the whole thing off the row.
-        Any one of them alone still reads as a coloured box — it is the pair of
-        opposing inner edges that makes it a physical object.
-      */
-      boxShadow: [
-        `inset 0 1px 0 color-mix(in srgb, ${c} 45%, transparent)`,
-        `inset 0 -1px 0 rgba(0,0,0,.28)`,
-        `0 1px 2px rgba(0,0,0,.35)`,
-      ].join(', '),
-    }}>{text}</span>
-  );
+  return <BadgeChipView tone={TONE[tone]} size={dense ? 'xs' : 'sm'}>{text}</BadgeChipView>;
 }
 
 export function FileBrowserView({
