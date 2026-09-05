@@ -811,6 +811,8 @@ export type { LiveColorCustomizerProps, LiveColorVar } from './components/displa
 
 export { SearchFieldView } from './components/input/SearchFieldView';
 export type { SearchFieldViewProps } from './components/input/SearchFieldView';
+export { IconSize } from './core/IconSize';
+export type { IconRole } from './core/IconSize';
 export { BadgeChipView } from './components/display/BadgeChipView';
 export type { BadgeChipViewProps, BadgeChipSize } from './components/display/BadgeChipView';
 export { FilterInputView } from './components/input/FilterInputView';
