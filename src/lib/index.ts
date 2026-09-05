@@ -813,6 +813,8 @@ export { SearchFieldView } from './components/input/SearchFieldView';
 export type { SearchFieldViewProps } from './components/input/SearchFieldView';
 export { IconSize } from './core/IconSize';
 export type { IconRole } from './core/IconSize';
+export { TableSkeletonView } from './components/display/TableSkeletonView';
+export type { TableSkeletonViewProps, TableSkeletonColumn } from './components/display/TableSkeletonView';
 export { BadgeChipView } from './components/display/BadgeChipView';
 export type { BadgeChipViewProps, BadgeChipSize } from './components/display/BadgeChipView';
 export { FilterInputView } from './components/input/FilterInputView';

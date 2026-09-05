@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { BadgeChipView } from './BadgeChipView';
+import { TableSkeletonView } from './TableSkeletonView';
 import type { CSSProperties, ReactNode } from 'react';
 import type { DuiSize } from '../../core/DuiTypes';
 import { useDisplayBase } from '../../core/DisplayBase';
@@ -132,6 +133,17 @@ export interface FileBrowserViewProps {
   flashColor?: string;
   /** Shown in place of the rows when there are none. */
   emptyText?: ReactNode;
+  /**
+   * The listing is on its way.
+   *
+   * Draws column-aligned placeholder rows instead of the empty state, because
+   * "nothing here" and "not here yet" are different answers and only one of
+   * them is worth reading. The component draws it rather than the caller: the
+   * column widths are known here and nowhere else, and a skeleton whose
+   * columns do not line up with the table it precedes makes the real rows look
+   * like they jumped.
+   */
+  loading?: boolean;
   /** A summary line under the rows — counts, the command that ran. */
   footer?: ReactNode;
   showHeader?: boolean;
@@ -266,6 +278,7 @@ export function FileBrowserView({
   selectionColor = SELECTED,
   flashColor = FLASH,
   emptyText = 'Nothing here.',
+  loading,
   footer,
   showHeader = true,
   size,
@@ -388,7 +401,22 @@ export function FileBrowserView({
           </button>
         )}
 
-        {entries.length === 0 && (
+        {entries.length === 0 && loading && (
+          <TableSkeletonView
+            rowHeight={dense ? 20 : 24}
+            leadingIcon
+            columns={[
+              { width: 'flex', fill: 0.45 },
+              ...(showSize ? [{ width: 88, fill: 0.5, align: 'right' as const }] : []),
+              ...(showModified ? [{ width: 132, fill: 0.62, align: 'right' as const }] : []),
+              ...(actions.length
+                ? [{ width: actions.length * (dense ? 21 : 29), fill: 0.5 }]
+                : []),
+            ]}
+          />
+        )}
+
+        {entries.length === 0 && !loading && (
           /*
             Shown whenever there are no entries, `..` row or not.
 
