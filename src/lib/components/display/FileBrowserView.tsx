@@ -181,7 +181,27 @@ export interface FileBrowserViewProps {
   one keeps it.
 */
 const SELECTED = 'var(--dui-row-selected, #4d7d94)';
-const FLASH = 'var(--dui-row-flash, #ffc400)';
+
+/*
+  A light yellow, not a dark one — and the ink to go on it.
+
+  `#ffc400` at 36% over a dark ground composites to mustard: dark enough that
+  the row's own light-grey text sat on it at almost no contrast, which is the
+  opposite of what a highlight is for. The band was findable and its contents
+  were not.
+
+  So the band is now genuinely light — a brighter hue at more than twice the
+  strength — and the row's text flips to a dark ink for as long as it is
+  flashed. Both halves are needed: a light band under light text is worse than
+  the mustard was, and dark ink over a dark band is worse still. They change
+  together or not at all.
+*/
+const FLASH = 'var(--dui-row-flash, #ffd54a)';
+const FLASH_MIX = '78%';
+/** Text on a flashed row. Warm near-black, so it reads as ink rather than as a hole. */
+const FLASH_INK = 'var(--dui-row-flash-ink, #1c1600)';
+/** The left rule and the matched run, which both have to survive a light band. */
+const FLASH_EDGE = 'var(--dui-row-flash-edge, #8a6400)';
 /** The matched run in a name. The flash hue, at full strength on text. */
 const MATCH = 'var(--dui-row-flash, #ffc400)';
 
@@ -221,13 +241,20 @@ export function formatSize(bytes?: number): string {
  * well as the filename, and marking one and not the other implies the other is
  * not why this row is here.
  */
-function renderName(name: string, match?: string): ReactNode {
+/**
+ * `matchColor` overrides the highlight hue for a row that is itself flashed.
+ *
+ * The matched run is normally the flash yellow, which on a flashed row would
+ * be yellow on yellow — the one place the highlight has to stop being the
+ * highlight colour.
+ */
+function renderName(name: string, match?: string, matchColor?: string): ReactNode {
   const cut = name.lastIndexOf('/');
   const dir = cut >= 0 ? name.slice(0, cut + 1) : '';
   const base = cut >= 0 ? name.slice(cut + 1) : name;
 
   const head = dir && (
-    <span style={{ color: 'var(--color-text-muted)' }}>{dir}</span>
+    <span style={{ color: matchColor ?? 'var(--color-text-muted)' }}>{dir}</span>
   );
 
   const needle = match?.trim();
@@ -242,7 +269,7 @@ function renderName(name: string, match?: string): ReactNode {
     if (i < 0) break;
     if (i > at) parts.push(base.slice(at, i));
     parts.push(
-      <span key={i} style={{ color: MATCH, fontWeight: 600 }}>
+      <span key={i} style={{ color: matchColor ?? MATCH, fontWeight: 600 }}>
         {base.slice(i, i + low.length)}
       </span>,
     );
@@ -497,12 +524,12 @@ export function FileBrowserView({
                   the selection underneath it is what it decays into.
                 */
                 background: highlighted
-                  ? `color-mix(in srgb, ${flashColor} 36%, transparent)`
+                  ? `color-mix(in srgb, ${flashColor} ${FLASH_MIX}, transparent)`
                   : selected
                     ? `color-mix(in srgb, ${selectionColor} 24%, transparent)`
                     : 'transparent',
                 boxShadow: highlighted
-                  ? `inset 2px 0 0 ${flashColor}`
+                  ? `inset 3px 0 0 ${FLASH_EDGE}`
                   : selected
                     ? `inset 2px 0 0 color-mix(in srgb, ${selectionColor} 60%, transparent)`
                     : undefined,
@@ -521,7 +548,8 @@ export function FileBrowserView({
               <span style={{
                 flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 8,
               }}>
-                <span style={{ display: 'flex', flexShrink: 0, color: iconColour(entry) }}>
+                <span style={{ display: 'flex', flexShrink: 0,
+                               color: highlighted ? FLASH_EDGE : iconColour(entry) }}>
                   {disabled ? <LockIcon size={14} />
                     : isDir ? <FolderIcon size={14} />
                       /* A chain, not an arrow-out-of-a-box: this row points at
@@ -540,8 +568,9 @@ export function FileBrowserView({
                       border: 'none', background: 'transparent', padding: 0,
                       cursor: 'pointer', font: 'inherit',
                       fontSize: dense ? 10 : base.fontSize,
-                      fontFamily: 'ui-monospace, monospace', color: accent,
-                      fontWeight: 500, minWidth: 0,
+                      fontFamily: 'ui-monospace, monospace',
+                      color: highlighted ? FLASH_INK : accent,
+                      fontWeight: highlighted ? 700 : 500, minWidth: 0,
                       overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                     }}
                   >{entry.name}</button>
@@ -549,16 +578,19 @@ export function FileBrowserView({
                   <span style={{
                     fontFamily: 'ui-monospace, monospace',
                     fontSize: dense ? 10 : base.fontSize,
-                    color: disabled ? 'var(--color-text-muted)' : 'var(--color-text-primary)',
+                    color: highlighted ? FLASH_INK
+                      : disabled ? 'var(--color-text-muted)' : 'var(--color-text-primary)',
+                    fontWeight: highlighted ? 600 : undefined,
                     minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap',
-                  }}>{renderName(entry.name, match)}</span>
+                  }}>{renderName(entry.name, match, highlighted ? FLASH_EDGE : undefined)}</span>
                 )}
 
                 {entry.linkTarget && (
                   <span style={{
                     fontFamily: 'ui-monospace, monospace', fontSize: base.fontSize,
-                    color: 'var(--color-text-muted)', whiteSpace: 'nowrap',
+                    color: highlighted ? FLASH_EDGE : 'var(--color-text-muted)',
+                    whiteSpace: 'nowrap',
                   }}>→ {entry.linkTarget}</span>
                 )}
 
@@ -570,7 +602,8 @@ export function FileBrowserView({
               <span style={{
                 width: 88, textAlign: 'right', flexShrink: 0,
                 fontFamily: 'ui-monospace, monospace', fontSize: base.fontSize,
-                fontVariantNumeric: 'tabular-nums', color: 'var(--color-text-secondary)',
+                fontVariantNumeric: 'tabular-nums',
+                color: highlighted ? FLASH_INK : 'var(--color-text-secondary)',
               }}>
                 {entry.detail ?? (isDir ? '—' : formatSize(entry.size))}
               </span>
@@ -580,7 +613,8 @@ export function FileBrowserView({
               <span style={{
                 width: 132, textAlign: 'right', flexShrink: 0,
                 fontFamily: 'ui-monospace, monospace', fontSize: base.fontSize,
-                fontVariantNumeric: 'tabular-nums', color: 'var(--color-text-muted)',
+                fontVariantNumeric: 'tabular-nums',
+                color: highlighted ? FLASH_EDGE : 'var(--color-text-muted)',
               }}>{entry.modified ?? '—'}</span>
               )}
 

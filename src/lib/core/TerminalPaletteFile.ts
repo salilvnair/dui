@@ -118,6 +118,80 @@ function ansiOf(raw: Record<string, unknown>, where: string):
   return { ok: true, ansi: out as unknown as TerminalAnsi };
 }
 
+/**
+ * Turn one hex colour into its counterpart for a light ground.
+ *
+ * Used only where a theme arrived without a light variant. A published light
+ * palette is a different set of decisions and this is not pretending to be
+ * one — but a theme with no light variant is worse: it gets used on a light
+ * panel anyway, at whatever contrast it happens to have, which is how a
+ * carefully chosen green ends up invisible on white.
+ *
+ * The conversion is the one that matters for legibility rather than for
+ * beauty: keep the hue, push the saturation up and the lightness down, so a
+ * colour chosen to glow on near-black becomes ink on near-white. Themes that
+ * ship their own `light` never come through here.
+ */
+function darkenForLight(hex: string): string {
+  const m = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(hex.trim());
+  if (!m) return hex;
+  let h = m[1];
+  if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+  const n = parseInt(h, 16);
+  const r = ((n >> 16) & 255) / 255, g = ((n >> 8) & 255) / 255, b = (n & 255) / 255;
+
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  const l = (max + min) / 2;
+  const d = max - min;
+  const sat = d === 0 ? 0 : d / (1 - Math.abs(2 * l - 1));
+  let hue = 0;
+  if (d !== 0) {
+    hue = max === r ? ((g - b) / d) % 6 : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+    hue *= 60;
+    if (hue < 0) hue += 360;
+  }
+
+  /*
+    Greys keep being greys, inverted.
+
+    Running a near-neutral through a saturation boost invents a hue that was
+    never in the palette, and the greys are what carry a terminal's dimmed
+    text — a stack frame that came out faintly purple would be worse than one
+    that stayed grey.
+  */
+  const targetL = sat < 0.12 ? Math.min(0.42, 1 - l) : Math.min(0.42, 0.34 + l * 0.12);
+  const targetS = sat < 0.12 ? sat : Math.min(1, sat * 1.25);
+
+  const c = (1 - Math.abs(2 * targetL - 1)) * targetS;
+  const x = c * (1 - Math.abs(((hue / 60) % 2) - 1));
+  const mm = targetL - c / 2;
+  const [rr, gg, bb] =
+    hue < 60 ? [c, x, 0] : hue < 120 ? [x, c, 0] : hue < 180 ? [0, c, x]
+      : hue < 240 ? [0, x, c] : hue < 300 ? [x, 0, c] : [c, 0, x];
+  const to = (v: number) => Math.round((v + mm) * 255).toString(16).padStart(2, '0');
+  return `#${to(rr)}${to(gg)}${to(bb)}`;
+}
+
+/**
+ * A whole light variant, derived.
+ *
+ * The selection wash is left as an rgba and only its alpha kept sane —
+ * inverting a translucent overlay the way an opaque colour is inverted gives
+ * a selection nobody can see through.
+ */
+export function deriveLightAnsi(dark: TerminalAnsi): TerminalAnsi {
+  const out: Record<string, string> = {};
+  for (const key of TERMINAL_ANSI_KEYS) {
+    const v = dark[key];
+    if (key === 'selectionBackground') {
+      out[key] = /^rgba?\(/i.test(v) ? v : 'rgba(0,0,0,.14)';
+      continue;
+    }
+    out[key] = darkenForLight(v);
+  }
+  return out as unknown as TerminalAnsi;
+}
+
 function paletteOf(raw: unknown, where: string): TerminalThemeParse {
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
     return { ok: false, error: `${where} is not an object.` };
@@ -142,19 +216,23 @@ function paletteOf(raw: unknown, where: string): TerminalThemeParse {
   if (!dark.ok) return dark;
 
   /*
-    A light variant is optional, and its absence is not filled in.
+    A light variant is optional to WRITE and never optional to HAVE.
 
-    Deriving one would mean darkening every colour by some factor, and that is
-    exactly the thing the palettes themselves refuse to do — a published light
-    palette is a different set of decisions, not a transform of the dark one.
-    A theme with no light variant is honestly a dark theme, and the UI says so
-    rather than shipping a guess under the author's name.
+    A theme with no light half still gets used on a light panel, at whatever
+    contrast it happens to have — which is how a green chosen to glow on
+    near-black ends up invisible on white. So one is derived, and the theme is
+    marked as having a derived light half rather than quietly presenting the
+    guess as the author's work. A theme that ships its own is untouched.
   */
-  let light: TerminalAnsi | undefined;
+  let light: TerminalAnsi;
+  let lightDerived = false;
   if (o.light !== undefined) {
     const l = ansiOf(o.light as Record<string, unknown>, `${where}.light`);
     if (!l.ok) return l;
     light = l.ansi;
+  } else {
+    light = deriveLightAnsi(dark.ansi);
+    lightDerived = true;
   }
 
   // The swatch is the one colour that stands for the theme in the picker.
@@ -164,7 +242,7 @@ function paletteOf(raw: unknown, where: string): TerminalThemeParse {
 
   return {
     ok: true,
-    themes: [{ id, label, swatch, dark: dark.ansi, light: light ?? dark.ansi }],
+    themes: [{ id, label, swatch, dark: dark.ansi, light, lightDerived }],
   };
 }
 

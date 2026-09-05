@@ -83,13 +83,42 @@ describe('parseTerminalThemes', () => {
     }
   });
 
-  it('keeps a theme with no light variant, and does not invent one', () => {
+  it('derives a light variant when one is missing, and says that it did', () => {
     const { light: _drop, ...darkOnly } = good;
     const out = parseTerminalThemes(darkOnly);
     expect(out.ok).toBe(true);
-    // Used on both grounds, and identical — so the UI can tell it is dark-only
-    // rather than being handed a derived palette it cannot distinguish.
-    if (out.ok) expect(out.themes[0].light).toEqual(out.themes[0].dark);
+    if (!out.ok) return;
+    const t = out.themes[0];
+    expect(t.lightDerived).toBe(true);
+    // Derived, not copied: a theme used on a light ground with its dark
+    // colours is the bug this replaced.
+    expect(t.light).not.toEqual(t.dark);
+    // And every derived value is still a colour, so it survives its own
+    // validator on the way back in.
+    for (const key of TERMINAL_ANSI_KEYS) {
+      expect(isTerminalColor(t.light[key]), key).toBe(true);
+    }
+  });
+
+  it('leaves an authored light variant alone', () => {
+    const out = parseTerminalThemes(good);
+    expect(out.ok).toBe(true);
+    if (!out.ok) return;
+    expect(out.themes[0].lightDerived).toBe(false);
+    expect(out.themes[0].light).toEqual(good.light);
+  });
+
+  it('derives ink that is actually darker than the dark palette', () => {
+    const { light: _drop, ...darkOnly } = good;
+    const out = parseTerminalThemes(darkOnly);
+    if (!out.ok) return;
+    const luma = (hex: string) => {
+      const n = parseInt(hex.slice(1), 16);
+      return (0.299 * ((n >> 16) & 255) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255;
+    };
+    // The whole point: colours chosen to glow on near-black become ink on
+    // near-white, so the foreground must end up dark.
+    expect(luma(out.themes[0].light.foreground)).toBeLessThan(0.5);
   });
 
   it('refuses ids that are not usable as ids', () => {

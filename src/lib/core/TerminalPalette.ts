@@ -42,6 +42,14 @@ export interface TerminalPalette {
   swatch: string;
   dark: TerminalAnsi;
   light: TerminalAnsi;
+  /**
+   * The light half was computed, not authored.
+   *
+   * Worth carrying because it is worth SAYING: a derived variant is legible
+   * rather than designed, and a reader deciding whether to keep a theme should
+   * know which they are looking at.
+   */
+  lightDerived?: boolean;
 }
 
 /**
