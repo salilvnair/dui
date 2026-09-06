@@ -26,7 +26,7 @@
  */
 import type { CSSProperties, ReactNode } from 'react';
 
-export type BadgeChipSize = 'xs' | 'sm' | 'md';
+export type BadgeChipSize = '2xs' | 'xs' | 'sm' | 'md';
 
 export interface BadgeChipViewProps {
   children: ReactNode;
@@ -51,7 +51,17 @@ export interface BadgeChipViewProps {
   style?: CSSProperties;
 }
 
+/*
+  `2xs` is for a chip that annotates something rather than labelling it.
+
+  The mark beside a facet field name saying where the field came from is the
+  case it was added for: at `xs` the chip stood taller than the 10.5px name it
+  qualified, so the annotation read as the heading and the heading as its
+  caption. A chip that outweighs its own subject is the wrong size whatever
+  else is true of it.
+*/
 const SIZES: Record<BadgeChipSize, { h: number; fs: number; px: number; r: number }> = {
+  '2xs': { h: 11, fs: 6, px: 3, r: 2 },
   xs: { h: 15, fs: 7.5, px: 4.5, r: 3 },
   sm: { h: 17, fs: 8, px: 6, r: 4 },
   md: { h: 20, fs: 9, px: 8, r: 5 },
