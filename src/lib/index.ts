@@ -760,6 +760,9 @@ export { NetworkGraphView } from './components/display/NetworkGraphView';
 export type { NetworkGraphViewProps, NetworkGraphNode, NetworkGraphEdge } from './components/display/NetworkGraphView';
 
 export { AIButtonView } from './components/button/AIButtonView';
+/** The AI button's box without the sparkle — for a plain action beside them. */
+export { ActionButtonView } from './components/button/ActionButtonView';
+export type { ActionButtonViewProps } from './components/button/ActionButtonView';
 export type { AIButtonViewProps, AIButtonAction } from './components/button/AIButtonView';
 
 export { SideNavView, filterItems, countLeaves } from './components/layout/SideNavView';

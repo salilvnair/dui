@@ -1,8 +1,8 @@
-import type { CSSProperties } from 'react';
 import { SparkleIcon, SpinnerIcon } from '../../../icons';
 import type { DuiSize, DuiRadius, DuiWidth, DuiFontStyle } from '../../core/DuiTypes';
 import { useButtonBase } from '../../core/ButtonBase';
-import { useDui, resolveBorderRadius } from '../../core/DuiContext';
+import { useDui } from '../../core/DuiContext';
+import { ActionButtonView } from './ActionButtonView';
 import './AIButtonView.css';
 
 export type AIButtonAction = 'generate' | 'fuzz' | 'explain' | 'fix' | 'ask' | 'suggest';
@@ -51,56 +51,34 @@ export function AIButtonView({
   fontStyle,
 }: AIButtonViewProps) {
   const ctx = useDui();
-  // `compact` maps to 'xs' (20px); explicit `size` wins over compact
+  // `compact` maps to 'xs' (20px); an explicit `size` wins over it.
   const resolvedSize: DuiSize | undefined = size ?? (compact ? 'xs' : undefined);
   const base = useButtonBase(resolvedSize, { width, borderRadius, color, fontStyle });
-  const accent = accentColor || ctx.defaultColor || 'var(--color-protocol-ai)';
-  const displayLabel = label ?? ACTION_LABEL[action];
-  const resolvedRadius = resolveBorderRadius(borderRadius ?? ctx.borderRadius, '5px');
 
+  /*
+    The box lives in `ActionButtonView` now, and this is that box with a
+    sparkle in it.
+
+    It used to be a hundred lines of its own, which meant a plain action
+    button beside one could only be a different component with a different
+    look — and the day the tint or the hover changed here, nothing else would
+    follow. One implementation, two faces.
+  */
   return (
-    <button
-      type="button"
+    <ActionButtonView
       onClick={onClick}
       disabled={disabled || loading}
-      className={`dui_ai-button ${className}`}
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: base.gap,
-        height: base.height,
-        width: base.width !== 'auto' ? base.width : undefined,
-        paddingLeft: base.paddingX,
-        paddingRight: base.paddingX,
-        borderRadius: resolvedRadius,
-        color: base.color || (accentColor ? accentColor : 'var(--color-aibtn-text)'),
-        fontSize: base.fontSize,
-        fontWeight: 600,
-        fontStyle: base.fontStyle,
-        cursor: disabled || loading ? 'not-allowed' : 'pointer',
-        opacity: disabled ? 0.5 : 1,
-        letterSpacing: '0.01em',
-        fontFamily: 'inherit',
-        // Resting bg + border as CSS vars — CSS class reads them so :hover rule can override
-        '--dui-aibtn-bg': accentColor
-          ? `color-mix(in srgb, ${accentColor} 10%, transparent)`
-          : 'var(--color-aibtn-bg)',
-        '--dui-aibtn-border-color': accentColor
-          ? `color-mix(in srgb, ${accentColor} 35%, transparent)`
-          : 'var(--color-aibtn-border)',
-        '--dui-aibtn-hover-bg': accentColor
-          ? `color-mix(in srgb, ${accentColor} 10%, var(--color-surface))`
-          : `color-mix(in srgb, var(--color-protocol-ai) 10%, var(--color-surface))`,
-        '--dui-aibtn-hover-border': accentColor
-          ? `color-mix(in srgb, ${accentColor} 45%, var(--color-surface-border))`
-          : `color-mix(in srgb, var(--color-protocol-ai) 45%, var(--color-surface-border))`,
-      } as CSSProperties}
-    >
-      {loading
+      size={resolvedSize}
+      accentColor={accentColor || ctx.defaultColor || 'var(--color-protocol-ai)'}
+      className={className}
+      width={width}
+      borderRadius={borderRadius}
+      color={color}
+      fontStyle={fontStyle}
+      icon={loading
         ? <SpinnerIcon size={base.iconSize} style={{ flexShrink: 0 }} />
-        : <SparkleIcon size={base.iconSize} style={{ flexShrink: 0 }} />
-      }
-      {loading ? 'Thinking…' : displayLabel}
-    </button>
+        : <SparkleIcon size={base.iconSize} style={{ flexShrink: 0 }} />}
+      label={loading ? 'Thinking…' : (label ?? ACTION_LABEL[action])}
+    />
   );
 }
