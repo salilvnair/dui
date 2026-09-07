@@ -30,6 +30,15 @@ export interface TextInputViewProps extends Omit<InputHTMLAttributes<HTMLInputEl
   naked?: boolean;
   // ─── DUI container props ────────────────────────────────────────────────────
   width?: DuiWidth;
+  /**
+   * Styles for the inner `<input>`, where `style` reaches only the box.
+   *
+   * `style` is the container's — its border, height and width — so a caller
+   * setting `fontSize` there was styling the wrapper and watching the text
+   * ignore it. A title being renamed in place wants its own type size while
+   * keeping everything else this control brings.
+   */
+  inputStyle?: React.CSSProperties;
   borderRadius?: DuiRadius | number;
   /** Text color override */
   color?: string;
@@ -42,7 +51,7 @@ export const TextInputView = forwardRef<HTMLInputElement, TextInputViewProps>(
       iconLeft, iconRight, prefixIcon, suffixIcon,
       masked = false, maskIcon,
       naked = false,
-      style, className = '', onFocus, onBlur, type,
+      style, inputStyle, className = '', onFocus, onBlur, type,
       width, borderRadius, color, fontStyle,
       ...rest },
     ref
@@ -120,6 +129,7 @@ export const TextInputView = forwardRef<HTMLInputElement, TextInputViewProps>(
             minWidth: 0,
             fontFamily: 'inherit',
             caretColor: (naked && error) ? 'var(--color-error)' : undefined,
+            ...inputStyle,
           }}
           onFocus={e => { setFocused(true); onFocus?.(e); }}
           onBlur={e => { setFocused(false); onBlur?.(e); }}
