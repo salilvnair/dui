@@ -31,6 +31,23 @@ export interface SelectInputViewProps {
   value: string;
   onChange: (value: string) => void;
   size?: SelectInputSize;
+  /**
+   * Row size for the OPEN MENU, when it should differ from the trigger.
+   *
+   * A trigger sized for a form row can open a list that wants to be denser:
+   * twenty content types at the trigger's own row height is a menu you scroll
+   * rather than scan. Defaults to `size`, so nothing changes unless asked.
+   */
+  menuSize?: SelectInputSize;
+  /**
+   * A floor for the menu's width, in px.
+   *
+   * The menu is otherwise at least as wide as the trigger and as wide as its
+   * widest option — which is right until the trigger is narrow and the
+   * options are long, where a menu a little wider than its trigger reads
+   * better than one that hugs the text.
+   */
+  menuMinWidth?: number;
   /** true = size-derived radius (default), false = 0px */
   rounded?: boolean;
   placeholder?: string;
@@ -71,6 +88,8 @@ export function SelectInputView({
   value,
   onChange,
   size = 'default',
+  menuSize,
+  menuMinWidth,
   rounded = true,
   placeholder,
   accentColor,
@@ -87,6 +106,8 @@ export function SelectInputView({
 
   const duiSize = resolveSelectSize(size);
   const base = useSelectBase(duiSize, { borderRadius });
+  // The menu's own metrics: the same by default, denser when asked.
+  const menuBase = useSelectBase(resolveSelectSize(menuSize ?? size), { borderRadius });
 
   const accent = accentColor || 'var(--color-primary)';
   const radius = rounded ? base.borderRadius : '0px';
@@ -100,7 +121,7 @@ export function SelectInputView({
     const position = () => {
       const r = trigger.getBoundingClientRect();
       const M = 8; // viewport margin
-      menu.style.minWidth = r.width + 'px';
+      menu.style.minWidth = Math.max(menuMinWidth ?? 0, r.width) + 'px';
 
       /*
         ── Vertical: flip up when there is more room above, and never overflow ──
@@ -267,7 +288,7 @@ export function SelectInputView({
                   {i > 0 && (
                     <div style={{ height: '1px', background: 'var(--color-surface-border)', margin: '3px 4px' }} />
                   )}
-                  <div style={{ padding: `5px ${base.paddingX} 3px`, fontSize: '9px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-text-muted)', userSelect: 'none' }}>
+                  <div style={{ padding: `5px ${menuBase.paddingX} 3px`, fontSize: '9px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-text-muted)', userSelect: 'none' }}>
                     {opt.label}
                   </div>
                 </div>
@@ -283,11 +304,11 @@ export function SelectInputView({
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: base.gap,
-                  padding: `${base.itemPy} ${base.paddingX}`,
+                  gap: menuBase.gap,
+                  padding: `${menuBase.itemPy} ${menuBase.paddingX}`,
                   marginBottom: '2px',
                   borderRadius: rounded ? '5px' : '0px',
-                  fontSize: base.fontSize,
+                  fontSize: menuBase.fontSize,
                   fontWeight: 500,
                   color: opt.value === value ? (accentColor || 'var(--color-primary-light)') : (opt.color || 'var(--color-text-secondary)'),
                   cursor: 'pointer',
