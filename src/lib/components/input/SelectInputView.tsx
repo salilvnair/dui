@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
-import { DropdownArrowIcon } from '../../../icons';
+import { DropdownArrowIcon, CheckIcon } from '../../../icons';
 import type { DuiSize, DuiRadius, DuiWidth } from '../../core/DuiTypes';
 import { useSelectBase } from '../../core/SelectBase';
 import './SelectInputView.css';
@@ -31,6 +31,28 @@ export interface SelectInputViewProps {
   value: string;
   onChange: (value: string) => void;
   size?: SelectInputSize;
+  /**
+   * A floor for the open menu's width, in px.
+   *
+   * The menu is otherwise as wide as the trigger and as wide as its widest
+   * option — right until the labels are short (`JSON`, `XML`) and the menu
+   * comes out narrower than the list it presents deserves.
+   */
+  menuMinWidth?: number;
+  /**
+   * Label size inside the open menu, in px.
+   *
+   * Defaults to the control's own. A menu of short words reads better a
+   * point larger than the trigger that summarises it.
+   */
+  menuFontSize?: number;
+  /**
+   * Horizontal padding inside the menu's rows, in px.
+   *
+   * Defaults to the control's own — this is for a menu that wants more room
+   * around its labels than its trigger does.
+   */
+  menuPaddingX?: number;
   /** true = size-derived radius (default), false = 0px */
   rounded?: boolean;
   placeholder?: string;
@@ -71,6 +93,9 @@ export function SelectInputView({
   value,
   onChange,
   size = 'default',
+  menuMinWidth,
+  menuPaddingX,
+  menuFontSize,
   rounded = true,
   placeholder,
   accentColor,
@@ -100,7 +125,7 @@ export function SelectInputView({
     const position = () => {
       const r = trigger.getBoundingClientRect();
       const M = 8; // viewport margin
-      menu.style.minWidth = r.width + 'px';
+      menu.style.minWidth = Math.max(menuMinWidth ?? 0, r.width) + 'px';
 
       /*
         ── Vertical: flip up when there is more room above, and never overflow ──
@@ -267,7 +292,7 @@ export function SelectInputView({
                   {i > 0 && (
                     <div style={{ height: '1px', background: 'var(--color-surface-border)', margin: '3px 4px' }} />
                   )}
-                  <div style={{ padding: `5px ${base.paddingX} 3px`, fontSize: '9px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-text-muted)', userSelect: 'none' }}>
+                  <div style={{ padding: `5px ${menuPaddingX !== undefined ? `${menuPaddingX}px` : base.paddingX} 3px`, fontSize: '9px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-text-muted)', userSelect: 'none' }}>
                     {opt.label}
                   </div>
                 </div>
@@ -284,10 +309,10 @@ export function SelectInputView({
                   display: 'flex',
                   alignItems: 'center',
                   gap: base.gap,
-                  padding: `${base.itemPy} ${base.paddingX}`,
+                  padding: `${base.itemPy} ${menuPaddingX !== undefined ? `${menuPaddingX}px` : base.paddingX}`,
                   marginBottom: '2px',
                   borderRadius: rounded ? '5px' : '0px',
-                  fontSize: base.fontSize,
+                  fontSize: menuFontSize !== undefined ? `${menuFontSize}px` : base.fontSize,
                   fontWeight: 500,
                   color: opt.value === value ? (accentColor || 'var(--color-primary-light)') : (opt.color || 'var(--color-text-secondary)'),
                   cursor: 'pointer',
@@ -298,6 +323,21 @@ export function SelectInputView({
                 )}
                 {opt.icon && <span style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>{opt.icon}</span>}
                 <span>{opt.label}</span>
+                {/*
+                  The selected row says so at its right edge, in the accent.
+
+                  Colour alone carried it before, which is the one signal that
+                  fails for a colour-blind reader, on a projector, and in any
+                  list where another row happens to be tinted. A tick is a
+                  second, unambiguous mark; `marginLeft: auto` pins it to the
+                  end however long the label is.
+                */}
+                {opt.value === value && (
+                  <CheckIcon
+                    size={base.iconSize}
+                    style={{ marginLeft: 'auto', flexShrink: 0, color: accentColor || 'var(--color-primary-light)' }}
+                  />
+                )}
               </div>
             );
           })}
