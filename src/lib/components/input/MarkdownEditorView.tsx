@@ -27,7 +27,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { marked } from 'marked';
 import type { DuiSize } from '../../core/DuiTypes';
-import { SegmentedControlView } from './SegmentedControlView';
 import { SelectInputView } from './SelectInputView';
 import {
   BoldIcon, ItalicIcon, StrikethroughIcon, LinkIcon, ListIcon, OrderedListIcon,
@@ -219,16 +218,25 @@ export function MarkdownEditorView({
         <span className="dui_mde__spacer" />
         {toolbarRight}
         {showModeToggle && (
-          <SegmentedControlView
-            size={size}
-            value={mode}
-            accentColor={accentColor}
-            options={[
-              { value: 'rich', label: 'Rich Text' },
-              { value: 'markdown', label: 'Markdown' },
-            ]}
-            onChange={v => setMode(v as MarkdownEditorMode)}
-          />
+          /* A flat pair sharing one outline, not a pill with a filled thumb.
+             This sits in a toolbar of quiet icon buttons and a segmented
+             control shouted over all of them — it is a view switch, not the
+             action on the screen. */
+          <div className="dui_mde__modes">
+            {(['rich', 'markdown'] as const).map(m => (
+              <button
+                key={m}
+                type="button"
+                className={mode === m ? 'on' : ''}
+                style={mode === m
+                  ? { color: accentColor, background: `color-mix(in srgb, ${accentColor} 16%, transparent)` }
+                  : undefined}
+                onClick={() => setMode(m)}
+              >
+                {m === 'rich' ? 'Rich Text' : 'Markdown'}
+              </button>
+            ))}
+          </div>
         )}
       </div>
 

@@ -169,3 +169,31 @@
 }
 
 .dui_mde__surface img { max-width: 100%; border-radius: 6px; }
+
+/* ── View switch ────────────────────────────────────────────────────────── */
+
+/*
+  A flat pair sharing one outline rather than a segmented control.
+
+  This sits at the end of a toolbar of quiet icon buttons, and a pill with a
+  filled thumb was the loudest thing in it — which is the wrong emphasis for a
+  switch between two ways of looking at the same document. It is not the action
+  on the screen.
+*/
+.dui_mde__modes {
+  display: inline-flex;
+  overflow: hidden;
+  border-radius: 5px;
+  border: 1px solid var(--color-surface-border);
+  font-size: 9.5px;
+}
+.dui_mde__modes button {
+  padding: 3px 9px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  transition: color 120ms, background 120ms;
+}
+.dui_mde__modes button:hover:not(.on) { color: var(--color-text-primary); }
+.dui_mde__modes button.on { font-weight: 600; }
