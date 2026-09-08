@@ -738,6 +738,10 @@ export type { StatsCardViewProps } from './components/display/StatsCardView';
 export { DataTableView } from './components/display/DataTableView';
 export type { DataTableViewProps, DataTableColumn } from './components/display/DataTableView';
 
+export { LineDiffView } from './components/display/LineDiffView';
+export type { LineDiffViewProps } from './components/display/LineDiffView';
+export { diffLines, tallyDiff } from './components/display/line-diff';
+export type { DiffLine, DiffOp, DiffTally } from './components/display/line-diff';
 export { CodeBlockView } from './components/display/CodeBlockView';
 export type { CodeBlockViewProps } from './components/display/CodeBlockView';
 
