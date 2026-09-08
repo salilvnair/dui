@@ -1,0 +1,171 @@
+/*
+  MarkdownEditorView.
+
+  The rich surface renders what `marked` produces, so the styles below have to
+  cover every element it can emit — a heading with no size is a heading nobody
+  can see, which would make the toolbar look broken rather than the CSS
+  incomplete.
+*/
+
+.dui_mde {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+}
+
+/* ── Toolbar ───────────────────────────────────────────────────────────── */
+
+.dui_mde__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  padding: 6px 9px;
+  border-bottom: 1px solid var(--color-surface-border);
+}
+.dui_mde__spacer { flex: 1; min-width: 8px; }
+.dui_mde__sep {
+  width: 1px;
+  height: 16px;
+  margin: 0 4px;
+  background: var(--color-surface-border);
+}
+
+.dui_mde__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  transition: background 120ms, color 120ms;
+}
+.dui_mde__btn:hover:not(:disabled) {
+  color: var(--color-text-primary);
+  background: color-mix(in srgb, var(--color-text-primary) 9%, transparent);
+}
+.dui_mde__btn:active:not(:disabled) { transform: scale(0.92); }
+.dui_mde__btn:disabled { opacity: 0.4; cursor: default; }
+
+/* ── Surfaces ──────────────────────────────────────────────────────────── */
+
+.dui_mde__surface,
+.dui_mde__source {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 12px 14px;
+  outline: none;
+  color: var(--color-text-primary);
+  background: transparent;
+}
+
+.dui_mde__surface { font-size: 13px; line-height: 1.65; }
+
+/* An empty contenteditable is invisible, so it says what it is for. */
+.dui_mde__surface:empty::before,
+.dui_mde__surface > p:only-child:empty::before {
+  content: attr(data-placeholder);
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.dui_mde__source {
+  resize: none;
+  border: none;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+/* ── What marked emits ─────────────────────────────────────────────────── */
+
+.dui_mde__surface > :first-child { margin-top: 0; }
+.dui_mde__surface p { margin: 0 0 0.85em; }
+
+.dui_mde__surface h1,
+.dui_mde__surface h2,
+.dui_mde__surface h3,
+.dui_mde__surface h4,
+.dui_mde__surface h5,
+.dui_mde__surface h6 {
+  margin: 1.1em 0 0.5em;
+  font-weight: 650;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+.dui_mde__surface h1 { font-size: 1.7em; }
+.dui_mde__surface h2 { font-size: 1.42em; }
+.dui_mde__surface h3 { font-size: 1.2em; }
+.dui_mde__surface h4 { font-size: 1.06em; }
+.dui_mde__surface h5 { font-size: 0.96em; color: var(--color-text-secondary); }
+.dui_mde__surface h6 { font-size: 0.9em; color: var(--color-text-muted); }
+
+.dui_mde__surface a { color: var(--color-info); text-decoration: underline; }
+
+.dui_mde__surface ul,
+.dui_mde__surface ol { margin: 0 0 0.85em; padding-left: 1.4em; }
+.dui_mde__surface li { margin: 0.16em 0; }
+.dui_mde__surface li > input[type='checkbox'] { margin-right: 6px; }
+/* A task list keeps its own markers, so the bullets would be a second one. */
+.dui_mde__surface ul:has(input[type='checkbox']) { list-style: none; padding-left: 0.4em; }
+
+.dui_mde__surface code {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.88em;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--color-text-primary) 8%, transparent);
+}
+.dui_mde__surface pre {
+  margin: 0 0 0.85em;
+  padding: 10px 12px;
+  border-radius: 7px;
+  overflow-x: auto;
+  background: color-mix(in srgb, var(--color-text-primary) 6%, transparent);
+  border: 1px solid var(--color-surface-border);
+}
+.dui_mde__surface pre code { padding: 0; background: none; font-size: 0.86em; }
+
+.dui_mde__surface blockquote {
+  margin: 0 0 0.85em;
+  padding: 2px 0 2px 12px;
+  border-left: 3px solid color-mix(in srgb, var(--color-text-muted) 45%, transparent);
+  color: var(--color-text-secondary);
+}
+
+/* Wide tables scroll inside the editor rather than widening it. */
+.dui_mde__surface table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 0 0 0.85em;
+  font-size: 0.94em;
+}
+.dui_mde__surface th,
+.dui_mde__surface td {
+  border: 1px solid var(--color-surface-border);
+  padding: 5px 9px;
+  text-align: left;
+}
+.dui_mde__surface th {
+  font-weight: 650;
+  background: color-mix(in srgb, var(--color-text-primary) 5%, transparent);
+}
+
+.dui_mde__surface hr {
+  border: none;
+  border-top: 1px solid var(--color-surface-border);
+  margin: 1.2em 0;
+}
+
+.dui_mde__surface img { max-width: 100%; border-radius: 6px; }

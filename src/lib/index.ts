@@ -554,6 +554,9 @@ export type { RatingBreakdownViewProps } from './components/display/RatingBreakd
 export { TreeSelectView } from './components/input/TreeSelectView';
 export type { TreeSelectViewProps, TreeSelectNode } from './components/input/TreeSelectView';
 
+export { MarkdownEditorView } from './components/input/MarkdownEditorView';
+export type { MarkdownEditorViewProps, MarkdownEditorMode } from './components/input/MarkdownEditorView';
+export { htmlToMarkdown } from './components/input/markdown-serialise';
 export { RichTextToolbarView } from './components/input/RichTextToolbarView';
 export type { RichTextToolbarViewProps, RichTextAction } from './components/input/RichTextToolbarView';
 

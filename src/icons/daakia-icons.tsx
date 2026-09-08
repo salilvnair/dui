@@ -231,6 +231,56 @@ export function CloseSquareIcon(props: IconProps) {
   );
 }
 
+/**
+ * A luggage-style tag: the angled label with a punched hole.
+ *
+ * Distinct from PinIcon, which is a drawing pin and reads as "pinned to the
+ * top" rather than "labelled" — the two mean different things and were being
+ * drawn with the same glyph.
+ */
+/** Strikethrough — the S with a bar through it, as every editor draws it. */
+export function StrikethroughIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M16 4H9a3 3 0 0 0-2.83 4" />
+      <path d="M14 12a4 4 0 0 1 0 8H6" />
+      <line x1="4" y1="12" x2="20" y2="12" />
+    </svg>
+  );
+}
+
+/** A numbered list. ListIcon is the bulleted one. */
+export function OrderedListIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <line x1="10" y1="6" x2="21" y2="6" />
+      <line x1="10" y1="12" x2="21" y2="12" />
+      <line x1="10" y1="18" x2="21" y2="18" />
+      <path d="M4 6h1V2M4 10h3l-3 4h3" />
+      <path d="M4 16h2a1 1 0 0 1 0 2H4h2a1 1 0 0 1 0 2H4" />
+    </svg>
+  );
+}
+
+/** Block quote — the pair of opening marks. */
+export function QuoteIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M9 7H5a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h2v1a2 2 0 0 1-2 2H4" />
+      <path d="M19 7h-4a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h2v1a2 2 0 0 1-2 2h-1" />
+    </svg>
+  );
+}
+
+export function TagIcon(props: IconProps) {
+  return (
+    <svg {...withDefaults(props)}>
+      <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2.7 12.7A2 2 0 0 1 2.12 11.3V4a2 2 0 0 1 2-2h7.3a2 2 0 0 1 1.4.58l7.77 7.77a2 2 0 0 1 0 2.83z" />
+      <circle cx="7.5" cy="7.5" r="1.2" />
+    </svg>
+  );
+}
+
 export function PinIcon(props: IconProps) {
   return (
     <svg {...withDefaults(props)}>
