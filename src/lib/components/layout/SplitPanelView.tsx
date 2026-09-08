@@ -41,6 +41,16 @@ export interface SplitPanelViewProps {
    */
   collapsed?: boolean;
   /**
+   * Which panel `collapsed` hides. Defaults to the second.
+   *
+   * A split that can only collapse one side is half a component: a details pane
+   * on the right collapses second, a sidebar or a facet rail on the left
+   * collapses first. Without this a left-hand caller has to swap `first` and
+   * `second` — which puts the panel on the wrong side — or drop the split, and
+   * lose the state the collapse existed to preserve.
+   */
+  collapsedSide?: 'first' | 'second';
+  /**
    * Tooltip shown on pill hover. Pass `null` to suppress.
    * Defaults to "Double-click to reset Alt+/ / Drag to resize" with a styled kbd badge.
    */
@@ -83,6 +93,7 @@ export function SplitPanelView({
   onHandleClick,
   pillTooltip = DEFAULT_PILL_TOOLTIP,
   collapsed = false,
+  collapsedSide = 'second',
   style,
   className = '',
 }: SplitPanelViewProps) {
@@ -165,19 +176,22 @@ export function SplitPanelView({
     onResizeEnd?.(defaultSplit);
   };
 
-  // Collapsed, the first panel is the whole container — and its min size stops
-  // applying, since there is no second panel left for it to be squeezed by.
+  const firstGone = collapsed && collapsedSide === 'first';
+  const secondGone = collapsed && collapsedSide === 'second';
+
+  // Whichever panel survives is the whole container — and its min size stops
+  // applying, since there is no other panel left for it to be squeezed by.
   const firstStyle: React.CSSProperties = isHoriz
-    ? { width: collapsed ? '100%' : `${currentSplit}%`,
-        minWidth: collapsed ? 0 : minFirst, height: '100%', overflow: 'hidden',
+    ? { width: secondGone ? '100%' : `${currentSplit}%`,
+        minWidth: secondGone ? 0 : minFirst, height: '100%', overflow: 'hidden',
         transition: dragging ? 'none' : `width 180ms ${EASE}` }
-    : { height: collapsed ? '100%' : `${currentSplit}%`,
-        minHeight: collapsed ? 0 : minFirst, width: '100%', overflow: 'hidden',
+    : { height: secondGone ? '100%' : `${currentSplit}%`,
+        minHeight: secondGone ? 0 : minFirst, width: '100%', overflow: 'hidden',
         transition: dragging ? 'none' : `height 180ms ${EASE}` };
 
   const secondStyle: React.CSSProperties = isHoriz
-    ? { flex: 1, minWidth: minSecond, height: '100%', overflow: 'hidden' }
-    : { flex: 1, minHeight: minSecond, width: '100%', overflow: 'hidden',
+    ? { flex: 1, minWidth: firstGone ? 0 : minSecond, height: '100%', overflow: 'hidden' }
+    : { flex: 1, minHeight: firstGone ? 0 : minSecond, width: '100%', overflow: 'hidden',
         transition: dragging ? 'none' : `all 180ms ${EASE}` };
 
   const pillW = isHoriz ? 3 : (pillActive ? 80 : 44);
@@ -196,7 +210,7 @@ export function SplitPanelView({
         ...style,
       }}
     >
-      <div ref={firstPaneRef} style={firstStyle}>{first}</div>
+      {!firstGone && <div ref={firstPaneRef} style={firstStyle}>{first}</div>}
 
       {/* Drag handle. Hidden rather than removed when collapsed — it holds no
           caller content, so there is nothing to preserve either way, and this
@@ -287,10 +301,10 @@ export function SplitPanelView({
         )}
       </div>
 
-      {/* The second panel IS unmounted when collapsed — unlike the handle it
-          holds the caller's content, and a hidden pane that keeps running is
-          not what "collapsed" promises. */}
-      {!collapsed && <div style={secondStyle}>{second}</div>}
+      {/* The collapsed panel IS unmounted — unlike the handle it holds the
+          caller's content, and a hidden pane that keeps running is not what
+          "collapsed" promises. */}
+      {!secondGone && <div style={secondStyle}>{second}</div>}
     </div>
   );
 }
