@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
 import { createPortal } from 'react-dom';
 import { ExternalLinkIcon } from '../../../icons';
 
@@ -17,8 +17,31 @@ export interface InfoPopupViewProps {
   footer?: string;
   wikiLabel?: string;
   wikiHref?: string;
+  /**
+   * Open the docs in the host app instead of the browser.
+   *
+   * `wikiHref` assumes the documentation is a URL. An app whose docs are a
+   * panel of its own has nowhere to point one -- and inside an embedded host
+   * (a VS Code webview, an iframe with no top-level navigation) an anchor to
+   * an internal route does nothing at all, silently. Given this, the footer
+   * becomes a button and the app decides what "open the wiki" means.
+   *
+   * Takes precedence over `wikiHref` when both are given.
+   */
+  onWikiOpen?: () => void;
   width?: number;
 }
+
+/** Shared by the button and the anchor, so the two cannot drift apart. */
+const WIKI_LINK: CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '4px',
+  fontSize: '11px',
+  color: 'var(--color-accent)',
+  textDecoration: 'none',
+  fontWeight: 500,
+};
 
 export function InfoPopupView({
   open,
@@ -30,6 +53,7 @@ export function InfoPopupView({
   footer,
   wikiLabel = 'Open Wiki →',
   wikiHref,
+  onWikiOpen,
   width = 320,
 }: InfoPopupViewProps) {
   const popRef = useRef<HTMLDivElement>(null);
@@ -167,25 +191,23 @@ export function InfoPopupView({
       </div>
 
       {/* Wiki link */}
-      {wikiHref && (
+      {(onWikiOpen || wikiHref) && (
         <div style={{ padding: '8px 14px', borderTop: '1px solid var(--color-surface-border)' }}>
-          <a
-            href={wikiHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '4px',
-              fontSize: '11px',
-              color: 'var(--color-accent)',
-              textDecoration: 'none',
-              fontWeight: 500,
-            }}
-          >
-            {wikiLabel}
-            <ExternalLinkIcon size={10} />
-          </a>
+          {onWikiOpen ? (
+            <button
+              type="button"
+              onClick={() => { onWikiOpen(); onClose(); }}
+              style={{ ...WIKI_LINK, border: 'none', background: 'none', padding: 0, cursor: 'pointer' }}
+            >
+              {wikiLabel}
+              <ExternalLinkIcon size={10} />
+            </button>
+          ) : (
+            <a href={wikiHref} target="_blank" rel="noopener noreferrer" style={WIKI_LINK}>
+              {wikiLabel}
+              <ExternalLinkIcon size={10} />
+            </a>
+          )}
         </div>
       )}
     </div>
