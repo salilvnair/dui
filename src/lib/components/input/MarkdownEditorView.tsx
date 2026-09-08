@@ -103,6 +103,33 @@ export function MarkdownEditorView({
   const surface = useRef<HTMLDivElement>(null);
   const [block, setBlock] = useState('p');
 
+  /* Which URL the toolbar is asking for, and where the caret was when it
+     started asking — focusing the input collapses the selection, so it has to
+     be put back before the command runs. */
+  const [asking, setAsking] = useState<'link' | 'image' | null>(null);
+  const [askValue, setAskValue] = useState('');
+  const askRef = useRef<Range | null>(null);
+
+  const applyAsk = () => {
+    const url = askValue.trim();
+    const kind = asking;
+    setAsking(null);
+    setAskValue('');
+    if (!url || !kind) return;
+
+    const el = surface.current;
+    if (!el) return;
+    el.focus();
+    if (askRef.current) {
+      const sel = window.getSelection();
+      sel?.removeAllRanges();
+      sel?.addRange(askRef.current);
+    }
+    if (kind === 'link') document.execCommand('createLink', false, url);
+    else document.execCommand('insertHTML', false, `<img src="${escapeAttr(url)}" alt="" />`);
+    emit();
+  };
+
   /*
     The rendered HTML is only pushed into the surface when it differs from what
     the surface would itself produce. Writing it on every keystroke would move
@@ -148,12 +175,16 @@ export function MarkdownEditorView({
     if (!el) return;
     el.focus();
 
-    if (cmd === 'createLink') {
-      const href = window.prompt('Link to');
-      if (href) document.execCommand('createLink', false, href);
-    } else if (cmd === 'daakia:image') {
-      const src = window.prompt('Image URL');
-      if (src) document.execCommand('insertHTML', false, `<img src="${escapeAttr(src)}" alt="" />`);
+    if (cmd === 'createLink' || cmd === 'daakia:image') {
+      /* A row in the toolbar, not window.prompt.
+         Some hosts run this inside a sandboxed iframe with no `allow-modals`
+         — a VS Code webview is one — where prompt() returns null without a
+         word, and the button appears to do nothing. The selection is kept
+         because asking for the URL steals focus from the surface. */
+      const sel = window.getSelection();
+      askRef.current = sel && sel.rangeCount ? sel.getRangeAt(0).cloneRange() : null;
+      setAsking(cmd === 'createLink' ? 'link' : 'image');
+      return;
     } else if (cmd === 'daakia:code') {
       /* A selection becomes inline code; an empty caret opens a fenced block,
          because those are the two things "code" means and guessing between
@@ -239,6 +270,28 @@ export function MarkdownEditorView({
           </div>
         )}
       </div>
+
+      {asking && (
+        <div className="dui_mde__ask">
+          <span>{asking === 'link' ? 'Link to' : 'Image URL'}</span>
+          <input
+            autoFocus
+            value={askValue}
+            placeholder={asking === 'link' ? 'https://example.com' : 'https://example.com/image.png'}
+            onChange={e => setAskValue(e.target.value)}
+            onKeyDown={e => {
+              if (e.key === 'Enter') { e.preventDefault(); applyAsk(); }
+              if (e.key === 'Escape') { setAsking(null); setAskValue(''); }
+            }}
+          />
+          <button type="button" style={{ color: accentColor }} onMouseDown={e => { e.preventDefault(); applyAsk(); }}>
+            Apply
+          </button>
+          <button type="button" onMouseDown={e => { e.preventDefault(); setAsking(null); setAskValue(''); }}>
+            Cancel
+          </button>
+        </div>
+      )}
 
       {mode === 'rich' ? (
         <div

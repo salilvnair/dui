@@ -197,3 +197,46 @@
 }
 .dui_mde__modes button:hover:not(.on) { color: var(--color-text-primary); }
 .dui_mde__modes button.on { font-weight: 600; }
+
+/* ── The URL row ────────────────────────────────────────────────────────── */
+
+/*
+  Where window.prompt used to be.
+
+  Some hosts run this inside a sandboxed iframe with no `allow-modals` — a VS
+  Code webview is one — and there prompt() returns null without a word, so the
+  Link and Image buttons appeared to do nothing at all.
+*/
+.dui_mde__ask {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  padding: 6px 9px;
+  font-size: 11px;
+  color: var(--color-text-muted);
+  border-bottom: 1px solid var(--color-surface-border);
+  background: color-mix(in srgb, var(--color-text-primary) 4%, transparent);
+}
+.dui_mde__ask input {
+  flex: 1;
+  min-width: 0;
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 11.5px;
+  color: var(--color-text-primary);
+  background: var(--color-input-bg);
+  border: 1px solid var(--color-surface-border);
+  outline: none;
+}
+.dui_mde__ask button {
+  border: none;
+  background: none;
+  padding: 3px 7px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+.dui_mde__ask button:hover { background: color-mix(in srgb, currentColor 14%, transparent); }
