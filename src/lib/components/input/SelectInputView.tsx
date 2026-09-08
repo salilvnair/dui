@@ -113,7 +113,7 @@ export function SelectInputView({
   const duiSize = resolveSelectSize(size);
   const base = useSelectBase(duiSize, { borderRadius });
 
-  const accent = accentColor || 'var(--color-primary)';
+  const accent = accentColor || 'var(--color-accent, var(--color-primary))';
   const radius = rounded ? base.borderRadius : '0px';
   const selected = options.find(o => o.value === value && !o.isHeader);
 

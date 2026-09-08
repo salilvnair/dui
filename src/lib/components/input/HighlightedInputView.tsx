@@ -73,7 +73,7 @@ export function HighlightedInputView({
   const [selectedIdx, setSelectedIdx] = useState(0);
   const [dropPos,     setDropPos]     = useState({ top: 0, left: 0, width: 0 });
 
-  const accent = accentColor || 'var(--color-primary)';
+  const accent = accentColor || 'var(--color-accent, var(--color-primary))';
 
   // Populate on mount
   useEffect(() => {

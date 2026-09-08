@@ -92,7 +92,7 @@ export function MarkdownEditorView({
   toolbarRight,
   readOnly = false,
   size = 'sm',
-  accentColor = 'var(--color-primary)',
+  accentColor = 'var(--color-accent, var(--color-primary))',
   className = '',
   style,
 }: MarkdownEditorViewProps) {

@@ -22,7 +22,7 @@ export function TagInputView({
 }: TagInputViewProps) {
   const [input, setInput] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
-  const accent = accentColor || 'var(--color-primary)';
+  const accent = accentColor || 'var(--color-accent, var(--color-primary))';
   const canAdd = !disabled && (!maxTags || tags.length < maxTags);
 
   const addTag = (raw: string) => {

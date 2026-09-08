@@ -31,7 +31,7 @@ export function StepperInputView({
   style,
 }: StepperInputViewProps) {
   const base = useInputBase(size, { borderRadius, color });
-  const accent = color ?? 'var(--color-primary)';
+  const accent = color ?? 'var(--color-accent, var(--color-primary))';
 
   const clamp = (v: number) => Math.min(max, Math.max(min, v));
   const dec = () => onChange(clamp(value - step));

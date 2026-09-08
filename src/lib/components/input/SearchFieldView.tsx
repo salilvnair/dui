@@ -52,7 +52,7 @@ export function SearchFieldView({
   placeholder = 'Search',
   size = 'sm',
   width = '100%',
-  accentColor = 'var(--color-primary)',
+  accentColor = 'var(--color-accent, var(--color-primary))',
   trailing,
   autoFocus,
 }: SearchFieldViewProps) {

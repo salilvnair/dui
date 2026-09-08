@@ -32,7 +32,7 @@ export function ChatInputView({
   style,
 }: ChatInputViewProps) {
   const base = useInputBase(size, { borderRadius, color });
-  const accent = color ?? 'var(--color-primary)';
+  const accent = color ?? 'var(--color-accent, var(--color-primary))';
   const fileRef = useRef<HTMLInputElement>(null);
 
   const send = () => { if (value.trim()) onSend(); };

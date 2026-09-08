@@ -207,7 +207,7 @@ export function PickerView({
 }: PickerViewProps) {
   const ctx = useDui();
   const base = useSelectBase(size, { width, borderRadius, color });
-  const accent = color ?? ctx.activeColor ?? 'var(--color-primary)';
+  const accent = color ?? ctx.activeColor ?? 'var(--color-accent, var(--color-primary))';
   const rows = visibleRows % 2 === 0 ? visibleRows + 1 : visibleRows;
   const itemHeight = parseInt(base.height, 10) + 6;
 

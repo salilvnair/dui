@@ -53,7 +53,7 @@ export function CascaderView({
   style,
 }: CascaderViewProps) {
   const base = useSelectBase(size, { width, borderRadius, color });
-  const accent = color ?? 'var(--color-primary)';
+  const accent = color ?? 'var(--color-accent, var(--color-primary))';
   const [open, setOpen] = useState(false);
   const [hoverPath, setHoverPath] = useState<string[]>(value);
   const triggerRef = useRef<HTMLButtonElement>(null);

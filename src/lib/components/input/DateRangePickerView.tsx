@@ -63,7 +63,7 @@ export function DateRangePickerView({
   style,
 }: DateRangePickerViewProps) {
   const base = useDateBase(size, { width, borderRadius, color });
-  const accent = color ?? 'var(--color-primary)';
+  const accent = color ?? 'var(--color-accent, var(--color-primary))';
   const [start, end] = value;
 
   const calendar = (

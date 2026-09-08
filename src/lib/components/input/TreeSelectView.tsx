@@ -72,7 +72,7 @@ export function TreeSelectView({
   style,
 }: TreeSelectViewProps) {
   const base = useSelectBase(size, { color });
-  const accent = color ?? 'var(--color-primary)';
+  const accent = color ?? 'var(--color-accent, var(--color-primary))';
   const checked = new Set(value);
 
   const handleToggle = (ids: string[], next: boolean) => {

@@ -32,7 +32,7 @@ export function FloatingLabelInputView({
   style,
 }: FloatingLabelInputViewProps) {
   const base = useInputBase(size, { width, borderRadius, color });
-  const accent = color ?? 'var(--color-primary)';
+  const accent = color ?? 'var(--color-accent, var(--color-primary))';
   const [focused, setFocused] = useState(false);
   const floated = focused || value.length > 0;
 

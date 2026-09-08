@@ -44,7 +44,7 @@ export function DateInputView({
   const triggerRef = useRef<HTMLButtonElement>(null);
   const popRef = useRef<HTMLDivElement>(null);
   const base = useInputBase(size, { width, borderRadius, color });
-  const accent = color ?? 'var(--color-primary)';
+  const accent = color ?? 'var(--color-accent, var(--color-primary))';
 
   useEffect(() => {
     if (!open || !triggerRef.current || !popRef.current) return;

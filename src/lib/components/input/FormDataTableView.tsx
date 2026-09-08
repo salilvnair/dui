@@ -46,7 +46,7 @@ export function FormDataTableView({
 }: FormDataTableViewProps) {
   const [confirmClear, setConfirmClear] = useState(false);
   const fileRefs = useRef<Map<string, HTMLInputElement>>(new Map());
-  const accent = accentColor || 'var(--color-primary)';
+  const accent = accentColor || 'var(--color-accent, var(--color-primary))';
 
   const updateRow = (idx: number, patch: Partial<FormDataRow>) => {
     const next = [...rows];

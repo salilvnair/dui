@@ -85,7 +85,7 @@ export function SelectTextInputView({
   const resolvedSize: DuiSize = size ?? ctx.size;
   const base = useInputBase(size, { width, borderRadius, color, fontStyle });
   const selWidth = selectWidth ?? SELECT_WIDTH[resolvedSize];
-  const accent = accentColor ?? 'var(--color-primary)';
+  const accent = accentColor ?? 'var(--color-accent, var(--color-primary))';
 
   // Vertical centring for the editable, done with real padding rather than only
   // `align-content`. An EMPTY block container has no line box at all, so align-content has

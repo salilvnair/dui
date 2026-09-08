@@ -36,7 +36,7 @@ export const MultilineInputView = forwardRef<HTMLTextAreaElement, MultilineInput
   ) {
     const [focused, setFocused] = useState(false);
     const base = useInputBase(size === 'default' ? undefined : size, { width, borderRadius });
-    const accent = accentColor || 'var(--color-primary)';
+    const accent = accentColor || 'var(--color-accent, var(--color-primary))';
     const radius = rounded ? base.borderRadius : '0px';
 
     const borderColor = error

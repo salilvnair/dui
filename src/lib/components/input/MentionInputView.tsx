@@ -38,7 +38,7 @@ export function MentionInputView({
   style,
 }: MentionInputViewProps) {
   const base = useInputBase(size, { borderRadius, color });
-  const accent = color ?? 'var(--color-primary)';
+  const accent = color ?? 'var(--color-accent, var(--color-primary))';
   const [query, setQuery] = useState<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 

@@ -85,7 +85,7 @@ export function DateTimeInputView({
   const triggerRef = useRef<HTMLButtonElement>(null);
   const popRef = useRef<HTMLDivElement>(null);
   const base = useInputBase(size, { width, borderRadius, color });
-  const accent = color ?? 'var(--color-primary)';
+  const accent = color ?? 'var(--color-accent, var(--color-primary))';
   const { date, time } = splitValue(value);
 
   useEffect(() => {

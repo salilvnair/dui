@@ -38,7 +38,7 @@ export function FilterInputView({
   placeholder = 'Filter',
   size = 'sm',
   width = '100%',
-  accentColor = 'var(--color-primary)',
+  accentColor = 'var(--color-accent, var(--color-primary))',
   suffix,
   onKeyDown,
   autoFocus,

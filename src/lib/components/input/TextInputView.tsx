@@ -59,7 +59,7 @@ export const TextInputView = forwardRef<HTMLInputElement, TextInputViewProps>(
     const [focused, setFocused] = useState(false);
     const [showMasked, setShowMasked] = useState(false);
     const base = useInputBase(size === 'default' ? undefined : size, { width, borderRadius, color, fontStyle });
-    const accent = accentColor || 'var(--color-primary)';
+    const accent = accentColor || 'var(--color-accent, var(--color-primary))';
     const radius = rounded ? base.borderRadius : '0px';
 
     const effectiveLeft = prefixIcon ?? iconLeft;

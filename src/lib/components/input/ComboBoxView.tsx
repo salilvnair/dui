@@ -41,7 +41,7 @@ export function ComboBoxView({
   style,
 }: ComboBoxViewProps) {
   const base = useSelectBase(size, { width, borderRadius, color });
-  const accent = color ?? 'var(--color-primary)';
+  const accent = color ?? 'var(--color-accent, var(--color-primary))';
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState(value);
   const inputRef = useRef<HTMLInputElement>(null);

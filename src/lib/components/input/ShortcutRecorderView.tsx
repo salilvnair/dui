@@ -37,7 +37,7 @@ export function ShortcutRecorderView({
   style,
 }: ShortcutRecorderViewProps) {
   const base = useInputBase(size, { borderRadius, color });
-  const accent = color ?? 'var(--color-primary)';
+  const accent = color ?? 'var(--color-accent, var(--color-primary))';
   const [recording, setRecording] = useState(false);
   const [draft, setDraft] = useState<string[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);

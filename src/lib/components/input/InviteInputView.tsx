@@ -30,7 +30,7 @@ export function InviteInputView({
   style,
 }: InviteInputViewProps) {
   const base = useInputBase(size, { borderRadius, color });
-  const accent = color ?? 'var(--color-primary)';
+  const accent = color ?? 'var(--color-accent, var(--color-primary))';
   const [draft, setDraft] = useState('');
   const [error, setError] = useState(false);
 

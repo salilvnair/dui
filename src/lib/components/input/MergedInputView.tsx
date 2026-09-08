@@ -201,7 +201,7 @@ interface SegButtonProps {
 }
 
 function SegButton({ seg, dims, disabled }: SegButtonProps) {
-  const accent = seg.accentColor ?? 'var(--color-primary)';
+  const accent = seg.accentColor ?? 'var(--color-accent, var(--color-primary))';
   return (
     <button
       type="button"
@@ -256,7 +256,7 @@ export function MergedInputView({
     px:        parseInt(DUI_PADDING_X[s], 10),
     arrowSize: DUI_ICON_SIZE[s],
   };
-  const accent = accentColor ?? 'var(--color-primary)';
+  const accent = accentColor ?? 'var(--color-accent, var(--color-primary))';
   const borderColor = focused || openSel ? accent : 'var(--color-input-border)';
   const boxShadow = (focused || openSel)
     ? `0 0 0 2px color-mix(in srgb, ${accent} 20%, transparent)`

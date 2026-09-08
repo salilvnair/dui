@@ -44,7 +44,7 @@ export function InlineEditTextView({
   const [draft, setDraft] = useState(value);
   const [saving, setSaving] = useState(false);
   const boxRef = useRef<HTMLTextAreaElement | null>(null);
-  const accent = accentColor || 'var(--color-primary)';
+  const accent = accentColor || 'var(--color-accent, var(--color-primary))';
 
   useEffect(() => { if (!editing) setDraft(value); }, [value, editing]);
 

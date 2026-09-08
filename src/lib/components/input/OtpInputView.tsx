@@ -31,7 +31,7 @@ export function OtpInputView({
   style,
 }: OtpInputViewProps) {
   const base = useInputBase(size, { borderRadius, color });
-  const accent = color ?? 'var(--color-primary)';
+  const accent = color ?? 'var(--color-accent, var(--color-primary))';
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const chars = Array.from({ length }, (_, i) => value[i] ?? '');
 

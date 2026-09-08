@@ -100,7 +100,7 @@ function BulkEditArea({ defaultValue, onChangeRef, accentColor }: {
   const [text, setText] = useState(defaultValue);
   const [focused, setFocused] = useState(false);
   onChangeRef.current = text;
-  const hl = accentColor || 'var(--color-primary)';
+  const hl = accentColor || 'var(--color-accent, var(--color-primary))';
 
   return (
     <div className="flex flex-col gap-1">
@@ -149,7 +149,7 @@ export function KeyValueTableView({
   const [showClearConfirm, setShowClearConfirm] = useState(false);
   const [showPinned, setShowPinned] = useState(false);
   const bulkTextRef = useRef('');
-  const accent = accentColor || 'var(--color-primary)';
+  const accent = accentColor || 'var(--color-accent, var(--color-primary))';
   const hasPinned = pinnedTopRows && pinnedTopRows.length > 0;
 
   const updateRow = (idx: number, field: keyof KeyValueTableRow, value: string | boolean) => {
