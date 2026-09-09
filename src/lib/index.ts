@@ -516,6 +516,9 @@ export type { FindingCardViewProps, FindingSeverity } from './components/display
 export { IssueCardView } from './components/display/IssueCardView';
 export type { IssueCardViewProps } from './components/display/IssueCardView';
 
+export { IssueCardSkeletonView } from './components/display/IssueCardSkeletonView';
+export type { IssueCardSkeletonViewProps } from './components/display/IssueCardSkeletonView';
+
 export { SetupOptionView } from './components/display/SetupOptionView';
 export type { SetupOptionViewProps } from './components/display/SetupOptionView';
 
