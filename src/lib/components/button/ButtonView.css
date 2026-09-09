@@ -1,4 +1,16 @@
-.dui_button { transition: background 100ms, filter 100ms, color 100ms, transform 80ms, box-shadow 80ms; }
+/* The label never wraps.
+ *
+ * A button's height is fixed by its size token, so a label that wraps to two
+ * lines is drawn inside a box that cannot grow to hold it -- the second line
+ * spills over the border and the first sits off-centre. `nowrap` alone is not
+ * enough: in a flex row the button is still free to shrink below its content,
+ * which is what forces the wrap in the first place. The two go together, and
+ * they are the pair a fixed height implies. */
+.dui_button {
+  transition: background 100ms, filter 100ms, color 100ms, transform 80ms, box-shadow 80ms;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
 
 .dui_button--primary {
   background: var(--dui-btn-bg, var(--color-btn-primary-bg));
