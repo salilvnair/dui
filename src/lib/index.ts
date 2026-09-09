@@ -512,6 +512,24 @@ export type { FlameGraphViewProps } from './components/display/FlameGraphView';
 // Diagnostics — a finding, and the two lane charts it is usually read beside.
 export { FindingCardView } from './components/display/FindingCardView';
 export type { FindingCardViewProps, FindingSeverity } from './components/display/FindingCardView';
+
+export { IssueCardView } from './components/display/IssueCardView';
+export type { IssueCardViewProps } from './components/display/IssueCardView';
+
+export { SetupOptionView } from './components/display/SetupOptionView';
+export type { SetupOptionViewProps } from './components/display/SetupOptionView';
+
+export { GroupHeaderView } from './components/display/GroupHeaderView';
+export type { GroupHeaderViewProps } from './components/display/GroupHeaderView';
+
+export { PriorityMarkView } from './components/display/PriorityMarkView';
+export type { PriorityMarkViewProps, PriorityMarkLevel } from './components/display/PriorityMarkView';
+
+export { TogglePillView } from './components/input/TogglePillView';
+export type { TogglePillViewProps, TogglePillVariant } from './components/input/TogglePillView';
+
+export { UnderlineTabsView } from './components/tabs/UnderlineTabsView';
+export type { UnderlineTabsViewProps, UnderlineTab } from './components/tabs/UnderlineTabsView';
 export { SwimlaneChartView } from './components/display/SwimlaneChartView';
 export type {
   SwimlaneChartViewProps, SwimlaneRow, SwimlaneSegment, SwimlaneMarker,
