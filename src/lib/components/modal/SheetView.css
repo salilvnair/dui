@@ -1,0 +1,180 @@
+/*
+  A sheet: a panel that comes in off one edge and can be thrown back out.
+
+  Different from `DrawerView`, which is a flush-edged slab that sits there until
+  a button closes it. A sheet has the leading corners rounded, a grab handle,
+  and it follows your finger — the difference between a thing that opened and a
+  thing you are holding.
+*/
+
+.dui_sheet__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1400;
+  display: flex;
+  background: rgba(0, 0, 0, 0.45);
+  animation: dui_sheet_fade 180ms ease both;
+}
+.dui_sheet__backdrop--closing { animation: dui_sheet_fade 180ms ease both reverse; }
+
+@keyframes dui_sheet_fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Which end of the flex line the panel sits at — the edge it belongs to. */
+.dui_sheet__backdrop--bottom { align-items: flex-end; }
+.dui_sheet__backdrop--top { align-items: flex-start; }
+.dui_sheet__backdrop--left { justify-content: flex-start; }
+.dui_sheet__backdrop--right { justify-content: flex-end; }
+
+.dui_sheet__panel {
+  display: flex;
+  flex-direction: column;
+  /* Its size is stated, never flexed. Some hosts put a `flex: 1` on every div
+     in a flex row — with `flex-basis: 0` that makes the declared width mean
+     nothing and the sheet fills the window. */
+  flex: none;
+  min-width: 0;
+  min-height: 0;
+  max-width: 100vw;
+  max-height: 100vh;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.45);
+}
+
+/*
+  Arriving. On its own class, and not on the panel's base one.
+
+  On the base class every change of class re-triggered it — pressing the grab
+  handle added `--dragging`, releasing it took that away, and the sheet slid in
+  from off-screen again on a plain click. The overshoot is the whole feel of
+  it: a plain ease lands like a lift arriving; this settles.
+*/
+.dui_sheet__panel--entering {
+  animation: dui_sheet_in 260ms cubic-bezier(0.22, 1, 0.28, 1) both;
+}
+.dui_sheet__panel--bottom { width: 100%; border-radius: 14px 14px 0 0; }
+.dui_sheet__panel--top { width: 100%; border-radius: 0 0 14px 14px; }
+.dui_sheet__panel--left { height: 100%; border-radius: 0 14px 14px 0; }
+.dui_sheet__panel--right { height: 100%; border-radius: 14px 0 0 14px; }
+
+@keyframes dui_sheet_in { from { transform: var(--dui-sheet-from); } to { transform: none; } }
+
+.dui_sheet__panel--bottom { --dui-sheet-from: translateY(100%); }
+.dui_sheet__panel--top { --dui-sheet-from: translateY(-100%); }
+.dui_sheet__panel--left { --dui-sheet-from: translateX(-100%); }
+.dui_sheet__panel--right { --dui-sheet-from: translateX(100%); }
+
+/* Leaving: the same move, backwards, and a shade quicker — waiting for a thing
+   you have already dismissed is the one part of this nobody wants slow. */
+.dui_sheet__panel--closing {
+  animation: dui_sheet_in 200ms cubic-bezier(0.4, 0, 1, 1) both reverse;
+}
+
+/* While a finger is on it, the transform and the width are the pointer's. */
+.dui_sheet__panel--dragging { animation: none; transition: none; }
+.dui_sheet__panel--dragging .dui_sheet__grab { cursor: grabbing; }
+/* Let go short of the threshold and it goes back where it was. */
+.dui_sheet__panel--settling {
+  animation: none;
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.28, 1);
+}
+
+/* ── The handle ─────────────────────────────────────────────────────────── */
+
+.dui_sheet__grab {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  cursor: grab;
+  touch-action: none;
+}
+.dui_sheet__grab:active { cursor: grabbing; }
+/* On a side sheet the same bar widens it, so the cursor says which axis. */
+.dui_sheet__panel--left > .dui_sheet__grab,
+.dui_sheet__panel--right > .dui_sheet__grab { cursor: ew-resize; }
+.dui_sheet__panel--bottom > .dui_sheet__grab,
+.dui_sheet__panel--top > .dui_sheet__grab { cursor: ns-resize; }
+/* A wider target than the pill it draws — 4px is a hard thing to hit. */
+.dui_sheet__panel--left > .dui_sheet__grab,
+.dui_sheet__panel--right > .dui_sheet__grab { padding: 8px 6px; }
+.dui_sheet__grab:hover { background: color-mix(in srgb, var(--color-text-primary) 5%, transparent); }
+.dui_sheet__grab i {
+  display: block;
+  border-radius: 999px;
+  background: var(--color-text-muted);
+  opacity: 0.35;
+  transition: opacity 140ms;
+}
+.dui_sheet__grab:hover i { opacity: 0.6; }
+/* Along the edge it is attached to: a bar you pull down, or one you pull across. */
+.dui_sheet__panel--bottom .dui_sheet__grab i,
+.dui_sheet__panel--top .dui_sheet__grab i { width: 36px; height: 4px; }
+.dui_sheet__panel--left .dui_sheet__grab i,
+.dui_sheet__panel--right .dui_sheet__grab i { width: 4px; height: 36px; }
+
+/* A side sheet's handle runs down its inner edge rather than across the top. */
+.dui_sheet__panel--left,
+.dui_sheet__panel--right { flex-direction: row; }
+.dui_sheet__panel--left > .dui_sheet__grab { order: 2; }
+.dui_sheet__body--side { flex: 1; display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+
+/* ── Header, body, footer ───────────────────────────────────────────────── */
+
+.dui_sheet__head {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 14px 10px;
+  border-bottom: 1px solid var(--color-surface-border);
+}
+.dui_sheet__title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dui_sheet__x {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: background 140ms, color 140ms;
+}
+.dui_sheet__x:hover {
+  background: color-mix(in srgb, var(--color-error) 14%, transparent);
+  color: var(--color-error);
+}
+
+.dui_sheet__content { flex: 1; overflow: auto; min-height: 0; min-width: 0; }
+.dui_sheet__foot {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--color-surface-border);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dui_sheet__backdrop,
+  .dui_sheet__panel--entering,
+  .dui_sheet__panel--closing { animation-duration: 1ms; }
+  .dui_sheet__panel--settling { transition-duration: 1ms; }
+}

@@ -6,7 +6,7 @@
  * Depends on: marked (v14), highlight.js (v11) — both already bundled.
  */
 import { useMemo, useEffect, useRef, useCallback } from 'react';
-import { marked, Renderer, type MarkedExtension } from 'marked';
+import { Marked, Renderer, type MarkedExtension } from 'marked';
 import hljs from 'highlight.js/lib/core';
 import type { LanguageFn } from 'highlight.js';
 import javascript from 'highlight.js/lib/languages/javascript';
@@ -79,10 +79,6 @@ export function registerMarkdownLanguage(name: string, definition: LanguageFn): 
   hljs.registerLanguage(name, definition);
 }
 
-// ─── Singleton guard ──────────────────────────────────────────────────────────
-
-let _configured = false;
-
 // ─── Marked renderer ─────────────────────────────────────────────────────────
 
 function buildRenderer(): Renderer {
@@ -133,18 +129,36 @@ function buildRenderer(): Renderer {
   return r;
 }
 
-function ensureConfig() {
-  if (_configured) return;
-  _configured = true;
+/*
+  ── Its own parser, not the shared one ──
+
+  This used to call `marked.use()` on the package's default instance, which is
+  a global: every other consumer of `marked` in the process got this renderer
+  from the first time a MarkdownView rendered anywhere on the page.
+
+  That is not theoretical. `MarkdownEditorView` parses with `marked` to fill
+  its Rich Text surface, so the moment a MarkdownView had rendered once, the
+  editor's own code blocks came back carrying this renderer's chrome — a
+  language pill and a Copy button, in a `contenteditable`. Writing a code
+  block, looking at a preview and coming back put the literal text "cssCopy"
+  above the code, and typing then serialised it into the document.
+
+  An instance of its own, so configuring this component configures only this
+  component.
+*/
+let _marked: Marked | undefined;
+
+function parser(): Marked {
+  if (_marked) return _marked;
   ensureLanguages();
   const ext: MarkedExtension = { renderer: buildRenderer(), breaks: true, gfm: true };
-  marked.use(ext);
+  _marked = new Marked(ext);
+  return _marked;
 }
 
 function parseMarkdown(content: string): string {
-  ensureConfig();
   try {
-    const result = marked.parse(content);
+    const result = parser().parse(content);
     return typeof result === 'string' ? result : content;
   } catch {
     const escaped = content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');

@@ -170,6 +170,9 @@ export type { TooltipViewProps, TooltipPlacement } from './components/modal/Tool
 export { DrawerView } from './components/modal/DrawerView';
 export type { DrawerViewProps, DrawerEdge } from './components/modal/DrawerView';
 
+export { SheetView } from './components/modal/SheetView';
+export type { SheetViewProps, SheetEdge } from './components/modal/SheetView';
+
 export { ActionSheetView } from './components/modal/ActionSheetView';
 export type { ActionSheetViewProps, ActionSheetItem } from './components/modal/ActionSheetView';
 
