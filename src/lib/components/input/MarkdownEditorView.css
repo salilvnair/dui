@@ -180,18 +180,27 @@
   switch between two ways of looking at the same document. It is not the action
   on the screen.
 */
+/*
+  Height and type come from the size token, inline — see the component. Every
+  other control in this toolbar is sized that way, and a segmented control that
+  is not is a segmented control several pixels shorter than its neighbours.
+*/
 .dui_mde__modes {
   display: inline-flex;
+  align-items: stretch;
   overflow: hidden;
   border-radius: 5px;
   border: 1px solid var(--color-surface-border);
-  font-size: 9.5px;
+  flex-shrink: 0;
 }
 .dui_mde__modes button {
-  padding: 3px 9px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 10px;
   border: none;
   background: none;
   cursor: pointer;
+  font: inherit;
   color: var(--color-text-muted);
   transition: color 120ms, background 120ms;
 }

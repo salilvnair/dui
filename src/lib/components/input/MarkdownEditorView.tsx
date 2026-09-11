@@ -27,6 +27,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { marked } from 'marked';
 import type { DuiSize } from '../../core/DuiTypes';
+import { DUI_HEIGHT, DUI_FONT_SIZE } from '../../core/DuiTokens';
 import { SelectInputView } from './SelectInputView';
 import {
   BoldIcon, ItalicIcon, StrikethroughIcon, LinkIcon, ListIcon, OrderedListIcon,
@@ -253,7 +254,20 @@ export function MarkdownEditorView({
              This sits in a toolbar of quiet icon buttons and a segmented
              control shouted over all of them — it is a view switch, not the
              action on the screen. */
-          <div className="dui_mde__modes">
+          /*
+            Sized from the same token as everything beside it.
+
+            It was hand-rolled at 3px/9.5px, which left it several pixels
+            shorter than the size-driven controls on either side — the block
+            select on its left, whatever `toolbarRight` puts on its right — and
+            a toolbar whose controls are three different heights reads as
+            broken rather than as quiet. `DUI_HEIGHT.tab` is the row this scale
+            keeps for segmented controls.
+          */
+          <div
+            className="dui_mde__modes"
+            style={{ height: DUI_HEIGHT.tab[size] + 'px', fontSize: DUI_FONT_SIZE[size] }}
+          >
             {(['rich', 'markdown'] as const).map(m => (
               <button
                 key={m}
