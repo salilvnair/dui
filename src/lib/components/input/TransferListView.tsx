@@ -10,6 +10,16 @@ export interface TransferItem {
 }
 
 export interface TransferListViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   items: TransferItem[];
   /** Values currently on the right ("selected") side. */
   value: string[];
@@ -43,7 +53,7 @@ function Panel({
   );
 }
 
-export function TransferListView({
+export function TransferListView({ testId,
   items,
   value,
   onChange,
@@ -83,7 +93,7 @@ export function TransferListView({
   const moveAllLeft = () => { onChange([]); setRightChecked(new Set()); };
 
   return (
-    <div className={`dui_transferlist ${className}`} style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 460, ...style }}>
+    <div data-testid={testId} className={`dui_transferlist ${className}`} style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 460, ...style }}>
       <div style={{ height, borderRadius: base.borderRadius, border: '1px solid var(--color-surface-border)', overflow: 'hidden', flex: 1 }}>
         <Panel title={leftTitle} items={leftItems} checked={leftChecked} onToggle={v => toggle(leftChecked, setLeftChecked, v)} fontSize={base.fontSize} />
       </div>

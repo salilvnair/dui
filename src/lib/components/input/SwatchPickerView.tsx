@@ -20,6 +20,16 @@ export interface SwatchOption {
 }
 
 export interface SwatchPickerViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   options: SwatchOption[];
   value: string;
   onChange: (id: string) => void;
@@ -56,7 +66,7 @@ function inkOn(background: string): string {
   return luma > 0.55 ? 'rgba(0,0,0,.72)' : 'rgba(255,255,255,.92)';
 }
 
-export function SwatchPickerView({
+export function SwatchPickerView({ testId,
   options,
   value,
   onChange,
@@ -75,7 +85,7 @@ export function SwatchPickerView({
       {options.map(o => {
         const on = o.id === value;
         return (
-          <button
+          <button data-testid={testId}
             key={o.id}
             type="button"
             role="radio"

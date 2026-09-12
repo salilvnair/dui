@@ -3,6 +3,16 @@ import type { DuiSize } from '../../core/DuiTypes';
 import { useInputBase } from '../../core/InputBase';
 
 export interface SpectrumSliderViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   value: number;
   min?: number;
   max?: number;
@@ -16,7 +26,7 @@ export interface SpectrumSliderViewProps {
 }
 
 /** The slider track is a live rendered gradient spectrum; the handle shows a magnified live-color preview bubble while dragging. */
-export function SpectrumSliderView({
+export function SpectrumSliderView({ testId,
   value,
   min = 0,
   max = 100,
@@ -47,7 +57,7 @@ export function SpectrumSliderView({
   };
 
   return (
-    <div className={className} style={{ width, position: 'relative', paddingTop: 28, ...style }}>
+    <div data-testid={testId} className={className} style={{ width, position: 'relative', paddingTop: 28, ...style }}>
       <div
         style={{
           position: 'absolute', top: 0, left: `${ratio * 100}%`, transform: 'translateX(-50%)',

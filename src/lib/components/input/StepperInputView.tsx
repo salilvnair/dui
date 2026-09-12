@@ -4,6 +4,16 @@ import { useInputBase } from '../../core/InputBase';
 import { PlusIcon, MinusIcon } from '../../../icons';
 
 export interface StepperInputViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   value: number;
   onChange: (value: number) => void;
   min?: number;
@@ -17,7 +27,7 @@ export interface StepperInputViewProps {
   style?: CSSProperties;
 }
 
-export function StepperInputView({
+export function StepperInputView({ testId,
   value,
   onChange,
   min = -Infinity,
@@ -44,7 +54,7 @@ export function StepperInputView({
   };
 
   return (
-    <div
+    <div data-testid={testId}
       className={className}
       style={{
         display: 'inline-flex', alignItems: 'center',

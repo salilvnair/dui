@@ -3,6 +3,16 @@ import type { DuiSize } from '../../core/DuiTypes';
 import './RangeSliderView.css';
 
 export interface RangeSliderViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   value: [number, number];
   onChange: (value: [number, number]) => void;
   min?: number;
@@ -18,7 +28,7 @@ export interface RangeSliderViewProps {
 }
 
 /** Dual-handle min/max range slider — distinct from the single-handle `SliderView`. */
-export function RangeSliderView({
+export function RangeSliderView({ testId,
   value,
   onChange,
   min = 0,
@@ -60,7 +70,7 @@ export function RangeSliderView({
   }, [disabled, lo, hi, min, max, step, onChange]);
 
   return (
-    <div className={`dui_rangeslider ${className}`} style={{ display: 'flex', alignItems: 'center', gap: 8, width: typeof width === 'number' ? width : undefined, ...style }}>
+    <div data-testid={testId} className={`dui_rangeslider ${className}`} style={{ display: 'flex', alignItems: 'center', gap: 8, width: typeof width === 'number' ? width : undefined, ...style }}>
       <div ref={trackRef} className="dui_rangeslider__track" style={{ opacity: disabled ? 0.4 : 1 }}>
         <div
           className="dui_rangeslider__fill"

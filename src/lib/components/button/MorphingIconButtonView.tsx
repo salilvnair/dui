@@ -5,6 +5,16 @@ import { useButtonBase } from '../../core/ButtonBase';
 export type MorphIconPreset = 'play-pause' | 'menu-close' | 'sun-moon';
 
 export interface MorphingIconButtonViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   preset: MorphIconPreset;
   active: boolean;
   onClick: () => void;
@@ -30,7 +40,7 @@ const PATHS: Record<MorphIconPreset, [string, string]> = {
 };
 
 /** The icon itself SVG-path-morphs between two states instead of a crossfade/swap. */
-export function MorphingIconButtonView({
+export function MorphingIconButtonView({ testId,
   preset,
   active,
   onClick,
@@ -45,7 +55,7 @@ export function MorphingIconButtonView({
   const iconSize = base.iconSize;
 
   return (
-    <button
+    <button data-testid={testId}
       onClick={onClick}
       className={className}
       aria-pressed={active}

@@ -10,6 +10,16 @@ export interface MentionUser {
 }
 
 export interface MentionInputViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   value: string;
   onChange: (value: string) => void;
   users: MentionUser[];
@@ -24,7 +34,7 @@ export interface MentionInputViewProps {
 }
 
 /** @mention autocomplete textarea. */
-export function MentionInputView({
+export function MentionInputView({ testId,
   value,
   onChange,
   users,
@@ -69,7 +79,7 @@ export function MentionInputView({
   };
 
   return (
-    <div className={`dui_mentioninput ${className}`} style={{ position: 'relative', ...style }}>
+    <div data-testid={testId} className={`dui_mentioninput ${className}`} style={{ position: 'relative', ...style }}>
       <textarea
         ref={textareaRef}
         value={value}

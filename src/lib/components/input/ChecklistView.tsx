@@ -10,6 +10,16 @@ export interface ChecklistItem {
 }
 
 export interface ChecklistViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   items: ChecklistItem[];
   onToggle: (id: string) => void;
   size?: DuiSize;
@@ -19,7 +29,7 @@ export interface ChecklistViewProps {
 }
 
 /** Todo-style checklist — strikethrough + faded once complete. */
-export function ChecklistView({
+export function ChecklistView({ testId,
   items,
   onToggle,
   size,
@@ -31,7 +41,7 @@ export function ChecklistView({
   const accent = accentColor ?? base.activeColor ?? 'var(--color-primary)';
 
   return (
-    <div className={className} style={{ display: 'flex', flexDirection: 'column', gap: 8, ...style }}>
+    <div data-testid={testId} className={className} style={{ display: 'flex', flexDirection: 'column', gap: 8, ...style }}>
       {items.map(item => (
         <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: 8, opacity: item.checked ? 0.55 : 1, transition: 'opacity 140ms' }}>
           <CheckboxView checked={item.checked} onChange={() => onToggle(item.id)} size={size} accentColor={accent} />

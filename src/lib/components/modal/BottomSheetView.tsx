@@ -5,6 +5,16 @@ import { useOverlayBase } from '../../core/OverlayBase';
 import './BottomSheetView.css';
 
 export interface BottomSheetViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   open: boolean;
   onClose: () => void;
   title?: string;
@@ -16,7 +26,7 @@ export interface BottomSheetViewProps {
 }
 
 /** Mobile-style sheet — drag the handle down past a threshold, or fling it, to dismiss. */
-export function BottomSheetView({
+export function BottomSheetView({ testId,
   open,
   onClose,
   title,
@@ -58,7 +68,7 @@ export function BottomSheetView({
   if (!open) return null;
 
   return createPortal(
-    <div className="dui_bottomsheet__backdrop" onClick={onClose} style={{ opacity: closing ? 0 : 1 }}>
+    <div data-testid={testId} className="dui_bottomsheet__backdrop" onClick={onClose} style={{ opacity: closing ? 0 : 1 }}>
       <div
         ref={sheetRef}
         className={`dui_bottomsheet__sheet ${className}`}

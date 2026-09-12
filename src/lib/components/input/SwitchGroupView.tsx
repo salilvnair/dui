@@ -12,6 +12,16 @@ export interface SwitchGroupItem {
 }
 
 export interface SwitchGroupViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   title?: string;
   items: SwitchGroupItem[];
   /** Set of currently-enabled item values. */
@@ -23,7 +33,7 @@ export interface SwitchGroupViewProps {
   style?: CSSProperties;
 }
 
-export function SwitchGroupView({
+export function SwitchGroupView({ testId,
   title,
   items,
   checked,
@@ -41,7 +51,7 @@ export function SwitchGroupView({
   };
 
   return (
-    <div className={className} style={{ borderRadius: base.borderRadius, border: '1px solid var(--color-surface-border)', background: 'var(--color-surface)', overflow: 'hidden', ...style }}>
+    <div data-testid={testId} className={className} style={{ borderRadius: base.borderRadius, border: '1px solid var(--color-surface-border)', background: 'var(--color-surface)', overflow: 'hidden', ...style }}>
       {title && (
         <div style={{ padding: base.padding, fontSize: base.fontSize, fontWeight: 700, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', borderBottom: '1px solid var(--color-surface-border)' }}>
           {title}

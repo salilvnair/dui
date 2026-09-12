@@ -21,6 +21,16 @@ export interface PickerColumn {
 }
 
 export interface PickerViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   /** Single-column mode — mutually exclusive with `columns`. */
   options?: PickerOption[];
   value?: string;
@@ -191,7 +201,7 @@ function Wheel({
  * Scrollable wheel picker. Single column via `options`/`value`/`onChange`,
  * or multiple synchronized wheels (hour/min/meridiem-style) via `columns`.
  */
-export function PickerView({
+export function PickerView({ testId,
   options,
   value,
   onChange,
@@ -220,7 +230,7 @@ export function PickerView({
   }, [columns, options, value, onChange]);
 
   return (
-    <div
+    <div data-testid={testId}
       className={`dui_picker ${className}`}
       style={{
         display: 'flex',

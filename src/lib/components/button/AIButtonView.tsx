@@ -8,6 +8,16 @@ import './AIButtonView.css';
 export type AIButtonAction = 'generate' | 'fuzz' | 'explain' | 'fix' | 'ask' | 'suggest';
 
 export interface AIButtonViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   action?: AIButtonAction;
   label?: string;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -35,7 +45,7 @@ const ACTION_LABEL: Record<AIButtonAction, string> = {
   suggest:  'Suggest',
 };
 
-export function AIButtonView({
+export function AIButtonView({ testId,
   action = 'ask',
   label,
   onClick,
@@ -65,7 +75,7 @@ export function AIButtonView({
     follow. One implementation, two faces.
   */
   return (
-    <ActionButtonView
+    <ActionButtonView testId={testId}
       onClick={onClick}
       disabled={disabled || loading}
       size={resolvedSize}

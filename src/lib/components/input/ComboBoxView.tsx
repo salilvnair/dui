@@ -10,6 +10,16 @@ export interface ComboBoxOption {
 }
 
 export interface ComboBoxViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   options: ComboBoxOption[];
   value: string;
   onChange: (value: string) => void;
@@ -26,7 +36,7 @@ export interface ComboBoxViewProps {
 }
 
 /** Free-text input with a filtered dropdown of matching suggestions — autocomplete pattern. */
-export function ComboBoxView({
+export function ComboBoxView({ testId,
   options,
   value,
   onChange,
@@ -88,7 +98,7 @@ export function ComboBoxView({
   };
 
   return (
-    <div className={`dui_combobox ${className}`} style={{ display: 'inline-block', width: base.width, ...style }}>
+    <div data-testid={testId} className={`dui_combobox ${className}`} style={{ display: 'inline-block', width: base.width, ...style }}>
       <input
         ref={inputRef}
         type="text"

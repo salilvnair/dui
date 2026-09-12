@@ -3,6 +3,16 @@ import type { DuiSize } from '../../core/DuiTypes';
 import { useButtonBase } from '../../core/ButtonBase';
 
 export interface HoldToConfirmViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   children: ReactNode;
   onConfirm: () => void;
   /** Hold duration in ms required to trigger. Default 900. */
@@ -14,7 +24,7 @@ export interface HoldToConfirmViewProps {
 }
 
 /** Press-and-hold with a radial fill that must complete before the destructive action fires. */
-export function HoldToConfirmView({
+export function HoldToConfirmView({ testId,
   children,
   onConfirm,
   duration = 900,
@@ -46,7 +56,7 @@ export function HoldToConfirmView({
   };
 
   return (
-    <button
+    <button data-testid={testId}
       onMouseDown={startHold}
       onMouseUp={cancelHold}
       onMouseLeave={cancelHold}

@@ -39,6 +39,16 @@ import './MarkdownEditorView.css';
 export type MarkdownEditorMode = 'rich' | 'markdown';
 
 export interface MarkdownEditorViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   value: string;
   onChange: (markdown: string) => void;
   /** Controlled view. Left uncontrolled, the editor keeps its own. */
@@ -83,7 +93,7 @@ const TOOLS = [
   { id: 'redo', Icon: RedoIcon, label: 'Redo', cmd: 'redo' },
 ] as const;
 
-export function MarkdownEditorView({
+export function MarkdownEditorView({ testId,
   value,
   onChange,
   mode: modeProp,
@@ -214,7 +224,7 @@ export function MarkdownEditorView({
   const disabled = readOnly;
 
   return (
-    <div className={`dui_mde ${className}`} style={style}>
+    <div data-testid={testId} className={`dui_mde ${className}`} style={style}>
       <div className="dui_mde__toolbar">
         {mode === 'rich' && (
           <>

@@ -7,6 +7,16 @@ import './PopoverView.css';
 export type PopoverPlacement = 'top' | 'bottom' | 'left' | 'right';
 
 export interface PopoverViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   open: boolean;
   onClose: () => void;
   anchorEl: HTMLElement | null;
@@ -23,7 +33,7 @@ export interface PopoverViewProps {
  * shared conceptually with SelectInputView's dropdown / InfoPopupView, but
  * exposed as a standalone component for any custom popover content.
  */
-export function PopoverView({
+export function PopoverView({ testId,
   open,
   onClose,
   anchorEl,
@@ -84,7 +94,7 @@ export function PopoverView({
   if (!open) return null;
 
   return createPortal(
-    <div
+    <div data-testid={testId}
       ref={menuRef}
       className={`dui_popover ${className}`}
       style={{

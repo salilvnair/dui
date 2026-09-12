@@ -23,6 +23,16 @@ import { SearchInputView } from './SearchInputView';
 import { SearchIcon, CloseCircleIcon } from '../../../icons';
 
 export interface SearchFieldViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   value: string;
   onChange: (value: string) => void;
   /** Enter, and the icon's tooltip. Omit for a box that only holds a term. */
@@ -44,7 +54,7 @@ export interface SearchFieldViewProps {
   autoFocus?: boolean;
 }
 
-export function SearchFieldView({
+export function SearchFieldView({ testId,
   value,
   onChange,
   onSearch,
@@ -59,7 +69,7 @@ export function SearchFieldView({
   const active = value.length > 0;
 
   return (
-    <SearchInputView
+    <SearchInputView data-testid={testId}
       value={value}
       onChange={onChange}
       placeholder={placeholder}

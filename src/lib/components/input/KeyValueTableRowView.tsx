@@ -5,6 +5,16 @@ import { HTTP_REQUEST_HEADERS, SENSITIVE_HEADERS, HEADER_VALUE_SUGGESTIONS } fro
 import { CheckCircleFilledIcon, LockIcon, TrashIcon } from '../../../icons';
 
 export interface KeyValueTableRowViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   rowKey: string;
   value: string;
   description?: string;
@@ -35,7 +45,7 @@ const DROP_CLS = 'absolute top-full left-0 z-50 w-full max-h-[200px] overflow-y-
 const dropItemCls = (active: boolean) =>
   `w-full text-left px-3 py-2 text-[13px] text-[var(--color-text-primary)] cursor-pointer transition-colors ${active ? 'bg-[var(--color-surface-hover)]' : 'hover:bg-[var(--color-surface-hover)]'}`;
 
-export function KeyValueTableRowView({
+export function KeyValueTableRowView({ testId,
   rowKey,
   value,
   description = '',
@@ -150,7 +160,7 @@ export function KeyValueTableRowView({
   };
 
   return (
-    <div
+    <div data-testid={testId}
       className={`grid ${gridCls} gap-2 px-1 group ${!readOnly && enabled === false ? 'opacity-50' : ''}`}
       style={readOnly ? {
         borderRadius: '6px',

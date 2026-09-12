@@ -3,6 +3,16 @@ import type { DuiSize, DuiWidth, DuiRadius } from '../../core/DuiTypes';
 import { useInputBase } from '../../core/InputBase';
 
 export interface GhostTypingPlaceholderViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   value: string;
   onChange: (value: string) => void;
   /** Rotating example queries typed/backspaced into the placeholder slot. */
@@ -19,7 +29,7 @@ export interface GhostTypingPlaceholderViewProps {
 }
 
 /** An input placeholder that types out rotating example queries, pauses, then backspaces into the next one. */
-export function GhostTypingPlaceholderView({
+export function GhostTypingPlaceholderView({ testId,
   value,
   onChange,
   examples,
@@ -57,7 +67,7 @@ export function GhostTypingPlaceholderView({
   const placeholder = focused || value ? '' : (examples[exIdx] ?? '').slice(0, charIdx);
 
   return (
-    <input
+    <input data-testid={testId}
       value={value}
       onChange={e => onChange(e.target.value)}
       onFocus={() => setFocused(true)}

@@ -14,6 +14,16 @@ export interface FormDataRow {
 }
 
 export interface FormDataTableViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   rows: FormDataRow[];
   onChange: (rows: FormDataRow[]) => void;
   /** Called when a file row's picker resolves. Pass undefined to handle file reads externally. */
@@ -34,7 +44,7 @@ const TYPE_OPTIONS = [
   { value: 'file', label: 'File' },
 ];
 
-export function FormDataTableView({
+export function FormDataTableView({ testId,
   rows,
   onChange,
   onFileSelect,
@@ -113,7 +123,7 @@ export function FormDataTableView({
   };
 
   return (
-    <div className={className} style={{ fontSize: 12, ...style }}>
+    <div data-testid={testId} className={className} style={{ fontSize: 12, ...style }}>
       {/* Toolbar */}
       {!hideToolbar && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, justifyContent: 'space-between' }}>

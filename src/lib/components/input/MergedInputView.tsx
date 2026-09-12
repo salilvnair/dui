@@ -44,6 +44,16 @@ export type MergedInputSegment =
   | { type: 'custom'; content: React.ReactNode; width?: number };
 
 export interface MergedInputViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   segments: MergedInputSegment[];
   /** Falls back to DuiProvider size when omitted. */
   size?: DuiSize;
@@ -238,7 +248,7 @@ function SegButton({ seg, dims, disabled }: SegButtonProps) {
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-export function MergedInputView({
+export function MergedInputView({ testId,
   segments,
   size,
   accentColor,
@@ -325,7 +335,7 @@ export function MergedInputView({
         }
         if (seg.type === 'custom') {
           return (
-            <div
+            <div data-testid={testId}
               key={i}
               style={{
                 display: 'flex',

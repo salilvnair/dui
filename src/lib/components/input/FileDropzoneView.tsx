@@ -12,6 +12,16 @@ export interface FileDropzoneEntry {
 }
 
 export interface FileDropzoneViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   files: FileDropzoneEntry[];
   onFilesAdded: (files: File[]) => void;
   onRemove: (index: number) => void;
@@ -32,7 +42,7 @@ function formatSize(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-export function FileDropzoneView({
+export function FileDropzoneView({ testId,
   files,
   onFilesAdded,
   onRemove,
@@ -57,7 +67,7 @@ export function FileDropzoneView({
   };
 
   return (
-    <div className={`dui_dropzone ${className}`} style={{ width, ...style }}>
+    <div data-testid={testId} className={`dui_dropzone ${className}`} style={{ width, ...style }}>
       <div
         className={`dui_dropzone__area${dragOver ? ' dui_dropzone__area--over' : ''}`}
         style={{ borderRadius: base.borderRadius, borderColor: dragOver ? accent : undefined, opacity: disabled ? 0.5 : 1, pointerEvents: disabled ? 'none' : 'auto' }}

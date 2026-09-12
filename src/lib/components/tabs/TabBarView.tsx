@@ -44,6 +44,16 @@ export interface TabBarTab {
 }
 
 export interface TabBarViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   tabs: TabBarTab[];
   activeTabId: string;
   onTabClick: (id: string) => void;
@@ -135,7 +145,7 @@ function TabProtocolBadge({ tab }: { tab: TabBarTab }) {
 
 // ─── TabBarView ────────────────────────────────────────────────────────────────
 
-export function TabBarView({
+export function TabBarView({ testId,
   tabs,
   activeTabId,
   onTabClick,
@@ -251,7 +261,7 @@ export function TabBarView({
           const isRenaming = renamingId === tab.id;
 
           return (
-            <div
+            <div data-testid={testId}
               key={tab.id}
               className={`dui_tab-bar__tab group${isActive ? ' dui_tab-bar__tab--active' : ''}`}
               style={{

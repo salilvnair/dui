@@ -24,6 +24,16 @@ export interface TabItem {
 export type TabVariant = 'pill' | 'underline' | 'chip' | 'picker';
 
 export interface TabViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   tabs: TabItem[];
   activeTab: string;
   onChange: (id: string) => void;
@@ -42,7 +52,7 @@ export interface TabViewProps {
   fontStyle?: DuiFontStyle;
 }
 
-export function TabView({
+export function TabView({ testId,
   tabs,
   activeTab,
   onChange,
@@ -71,7 +81,7 @@ export function TabView({
 
   if (variant === 'underline') {
     return (
-      <div
+      <div data-testid={testId}
         ref={containerRef}
         role="tablist"
         className={className}

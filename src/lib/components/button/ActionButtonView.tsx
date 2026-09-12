@@ -19,6 +19,16 @@ import { useDui, resolveBorderRadius } from '../../core/DuiContext';
 import './AIButtonView.css';
 
 export interface ActionButtonViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   label?: ReactNode;
   children?: ReactNode;
   /**
@@ -50,7 +60,7 @@ export interface ActionButtonViewProps {
   fontStyle?: DuiFontStyle;
 }
 
-export function ActionButtonView({
+export function ActionButtonView({ testId,
   label,
   children,
   icon,
@@ -71,7 +81,7 @@ export function ActionButtonView({
   const resolvedRadius = resolveBorderRadius(borderRadius ?? ctx.borderRadius, '5px');
 
   return (
-    <button
+    <button data-testid={testId}
       type="button"
       onClick={onClick}
       disabled={disabled}

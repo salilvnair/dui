@@ -3,6 +3,16 @@ import type { DuiSize, DuiRadius } from '../../core/DuiTypes';
 import { useInputBase } from '../../core/InputBase';
 
 export interface OtpInputViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   value: string;
   onChange: (value: string) => void;
   onComplete?: (value: string) => void;
@@ -17,7 +27,7 @@ export interface OtpInputViewProps {
   style?: CSSProperties;
 }
 
-export function OtpInputView({
+export function OtpInputView({ testId,
   value,
   onChange,
   onComplete,
@@ -79,7 +89,7 @@ export function OtpInputView({
   };
 
   return (
-    <div className={className} style={{ display: 'flex', gap: base.gap, ...style }}>
+    <div data-testid={testId} className={className} style={{ display: 'flex', gap: base.gap, ...style }}>
       {chars.map((char, idx) => (
         <input
           key={idx}

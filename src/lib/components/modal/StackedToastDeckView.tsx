@@ -9,6 +9,16 @@ export interface ToastDeckEntry {
 }
 
 export interface StackedToastDeckViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   toasts: ToastDeckEntry[];
   onDismiss: (id: string) => void;
   size?: DuiSize;
@@ -18,7 +28,7 @@ export interface StackedToastDeckViewProps {
 }
 
 /** Toasts don't stack vertically — older ones shrink and recede behind the newest like a card deck; click to fan out. */
-export function StackedToastDeckView({
+export function StackedToastDeckView({ testId,
   toasts,
   onDismiss,
   size,
@@ -40,7 +50,7 @@ export function StackedToastDeckView({
         const idx = visible.length - 1 - revIdx;
         const isTop = idx === 0;
         return (
-          <div
+          <div data-testid={testId}
             key={toast.id}
             onClick={e => { if (isTop || fanned) { e.stopPropagation(); onDismiss(toast.id); } }}
             style={{

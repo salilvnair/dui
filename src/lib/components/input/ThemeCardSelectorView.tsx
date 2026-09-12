@@ -14,13 +14,23 @@ export interface ThemeOption {
 }
 
 export interface ThemeCardSelectorViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   options: ThemeOption[];
   value: string;
   onChange: (value: string) => void;
   className?: string;
 }
 
-export function ThemeCardSelectorView({
+export function ThemeCardSelectorView({ testId,
   options,
   value,
   onChange,
@@ -31,7 +41,7 @@ export function ThemeCardSelectorView({
       {options.map(opt => {
         const isSelected = opt.value === value;
         return (
-          <button
+          <button data-testid={testId}
             key={opt.value}
             type="button"
             onClick={() => onChange(opt.value)}

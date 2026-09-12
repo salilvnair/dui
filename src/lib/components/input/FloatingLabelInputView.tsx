@@ -4,6 +4,16 @@ import { useInputBase } from '../../core/InputBase';
 import './FloatingLabelInputView.css';
 
 export interface FloatingLabelInputViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   label: string;
   value: string;
   onChange: (value: string) => void;
@@ -18,7 +28,7 @@ export interface FloatingLabelInputViewProps {
 }
 
 /** Floating-label input, distinct from TextInputView's static placeholder. */
-export function FloatingLabelInputView({
+export function FloatingLabelInputView({ testId,
   label,
   value,
   onChange,
@@ -37,7 +47,7 @@ export function FloatingLabelInputView({
   const floated = focused || value.length > 0;
 
   return (
-    <div
+    <div data-testid={testId}
       className={`dui_floatinglabel ${className}`}
       style={{ width: base.width, ['--dui-floatinglabel-accent' as string]: accent, ...style }}
     >

@@ -13,6 +13,16 @@ export interface ActionSheetItem {
 }
 
 export interface ActionSheetViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   open: boolean;
   onClose: () => void;
   title?: string;
@@ -22,7 +32,7 @@ export interface ActionSheetViewProps {
   className?: string;
 }
 
-export function ActionSheetView({
+export function ActionSheetView({ testId,
   open,
   onClose,
   title,
@@ -35,7 +45,7 @@ export function ActionSheetView({
   if (!open) return null;
 
   return createPortal(
-    <div className="dui_actionsheet__backdrop" onClick={onClose}>
+    <div data-testid={testId} className="dui_actionsheet__backdrop" onClick={onClose}>
       <div className={`dui_actionsheet__sheet ${className}`} onClick={e => e.stopPropagation()}>
         <div className="dui_actionsheet__group">
           {title && (

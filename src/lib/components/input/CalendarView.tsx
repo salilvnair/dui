@@ -14,6 +14,16 @@ export type CalendarRangeStyle = 'tint' | 'block';
 export type IsoDate = string;
 
 export interface CalendarViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   mode?: CalendarMode;
   /** `single`: IsoDate | null. `range`: [IsoDate | null, IsoDate | null]. `multi`: IsoDate[]. */
   value: IsoDate | null | [IsoDate | null, IsoDate | null] | IsoDate[];
@@ -169,7 +179,7 @@ function MonthYearDropdown({
   );
 }
 
-export function CalendarView({
+export function CalendarView({ testId,
   mode = 'single',
   value,
   onChange,
@@ -310,7 +320,7 @@ export function CalendarView({
           const barRadius = base.cellSize / 2;
 
           return (
-            <div key={i} className="dui_calendar__cell" style={{ height: base.cellSize }}>
+            <div data-testid={testId} key={i} className="dui_calendar__cell" style={{ height: base.cellSize }}>
               {showBar && (
                 <span
                   className="dui_calendar__rangebar"

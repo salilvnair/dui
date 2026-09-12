@@ -13,6 +13,16 @@ export interface RadioOption {
 }
 
 export interface RadioGroupViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   options: RadioOption[];
   value: string;
   onChange: (value: string) => void;
@@ -25,7 +35,7 @@ export interface RadioGroupViewProps {
   style?: CSSProperties;
 }
 
-export function RadioGroupView({
+export function RadioGroupView({ testId,
   options,
   value,
   onChange,
@@ -54,7 +64,7 @@ export function RadioGroupView({
         const isActive = opt.value === value;
         const isDisabled = disabled || opt.disabled;
         return (
-          <label
+          <label data-testid={testId}
             key={opt.value}
             style={{
               display: 'flex',

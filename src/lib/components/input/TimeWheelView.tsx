@@ -9,6 +9,16 @@ export interface TimeWheelValue {
 }
 
 export interface TimeWheelViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   value: TimeWheelValue;
   onChange: (value: TimeWheelValue) => void;
   use24Hour?: boolean;
@@ -23,7 +33,7 @@ export interface TimeWheelViewProps {
   style?: React.CSSProperties;
 }
 
-export function TimeWheelView({
+export function TimeWheelView({ testId,
   value,
   onChange,
   use24Hour = false,
@@ -65,7 +75,7 @@ export function TimeWheelView({
   }
 
   return (
-    <PickerView
+    <PickerView testId={testId}
       columns={columns}
       size={size}
       width={width}

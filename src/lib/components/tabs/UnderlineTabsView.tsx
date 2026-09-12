@@ -10,6 +10,16 @@ export interface UnderlineTab {
 }
 
 export interface UnderlineTabsViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   tabs: UnderlineTab[];
   activeId: string;
   onChange: (id: string) => void;
@@ -32,7 +42,7 @@ export interface UnderlineTabsViewProps {
  * on the active one — so an inactive section still reports its size without
  * pulling the eye off the section you are in.
  */
-export function UnderlineTabsView({
+export function UnderlineTabsView({ testId,
   tabs,
   activeId,
   onChange,
@@ -55,7 +65,7 @@ export function UnderlineTabsView({
       {tabs.map(t => {
         const on = t.id === activeId;
         return (
-          <button
+          <button data-testid={testId}
             key={t.id}
             type="button"
             role="tab"

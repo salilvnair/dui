@@ -8,6 +8,16 @@ import './DrawerView.css';
 export type DrawerEdge = 'left' | 'right' | 'top' | 'bottom';
 
 export interface DrawerViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   open: boolean;
   onClose: () => void;
   edge?: DrawerEdge;
@@ -19,7 +29,7 @@ export interface DrawerViewProps {
   className?: string;
 }
 
-export function DrawerView({
+export function DrawerView({ testId,
   open,
   onClose,
   edge = 'right',
@@ -42,7 +52,7 @@ export function DrawerView({
   if (!open) return null;
 
   return createPortal(
-    <div className="dui_drawer__backdrop" onClick={onClose}>
+    <div data-testid={testId} className="dui_drawer__backdrop" onClick={onClose}>
       <div
         className={`dui_drawer__panel dui_drawer__panel--${edge} ${className}`}
         onClick={e => e.stopPropagation()}

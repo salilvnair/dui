@@ -4,6 +4,16 @@ import { useInputBase } from '../../core/InputBase';
 import { KbdView } from '../display/KbdView';
 
 export interface ShortcutRecorderViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   value: string[];
   onChange: (keys: string[]) => void;
   placeholder?: string;
@@ -25,7 +35,7 @@ function normalizeKey(e: React.KeyboardEvent): string {
 }
 
 /** Captures a keybinding — click to start recording, press keys, click away or Enter to commit. */
-export function ShortcutRecorderView({
+export function ShortcutRecorderView({ testId,
   value,
   onChange,
   placeholder = 'Click to record…',
@@ -68,7 +78,7 @@ export function ShortcutRecorderView({
   const displayKeys = recording ? draft : value;
 
   return (
-    <div
+    <div data-testid={testId}
       ref={containerRef}
       tabIndex={disabled ? -1 : 0}
       onClick={startRecording}

@@ -5,6 +5,16 @@ import { DUI_HEIGHT } from '../../core/DuiTokens';
 import { CameraIcon } from '../../../icons';
 
 export interface AvatarUploadViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   /** Preview image URL, or null/undefined for the empty state. */
   src?: string | null;
   onFileSelected: (file: File) => void;
@@ -16,7 +26,7 @@ export interface AvatarUploadViewProps {
   style?: CSSProperties;
 }
 
-export function AvatarUploadView({
+export function AvatarUploadView({ testId,
   src,
   onFileSelected,
   initials,
@@ -33,7 +43,7 @@ export function AvatarUploadView({
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div
+    <div data-testid={testId}
       className={`dui_avatarupload ${className}`}
       style={{
         position: 'relative', width: diameter, height: diameter, borderRadius: '999px',

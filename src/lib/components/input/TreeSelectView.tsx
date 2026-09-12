@@ -10,6 +10,16 @@ export interface TreeSelectNode {
 }
 
 export interface TreeSelectViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   nodes: TreeSelectNode[];
   /** Checked node ids. */
   value: string[];
@@ -62,7 +72,7 @@ function Node({ node, checked, onToggle, base, accent, depth }: {
 }
 
 /** Checkbox-driven hierarchical select — tri-state parent checkboxes over a folder-style tree. */
-export function TreeSelectView({
+export function TreeSelectView({ testId,
   nodes,
   value,
   onChange,
@@ -82,7 +92,7 @@ export function TreeSelectView({
   };
 
   return (
-    <div className={className} style={style}>
+    <div data-testid={testId} className={className} style={style}>
       {nodes.map(node => <Node key={node.id} node={node} checked={checked} onToggle={handleToggle} base={base} accent={accent} depth={0} />)}
     </div>
   );

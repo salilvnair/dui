@@ -32,6 +32,16 @@ export interface PinnedKeyValueRow {
 }
 
 export interface KeyValueTableViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   rows: KeyValueTableRow[];
   onChange: (rows: KeyValueTableRow[]) => void;
   showDescription?: boolean;
@@ -128,7 +138,7 @@ function BulkEditArea({ defaultValue, onChangeRef, accentColor }: {
 
 // ─── Main Component ────────────────────────────────────────────────────────────
 
-export function KeyValueTableView({
+export function KeyValueTableView({ testId,
   rows,
   onChange,
   showDescription = false,
@@ -193,7 +203,7 @@ export function KeyValueTableView({
   const gridCols = showDescription ? 'grid-cols-[32px_1fr_1fr_1fr_32px]' : 'grid-cols-[32px_1fr_1fr_32px]';
 
   return (
-    <div className={`text-[13px] ${bordered ? 'border border-[var(--color-surface-border)] rounded-md overflow-hidden' : ''} ${className}`}>
+    <div data-testid={testId} className={`text-[13px] ${bordered ? 'border border-[var(--color-surface-border)] rounded-md overflow-hidden' : ''} ${className}`}>
       {/* Toolbar: label left, icon buttons right */}
       {!hideToolbar && (
         <div className="flex items-center justify-between mb-2 px-1">

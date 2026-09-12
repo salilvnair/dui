@@ -3,6 +3,16 @@ import type { DuiSize } from '../../core/DuiTypes';
 import { useButtonBase } from '../../core/ButtonBase';
 
 export interface FollowButtonViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   following: boolean;
   onChange: (following: boolean) => void;
   size?: DuiSize;
@@ -11,7 +21,7 @@ export interface FollowButtonViewProps {
 }
 
 /** Follow/following state-toggle button — swaps label + style, "Unfollow" on hover while following. */
-export function FollowButtonView({
+export function FollowButtonView({ testId,
   following,
   onChange,
   size,
@@ -25,7 +35,7 @@ export function FollowButtonView({
   const label = following ? (hover ? 'Unfollow' : 'Following') : 'Follow';
 
   return (
-    <button
+    <button data-testid={testId}
       type="button"
       onClick={() => onChange(!following)}
       onMouseEnter={() => setHover(true)}

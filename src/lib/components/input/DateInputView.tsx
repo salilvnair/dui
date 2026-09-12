@@ -6,6 +6,16 @@ import { CalendarView, type IsoDate } from './CalendarView';
 import { CalendarIcon } from '../../../icons';
 
 export interface DateInputViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   value: IsoDate | null;
   onChange: (value: IsoDate) => void;
   placeholder?: string;
@@ -26,7 +36,7 @@ function formatDisplay(iso: IsoDate | null): string {
   return new Date(y, m - 1, d).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
 }
 
-export function DateInputView({
+export function DateInputView({ testId,
   value,
   onChange,
   placeholder = 'Select date…',
@@ -78,7 +88,7 @@ export function DateInputView({
   }, [open]);
 
   return (
-    <div className={`relative inline-block ${className}`} style={style}>
+    <div data-testid={testId} className={`relative inline-block ${className}`} style={style}>
       <button
         ref={triggerRef}
         type="button"

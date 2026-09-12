@@ -21,6 +21,17 @@ export interface MockServerSuggestion {
 }
 
 export interface SelectTextInputViewProps {
+  /**
+   * A stable hook for tests and the demo recorder.
+   *
+   * Lands on the element somebody actually types into — which, for this
+   * component, is a `contenteditable` div whose placeholder is a decorative
+   * `<span>`. Playwright's `getByPlaceholder` therefore never finds it, and a
+   * recorder that assumed it would spent a whole take typing into nothing.
+   * Give it a `testId` and it can be addressed by contract instead of by
+   * guessing at dui's internals.
+   */
+  testId?: string;
   selectValue: string;
   selectOptions: SelectTextOption[];
   onSelectChange: (value: string) => void;
@@ -58,7 +69,7 @@ const SELECT_WIDTH: Record<DuiSize, number> = {
   xxs: 44, xs: 52, sm: 64, md: 80, lg: 96, xl: 112, xxl: 128, xxxl: 148,
 };
 
-export function SelectTextInputView({
+export function SelectTextInputView({ testId,
   selectValue,
   selectOptions,
   onSelectChange,
@@ -414,6 +425,7 @@ export function SelectTextInputView({
             onKeyDown={handleInputKeyDown}
             onCompositionStart={() => { composingRef.current = true; }}
             onCompositionEnd={() => { composingRef.current = false; handleEditorInput(); }}
+            data-testid={testId}
             className="dui_select-text__editor"
             style={{
               height: '100%', width: '100%',

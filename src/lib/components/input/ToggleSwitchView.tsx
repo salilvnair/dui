@@ -6,6 +6,16 @@ import { useToggleBase } from '../../core/ToggleBase';
 export type ToggleSwitchSize = DuiSize;
 
 export interface ToggleSwitchViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   checked: boolean;
   onChange: (checked: boolean) => void;
   disabled?: boolean;
@@ -22,7 +32,7 @@ export interface ToggleSwitchViewProps {
   color?: string;
 }
 
-export function ToggleSwitchView({
+export function ToggleSwitchView({ testId,
   checked,
   onChange,
   disabled = false,
@@ -96,7 +106,7 @@ export function ToggleSwitchView({
   if (!label) return toggle;
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+    <div data-testid={testId} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
       {labelPosition === 'left' && (
         <span style={{ fontSize, color: labelColor, userSelect: 'none' }}>
           {label}

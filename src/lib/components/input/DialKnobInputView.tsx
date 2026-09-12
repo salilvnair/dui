@@ -4,6 +4,16 @@ import { useInputBase } from '../../core/InputBase';
 import './DialKnobInputView.css';
 
 export interface DialKnobInputViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   value: number;
   min?: number;
   max?: number;
@@ -25,7 +35,7 @@ const DIAMETER: Record<DuiSize, number> = {
 };
 
 /** Rotary analog knob (drag in a circle) with snap-ticks and a haptic-style micro-bounce at each notch. */
-export function DialKnobInputView({
+export function DialKnobInputView({ testId,
   value,
   min = 0,
   max = 100,
@@ -94,7 +104,7 @@ export function DialKnobInputView({
           const tAngle = SWEEP_START + (i / ticks) * (SWEEP_END - SWEEP_START);
           const active = i / ticks <= ratio;
           return (
-            <div
+            <div data-testid={testId}
               key={i}
               style={{
                 position: 'absolute', left: '50%', top: 2, width: 2, height: 5, borderRadius: 1,

@@ -5,6 +5,16 @@ import { useButtonBase } from '../../core/ButtonBase';
 import './CommandChipView.css';
 
 export interface CommandChipViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   /** The command text — also what is copied to the clipboard on click. */
   command: string;
   /** DUI size — shares the SAME height/padding/font tokens as ButtonView, so a
@@ -30,7 +40,7 @@ export interface CommandChipViewProps {
  * the same `size`. Degrades to a plain, selectable pill when the Clipboard API
  * is unavailable (non-secure context).
  */
-export function CommandChipView({
+export function CommandChipView({ testId,
   command,
   size,
   color,
@@ -58,7 +68,7 @@ export function CommandChipView({
   const accent = color || base.color || 'var(--color-text-primary)';
 
   return (
-    <button
+    <button data-testid={testId}
       type="button"
       onClick={copy}
       title={copyable ? 'Copy command' : undefined}

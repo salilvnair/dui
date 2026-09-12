@@ -5,6 +5,16 @@ import { BookmarkIcon } from '../../../icons';
 import './LikeButtonView.css';
 
 export interface BookmarkButtonViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   saved: boolean;
   onChange: (saved: boolean) => void;
   size?: DuiSize;
@@ -13,7 +23,7 @@ export interface BookmarkButtonViewProps {
 }
 
 /** Animated bookmark/save toggle button. */
-export function BookmarkButtonView({
+export function BookmarkButtonView({ testId,
   saved,
   onChange,
   size,
@@ -31,7 +41,7 @@ export function BookmarkButtonView({
   };
 
   return (
-    <button
+    <button data-testid={testId}
       type="button"
       onClick={handleClick}
       className={className}

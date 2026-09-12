@@ -3,6 +3,16 @@ import type { ReactNode, CSSProperties } from 'react';
 export type TogglePillVariant = 'default' | 'go';
 
 export interface TogglePillViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   children: ReactNode;
   /** A glyph before the label. */
   icon?: ReactNode;
@@ -42,7 +52,7 @@ export interface TogglePillViewProps {
  * Off is a plain border on the panel, not a grey fill: a toolbar where every
  * pill has a background is a wall, and the lit one no longer stands out.
  */
-export function TogglePillView({
+export function TogglePillView({ testId,
   children,
   icon,
   active = false,
@@ -58,7 +68,7 @@ export function TogglePillView({
   const go = variant === 'go';
 
   return (
-    <button
+    <button data-testid={testId}
       type="button"
       className={className}
       onClick={onClick}

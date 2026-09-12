@@ -11,6 +11,16 @@ import { CalendarEventIcon } from '../../../icons';
 export type IsoDateTime = string;
 
 export interface DateTimeInputViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   value: IsoDateTime | null;
   onChange: (value: IsoDateTime) => void;
   placeholder?: string;
@@ -65,7 +75,7 @@ function formatDisplay(v: IsoDateTime | null, use24Hour: boolean): string {
  * wheels) side by side in one popover — same trigger-button + portal pattern
  * as `DateInputView`, just with a second pane.
  */
-export function DateTimeInputView({
+export function DateTimeInputView({ testId,
   value,
   onChange,
   placeholder = 'Select date & time…',
@@ -120,7 +130,7 @@ export function DateTimeInputView({
   }, [open]);
 
   return (
-    <div className={`relative inline-block ${className}`} style={style}>
+    <div data-testid={testId} className={`relative inline-block ${className}`} style={style}>
       <button
         ref={triggerRef}
         type="button"

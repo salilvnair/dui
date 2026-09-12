@@ -19,6 +19,16 @@ export interface PilledTab {
 }
 
 export interface PilledTabViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   tabs: PilledTab[]
   activeId: string
   onChange: (id: string) => void
@@ -33,7 +43,7 @@ export interface PilledTabViewProps {
   style?: React.CSSProperties
 }
 
-export function PilledTabView({
+export function PilledTabView({ testId,
   tabs,
   activeId,
   onChange,
@@ -89,7 +99,7 @@ export function PilledTabView({
       {tabs.map((tab, i) => {
         const isActive = tab.id === activeId
         return (
-          <button
+          <button data-testid={testId}
             key={tab.id}
             ref={(el) => { btnRefs.current[i] = el }}
             onClick={() => onChange(tab.id)}

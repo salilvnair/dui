@@ -12,6 +12,16 @@ export interface SpotlightTourStep {
 }
 
 export interface SpotlightTourViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   open: boolean;
   steps: SpotlightTourStep[];
   stepIndex: number;
@@ -22,7 +32,7 @@ export interface SpotlightTourViewProps {
   color?: string;
 }
 
-export function SpotlightTourView({
+export function SpotlightTourView({ testId,
   open,
   steps,
   stepIndex,
@@ -59,7 +69,7 @@ export function SpotlightTourView({
   const tooltipLeft = rect ? Math.min(Math.max(16, rect.left), window.innerWidth - 300) : window.innerWidth / 2 - 150;
 
   return createPortal(
-    <div className="dui_spotlight__overlay">
+    <div data-testid={testId} className="dui_spotlight__overlay">
       {rect && (
         <div
           className="dui_spotlight__cutout"

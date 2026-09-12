@@ -3,6 +3,16 @@ import type { DuiSize } from '../../core/DuiTypes';
 import './SliderView.css';
 
 export interface SliderViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   value: number;
   onChange: (value: number) => void;
   min?: number;
@@ -16,7 +26,7 @@ export interface SliderViewProps {
   className?: string;
 }
 
-export function SliderView({
+export function SliderView({ testId,
   value,
   onChange,
   min = 0,
@@ -38,7 +48,7 @@ export function SliderView({
   } as CSSProperties;
 
   return (
-    <div className={`dui-slider ${className}`}>
+    <div data-testid={testId} className={`dui-slider ${className}`}>
       <input
         type="range"
         className="dui-slider__input"

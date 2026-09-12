@@ -4,6 +4,16 @@ import { useInputBase } from '../../core/InputBase';
 import { PaperclipIcon, SendIcon } from '../../../icons';
 
 export interface ChatInputViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   value: string;
   onChange: (value: string) => void;
   onSend: () => void;
@@ -18,7 +28,7 @@ export interface ChatInputViewProps {
 }
 
 /** Message composer — auto-growing textarea + attach + send. */
-export function ChatInputView({
+export function ChatInputView({ testId,
   value,
   onChange,
   onSend,
@@ -38,7 +48,7 @@ export function ChatInputView({
   const send = () => { if (value.trim()) onSend(); };
 
   return (
-    <div
+    <div data-testid={testId}
       className={className}
       style={{
         display: 'flex', alignItems: 'flex-end', gap: 6, padding: 6,

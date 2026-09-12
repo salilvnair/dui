@@ -4,6 +4,16 @@ import { useDui } from '../../core/DuiContext';
 import { DUI_ICON_SIZE } from '../../core/DuiTokens';
 
 export interface RatingViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   value: number;
   onChange?: (value: number) => void;
   max?: number;
@@ -38,7 +48,7 @@ function Glyph({ filled, half, icon, size, color }: { filled: boolean; half: boo
   );
 }
 
-export function RatingView({
+export function RatingView({ testId,
   value,
   onChange,
   max = 5,
@@ -87,7 +97,7 @@ export function RatingView({
         const filled = display >= i + 1;
         const half = allowHalf && !filled && display >= i + 0.5;
         return (
-          <button
+          <button data-testid={testId}
             key={i}
             type="button"
             disabled={readOnly}

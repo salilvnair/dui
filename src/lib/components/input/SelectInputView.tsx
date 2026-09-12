@@ -27,6 +27,16 @@ export type SelectInputSize = DuiSize | 'default';
 const MIN_MENU_H = 120;
 
 export interface SelectInputViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   options: SelectOption[];
   value: string;
   onChange: (value: string) => void;
@@ -88,7 +98,7 @@ function BadgeChip({ label, color }: { label: string; color: string }) {
   );
 }
 
-export function SelectInputView({
+export function SelectInputView({ testId,
   options,
   value,
   onChange,
@@ -299,7 +309,7 @@ export function SelectInputView({
               );
             }
             return (
-              <div
+              <div data-testid={testId}
                 key={opt.value}
                 role="option"
                 aria-selected={opt.value === value}

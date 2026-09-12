@@ -5,6 +5,16 @@ import { useToggleBase } from '../../core/ToggleBase';
 export type PriorityLevel = 'low' | 'medium' | 'high' | 'urgent';
 
 export interface PriorityPickerViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   value: PriorityLevel;
   onChange: (value: PriorityLevel) => void;
   size?: DuiSize;
@@ -21,7 +31,7 @@ const LEVELS: { value: PriorityLevel; label: string; color: string }[] = [
 ];
 
 /** Low/medium/high/urgent selector with color-coded dots — a color-coded priority picker. */
-export function PriorityPickerView({
+export function PriorityPickerView({ testId,
   value,
   onChange,
   size,
@@ -36,7 +46,7 @@ export function PriorityPickerView({
       {LEVELS.map(level => {
         const active = level.value === value;
         return (
-          <button
+          <button data-testid={testId}
             key={level.value}
             type="button"
             disabled={disabled}

@@ -15,6 +15,16 @@ export type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 export type ModalMode = 'popout' | 'inline';
 
 export interface ModalViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   open: boolean;
   onClose: () => void;
   /**
@@ -82,7 +92,7 @@ const SIZE_MAP: Record<ModalSize, string> = {
   xxl: 'min(1150px, 85vw)',
 };
 
-export function ModalView({
+export function ModalView({ testId,
   open,
   onClose,
   title,
@@ -239,7 +249,7 @@ export function ModalView({
 
   // Modal: portal + backdrop + centering
   return createPortal(
-    <div
+    <div data-testid={testId}
       style={{
         position: 'fixed',
         inset: 0,

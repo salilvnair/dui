@@ -6,6 +6,16 @@ import { WarningTriangleIcon } from '../../../icons';
 import './AlertDialogView.css';
 
 export interface AlertDialogViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   open: boolean;
   title: string;
   message: string;
@@ -19,7 +29,7 @@ export interface AlertDialogViewProps {
 }
 
 /** Pre-built confirm/cancel dialog with danger styling — the standard "Are you sure?" pattern. */
-export function AlertDialogView({
+export function AlertDialogView({ testId,
   open,
   title,
   message,
@@ -44,7 +54,7 @@ export function AlertDialogView({
   if (!open) return null;
 
   return createPortal(
-    <div className="dui_alertdialog__backdrop" onClick={onCancel}>
+    <div data-testid={testId} className="dui_alertdialog__backdrop" onClick={onCancel}>
       <div className={`dui_alertdialog__card ${className}`} onClick={e => e.stopPropagation()}>
         <div style={{ display: 'flex', gap: 12, padding: base.paddingX }}>
           {danger && (

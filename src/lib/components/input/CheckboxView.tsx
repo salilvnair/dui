@@ -10,6 +10,16 @@ const DUI_SIZES: DuiSize[] = ['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl', 'xxxl'
 export type CheckboxSize = DuiSize;
 
 export interface CheckboxViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   checked: boolean;
   onChange?: (checked: boolean) => void;
   disabled?: boolean;
@@ -21,7 +31,7 @@ export interface CheckboxViewProps {
   className?: string;
 }
 
-export function CheckboxView({
+export function CheckboxView({ testId,
   checked,
   onChange,
   disabled = false,
@@ -78,7 +88,7 @@ export function CheckboxView({
   if (!label) return box_;
 
   return (
-    <div
+    <div data-testid={testId}
       style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: disabled ? 'not-allowed' : 'pointer' }}
       onClick={() => !disabled && onChange?.(!checked)}
     >

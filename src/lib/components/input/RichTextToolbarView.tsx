@@ -6,6 +6,16 @@ import { BoldIcon, ItalicIcon, UnderlineIcon, LinkIcon, ListIcon, CodeIcon } fro
 export type RichTextAction = 'bold' | 'italic' | 'underline' | 'link' | 'list' | 'code';
 
 export interface RichTextToolbarViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   active?: RichTextAction[];
   onAction: (action: RichTextAction) => void;
   size?: DuiSize;
@@ -24,7 +34,7 @@ const ACTIONS: { id: RichTextAction; Icon: typeof BoldIcon; label: string }[] = 
 ];
 
 /** Formatting toolbar primitive — bold/italic/underline/link/list/code. */
-export function RichTextToolbarView({
+export function RichTextToolbarView({ testId,
   active = [],
   onAction,
   size,
@@ -41,7 +51,7 @@ export function RichTextToolbarView({
       {ACTIONS.map(({ id, Icon, label }) => {
         const isActive = activeSet.has(id);
         return (
-          <button
+          <button data-testid={testId}
             key={id}
             type="button"
             onClick={() => onAction(id)}

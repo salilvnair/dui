@@ -15,6 +15,16 @@ const ALL_ICONS: { name: string; Icon: IconComponent }[] = Object.entries(Icons)
   .map(([name, Icon]) => ({ name, Icon: Icon as unknown as IconComponent }));
 
 export interface IconPickerViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   value: string | null;
   onChange: (iconName: string) => void;
   disabled?: boolean;
@@ -26,7 +36,7 @@ export interface IconPickerViewProps {
   style?: CSSProperties;
 }
 
-export function IconPickerView({
+export function IconPickerView({ testId,
   value,
   onChange,
   disabled = false,
@@ -77,7 +87,7 @@ export function IconPickerView({
   }, [open]);
 
   return (
-    <div className={`dui_iconpicker ${className}`} style={{ display: 'inline-block', ...style }}>
+    <div data-testid={testId} className={`dui_iconpicker ${className}`} style={{ display: 'inline-block', ...style }}>
       <button
         ref={triggerRef}
         type="button"

@@ -4,6 +4,16 @@ import { useInputBase } from '../../core/InputBase';
 import { CloseIcon } from '../../../icons';
 
 export interface InviteInputViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   emails: string[];
   onChange: (emails: string[]) => void;
   placeholder?: string;
@@ -18,7 +28,7 @@ export interface InviteInputViewProps {
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /** Email-chip input specialized for multi-invite forms — validates each entry before adding. */
-export function InviteInputView({
+export function InviteInputView({ testId,
   emails,
   onChange,
   placeholder = 'Enter email and press Enter…',
@@ -44,7 +54,7 @@ export function InviteInputView({
   };
 
   return (
-    <div
+    <div data-testid={testId}
       className={className}
       style={{
         display: 'flex', flexWrap: 'wrap', gap: 6, alignItems: 'center', minHeight: base.height,

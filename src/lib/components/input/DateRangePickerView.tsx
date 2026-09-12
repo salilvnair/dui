@@ -11,6 +11,16 @@ export interface DateRangePreset {
 export type DateRangePickerVariant = 'panel' | 'single';
 
 export interface DateRangePickerViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   value: [IsoDate | null, IsoDate | null];
   onChange: (value: [IsoDate | null, IsoDate | null]) => void;
   presets?: DateRangePreset[];
@@ -47,7 +57,7 @@ export const DEFAULT_DATE_RANGE_PRESETS: DateRangePreset[] = [
   } },
 ];
 
-export function DateRangePickerView({
+export function DateRangePickerView({ testId,
   value,
   onChange,
   presets = DEFAULT_DATE_RANGE_PRESETS,
@@ -142,7 +152,7 @@ export function DateRangePickerView({
   }
 
   return (
-    <div
+    <div data-testid={testId}
       className={`dui_daterange dui_daterange--panel ${className}`}
       style={{
         display: 'inline-flex',

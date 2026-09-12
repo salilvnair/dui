@@ -39,6 +39,16 @@ const EXIT_MS = 200;
 const ENTER_MS = 280;
 
 export interface SheetViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   open: boolean;
   onClose: () => void;
   /** Which edge it comes in from. */
@@ -57,7 +67,7 @@ export interface SheetViewProps {
   className?: string;
 }
 
-export function SheetView({
+export function SheetView({ testId,
   open,
   onClose,
   edge = 'right',
@@ -194,7 +204,7 @@ export function SheetView({
   );
 
   return createPortal(
-    <div
+    <div data-testid={testId}
       className={`dui_sheet__backdrop dui_sheet__backdrop--${edge}`
         + (closing ? ' dui_sheet__backdrop--closing' : '')}
       onPointerDown={backdropClose ? e => { if (e.target === e.currentTarget) onClose(); } : undefined}

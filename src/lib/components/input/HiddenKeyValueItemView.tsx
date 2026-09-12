@@ -3,6 +3,16 @@ import { LockIcon, TrashIcon, EyeIcon, EyeOffIcon } from '../../../icons';
 import './HiddenKeyValueItemView.css';
 
 export interface HiddenKeyValueItemViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   keyValue: string;
   value: string;
   /** Small colored pill badge on the key — e.g. "auth", "cookie" */
@@ -24,7 +34,7 @@ export interface HiddenKeyValueItemViewProps {
  * Ditto the lock-icon + dashed-border pattern from ComputedHeaderList —
  * "Hidden" describes system-managed/locked fields; Daakia's visual style is kept.
  */
-export function HiddenKeyValueItemView({
+export function HiddenKeyValueItemView({ testId,
   keyValue,
   value,
   badge,
@@ -67,7 +77,7 @@ export function HiddenKeyValueItemView({
   };
 
   return (
-    <div
+    <div data-testid={testId}
       className={`dui_hidden-kv-item group ${className}`}
       style={{
         display: 'grid',

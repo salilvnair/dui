@@ -15,6 +15,16 @@ const EMOJI_DATA: EmojiEntry[] = [
 ];
 
 export interface EmojiPickerViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   value: string | null;
   onChange: (emoji: string) => void;
   disabled?: boolean;
@@ -26,7 +36,7 @@ export interface EmojiPickerViewProps {
   style?: CSSProperties;
 }
 
-export function EmojiPickerView({
+export function EmojiPickerView({ testId,
   value,
   onChange,
   disabled = false,
@@ -81,7 +91,7 @@ export function EmojiPickerView({
   }, [open]);
 
   return (
-    <div className={`dui_emojipicker ${className}`} style={{ display: 'inline-block', ...style }}>
+    <div data-testid={testId} className={`dui_emojipicker ${className}`} style={{ display: 'inline-block', ...style }}>
       <button
         ref={triggerRef}
         type="button"

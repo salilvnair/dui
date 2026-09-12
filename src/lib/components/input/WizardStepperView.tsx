@@ -10,6 +10,16 @@ export interface WizardStep {
 }
 
 export interface WizardStepperViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   steps: WizardStep[];
   activeStep: string;
   completedSteps?: string[];
@@ -21,7 +31,7 @@ export interface WizardStepperViewProps {
 }
 
 /** Multi-step form wizard progress header — numbered step indicator pattern. Distinct from `StepperInputView` (numeric +/-). */
-export function WizardStepperView({
+export function WizardStepperView({ testId,
   steps,
   activeStep,
   completedSteps = [],
@@ -47,7 +57,7 @@ export function WizardStepperView({
           : <span style={{ fontSize: base.fontSize, fontWeight: 700, color: isActive ? '#fff' : 'var(--color-text-muted)' }}>{i + 1}</span>;
 
         return (
-          <div key={step.id} style={{ display: 'flex', alignItems: 'center', flex: i < steps.length - 1 ? 1 : undefined }}>
+          <div data-testid={testId} key={step.id} style={{ display: 'flex', alignItems: 'center', flex: i < steps.length - 1 ? 1 : undefined }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, cursor: isClickable ? 'pointer' : 'default' }} onClick={() => isClickable && onStepClick?.(step.id)}>
               <div
                 style={{

@@ -2,6 +2,16 @@ import { useState, useRef } from 'react';
 import { CloseIcon } from '../../../icons';
 
 export interface TagInputViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   tags: string[];
   onChange: (tags: string[]) => void;
   placeholder?: string;
@@ -11,7 +21,7 @@ export interface TagInputViewProps {
   className?: string;
 }
 
-export function TagInputView({
+export function TagInputView({ testId,
   tags,
   onChange,
   placeholder = 'Add tag…',
@@ -47,7 +57,7 @@ export function TagInputView({
   };
 
   return (
-    <div
+    <div data-testid={testId}
       className={className}
       onClick={() => inputRef.current?.focus()}
       style={{

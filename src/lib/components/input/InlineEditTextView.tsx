@@ -1,6 +1,16 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 
 export interface InlineEditTextViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   /** Current committed value. */
   value: string;
   /** Shown (dimmed by the consumer's CSS) when value is empty, and as the edit box placeholder. */
@@ -29,7 +39,7 @@ export interface InlineEditTextViewProps {
  *
  * Enter saves (Shift+Enter = newline when multiline), Escape cancels, blur saves.
  */
-export function InlineEditTextView({
+export function InlineEditTextView({ testId,
   value,
   placeholder = '',
   onSave,
@@ -119,7 +129,7 @@ export function InlineEditTextView({
   }
 
   return (
-    <span
+    <span data-testid={testId}
       className={className}
       title={disabled ? undefined : tooltip}
       style={{ opacity: saving ? 0.55 : undefined, cursor: disabled ? undefined : 'text', ...style }}

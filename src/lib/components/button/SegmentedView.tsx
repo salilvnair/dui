@@ -24,6 +24,16 @@ export interface SegmentedOption {
 }
 
 export interface SegmentedViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   options: SegmentedOption[];
   value: string;
   onChange: (id: string) => void;
@@ -33,7 +43,7 @@ export interface SegmentedViewProps {
   style?: CSSProperties;
 }
 
-export function SegmentedView({
+export function SegmentedView({ testId,
   options,
   value,
   onChange,
@@ -63,7 +73,7 @@ export function SegmentedView({
       {options.map((opt) => {
         const active = opt.id === value;
         return (
-          <button
+          <button data-testid={testId}
             key={opt.id}
             type="button"
             onClick={() => onChange(opt.id)}

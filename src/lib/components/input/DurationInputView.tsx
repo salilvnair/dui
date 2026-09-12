@@ -16,6 +16,16 @@ const UNIT_OPTIONS: { value: DurationUnit; label: string; color: string }[] = [
 const UNIT_TO_MS: Record<DurationUnit, number> = { ms: 1, s: 1000, m: 60000, hr: 3600000 };
 
 export interface DurationInputViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   /** Current value in milliseconds */
   value: number;
   /** Called with new value in milliseconds */
@@ -28,7 +38,7 @@ export interface DurationInputViewProps {
   className?: string;
 }
 
-export function DurationInputView({
+export function DurationInputView({ testId,
   value,
   onChange,
   placeholder = '0',
@@ -124,7 +134,7 @@ export function DurationInputView({
   );
 
   return (
-    <div className={className} style={{ position: 'relative', display: 'inline-flex', alignItems: 'center' }}>
+    <div data-testid={testId} className={className} style={{ position: 'relative', display: 'inline-flex', alignItems: 'center' }}>
       <input
         type="number"
         min="0"

@@ -16,6 +16,16 @@ export interface NotificationItem {
 }
 
 export interface NotificationCenterViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   notifications: NotificationItem[];
   onMarkAllRead?: () => void;
   size?: DuiSize;
@@ -24,7 +34,7 @@ export interface NotificationCenterViewProps {
 }
 
 /** Bell icon + dropdown notification list, unread-count badge. */
-export function NotificationCenterView({
+export function NotificationCenterView({ testId,
   notifications,
   onMarkAllRead,
   size,
@@ -57,7 +67,7 @@ export function NotificationCenterView({
   }, [open]);
 
   return (
-    <div className={`dui_notifcenter ${className}`} style={{ display: 'inline-block' }}>
+    <div data-testid={testId} className={`dui_notifcenter ${className}`} style={{ display: 'inline-block' }}>
       <button
         ref={triggerRef}
         type="button"

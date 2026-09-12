@@ -5,6 +5,16 @@ import { HeartIcon } from '../../../icons';
 import './LikeButtonView.css';
 
 export interface LikeButtonViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   liked: boolean;
   onChange: (liked: boolean) => void;
   count?: number;
@@ -14,7 +24,7 @@ export interface LikeButtonViewProps {
 }
 
 /** Animated heart/like toggle button — pop animation on like. */
-export function LikeButtonView({
+export function LikeButtonView({ testId,
   liked,
   onChange,
   count,
@@ -33,7 +43,7 @@ export function LikeButtonView({
   };
 
   return (
-    <button
+    <button data-testid={testId}
       type="button"
       onClick={handleClick}
       className={`dui_likebtn ${className}`}

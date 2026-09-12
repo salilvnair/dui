@@ -21,6 +21,16 @@ export interface SegmentedControlOption {
 }
 
 export interface SegmentedControlViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   options: SegmentedControlOption[];
   value: string;
   onChange: (value: string) => void;
@@ -57,7 +67,7 @@ const VARIANT_RADIUS: Record<SegmentedControlVariant, DuiRadius> = {
   pointy: 'none',
 };
 
-export function SegmentedControlView({
+export function SegmentedControlView({ testId,
   options,
   value,
   onChange,
@@ -211,7 +221,7 @@ export function SegmentedControlView({
       {options.map(opt => {
         const isActive = opt.value === value;
         return (
-          <button
+          <button data-testid={testId}
             key={opt.value}
             data-seg="1"
             type="button"

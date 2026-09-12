@@ -102,6 +102,16 @@ export function offsetLabel(timeZone: string, at: Date = new Date()): string {
 }
 
 export interface TimeZoneSelectViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   value: string;
   onChange: (timeZone: string) => void;
   size?: SelectInputSize;
@@ -112,7 +122,7 @@ export interface TimeZoneSelectViewProps {
   style?: React.CSSProperties;
 }
 
-export function TimeZoneSelectView({
+export function TimeZoneSelectView({ testId,
   value, onChange, size = 'md', width = 210, color, disabled, className, style,
 }: TimeZoneSelectViewProps) {
   const options = useMemo(() => {
@@ -126,7 +136,7 @@ export function TimeZoneSelectView({
   }, []);
 
   return (
-    <SelectInputView
+    <SelectInputView testId={testId}
       value={value}
       onChange={onChange}
       options={options}

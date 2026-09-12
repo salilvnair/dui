@@ -11,6 +11,16 @@ const DEFAULT_SWATCHES = [
 ];
 
 export interface ColorPickerViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   value: string;
   onChange: (value: string) => void;
   swatches?: string[];
@@ -22,7 +32,7 @@ export interface ColorPickerViewProps {
   style?: CSSProperties;
 }
 
-export function ColorPickerView({
+export function ColorPickerView({ testId,
   value,
   onChange,
   swatches = DEFAULT_SWATCHES,
@@ -72,7 +82,7 @@ export function ColorPickerView({
   };
 
   return (
-    <div className={`dui_colorpicker ${className}`} style={{ display: 'inline-block', ...style }}>
+    <div data-testid={testId} className={`dui_colorpicker ${className}`} style={{ display: 'inline-block', ...style }}>
       <button
         ref={triggerRef}
         type="button"

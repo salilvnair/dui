@@ -12,6 +12,17 @@ export interface MockServerSuggestion {
 }
 
 export interface HighlightedInputViewProps {
+  /**
+   * A stable hook for tests and the demo recorder.
+   *
+   * Lands on the element somebody actually types into — which, for this
+   * component, is a `contenteditable` div whose placeholder is a decorative
+   * `<span>`. Playwright's `getByPlaceholder` therefore never finds it, and a
+   * recorder that assumed it would spent a whole take typing into nothing.
+   * Give it a `testId` and it can be addressed by contract instead of by
+   * guessing at dui's internals.
+   */
+  testId?: string;
   value: string;
   onChange: (value: string) => void;
   onKeyDown?: (e: React.KeyboardEvent) => void;
@@ -32,7 +43,7 @@ export interface HighlightedInputViewProps {
   className?: string;
 }
 
-export function HighlightedInputView({
+export function HighlightedInputView({ testId,
   value,
   onChange,
   onKeyDown,
@@ -229,6 +240,7 @@ export function HighlightedInputView({
         onBlur={() => { setTimeout(() => setFocused(false), 150); onBlur?.(); }}
         onCompositionStart={() => { composing.current = true; }}
         onCompositionEnd={() => { composing.current = false; handleInput(); }}
+        data-testid={testId}
         className={`dui_highlighted-input__editor${disabled ? ' opacity-60' : ''}`}
         // lineHeight 'normal' on purpose: the editor is a flex container that already
         // centers its children, so a full-height line-height's only visible effect is

@@ -4,6 +4,16 @@ import { useButtonBase } from '../../core/ButtonBase';
 import { ChevronUpIcon, ChevronDownIcon } from '../../../icons';
 
 export interface VoteWidgetViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   score: number;
   userVote: 'up' | 'down' | null;
   onVote: (vote: 'up' | 'down' | null) => void;
@@ -14,7 +24,7 @@ export interface VoteWidgetViewProps {
 }
 
 /** Upvote/downvote counter control. */
-export function VoteWidgetView({
+export function VoteWidgetView({ testId,
   score,
   userVote,
   onVote,
@@ -34,7 +44,7 @@ export function VoteWidgetView({
   });
 
   return (
-    <div className={className} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0, ...style }}>
+    <div data-testid={testId} className={className} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0, ...style }}>
       <button type="button" style={btnStyle(userVote === 'up')} onClick={() => handle('up')} aria-label="Upvote">
         <ChevronUpIcon size={base.iconSize} />
       </button>

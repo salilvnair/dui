@@ -3,6 +3,16 @@ import type { DuiSize } from '../../core/DuiTypes';
 import { useButtonBase } from '../../core/ButtonBase';
 
 export interface NpsSurveyViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   question?: string;
   score: number | null;
   onScoreChange: (score: number) => void;
@@ -16,7 +26,7 @@ export interface NpsSurveyViewProps {
 }
 
 /** 0-10 Net Promoter Score picker with an optional follow-up text field. */
-export function NpsSurveyView({
+export function NpsSurveyView({ testId,
   question = 'How likely are you to recommend us to a friend?',
   score,
   onScoreChange,
@@ -41,7 +51,7 @@ export function NpsSurveyView({
         {Array.from({ length: 11 }, (_, n) => {
           const active = score === n || hover === n;
           return (
-            <button
+            <button data-testid={testId}
               key={n}
               type="button"
               onClick={() => onScoreChange(n)}

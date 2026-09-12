@@ -11,6 +11,16 @@ export interface FabAction {
 }
 
 export interface FabViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   icon?: ReactNode;
   /** Extended FAB: renders `label` beside the icon. */
   label?: string;
@@ -23,7 +33,7 @@ export interface FabViewProps {
   className?: string;
 }
 
-export function FabView({
+export function FabView({ testId,
   icon,
   label,
   onClick,
@@ -40,7 +50,7 @@ export function FabView({
   const h = parseInt(base.height, 10) * 1.5;
 
   return (
-    <div className={`dui_fab dui_fab--${position} ${className}`}>
+    <div data-testid={testId} className={`dui_fab dui_fab--${position} ${className}`}>
       {isSpeedDial && open && (
         <div className="dui_fab__actions">
           {actions!.map((a, i) => (

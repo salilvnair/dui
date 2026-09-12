@@ -12,6 +12,16 @@ export interface CascaderOption {
 }
 
 export interface CascaderViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   options: CascaderOption[];
   /** Selected path, e.g. ['us', 'ca', 'sf']. */
   value: string[];
@@ -39,7 +49,7 @@ function findPathLabels(options: CascaderOption[], path: string[]): string[] {
 }
 
 /** Multi-level cascading select — region/category trees. */
-export function CascaderView({
+export function CascaderView({ testId,
   options,
   value,
   onChange,
@@ -133,7 +143,7 @@ export function CascaderView({
               {col.map(opt => {
                 const active = hoverPath[depth] === opt.value;
                 return (
-                  <button
+                  <button data-testid={testId}
                     key={opt.value}
                     type="button"
                     className={`dui_cascader__item${active ? ' dui_cascader__item--active' : ''}`}

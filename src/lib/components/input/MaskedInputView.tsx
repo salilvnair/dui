@@ -7,6 +7,16 @@ import { useInputBase } from '../../core/InputBase';
  * Any other character in the mask is a literal separator, auto-inserted.
  */
 export interface MaskedInputViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   value: string;
   onChange: (value: string) => void;
   mask: string;
@@ -45,7 +55,7 @@ export function applyMask(mask: string, raw: string): string {
   return out;
 }
 
-export function MaskedInputView({
+export function MaskedInputView({ testId,
   value,
   onChange,
   mask,
@@ -61,7 +71,7 @@ export function MaskedInputView({
   const base = useInputBase(size, { width, borderRadius, color });
 
   return (
-    <input
+    <input data-testid={testId}
       type="text"
       className={className}
       disabled={disabled}

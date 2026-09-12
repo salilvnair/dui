@@ -6,6 +6,16 @@ import { useChipBase } from '../../core/ChipBase';
 export type ChipViewSize = 'xs' | DuiSize;
 
 export interface ChipViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   label: string;
   /** Leading glyph — pass a DUI icon component (e.g. `<TargetGoalIcon size={12} />`),
    *  never an emoji. Sized/colored by the caller; the chip just positions it. */
@@ -49,7 +59,7 @@ export interface ChipViewProps {
 
 const XS = { height: '16px', px: '5px', fontSize: '9px' };
 
-export function ChipView({
+export function ChipView({ testId,
   label,
   icon,
   color,
@@ -83,7 +93,7 @@ export function ChipView({
   const borderColor = `color-mix(in srgb, ${accent} 30%, transparent)`;
 
   return (
-    <span
+    <span data-testid={testId}
       className={`inline-flex items-center font-semibold tracking-wide select-none ${onClick ? 'cursor-pointer' : ''} ${className}`}
       title={title ?? label}
       style={{

@@ -14,6 +14,16 @@ export interface PaletteCommand {
 }
 
 export interface CommandPaletteViewProps {
+  /**
+   * A stable hook for tests and automation.
+   *
+   * Lands on this component's root element as `data-testid`. Worth setting on
+   * anything a test drives: several dui inputs render a `contenteditable` div
+   * with a decorative placeholder span, which neither `getByPlaceholder` nor
+   * `getByRole` reliably finds.
+   */
+  testId?: string;
+
   open: boolean;
   onClose: () => void;
   commands: PaletteCommand[];
@@ -23,7 +33,7 @@ export interface CommandPaletteViewProps {
 }
 
 /** Cmd-K style launcher: fuzzy filter + ↑/↓/Enter/Esc keyboard navigation. */
-export function CommandPaletteView({
+export function CommandPaletteView({ testId,
   open,
   onClose,
   commands,
@@ -87,7 +97,7 @@ export function CommandPaletteView({
   };
 
   return createPortal(
-    <div
+    <div data-testid={testId}
       onMouseDown={e => { if (e.target === e.currentTarget) onClose(); }}
       style={{
         position: 'fixed', inset: 0, zIndex: 1200,
