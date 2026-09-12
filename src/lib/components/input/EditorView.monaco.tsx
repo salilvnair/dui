@@ -284,7 +284,7 @@ function EditorViewSimple({
   const handleMount: OnMount = (editor, monacoInstance) => {
     editorRef.current = editor;
     disposablesRef.current = [];
-    mountCommon(editor, monacoInstance, { language, value, placeholder, onEditorMount, contextMenuMode });
+    mountCommon(editor, monacoInstance, { language, value, placeholder, onEditorMount, contextMenuMode, autoClosing: autoCloses(editorOptions ?? {}) });
   };
 
   const resolvedTheme = theme === 'light' ? 'daakia-light' : 'daakia-dark';
@@ -368,7 +368,7 @@ function EditorViewDebug({
     // Attach debug features
     attachBreakpointGutter(editor, monacoInstance);
     attachDebugHover(editor, monacoInstance);
-    mountCommon(editor, monacoInstance, { language, value, placeholder, onEditorMount, contextMenuMode });
+    mountCommon(editor, monacoInstance, { language, value, placeholder, onEditorMount, contextMenuMode, autoClosing: autoCloses(editorOptions ?? {}) });
   };
 
   const resolvedTheme = theme === 'light' ? 'daakia-light' : 'daakia-dark';
@@ -399,6 +399,30 @@ export function EditorViewMonacoImpl({ debugSupported = false, className = '', .
 
 // ─── Shared Monaco options builder ───────────────────────────────────────────
 
+/**
+ * Should this editor close brackets, quotes and tags as you type?
+ *
+ * Yes, unless the caller passed `autoClosing: false` — or unless something
+ * other than a person is typing, which the page says by setting
+ * `window.__DUI_NO_AUTOCLOSE__ = true` before the app loads.
+ *
+ * The global exists because the answer has to hold across re-renders. These
+ * options are construction options: every render hands Monaco the same object
+ * again, so an `updateOptions({ autoClosingBrackets: 'never' })` from outside
+ * survives only until the next keystroke re-renders the component and puts
+ * 'always' back. A test driving the editor a character at a time would get a
+ * few characters in and then start typing its closing braces onto the ones
+ * Monaco had inserted — `{"a": 1}}`, a SOAP envelope with every tag doubled.
+ *
+ * Reading it here rather than at each of the dozens of call sites is the point:
+ * one line makes every editor in every consuming app drivable.
+ */
+function autoCloses(o: EditorOptions): boolean {
+  if (o.autoClosing === false) return false;
+  if (typeof window !== 'undefined' && (window as unknown as Record<string, unknown>).__DUI_NO_AUTOCLOSE__ === true) return false;
+  return true;
+}
+
 function buildOptions({ readOnly, fontSize, wordWrap, glyphMargin, contextMenuMode = 'native', editorOptions, theme }: {
   readOnly: boolean;
   fontSize: number;
@@ -409,6 +433,7 @@ function buildOptions({ readOnly, fontSize, wordWrap, glyphMargin, contextMenuMo
   theme: string;
 }) {
   const o = editorOptions ?? {};
+  const closes = autoCloses(o);
   return {
     // Baked into construction options (not just the top-level <Editor theme=""> prop)
     // so Monaco applies it before its first paint — @monaco-editor/react creates the
@@ -469,10 +494,21 @@ function buildOptions({ readOnly, fontSize, wordWrap, glyphMargin, contextMenuMo
       horizontalScrollbarSize: o.scrollbar?.horizontalScrollbarSize ?? 6,
     },
     fontFamily: o.fontFamily ?? 'Menlo, Monaco, "Courier New", monospace',
-    autoClosingBrackets: 'always' as const,
-    autoClosingQuotes: 'always' as const,
-    autoClosingDelete: 'always' as const,
-    autoSurround: 'languageDefined' as const,
+    /*
+      Closing brackets, quotes and tags for you — on by default, and off when
+      the caller says so.
+
+      These were hard-coded to 'always' in two places, one of them an
+      `updateOptions` that runs after mount, so a consumer setting them to
+      'never' on the instance had them set straight back. Anything driving this
+      editor a character at a time then typed its own closing brace onto the
+      one Monaco had already inserted: `{"a": 1}}`, and a SOAP envelope with
+      every tag doubled.
+    */
+    autoClosingBrackets: (closes ? 'always' : 'never') as 'never' | 'always',
+    autoClosingQuotes: (closes ? 'always' : 'never') as 'never' | 'always',
+    autoClosingDelete: (closes ? 'always' : 'never') as 'never' | 'always',
+    autoSurround: (closes ? 'languageDefined' : 'never') as 'never' | 'languageDefined',
     guides: { bracketPairs: true, indentation: true },
     suggest: {
       showKeywords: o.suggest?.showKeywords ?? true,
@@ -620,12 +656,13 @@ function menuItemsAt(editor: any, x: number, y: number, readOnly: boolean): Cont
 function mountCommon(
   editor: any,
   monacoInstance: any,
-  { language, value, placeholder, onEditorMount, contextMenuMode = 'native' }: {
+  { language, value, placeholder, onEditorMount, contextMenuMode = 'native', autoClosing = true }: {
     language: EditorLanguage;
     value: string;
     placeholder?: string;
     onEditorMount?: (editor: any, monaco: any) => void;
     contextMenuMode?: EditorContextMenuMode;
+    autoClosing?: boolean;
   },
 ) {
   // Layout fixes for flex/overflow containers
@@ -642,8 +679,11 @@ function mountCommon(
   }
 
   editor.updateOptions({
-    autoClosingBrackets: 'always', autoClosingQuotes: 'always',
-    autoClosingDelete: 'always', autoSurround: 'languageDefined', autoIndent: 'full',
+    autoClosingBrackets: autoClosing ? 'always' : 'never',
+    autoClosingQuotes: autoClosing ? 'always' : 'never',
+    autoClosingDelete: autoClosing ? 'always' : 'never',
+    autoSurround: autoClosing ? 'languageDefined' : 'never',
+    autoIndent: 'full',
   });
 
   // Clipboard overrides — modern Clipboard API (webview-compatible)

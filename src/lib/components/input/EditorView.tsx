@@ -87,6 +87,14 @@ export interface EditorOptions {
   // ── Editing
   tabSize?: number;
   wordWrap?: EditorWordWrap;
+  /**
+   * Close brackets, quotes and XML tags as you type. Default `true`.
+   *
+   * Set `false` when something other than a person is typing — a test, a
+   * recorder, anything replaying keystrokes — so that a typed `}` lands as a
+   * `}` rather than on top of one the editor has already put there.
+   */
+  autoClosing?: boolean;
   formatOnPaste?: boolean;
   formatOnType?: boolean;
   autoIndent?: EditorAutoIndent;
