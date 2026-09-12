@@ -77,7 +77,7 @@ export function SwatchPickerView({ testId,
 }: SwatchPickerViewProps) {
   const box = initials ? Math.max(size, 15) : size;
   return (
-    <span
+    <span data-testid={testId}
       role="radiogroup"
       className={className}
       style={{ display: 'inline-flex', alignItems: 'center', gap: 5, ...style }}
@@ -85,7 +85,7 @@ export function SwatchPickerView({ testId,
       {options.map(o => {
         const on = o.id === value;
         return (
-          <button data-testid={testId}
+          <button
             key={o.id}
             type="button"
             role="radio"

@@ -90,7 +90,7 @@ export function DialKnobInputView({ testId,
   };
 
   return (
-    <div className={className} style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: 6, ...style }}>
+    <div data-testid={testId} className={className} style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: 6, ...style }}>
       <div
         ref={ref}
         onMouseDown={handleDrag}
@@ -104,7 +104,7 @@ export function DialKnobInputView({ testId,
           const tAngle = SWEEP_START + (i / ticks) * (SWEEP_END - SWEEP_START);
           const active = i / ticks <= ratio;
           return (
-            <div data-testid={testId}
+            <div
               key={i}
               style={{
                 position: 'absolute', left: '50%', top: 2, width: 2, height: 5, borderRadius: 1,

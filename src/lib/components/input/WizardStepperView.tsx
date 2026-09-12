@@ -47,7 +47,7 @@ export function WizardStepperView({ testId,
   const activeIdx = steps.findIndex(s => s.id === activeStep);
 
   return (
-    <div className={className} style={{ display: 'flex', alignItems: 'flex-start', width: '100%', ...style }}>
+    <div data-testid={testId} className={className} style={{ display: 'flex', alignItems: 'flex-start', width: '100%', ...style }}>
       {steps.map((step, i) => {
         const isCompleted = completedSet.has(step.id);
         const isActive = step.id === activeStep;
@@ -57,7 +57,7 @@ export function WizardStepperView({ testId,
           : <span style={{ fontSize: base.fontSize, fontWeight: 700, color: isActive ? '#fff' : 'var(--color-text-muted)' }}>{i + 1}</span>;
 
         return (
-          <div data-testid={testId} key={step.id} style={{ display: 'flex', alignItems: 'center', flex: i < steps.length - 1 ? 1 : undefined }}>
+          <div key={step.id} style={{ display: 'flex', alignItems: 'center', flex: i < steps.length - 1 ? 1 : undefined }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, cursor: isClickable ? 'pointer' : 'default' }} onClick={() => isClickable && onStepClick?.(step.id)}>
               <div
                 style={{

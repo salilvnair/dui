@@ -160,7 +160,7 @@ export function SegmentedControlView({ testId,
     : `calc(${segRadius} + ${TRACK_PADDING}px)`;
 
   return (
-    <div
+    <div data-testid={testId}
       ref={containerRef}
       role="tablist"
       tabIndex={disabled ? -1 : 0}
@@ -221,7 +221,7 @@ export function SegmentedControlView({ testId,
       {options.map(opt => {
         const isActive = opt.value === value;
         return (
-          <button data-testid={testId}
+          <button
             key={opt.value}
             data-seg="1"
             type="button"

@@ -67,6 +67,7 @@ export function PilledTabView({ testId,
 
   return (
     <div
+      data-testid={testId}
       className={className}
       style={{
         position: 'relative',
@@ -99,7 +100,7 @@ export function PilledTabView({ testId,
       {tabs.map((tab, i) => {
         const isActive = tab.id === activeId
         return (
-          <button data-testid={testId}
+          <button
             key={tab.id}
             ref={(el) => { btnRefs.current[i] = el }}
             onClick={() => onChange(tab.id)}

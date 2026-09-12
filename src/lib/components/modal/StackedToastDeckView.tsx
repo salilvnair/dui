@@ -41,7 +41,7 @@ export function StackedToastDeckView({ testId,
   const visible = toasts.slice(0, 5);
 
   return (
-    <div
+    <div data-testid={testId}
       className={className}
       onClick={() => setFanned(f => !f)}
       style={{ position: 'relative', width, minHeight: fanned ? visible.length * 56 : 64, cursor: 'pointer', ...style }}
@@ -50,7 +50,7 @@ export function StackedToastDeckView({ testId,
         const idx = visible.length - 1 - revIdx;
         const isTop = idx === 0;
         return (
-          <div data-testid={testId}
+          <div
             key={toast.id}
             onClick={e => { if (isTop || fanned) { e.stopPropagation(); onDismiss(toast.id); } }}
             style={{

@@ -273,7 +273,7 @@ export function MergedInputView({ testId,
     : 'none';
 
   return (
-    <div
+    <div data-testid={testId}
       className={className}
       style={{
         display: 'flex',
@@ -335,7 +335,7 @@ export function MergedInputView({ testId,
         }
         if (seg.type === 'custom') {
           return (
-            <div data-testid={testId}
+            <div
               key={i}
               style={{
                 display: 'flex',

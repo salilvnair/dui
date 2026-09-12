@@ -92,6 +92,61 @@ describe('every interactive component can be addressed', () => {
     expect(astray).toEqual([]);
   });
 
+  it('marks one element per render, never one inside a repeat', () => {
+    /*
+      The second mistake the codemod made, and the one the check above could
+      not see: `TabBarView`, `PilledTabView` and `UnderlineTabsView` all end in
+      a `tabs.map(...)`, so "the last element in the component" was one tab.
+      Every tab then carried the same `data-testid`, and a locator asking for
+      it got ten elements instead of the strip — which reads as a flaky
+      selector rather than as a bug here. Twenty-two components had it.
+
+      Deciding "is this inside a callback" by counting parentheses gets it
+      wrong in both directions — JSX text, template literals and apostrophes
+      all break the count — so this asks about indentation instead, which is
+      the one thing a repeated element always gives away:
+
+        a component returns at two spaces, a variant branch at four; a
+        `return` inside a `.map` or an `Array.from` mapper is indented deeper
+        than that, because the callback is already nested inside JSX.
+
+      The second clause catches the inline `items.map(x => (<li …>)` form,
+      which has no `return` of its own: the nearest one above is the
+      component's, and the marker is then several elements past it.
+    */
+
+    /*
+      Components that deliberately mark something other than their root.
+
+      Each renders a wrapper around the thing worth selecting: the URL bars
+      mark their `contenteditable` editor, and the tab bar marks the strip
+      that scrolls rather than the chrome around it. The marker is still on
+      exactly one element per render, which is the property this guards.
+    */
+    const MARKER_ON_INNER = new Set([
+      'HighlightedInputView.tsx',
+      'SelectTextInputView.tsx',
+      'TabBarView.tsx',
+    ]);
+
+    const astray: string[] = [];
+    for (const c of components) {
+      for (const m of c.source.matchAll(/(?:data-testid|testId)=\{testId\}/g)) {
+        const before = c.source.slice(0, m.index);
+        const ret = [...before.matchAll(/^([ ]*)return\b/gm)].pop();
+        if (!ret) { astray.push(`${c.family}/${c.file}: marker with no return above it`); continue; }
+        const indent = ret[1].length;
+        const elements = (before.slice(ret.index! + ret[0].length).match(/</g) || []).length;
+        const nested = indent > 4;
+        const pastTheRoot = elements !== 1 && !MARKER_ON_INNER.has(c.file);
+        if (nested || pastTheRoot) {
+          astray.push(`${c.family}/${c.file}: marker is on element ${elements} after a return indented ${indent}`);
+        }
+      }
+    }
+    expect(astray).toEqual([]);
+  });
+
   it('never passes data-testid to a component, which React would drop', () => {
     /*
       A composite root takes `testId`; a DOM element takes `data-testid`. The

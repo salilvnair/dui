@@ -37,11 +37,11 @@ export function ThemeCardSelectorView({ testId,
   className = '',
 }: ThemeCardSelectorViewProps) {
   return (
-    <div className={className} style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+    <div data-testid={testId} className={className} style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
       {options.map(opt => {
         const isSelected = opt.value === value;
         return (
-          <button data-testid={testId}
+          <button
             key={opt.value}
             type="button"
             onClick={() => onChange(opt.value)}

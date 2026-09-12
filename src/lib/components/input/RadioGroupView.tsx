@@ -55,7 +55,7 @@ export function RadioGroupView({ testId,
   const descFontSize = DUI_FONT_SIZE[DUI_SIZES[Math.max(0, DUI_SIZES.indexOf(labelS) - 1)]];
 
   return (
-    <div
+    <div data-testid={testId}
       role="radiogroup"
       className={className}
       style={{ display: 'flex', flexDirection: direction === 'vertical' ? 'column' : 'row', gap: direction === 'vertical' ? 8 : 16, ...style }}
@@ -64,7 +64,7 @@ export function RadioGroupView({ testId,
         const isActive = opt.value === value;
         const isDisabled = disabled || opt.disabled;
         return (
-          <label data-testid={testId}
+          <label
             key={opt.value}
             style={{
               display: 'flex',

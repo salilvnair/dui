@@ -42,11 +42,11 @@ export function PriorityPickerView({ testId,
   const base = useToggleBase(size);
 
   return (
-    <div className={className} style={{ display: 'inline-flex', gap: 4, ...style }}>
+    <div data-testid={testId} className={className} style={{ display: 'inline-flex', gap: 4, ...style }}>
       {LEVELS.map(level => {
         const active = level.value === value;
         return (
-          <button data-testid={testId}
+          <button
             key={level.value}
             type="button"
             disabled={disabled}

@@ -139,6 +139,7 @@ export function TabView({ testId,
   if (variant === 'chip') {
     return (
       <div
+        data-testid={testId}
         role="tablist"
         className={className}
         style={{
@@ -198,6 +199,7 @@ export function TabView({ testId,
   if (variant === 'picker') {
     return (
       <div
+        data-testid={testId}
         role="tablist"
         className={`dui_tab__picker ${className}`}
         style={{
@@ -258,6 +260,7 @@ export function TabView({ testId,
   return (
     <div
       ref={containerRef}
+      data-testid={testId}
       role="tablist"
       className={`dui_tab__pill ${className}`}
       style={{

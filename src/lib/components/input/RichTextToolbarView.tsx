@@ -47,11 +47,11 @@ export function RichTextToolbarView({ testId,
   const activeSet = new Set(active);
 
   return (
-    <div className={className} style={{ display: 'inline-flex', gap: 2, padding: 3, border: '1px solid var(--color-surface-border)', borderRadius: 8, background: 'var(--color-surface)', ...style }}>
+    <div data-testid={testId} className={className} style={{ display: 'inline-flex', gap: 2, padding: 3, border: '1px solid var(--color-surface-border)', borderRadius: 8, background: 'var(--color-surface)', ...style }}>
       {ACTIONS.map(({ id, Icon, label }) => {
         const isActive = activeSet.has(id);
         return (
-          <button data-testid={testId}
+          <button
             key={id}
             type="button"
             onClick={() => onAction(id)}

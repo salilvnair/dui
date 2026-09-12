@@ -55,6 +55,7 @@ export function UnderlineTabsView({ testId,
     <div
       className={className}
       role="tablist"
+      data-testid={testId}
       style={{
         display: 'flex',
         gap: 3,
@@ -65,7 +66,7 @@ export function UnderlineTabsView({ testId,
       {tabs.map(t => {
         const on = t.id === activeId;
         return (
-          <button data-testid={testId}
+          <button
             key={t.id}
             type="button"
             role="tab"

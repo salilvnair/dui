@@ -49,14 +49,14 @@ export function RadioCardView({ testId,
   const accent = accentColor ?? base.color ?? 'var(--color-primary)';
 
   return (
-    <div
+    <div data-testid={testId}
       className={className}
       style={{ display: 'grid', gridTemplateColumns: `repeat(${columns}, 1fr)`, gap: base.gap, ...style }}
     >
       {options.map(opt => {
         const isActive = opt.value === value;
         return (
-          <button data-testid={testId}
+          <button
             key={opt.value}
             type="button"
             disabled={opt.disabled}

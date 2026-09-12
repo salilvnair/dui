@@ -57,7 +57,7 @@ export function SegmentedView({ testId,
   const px = DUI_PADDING_X[size];
 
   return (
-    <div
+    <div data-testid={testId}
       className={className}
       style={{
         display: 'inline-flex',
@@ -73,7 +73,7 @@ export function SegmentedView({ testId,
       {options.map((opt) => {
         const active = opt.id === value;
         return (
-          <button data-testid={testId}
+          <button
             key={opt.id}
             type="button"
             onClick={() => onChange(opt.id)}

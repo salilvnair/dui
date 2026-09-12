@@ -263,7 +263,7 @@ export function CalendarView({ testId,
   }), [currentYear]);
 
   return (
-    <div
+    <div data-testid={testId}
       className={`dui_calendar ${className}`}
       style={{
         width: base.width,
@@ -320,7 +320,7 @@ export function CalendarView({ testId,
           const barRadius = base.cellSize / 2;
 
           return (
-            <div data-testid={testId} key={i} className="dui_calendar__cell" style={{ height: base.cellSize }}>
+            <div key={i} className="dui_calendar__cell" style={{ height: base.cellSize }}>
               {showBar && (
                 <span
                   className="dui_calendar__rangebar"

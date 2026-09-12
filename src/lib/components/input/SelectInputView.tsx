@@ -223,7 +223,7 @@ export function SelectInputView({ testId,
   const boxShadow = (open || focused) ? `0 0 0 2px color-mix(in srgb, ${accent} 20%, transparent)` : 'none';
 
   return (
-    <div
+    <div data-testid={testId}
       className={`relative inline-block ${className}`}
       style={{ width, ...style }}
       onKeyDown={handleKey}
@@ -309,7 +309,7 @@ export function SelectInputView({ testId,
               );
             }
             return (
-              <div data-testid={testId}
+              <div
                 key={opt.value}
                 role="option"
                 aria-selected={opt.value === value}

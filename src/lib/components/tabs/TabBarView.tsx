@@ -245,6 +245,7 @@ export function TabBarView({ testId,
       {/* Scrollable tab list */}
       <div
         ref={scrollRef}
+        data-testid={testId}
         style={{
           display: 'flex', alignItems: 'center', height: '100%',
           flex: 1, minWidth: 0, overflowX: 'auto',
@@ -261,7 +262,7 @@ export function TabBarView({ testId,
           const isRenaming = renamingId === tab.id;
 
           return (
-            <div data-testid={testId}
+            <div
               key={tab.id}
               className={`dui_tab-bar__tab group${isActive ? ' dui_tab-bar__tab--active' : ''}`}
               style={{

@@ -45,13 +45,13 @@ export function NpsSurveyView({ testId,
   const colorFor = (n: number) => n <= 6 ? 'var(--color-error)' : n <= 8 ? 'var(--color-warning)' : 'var(--color-success)';
 
   return (
-    <div className={className} style={{ display: 'flex', flexDirection: 'column', gap: 10, ...style }}>
+    <div data-testid={testId} className={className} style={{ display: 'flex', flexDirection: 'column', gap: 10, ...style }}>
       <span style={{ fontSize: base.fontSize, fontWeight: 600, color: 'var(--color-text-primary)' }}>{question}</span>
       <div style={{ display: 'flex', gap: 4 }}>
         {Array.from({ length: 11 }, (_, n) => {
           const active = score === n || hover === n;
           return (
-            <button data-testid={testId}
+            <button
               key={n}
               type="button"
               onClick={() => onScoreChange(n)}

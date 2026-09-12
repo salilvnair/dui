@@ -88,7 +88,7 @@ export function RatingView({ testId,
   };
 
   return (
-    <div
+    <div data-testid={testId}
       className={className}
       style={{ display: 'inline-flex', gap: 2, ...style }}
       onMouseLeave={() => setHover(null)}
@@ -97,7 +97,7 @@ export function RatingView({ testId,
         const filled = display >= i + 1;
         const half = allowHalf && !filled && display >= i + 0.5;
         return (
-          <button data-testid={testId}
+          <button
             key={i}
             type="button"
             disabled={readOnly}

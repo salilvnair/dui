@@ -117,7 +117,7 @@ export function CascaderView({ testId,
   const displayLabel = value.length ? findPathLabels(options, value).join(' / ') : placeholder;
 
   return (
-    <div className={`dui_cascader ${className}`} style={{ display: 'inline-block', ...style }}>
+    <div data-testid={testId} className={`dui_cascader ${className}`} style={{ display: 'inline-block', ...style }}>
       <button
         ref={triggerRef}
         type="button"
@@ -143,7 +143,7 @@ export function CascaderView({ testId,
               {col.map(opt => {
                 const active = hoverPath[depth] === opt.value;
                 return (
-                  <button data-testid={testId}
+                  <button
                     key={opt.value}
                     type="button"
                     className={`dui_cascader__item${active ? ' dui_cascader__item--active' : ''}`}
