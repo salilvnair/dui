@@ -134,6 +134,13 @@ function installTagAutoClose(editor: any, monacoInstance: any) {
     if (!model) return;
     const langId = model.getLanguageId();
     if (langId !== 'xml' && langId !== 'html') return;
+    /*
+      Somebody who has turned bracket auto-closing off has said what they want.
+      Completing their tags for them is the same favour they just declined, and
+      doing it anyway is how `</Currency>` came out as `</Currency>Currency>`
+      for anything driving this editor a character at a time.
+    */
+    if (editor.getOption?.(monacoInstance.editor.EditorOption.autoClosingBrackets) === 'never') return;
     // Only react to a single typed character — never to paste, multi-cursor or
     // a programmatic setValue, where guessing the user's intent is wrong.
     if (e.changes.length !== 1) return;
