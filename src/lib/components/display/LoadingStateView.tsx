@@ -16,6 +16,15 @@ export interface LoadingStateViewProps {
   /** Matches EmptyStateView, so the two swap without the layout moving. */
   compact?: boolean;
   /**
+   * The medallion's box, in px.
+   *
+   * Defaulted from `compact`, and worth overriding in one case: a state that
+   * owns a whole panel rather than sitting inside a list. 54px centred in an
+   * empty tab reads as something that failed to load rather than as the
+   * subject of the screen. Pair it with a larger icon — `IconSize.hero`.
+   */
+  medallionSize?: number;
+  /**
    * Seconds after which the wait stops being ordinary.
    *
    * A cluster on the other side of the world, behind a VPN, answers in seconds
@@ -52,6 +61,7 @@ export function LoadingStateView({
   message,
   accentColor = 'var(--color-primary)',
   compact = false,
+  medallionSize,
   slowAfterSeconds = 8,
   slowMessage,
   action,
@@ -67,7 +77,10 @@ export function LoadingStateView({
     return () => window.clearTimeout(id);
   }, [slowAfterSeconds]);
 
-  const size = compact ? 40 : 54;
+  const size = medallionSize ?? (compact ? 40 : 54);
+  /* Scaled with the box rather than fixed at 16: an 84px medallion with a
+     16px corner looks like a rounded square, not like the 54px one grown. */
+  const radius = Math.round(size * 0.3);
   const body = slow && slowMessage ? slowMessage : message;
 
   return (
@@ -94,13 +107,13 @@ export function LoadingStateView({
             placeItems: 'center',
             width: size,
             height: size,
-            borderRadius: compact ? 12 : 16,
+            borderRadius: radius,
             color: accentColor,
             background: `color-mix(in srgb, ${accentColor} 11%, transparent)`,
             border: `1px solid color-mix(in srgb, ${accentColor} 22%, transparent)`,
           }}
         >
-          <span className="dui_loading-state__ripple" style={{ borderRadius: compact ? 12 : 16 }} />
+          <span className="dui_loading-state__ripple" style={{ borderRadius: radius }} />
           {icon}
         </div>
       )}

@@ -119,12 +119,15 @@ describe('every interactive component can be addressed', () => {
       Components that deliberately mark something other than their root.
 
       Each renders a wrapper around the thing worth selecting: the URL bars
-      mark their `contenteditable` editor, and the tab bar marks the strip
-      that scrolls rather than the chrome around it. The marker is still on
-      exactly one element per render, which is the property this guards.
+      mark their `contenteditable` editor, the tab bar marks the strip that
+      scrolls rather than the chrome around it, and the search field marks its
+      input rather than the positioning box its suggestion dropdown is
+      measured against. The marker is still on exactly one element per render,
+      which is the property this guards.
     */
     const MARKER_ON_INNER = new Set([
       'HighlightedInputView.tsx',
+      'SearchFieldView.tsx',
       'SelectTextInputView.tsx',
       'TabBarView.tsx',
     ]);

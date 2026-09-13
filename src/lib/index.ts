@@ -847,7 +847,7 @@ export type { LiveColorCustomizerProps, LiveColorVar } from './components/displa
 // ─── E6.176 — Superset DUI components matching shared/controls ───────────────
 
 export { SearchFieldView } from './components/input/SearchFieldView';
-export type { SearchFieldViewProps } from './components/input/SearchFieldView';
+export type { SearchFieldViewProps, SearchSuggestion } from './components/input/SearchFieldView';
 export { TERMINAL_PALETTES, resolveTerminalTheme, groundMode } from './core/TerminalPalette';
 export type { TerminalPalette, TerminalAnsi } from './core/TerminalPalette';
 export {

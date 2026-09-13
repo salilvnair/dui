@@ -33,6 +33,14 @@ export const IconSize = {
   state: 20,
   /** The empty-state medallion. */
   medallion: 22,
+  /**
+   * The subject of a screen that has nothing else on it.
+   *
+   * A panel-filling loading or empty state is not a row and should not be
+   * drawn like one: at `medallion` inside an 800px-tall empty tab the glyph
+   * reads as a typo rather than as the thing being waited for.
+   */
+  hero: 34,
 } as const;
 
 export type IconRole = keyof typeof IconSize;
