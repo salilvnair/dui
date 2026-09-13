@@ -29,7 +29,7 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import type { DuiSize } from '../../core/DuiTypes';
 import { SearchInputView } from './SearchInputView';
-import { SearchIcon, CloseCircleIcon, CloseIcon } from '../../../icons';
+import { SearchIcon, CloseCircleIcon, CloseIcon, TrashIcon } from '../../../icons';
 
 /**
  * One offered search.
@@ -89,6 +89,15 @@ export interface SearchFieldViewProps {
   onPick?: (value: string) => void;
   /** Given, each row gets an X that drops that entry. */
   onForget?: (value: string) => void;
+  /**
+   * Given, the heading gets a control that drops the lot.
+   *
+   * Worth having once the list is long enough to be a list: forgetting twelve
+   * entries one X at a time is twelve gestures to reach an empty box, and the
+   * reason to do it — a screen someone else is about to look at — is usually
+   * the reason there is no time for twelve.
+   */
+  onClearAll?: () => void;
   /** Most to offer at once. Beyond this the list stops being a shortcut. */
   maxSuggestions?: number;
   /** Above modals by default, which is where this is usually used. */
@@ -113,6 +122,7 @@ export function SearchFieldView({ testId,
   suggestionsLabel = 'Recent searches',
   onPick,
   onForget,
+  onClearAll,
   maxSuggestions = 8,
   suggestionZIndex = 10000,
 }: SearchFieldViewProps) {
@@ -260,13 +270,39 @@ export function SearchFieldView({ testId,
             zIndex: suggestionZIndex, padding: 3, overflow: 'hidden',
           }}
         >
-          <div style={{ padding: '4px 10px 6px', borderBottom: '1px solid var(--color-surface-border)' }}>
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 8,
+            padding: '4px 8px 6px 10px', borderBottom: '1px solid var(--color-surface-border)',
+          }}>
             <p style={{
               margin: 0, fontSize: '9.5px', fontWeight: 700, letterSpacing: '0.08em',
               textTransform: 'uppercase', color: 'var(--color-text-muted)',
             }}>
               {suggestionsLabel}
             </p>
+            <span style={{ flex: 1 }} />
+            {onClearAll && (
+              /* On the heading's own line, at its weight: it acts on the whole
+                 list, and a control that acts on everything does not belong in
+                 a row beside the ones that act on one thing. */
+              <button
+                type="button"
+                onMouseDown={e => { e.preventDefault(); e.stopPropagation(); onClearAll(); }}
+                title="Forget every search here"
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 4,
+                  border: 'none', background: 'transparent', padding: '1px 3px',
+                  cursor: 'pointer', font: 'inherit',
+                  fontSize: '9.5px', fontWeight: 700, letterSpacing: '0.08em',
+                  textTransform: 'uppercase', color: 'var(--color-text-muted)',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.color = accentColor; }}
+                onMouseLeave={e => { e.currentTarget.style.color = 'var(--color-text-muted)'; }}
+              >
+                <TrashIcon size={11} />
+                Clear all
+              </button>
+            )}
           </div>
           <div style={{ padding: '4px 3px 3px', maxHeight: 280, overflowY: 'auto' }}>
             {offered.map((s, i) => (
