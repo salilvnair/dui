@@ -11,7 +11,7 @@ const DuiCtx = createContext<DuiConfig>(DEFAULT_CONFIG);
  * Every prop is optional and falls back to its system default when omitted.
  *
  * @example
- * <DuiProvider size="sm" borderRadius="lg" activeColor="var(--color-primary)">
+ * <DuiProvider size="sm" borderRadius="lg" chipVariant="quiet">
  *   <ButtonView>Save</ButtonView>
  * </DuiProvider>
  */
@@ -23,6 +23,7 @@ export function DuiProvider({
   defaultColor,
   activeColor,
   fontStyle,
+  chipVariant,
   children,
 }: {
   size?: DuiSize;
@@ -32,11 +33,13 @@ export function DuiProvider({
   defaultColor?: string;
   activeColor?: string;
   fontStyle?: DuiFontStyle;
+  /** The look every `BadgeChipView` in the subtree takes. */
+  chipVariant?: string;
   children: ReactNode;
 }) {
   const value = useMemo<DuiConfig>(
-    () => ({ size, width, borderRadius, color, defaultColor, activeColor, fontStyle }),
-    [size, width, borderRadius, color, defaultColor, activeColor, fontStyle]
+    () => ({ size, width, borderRadius, color, defaultColor, activeColor, fontStyle, chipVariant }),
+    [size, width, borderRadius, color, defaultColor, activeColor, fontStyle, chipVariant]
   );
   return <DuiCtx.Provider value={value}>{children}</DuiCtx.Provider>;
 }

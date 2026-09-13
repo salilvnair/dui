@@ -30,4 +30,12 @@ export interface DuiConfig {
   activeColor?: string;
   /** Font style applied to all text within the DUI subtree. */
   fontStyle?: DuiFontStyle;
+  /**
+   * Which of `BadgeChipView`'s looks every chip takes.
+   *
+   * The one setting that changes a mark appearing in twenty screens at once,
+   * which is why it is here rather than argued at each call site. A chip that
+   * needs to differ still says `variant` itself.
+   */
+  chipVariant?: string;
 }
