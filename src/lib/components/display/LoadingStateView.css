@@ -1,0 +1,56 @@
+/*
+  The medallion breathes rather than spins.
+
+  A spinner says "busy" and nothing else — it looks the same at 200ms and at
+  forty seconds, so a reader watching one has no idea whether to keep waiting.
+  A slow breath reads as alive without claiming progress nobody is measuring,
+  and it lets the icon stay the subject: what is being fetched, drawn at the
+  same size the empty state draws it, so the two swap without the layout moving.
+*/
+@keyframes dui_loading-breathe {
+  0%, 100% { transform: scale(1);    opacity: 1;   }
+  50%      { transform: scale(1.06); opacity: .78; }
+}
+
+/* The ring that widens and fades, once per breath, like something reaching out. */
+@keyframes dui_loading-ripple {
+  0%   { transform: scale(1);   opacity: .5; }
+  70%  { transform: scale(1.5); opacity: 0;  }
+  100% { transform: scale(1.5); opacity: 0;  }
+}
+
+.dui_loading-state__medallion {
+  position: relative;
+  animation: dui_loading-breathe 2.4s ease-in-out infinite;
+}
+
+.dui_loading-state__ripple {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid currentColor;
+  animation: dui_loading-ripple 2.4s ease-out infinite;
+  pointer-events: none;
+}
+
+/*
+  Somebody who has asked not to see motion still needs to know it is working,
+  so the animation stops and the medallion simply sits at a steady, slightly
+  dimmed state — visibly different from the empty state it shares a shape with.
+*/
+@media (prefers-reduced-motion: reduce) {
+  .dui_loading-state__medallion { animation: none; opacity: .85; }
+  .dui_loading-state__ripple    { animation: none; opacity: .25; }
+}
+
+/* The three dots after the title, which carry the only sense of time here. */
+@keyframes dui_loading-dot {
+  0%, 60%, 100% { opacity: .25; }
+  30%           { opacity: 1;   }
+}
+.dui_loading-state__dot { animation: dui_loading-dot 1.4s ease-in-out infinite; }
+.dui_loading-state__dot:nth-child(2) { animation-delay: .2s; }
+.dui_loading-state__dot:nth-child(3) { animation-delay: .4s; }
+@media (prefers-reduced-motion: reduce) {
+  .dui_loading-state__dot { animation: none; opacity: .6; }
+}

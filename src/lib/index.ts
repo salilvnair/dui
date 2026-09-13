@@ -736,6 +736,9 @@ export { LoaderView } from './components/display/LoaderView';
 export type { LoaderViewProps, LoaderVariant } from './components/display/LoaderView';
 
 export { EmptyStateView } from './components/display/EmptyStateView';
+
+export { LoadingStateView } from './components/display/LoadingStateView';
+export type { LoadingStateViewProps } from './components/display/LoadingStateView';
 export type { EmptyStateViewProps } from './components/display/EmptyStateView';
 
 export { StatusIndicatorView } from './components/display/StatusIndicatorView';

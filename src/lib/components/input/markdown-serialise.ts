@@ -14,12 +14,31 @@
  * makes the next round trip worse, not better.
  */
 
-/** Characters that would otherwise turn plain text into markup. */
-function escapeText(text: string): string {
+/**
+ * Characters that would otherwise turn plain text into markup.
+ *
+ * Escaped only where they would ACTUALLY be markup, which is narrower than
+ * "at the start of a line" and the difference matters.
+ *
+ * CommonMark needs a space after the marker: `# Title` is a heading, `#14` is
+ * the text `#14`. Escaping the second produced `\#14`, which renders as `#14`
+ * and so looked right — while GitHub quietly stopped linking it to issue 14. A
+ * reference typed into a comment box arrived dead on github.com and dead in
+ * dkgh, for a heading nobody was writing.
+ *
+ * Same rule for the list markers: `- item` is a bullet, `-5` is a number.
+ * `>` is the exception — a blockquote needs no space, so it always escapes.
+ */
+export function escapeText(text: string): string {
   return text
     .replace(/([\\`*_[\]])/g, '\\$1')
-    // Only at the start of a line, where they mean something.
-    .replace(/^(\s*)([#>+-])/gm, '$1\\$2')
+    // A heading is one to six hashes followed by a space, or nothing at all.
+    .replace(/^(\s*)(#{1,6})(?=\s|$)/gm, '$1\\$2')
+    // A bullet is the marker followed by a space.
+    .replace(/^(\s*)([+-])(?=\s)/gm, '$1\\$2')
+    // A blockquote needs no space after it, so it is always markup.
+    .replace(/^(\s*)(>)/gm, '$1\\$2')
+    // An ordered list is digits, a dot, and a space.
     .replace(/^(\s*\d+)\. /gm, '$1\\. ');
 }
 
