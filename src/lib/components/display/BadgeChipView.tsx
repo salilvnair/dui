@@ -96,11 +96,20 @@ interface ChipSize {
   nudge: number;
 }
 
+/*
+  Tightened, on the second look at them in place.
+
+  The first set gave `md` a 20px box around 9px text — six pixels of air above
+  and below a six-pixel cap, and eight either side. Beside a 11.5px label like
+  "Status:" that reads as a button rather than a mark on the value. Roughly a
+  pixel off the padding and two off the height in each, which is enough to
+  close the gap without crowding the glyphs against the border.
+*/
 const SIZES: Record<BadgeChipSize, ChipSize> = {
-  '2xs': { h: 11, fs: 6, px: 3, r: 2, dot: 4, nudge: 0.3 },
-  xs: { h: 15, fs: 7.5, px: 4.5, r: 3, dot: 5, nudge: 0.2 },
-  sm: { h: 17, fs: 8, px: 6, r: 4, dot: 5, nudge: 0 },
-  md: { h: 20, fs: 9, px: 8, r: 5, dot: 6, nudge: 0.1 },
+  '2xs': { h: 10, fs: 6, px: 3, r: 2, dot: 4, nudge: 0.3 },
+  xs: { h: 14, fs: 7.5, px: 4, r: 3, dot: 5, nudge: 0.2 },
+  sm: { h: 16, fs: 8, px: 5, r: 4, dot: 5, nudge: 0 },
+  md: { h: 18, fs: 9, px: 7, r: 5, dot: 6, nudge: 0.1 },
 };
 
 const mix = (tone: string, pct: number) => `color-mix(in srgb, ${tone} ${pct}%, transparent)`;
@@ -139,7 +148,13 @@ export function chipBoxStyle(skin: ChipSkin, tone: string, size: BadgeChipSize):
   } else if (skin.fill === 'surface') {
     box.background = 'var(--color-surface-hover, rgba(255,255,255,.05))';
   } else if (skin.fill === 'sunken') {
-    box.background = 'rgba(0,0,0,.32)';
+    /*
+      A well has to be darker than whatever it is cut into, and "darker" is a
+      different colour on a white panel than on a near-black one. The value is
+      a variable so a light theme can say what its own recess looks like; the
+      fallback is the dark one, which is where this started.
+    */
+    box.background = 'var(--dui-chip-sunken-bg, rgba(0,0,0,.32))';
   } else if (typeof skin.fill === 'number') {
     box.background = mix(tone, skin.fill);
   }
@@ -165,7 +180,13 @@ export function chipBoxStyle(skin: ChipSkin, tone: string, size: BadgeChipSize):
       '0 1px 2px rgba(0,0,0,.35)',
     );
   } else if (skin.depth === 'inset') {
-    shadows.push('inset 0 1px 1px rgba(0,0,0,.5)', `inset 0 -1px 0 ${mix(tone, 22)}`);
+    /* The near edge in shadow, and the far edge catching light. The first is
+       theme-dependent for the same reason the fill is; the second is the
+       tone, which already works either way. */
+    shadows.push(
+      'inset 0 1px 1px var(--dui-chip-sunken-shadow, rgba(0,0,0,.5))',
+      `inset 0 -1px 0 ${mix(tone, 22)}`,
+    );
   } else if (skin.depth === 'lift') {
     shadows.push('0 1px 3px rgba(0,0,0,.42)');
   }
@@ -185,16 +206,24 @@ export function chipDotStyle(tone: string, size: BadgeChipSize): CSSProperties {
 /**
  * What to put on the span holding the glyphs.
  *
- * Two corrections, both sub-pixel and both real: the trailing letter-space
- * taken back out of the centring, and the measured vertical nudge for caps.
- * Exported so the gallery draws exactly what the component draws.
+ * It is a flex row, and that is not decoration. The children used to sit
+ * directly in the chip's own flex box, so a caller passing an icon and a word
+ * got them side by side. Wrapping them in a span to carry the corrections
+ * below turned that into inline flow — and an `<svg>` is `display: block`
+ * under a Tailwind reset, which breaks the line. The performance badge in the
+ * REST status bar became a gauge on one line and "5.6σ slow" on the next.
+ *
+ * Then the two corrections, both sub-pixel and both real: the trailing
+ * letter-space taken back out of the centring, and the measured vertical nudge
+ * for caps. Exported so the gallery draws exactly what the component draws.
  */
-export function chipTextStyle(skin: ChipSkin, size: BadgeChipSize): CSSProperties | undefined {
+export function chipTextStyle(skin: ChipSkin, size: BadgeChipSize): CSSProperties {
   const caps = skin.caps ?? true;
   const tracking = skin.tracking ?? 0.08;
   const nudge = caps ? SIZES[size].nudge : 0;
-  if (!tracking && !nudge) return undefined;
   return {
+    display: 'inline-flex',
+    alignItems: 'center',
     marginRight: tracking ? `-${tracking}em` : undefined,
     transform: nudge ? `translateY(${nudge}px)` : undefined,
   };

@@ -9,11 +9,12 @@
  * written to end.
  */
 import { describe, it, expect } from 'vitest';
-import { BADGE_CHIP_SKINS, CHIP_SKIN_BY_ID, DEFAULT_CHIP_VARIANT } from './badge-chip-skins';
+import { BADGE_CHIP_SKINS, CHIP_SKIN_BY_ID, DEFAULT_CHIP_VARIANT,
+  type ChipSkin } from './badge-chip-skins';
 import { chipBoxStyle, chipDotStyle, chipTextStyle, type BadgeChipSize } from './BadgeChipView';
 
 const SIZES: BadgeChipSize[] = ['2xs', 'xs', 'sm', 'md'];
-const HEIGHT: Record<BadgeChipSize, number> = { '2xs': 11, xs: 15, sm: 17, md: 20 };
+const HEIGHT: Record<BadgeChipSize, number> = { '2xs': 10, xs: 14, sm: 16, md: 18 };
 const TONE = '#22c55e';
 
 describe('the table', () => {
@@ -76,7 +77,9 @@ describe('the corrections', () => {
     pushes the ink left by half the tracking.
   */
   it('takes the trailing letter-space back out wherever there is tracking', () => {
-    for (const skin of BADGE_CHIP_SKINS) {
+    /* `as const satisfies` narrows each entry to its own literal type, so the
+       optional keys are absent from the union rather than optional on it. */
+    for (const skin of BADGE_CHIP_SKINS as readonly ChipSkin[]) {
       const tracking = skin.tracking ?? 0.08;
       const t = chipTextStyle(skin, 'sm');
       if (tracking) expect(t?.marginRight).toBe(`-${tracking}em`);
@@ -91,6 +94,26 @@ describe('the corrections', () => {
       const sentence = chipTextStyle(CHIP_SKIN_BY_ID['mui-filled'], size);
       expect(caps?.transform).toBe(nudge[size] ? `translateY(${nudge[size]})` : undefined);
       expect(sentence?.transform).toBeUndefined();
+    }
+  });
+});
+
+describe('an icon beside the word stays beside it', () => {
+  /*
+    The regression that made this worth a test: the children used to sit in the
+    chip's own flex box, and wrapping them in a span to carry the centring
+    corrections put them in inline flow instead. An `<svg>` is `display: block`
+    under a Tailwind reset, so it took a line of its own — the REST status
+    bar's performance badge became a gauge on one line and the reading on the
+    next.
+  */
+  it('keeps the text span a flex row for every skin', () => {
+    for (const skin of BADGE_CHIP_SKINS as readonly ChipSkin[]) {
+      for (const size of SIZES) {
+        const t = chipTextStyle(skin, size);
+        expect(t.display).toBe('inline-flex');
+        expect(t.alignItems).toBe('center');
+      }
     }
   });
 });
