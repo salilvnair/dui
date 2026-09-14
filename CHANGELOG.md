@@ -41,14 +41,19 @@ Dates are the day the version was tagged.
 - **The showcase loads a component at a time.** Its ~700 static panel imports
   are now lazy, grouped one chunk per component. The main chunk went from
   11.4 MB to 435 KB.
+- **Monaco is fetched in the background.** It was 4.2 MB of the showcase's
+  critical path — about seventy per cent of everything downloaded before a
+  reader saw a single component, and most readers never open a code panel. It
+  now loads alongside the app rather than in front of it. Nothing mounts an
+  editor until the library's existing readiness gate flips, so there is no
+  window in which `@monaco-editor/react` could fall back to its CDN.
 - **Monaco's workers are no longer inlined into the showcase.** Inlining is
   right for a VS Code webview, whose CSP forbids fetching a worker, and wrong
   for a web page: it put the entire TypeScript compiler, base64-encoded, into
   the chunk that has to arrive before the first paint. The published
   `@salilvnair/dui/monaco-setup` still inlines them and is unchanged; the
-  showcase pairs the same shared core with fetched workers. Between the two
-  changes the demo's first load went from 15.7 MB to 5.9 MB.
-
+  showcase pairs the same shared core with fetched workers. Between these three
+  changes the render path went from 3.75 MB gzipped to 430 KB in seven files.
 - **The showcase's sidebar is a `SplitPanelView`**, so it can be dragged to
   whatever width the component names need — a catalog of 238 components with
   names like `SegmentedProgressBarView` was truncating itself in a fixed 232px

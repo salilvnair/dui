@@ -782,9 +782,20 @@ therefore imports `showcase/monacoSetup`, which pairs the same
 `monaco-setup.core` with ordinary `?worker` imports. **Do not point the
 showcase back at `@/monaco-setup`.**
 
-Together those took the first load from 15.7 MB to 5.9 MB (3.75 → 1.48 MB
-gzipped). Monaco itself is 4.2 MB of what remains and is still eager, because
-the panel the showcase opens on renders a live editor.
+**Monaco itself is fetched in the background**, started at module scope in
+`main.tsx` so it downloads in parallel and blocks nothing. The rule that makes
+this safe: `@monaco-editor/react` lazy-loads Monaco *from a public CDN* unless
+`loader.config({ monaco })` has run first, and this package's position is that
+the CDN path is never taken — it is unreachable under a webview CSP, on an
+intranet, or offline. So nothing mounts an editor until the library's own
+readiness gate flips. `EditorView` and `DiffEditorView` already waited on it;
+the playground waits on it too. **If you add a component that renders
+`@monaco-editor/react` directly, gate it on `useMonacoRuntimeStatus()` — do not
+render it unconditionally.**
+
+Together these took the render path from 3.75 MB gzipped to **430 KB**, in
+seven files. Monaco's 2.6 MB still arrives, just alongside the app instead of
+in front of it, and only the readers who open a code panel wait on it.
 
 ## Screenshots, video and the demo site
 
