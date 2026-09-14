@@ -2,7 +2,7 @@ import { createRoot } from 'react-dom/client';
 import { lazy, Suspense } from 'react';
 import './index.css';
 import 'highlight.js/styles/github-dark.css';
-import './monaco-setup';
+import './showcase/monacoSetup';
 
 const DuiShowcase = lazy(() =>
   import('./showcase/DuiShowcase').then(m => ({ default: m.DuiShowcase }))

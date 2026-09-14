@@ -20,7 +20,14 @@ export default defineConfig({
     tailwindcss(),
     dts({
       entryRoot: 'src',
-      include: ['src/index.ts', 'src/icons/**/*.tsx', 'src/lib/**/*.ts', 'src/lib/**/*.tsx', 'src/monaco-setup.ts', 'src/vis-setup.ts', 'src/*.d.ts'],
+      // monaco-setup.core.ts is in here because monaco-setup.d.ts is generated
+      // as `export * from './monaco-setup.core'` — leave the core out and the
+      // published types point at a file that was never emitted, so every
+      // TypeScript consumer of '@salilvnair/dui/monaco-setup' fails to resolve
+      // it. The runtime bundle does not have this problem: rollup inlines the
+      // core into the entry, which is why the break is invisible until someone
+      // type-checks against the package.
+      include: ['src/index.ts', 'src/icons/**/*.tsx', 'src/lib/**/*.ts', 'src/lib/**/*.tsx', 'src/monaco-setup.ts', 'src/monaco-setup.core.ts', 'src/vis-setup.ts', 'src/*.d.ts'],
       outDir: 'dist',
       rollupTypes: false,
       insertTypesEntry: false,
