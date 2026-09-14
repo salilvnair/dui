@@ -38,6 +38,38 @@ Dates are the day the version was tagged.
 - The README is rebuilt around the catalog: a demo video at the top, a contact
   sheet and a table per group, and a live link on every component name. It also
   stops claiming 65 components, which it had said since there were 65.
+- **The showcase loads a component at a time.** Its ~700 static panel imports
+  are now lazy, grouped one chunk per component. The main chunk went from
+  11.4 MB to 435 KB.
+- **Monaco's workers are no longer inlined into the showcase.** Inlining is
+  right for a VS Code webview, whose CSP forbids fetching a worker, and wrong
+  for a web page: it put the entire TypeScript compiler, base64-encoded, into
+  the chunk that has to arrive before the first paint. The published
+  `@salilvnair/dui/monaco-setup` still inlines them and is unchanged; the
+  showcase pairs the same shared core with fetched workers. Between the two
+  changes the demo's first load went from 15.7 MB to 5.9 MB.
+
+- **The showcase's sidebar is a `SplitPanelView`**, so it can be dragged to
+  whatever width the component names need — a catalog of 238 components with
+  names like `SegmentedProgressBarView` was truncating itself in a fixed 232px
+  rail. The header's toggle now hides the nav outright rather than narrowing it
+  to an icon rail, which is what that button's tooltip always claimed it did.
+
+### Fixed
+
+- **The accent scrollbar had never rendered.** Its three rules in `index.css`
+  read `var(--color-accent)` with no fallback, unlike every other use of that
+  hook in the same file. `--color-accent` is not defined by the library — it is
+  there for a host app to override — so `color-mix()` received an empty value,
+  which makes the declaration invalid, which drops it, which left every scroll
+  container in the library showing the browser's default grey. Now falls back
+  to `--color-primary`, and the thumb is inset into its gutter so it reads as a
+  pill rather than a bar against the edge.
+- `dist/monaco-setup.d.ts` is generated as a re-export of
+  `./monaco-setup.core`, so the core's declarations now ship alongside it.
+  Without them the runtime bundle works and every TypeScript consumer of
+  `@salilvnair/dui/monaco-setup` fails to resolve the module — a break that is
+  invisible until someone type-checks against the package.
 
 ---
 

@@ -755,10 +755,36 @@ Every panel has an address, so you can go straight to one:
 | `#/chips?capture=1` | the component alone, no chrome — what the catalog images are of, and what the demo site embeds |
 
 ```bash
-npm run build           # builds the showcase app (this is what the demo site serves)
+npm run build           # builds the showcase app
+npm run build:demo      # the same, into demo-dist/ — this is what the demo site serves
 npm run build:lib       # builds the publishable library into dist/
 npm test                # vitest
 ```
+
+### How the showcase is split
+
+Worth knowing before adding a component, because two things here are easy to
+undo by accident.
+
+**Panels are lazily imported.** Each component's live view, examples and props
+table load the first time somebody opens that panel, and Rollup groups the
+three into one chunk per component — 236 of them, a median of 7 KB each. Adding
+a panel means adding a `slot(() => import('…'))` entry to `PANELS`, not an
+import at the top of the file. The eager version cost 11.4 MB before anything
+could render.
+
+**Monaco's workers are fetched, not inlined, in the showcase.** The published
+`monaco-setup` builds them into the bundle as blobs, because a consumer inside
+a VS Code webview cannot fetch a worker past the CSP. A web page can, and
+should: inlining put `ts.worker` — the whole TypeScript compiler — base64'd
+into the chunk that has to arrive first, about 8 MB of it. The showcase
+therefore imports `showcase/monacoSetup`, which pairs the same
+`monaco-setup.core` with ordinary `?worker` imports. **Do not point the
+showcase back at `@/monaco-setup`.**
+
+Together those took the first load from 15.7 MB to 5.9 MB (3.75 → 1.48 MB
+gzipped). Monaco itself is 4.2 MB of what remains and is still eager, because
+the panel the showcase opens on renders a live editor.
 
 ## Screenshots, video and the demo site
 
