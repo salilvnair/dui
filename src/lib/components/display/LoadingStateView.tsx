@@ -37,6 +37,17 @@ export interface LoadingStateViewProps {
   slowMessage?: string;
   /** Offered only once the wait has gone long — Cancel, Try again, Go back. */
   action?: { label: string; onClick: () => void };
+  /**
+   * How wide the message is allowed to run.
+   *
+   * Defaults to `52ch`, which is the right measure for a sentence inside a
+   * list or a modal. A loader that owns a whole panel is a different problem:
+   * the same 52ch sits as a narrow column in the middle of a large empty
+   * space, wrapping a short message onto three lines while the screen around
+   * it is blank. Widen it there, in `ch` so it stays a measure rather than a
+   * pixel guess.
+   */
+  messageWidth?: number | string;
   /** Shown under the message: what is being fetched, step by step. */
   hints?: { key: ReactNode; text: string }[];
   className?: string;
@@ -65,6 +76,7 @@ export function LoadingStateView({
   slowAfterSeconds = 8,
   slowMessage,
   action,
+  messageWidth,
   hints,
   className = '',
   style,
@@ -136,7 +148,7 @@ export function LoadingStateView({
       {body && (
         <p style={{
           margin: 0,
-          maxWidth: '52ch',
+          maxWidth: messageWidth ?? '52ch',
           fontSize: compact ? 11 : 11.5,
           lineHeight: 1.6,
           color: slow ? 'var(--color-warning)' : 'var(--color-text-muted)',
