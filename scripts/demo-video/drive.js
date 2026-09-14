@@ -40,6 +40,12 @@ export async function goTo(page, id, { tab = 'live', theme = null, settleMs = 11
     const pane = document.querySelector('[data-showcase-content]');
     if (pane) pane.scrollTop = 0;
   }, `#/${id}${tab === 'live' ? '' : `/${tab}`}${search ? `?${search}` : ''}`);
+  /* Panels are lazily imported, so a switch fetches a chunk. Filming the
+     Suspense fallback instead of the component is exactly the kind of bad take
+     the verify step exists to catch — this stops it happening in the first
+     place. */
+  await page.waitForFunction(() => !document.querySelector('[data-panel-pending]'), null, { timeout: 30_000 })
+    .catch(() => {});
   await page.waitForTimeout(settleMs);
 }
 

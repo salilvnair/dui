@@ -88,7 +88,35 @@ export async function show(page, id, { tab = 'live', theme = null, capture = fal
   };
   await page.evaluate((h) => { window.location.hash = h; }, hash);
   await page.evaluate(toTop);
-  await page.waitForTimeout(settleMs);
+  await settled(page, settleMs);
   await page.evaluate(toTop);
   await page.waitForTimeout(120);
+}
+
+/**
+ * Wait for the panel to actually be on screen.
+ *
+ * Panels are lazily imported, so switching to one now fetches a chunk. The old
+ * fixed pause was correct when every component was already in the bundle and
+ * is a race now: a chunk that arrives a beat late gets photographed as the
+ * word "Loading…".
+ *
+ * So wait for the Suspense marker to leave the DOM first, then pause for the
+ * animations and the webfonts — which is what the pause was ever really for.
+ * A panel already in the browser cache clears the first step immediately, so
+ * this is faster in the common case as well as correct in the rare one.
+ */
+async function settled(page, settleMs) {
+  try {
+    await page.waitForFunction(
+      () => !document.querySelector('[data-panel-pending]'),
+      null,
+      { timeout: 30_000 },
+    );
+  } catch {
+    /* Thirty seconds on one chunk means something is wrong with the server,
+       not with the panel. Fall through and let the caller's own check fail
+       with something more useful than a timeout. */
+  }
+  await page.waitForTimeout(settleMs);
 }
