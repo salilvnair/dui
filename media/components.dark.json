@@ -1,0 +1,2407 @@
+{
+  "generatedAt": "2026-09-14",
+  "theme": "dark",
+  "total": 238,
+  "groups": [
+    "Inputs",
+    "Date & Time",
+    "Form & Selection",
+    "Feedback & Status",
+    "Buttons",
+    "Navigation",
+    "Display",
+    "Overlays",
+    "Layout",
+    "Data & Enterprise",
+    "Advanced Selection",
+    "Communication & Content",
+    "Enterprise & Settings",
+    "Media & Files",
+    "Data Display & Wow",
+    "Fun & Micro-interactions",
+    "DUI Signature Series",
+    "More"
+  ],
+  "components": [
+    {
+      "id": "textinput",
+      "label": "TextInputView",
+      "title": "TextInputView",
+      "desc": "Standard text input — sizes match ButtonView and SelectInputView exactly.",
+      "group": "Inputs",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/textinput.png"
+    },
+    {
+      "id": "selectinput",
+      "label": "SelectInputView",
+      "title": "SelectInputView",
+      "desc": "Portal dropdown with keyboard nav — replaces all StyledDropdown usages.",
+      "group": "Inputs",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/selectinput.png"
+    },
+    {
+      "id": "selecttextinput",
+      "label": "SelectTextInputView",
+      "title": "SelectTextInputView",
+      "desc": "Combined method selector + URL input in one bordered pill — URL bar pattern.",
+      "group": "Inputs",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/selecttextinput.png"
+    },
+    {
+      "id": "taginput",
+      "label": "TagInputView",
+      "title": "TagInputView",
+      "desc": "Multi-value tag input — Enter or comma to add, Backspace to remove.",
+      "group": "Inputs",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/taginput.png"
+    },
+    {
+      "id": "checkbox",
+      "label": "CheckboxView",
+      "title": "CheckboxView",
+      "desc": "Checkbox — checked / unchecked / indeterminate / disabled — with accent colors.",
+      "group": "Inputs",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/checkbox.png"
+    },
+    {
+      "id": "toggle",
+      "label": "ToggleSwitchView",
+      "title": "ToggleSwitchView",
+      "desc": "On/off toggle with sm/md/lg sizes, accent color, label positions, disabled state.",
+      "group": "Inputs",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/toggle.png"
+    },
+    {
+      "id": "themecardselector",
+      "label": "ThemeCardSelectorView",
+      "title": "ThemeCardSelectorView",
+      "desc": "Card-based theme picker with color swatch previews and checkmark selection.",
+      "group": "Inputs",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/themecardselector.png"
+    },
+    {
+      "id": "editor",
+      "label": "EditorView",
+      "title": "EditorView",
+      "desc": "Monaco editor wrapper — simplified props — JSON / GQL / XML / YAML etc.",
+      "group": "Inputs",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/editor.png"
+    },
+    {
+      "id": "debugeditor",
+      "label": "DebugEditorView",
+      "title": "DebugEditorView",
+      "desc": "Monaco editor with breakpoint gutter, paused-line highlight, and variable-hover tooltips. Fully abstract — consumer provides the adapter.",
+      "group": "Inputs",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/debugeditor.png"
+    },
+    {
+      "id": "searchinput",
+      "label": "SearchInputView",
+      "title": "SearchInputView",
+      "desc": "URL-bar style search input with optional prefix icon and suffix clear button.",
+      "group": "Inputs",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/searchinput.png"
+    },
+    {
+      "id": "durationinput",
+      "label": "DurationInputView",
+      "title": "DurationInputView",
+      "desc": "Number input with ms / s / m / hr unit selector dropdown.",
+      "group": "Inputs",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/durationinput.png"
+    },
+    {
+      "id": "highlightedinput",
+      "label": "HighlightedInputView",
+      "title": "HighlightedInputView",
+      "desc": "{{variable}} highlighted URL input with autocomplete dropdown — the Daakia URL bar.",
+      "group": "Inputs",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/highlightedinput.png"
+    },
+    {
+      "id": "keyvaluetable",
+      "label": "KeyValueTableView",
+      "title": "KeyValueTableView",
+      "desc": "KV table — toolbar · add/delete/bulk-clear · enable toggle · maskSensitive · autocompleteKeys · showDescription · pinnedTopRows.",
+      "group": "Inputs",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/keyvaluetable.png"
+    },
+    {
+      "id": "mergedinput",
+      "label": "MergedInputView",
+      "title": "MergedInputView",
+      "desc": "Unified single-border input bar — merge select dropdowns, text inputs, inline buttons, and dividers into one pill.",
+      "group": "Inputs",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/mergedinput.png"
+    },
+    {
+      "id": "picker",
+      "label": "PickerView",
+      "title": "PickerView",
+      "desc": "Scrollable wheel picker — single column or multi-column (hour/min/AM-PM) — momentum scroll, snap, and depth-fade animation.",
+      "group": "Inputs",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/picker.png"
+    },
+    {
+      "id": "segmentedcontrol",
+      "label": "SegmentedControlView",
+      "title": "SegmentedControlView",
+      "desc": "Pill-shaped segmented control — solid sliding indicator with a springy bounce transition — pill / rounded / pointy shapes.",
+      "group": "Inputs",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/segmentedcontrol.png"
+    },
+    {
+      "id": "calendar",
+      "label": "CalendarView",
+      "title": "CalendarView",
+      "desc": "Month grid calendar — single / range / multi select, min/max bounds, animated month transitions.",
+      "group": "Date & Time",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/calendar.png"
+    },
+    {
+      "id": "dateinput",
+      "label": "DateInputView",
+      "title": "DateInputView",
+      "desc": "Text field trigger + CalendarView popover — the standard date field pattern.",
+      "group": "Date & Time",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/dateinput.png"
+    },
+    {
+      "id": "daterangepicker",
+      "label": "DateRangePickerView",
+      "title": "DateRangePickerView",
+      "desc": "Range calendar + quick presets (Today / Last 7 days / Last 30 days / This month).",
+      "group": "Date & Time",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/daterangepicker.png"
+    },
+    {
+      "id": "timewheel",
+      "label": "TimeWheelView",
+      "title": "TimeWheelView",
+      "desc": "Prop-driven wrapper over PickerView columns for hour/minute/AM-PM — 12h or 24h mode, configurable minute step.",
+      "group": "Date & Time",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/timewheel.png"
+    },
+    {
+      "id": "countdownring",
+      "label": "CountdownRingView",
+      "title": "CountdownRingView",
+      "desc": "Circular countdown ring + digit readout — target Date or durationSeconds, onComplete callback.",
+      "group": "Date & Time",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/countdownring.png"
+    },
+    {
+      "id": "radiogroup",
+      "label": "RadioGroupView",
+      "title": "RadioGroupView",
+      "desc": "Radio list with optional descriptions — vertical or horizontal layout.",
+      "group": "Form & Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/radiogroup.png"
+    },
+    {
+      "id": "radiocard",
+      "label": "RadioCardView",
+      "title": "RadioCardView",
+      "desc": "Big selectable cards — plan pickers, mode selectors — grid layout via `columns`.",
+      "group": "Form & Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/radiocard.png"
+    },
+    {
+      "id": "rating",
+      "label": "RatingView",
+      "title": "RatingView",
+      "desc": "Star or heart rating input — half-step precision, hover preview, read-only mode.",
+      "group": "Form & Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/rating.png"
+    },
+    {
+      "id": "otpinput",
+      "label": "OtpInputView",
+      "title": "OtpInputView",
+      "desc": "Auto-advance OTP/PIN boxes — paste splits across cells, onComplete callback.",
+      "group": "Form & Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/otpinput.png"
+    },
+    {
+      "id": "phoneinput",
+      "label": "PhoneInputView",
+      "title": "PhoneInputView",
+      "desc": "Country-code select + number field in one bordered pill.",
+      "group": "Form & Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/phoneinput.png"
+    },
+    {
+      "id": "colorpicker",
+      "label": "ColorPickerView",
+      "title": "ColorPickerView",
+      "desc": "Swatch grid + native hue canvas + hex input, popover trigger.",
+      "group": "Form & Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/colorpicker.png"
+    },
+    {
+      "id": "iconpicker",
+      "label": "IconPickerView",
+      "title": "IconPickerView",
+      "desc": "Searchable grid over every DUI icon — popover trigger.",
+      "group": "Form & Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/iconpicker.png"
+    },
+    {
+      "id": "emojipicker",
+      "label": "EmojiPickerView",
+      "title": "EmojiPickerView",
+      "desc": "Categorized emoji grid with search — popover trigger.",
+      "group": "Form & Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/emojipicker.png"
+    },
+    {
+      "id": "filedropzone",
+      "label": "FileDropzoneView",
+      "title": "FileDropzoneView",
+      "desc": "Drag-drop upload zone — per-file progress bars, remove action.",
+      "group": "Form & Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/filedropzone.png"
+    },
+    {
+      "id": "avatarupload",
+      "label": "AvatarUploadView",
+      "title": "AvatarUploadView",
+      "desc": "Circular avatar preview with a camera-overlay upload button.",
+      "group": "Form & Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/avatarupload.png"
+    },
+    {
+      "id": "maskedinput",
+      "label": "MaskedInputView",
+      "title": "MaskedInputView",
+      "desc": "Pattern-masked text input — `9`=digit, `A`=letter, `*`=any, literal separators auto-insert.",
+      "group": "Form & Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/maskedinput.png"
+    },
+    {
+      "id": "transferlist",
+      "label": "TransferListView",
+      "title": "TransferListView",
+      "desc": "Dual listbox — available ↔ selected — move one or move-all controls.",
+      "group": "Form & Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/transferlist.png"
+    },
+    {
+      "id": "stepperinput",
+      "label": "StepperInputView",
+      "title": "StepperInputView",
+      "desc": "Numeric +/- stepper — iOS UIStepper pattern — min/max/step.",
+      "group": "Form & Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/stepperinput.png"
+    },
+    {
+      "id": "switchgroup",
+      "label": "SwitchGroupView",
+      "title": "SwitchGroupView",
+      "desc": "Settings.app-style grouped toggle rows — section header, per-row description, disabled state.",
+      "group": "Form & Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/switchgroup.png"
+    },
+    {
+      "id": "snackbar",
+      "label": "SnackbarView",
+      "title": "SnackbarView",
+      "desc": "Single-line bottom bar + action, auto-dismiss timer pauses on hover — distinct from the stacked-corner ToastView.",
+      "group": "Feedback & Status",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/snackbar.png"
+    },
+    {
+      "id": "banner",
+      "label": "BannerView",
+      "title": "BannerView",
+      "desc": "Persistent dismissible top strip — info / success / warning / danger variants.",
+      "group": "Feedback & Status",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/banner.png"
+    },
+    {
+      "id": "progressring",
+      "label": "ProgressRingView",
+      "title": "ProgressRingView",
+      "desc": "Circular determinate/indeterminate progress — distinct from GaugeView (metric gauge).",
+      "group": "Feedback & Status",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/progressring.png"
+    },
+    {
+      "id": "progressbar",
+      "label": "ProgressBarView",
+      "title": "ProgressBarView",
+      "desc": "Linear progress — buffer fill and striped-indeterminate variants.",
+      "group": "Feedback & Status",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/progressbar.png"
+    },
+    {
+      "id": "skeleton",
+      "label": "SkeletonView",
+      "title": "SkeletonView",
+      "desc": "Composable shimmer primitives — text / block / avatar / row — for custom loading layouts.",
+      "group": "Feedback & Status",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/skeleton.png"
+    },
+    {
+      "id": "notificationbadge",
+      "label": "NotificationBadgeView",
+      "title": "NotificationBadgeView",
+      "desc": "Dot/count badge overlay anchor for icons and avatars.",
+      "group": "Feedback & Status",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/notificationbadge.png"
+    },
+    {
+      "id": "avatar",
+      "label": "AvatarView",
+      "title": "AvatarView",
+      "desc": "Image or initials fallback, with an optional presence-status dot.",
+      "group": "Feedback & Status",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/avatar.png"
+    },
+    {
+      "id": "avatargroup",
+      "label": "AvatarGroupView",
+      "title": "AvatarGroupView",
+      "desc": "Stacked overlapping avatars with a \"+N\" overflow bubble.",
+      "group": "Feedback & Status",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/avatargroup.png"
+    },
+    {
+      "id": "presencedot",
+      "label": "PresenceDotView",
+      "title": "PresenceDotView",
+      "desc": "Tiny online/away/busy/offline status primitive.",
+      "group": "Feedback & Status",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/presencedot.png"
+    },
+    {
+      "id": "confettiburst",
+      "label": "ConfettiBurstView",
+      "title": "ConfettiBurstView",
+      "desc": "Canvas confetti burst triggered imperatively via ref — fire() from any event handler.",
+      "group": "Feedback & Status",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/confettiburst.png"
+    },
+    {
+      "id": "button",
+      "label": "ButtonView",
+      "title": "ButtonView",
+      "desc": "Standard button — primary / secondary / ghost / danger — all sizes.",
+      "group": "Buttons",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/button.png"
+    },
+    {
+      "id": "iconbutton",
+      "label": "IconButtonView",
+      "title": "IconButtonView",
+      "desc": "Square icon-only buttons — ghost / filled — toggle support — all sizes.",
+      "group": "Buttons",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/iconbutton.png"
+    },
+    {
+      "id": "dropdownbutton",
+      "label": "DropDownButtonView",
+      "title": "DropDownButtonView",
+      "desc": "Split button — primary action + chevron dropdown — Save as, Export as, etc.",
+      "group": "Buttons",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/dropdownbutton.png"
+    },
+    {
+      "id": "aibutton",
+      "label": "AIButtonView",
+      "title": "AIButtonView",
+      "desc": "AI action button — generate · fuzz · explain · fix · ask · suggest — loading state.",
+      "group": "Buttons",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/aibutton.png"
+    },
+    {
+      "id": "tabs",
+      "label": "TabView",
+      "title": "TabView",
+      "desc": "pill · underline variants — sliding indicator, badges, dots — all with accentColor.",
+      "group": "Navigation",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/tabs.png"
+    },
+    {
+      "id": "tabbar",
+      "label": "TabBarView",
+      "title": "TabBarView",
+      "desc": "Editor-style protocol tab bar — store-free, drag-free, scroll arrows, dirty dot.",
+      "group": "Navigation",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/tabbar.png"
+    },
+    {
+      "id": "contextmenu",
+      "label": "ContextMenuView",
+      "title": "ContextMenuView",
+      "desc": "Recursive context menu with submenus — portal rendered — collection tree style.",
+      "group": "Navigation",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/contextmenu.png"
+    },
+    {
+      "id": "sidenav",
+      "label": "SideNavView",
+      "title": "SideNavView",
+      "desc": "Collapsible left sidebar nav with nested items and icon-only collapse mode.",
+      "group": "Navigation",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/sidenav.png"
+    },
+    {
+      "id": "settingsnav",
+      "label": "SettingsNavView",
+      "title": "SettingsNavView",
+      "desc": "Settings-style grouped nav with badges, descriptions, active state.",
+      "group": "Navigation",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/settingsnav.png"
+    },
+    {
+      "id": "breadcrumb",
+      "label": "BreadcrumbView",
+      "title": "BreadcrumbView",
+      "desc": "Path breadcrumb trail with overflow-collapse into a \"…\" for long paths.",
+      "group": "Navigation",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/breadcrumb.png"
+    },
+    {
+      "id": "pagination",
+      "label": "PaginationView",
+      "title": "PaginationView",
+      "desc": "Page number control with ellipsis collapse for long ranges.",
+      "group": "Navigation",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/pagination.png"
+    },
+    {
+      "id": "dock",
+      "label": "DockView",
+      "title": "DockView",
+      "desc": "Floating icon dock — icons magnify as the cursor approaches.",
+      "group": "Navigation",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/dock.png"
+    },
+    {
+      "id": "fab",
+      "label": "FabView",
+      "title": "FabView",
+      "desc": "Floating action button — standard, extended (with label), or speed-dial with sub-actions.",
+      "group": "Navigation",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/fab.png"
+    },
+    {
+      "id": "chips",
+      "label": "ChipView",
+      "title": "ChipView",
+      "desc": "Colored badge chips for methods, protocols, status codes, filter tags.",
+      "group": "Display",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/chips.png"
+    },
+    {
+      "id": "statusindicator",
+      "label": "StatusIndicatorView",
+      "title": "StatusIndicatorView",
+      "desc": "Connection status dot — idle · connecting · connected · disconnected · error.",
+      "group": "Display",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/statusindicator.png"
+    },
+    {
+      "id": "loader",
+      "label": "LoaderView",
+      "title": "LoaderView",
+      "desc": "Loading states — spinner · dots · skeleton · pulse · progress-bar.",
+      "group": "Display",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/loader.png"
+    },
+    {
+      "id": "emptystate",
+      "label": "EmptyStateView",
+      "title": "EmptyStateView",
+      "desc": "Empty state placeholder with icon, title, message, and optional CTA button.",
+      "group": "Display",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/emptystate.png"
+    },
+    {
+      "id": "coloredtext",
+      "label": "ColoredTextView",
+      "title": "ColoredTextView",
+      "desc": "Token-colored text — HTTP status lines, gRPC codes, SOAP faults.",
+      "group": "Display",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/coloredtext.png"
+    },
+    {
+      "id": "statscard",
+      "label": "StatsCardView",
+      "title": "StatsCardView",
+      "desc": "Colorful metric card — value, unit, trend (up/down/neutral), subValue.",
+      "group": "Display",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/statscard.png"
+    },
+    {
+      "id": "dottedcard",
+      "label": "DottedCardView",
+      "title": "DottedCardView",
+      "desc": "Dotted-border expandable card — useful for optional config sections.",
+      "group": "Display",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/dottedcard.png"
+    },
+    {
+      "id": "datatable",
+      "label": "DataTableView",
+      "title": "DataTableView",
+      "desc": "Generic sortable table — columns, striped rows, empty state, row click.",
+      "group": "Display",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/datatable.png"
+    },
+    {
+      "id": "codeblock",
+      "label": "CodeBlockView",
+      "title": "CodeBlockView",
+      "desc": "Read-only code block — language label, copy button, optional line numbers.",
+      "group": "Display",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/codeblock.png"
+    },
+    {
+      "id": "promptcard",
+      "label": "PromptCardView",
+      "title": "PromptCardView",
+      "desc": "Single prompt library row card — colored avatar initials, title, description, protocol badge, CUSTOM badge, hover actions.",
+      "group": "Display",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/promptcard.png"
+    },
+    {
+      "id": "promptlibrary",
+      "label": "PromptLibraryView",
+      "title": "PromptLibraryView",
+      "desc": "Full Prompt Library panel — list (search + sections + categories) + editor (avatar header + tabs + preview/edit toggle + save).",
+      "group": "Display",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/promptlibrary.png"
+    },
+    {
+      "id": "stageview",
+      "label": "StageCheck/Spin/Pulse",
+      "title": "StageCheck / StageSpin / StagePulse",
+      "desc": "Step-level status indicators — completed (check), active (spin), pending (pulse) — for multi-step pipelines and request flows.",
+      "group": "Display",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/stageview.png"
+    },
+    {
+      "id": "hudview",
+      "label": "HudView",
+      "title": "HudView",
+      "desc": "Generic floating draggable toolbar — store-free counterpart of DebugHud. Pass items[] and an optional status string.",
+      "group": "Display",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/hudview.png"
+    },
+    {
+      "id": "jsontree",
+      "label": "JsonTreeView",
+      "title": "JsonTreeView",
+      "desc": "Recursive JSON / object / array value tree with editor-style token colors. Expandable nodes with configurable default depth.",
+      "group": "Display",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/jsontree.png"
+    },
+    {
+      "id": "logentry",
+      "label": "ExpandableLogEntryView",
+      "title": "ExpandableLogEntryView",
+      "desc": "Expandable log row with icon, title, colored badge, timestamp chip, and chevron.",
+      "group": "Display",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/logentry.png"
+    },
+    {
+      "id": "copybutton",
+      "label": "CopyButtonView",
+      "title": "CopyButtonView",
+      "desc": "Icon-only button that copies text to clipboard. Shows CopyIcon → CheckIcon swap for 1500ms on success.",
+      "group": "Display",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/copybutton.png"
+    },
+    {
+      "id": "markdownview",
+      "label": "MarkdownView",
+      "title": "MarkdownView",
+      "desc": "Renders Markdown (GFM) with syntax-highlighted code blocks, inline code, tables, task lists, blockquotes, and copy-buttons on each code block.",
+      "group": "Display",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/markdownview.png"
+    },
+    {
+      "id": "formdatatable",
+      "label": "FormDataTableView",
+      "title": "FormDataTableView",
+      "desc": "Multipart/form-data key-value table with file upload support. Rows have: enabled toggle, key input, type dropdown (Text | File), value/file picker.",
+      "group": "Display",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/formdatatable.png"
+    },
+    {
+      "id": "yamlkeychip",
+      "label": "YamlKeyChip",
+      "title": "YamlKeyChip",
+      "desc": "Compact type-labeled chip for YAML/JSON keys. Shows the key name with a small colored type badge.",
+      "group": "Display",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/yamlkeychip.png"
+    },
+    {
+      "id": "modal",
+      "label": "ModalView",
+      "title": "ModalView",
+      "desc": "Configurable modal — sm/md/lg/xl — never closes on backdrop click.",
+      "group": "Overlays",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/modal.png"
+    },
+    {
+      "id": "infopopup",
+      "label": "InfoPopupView",
+      "title": "InfoPopupView",
+      "desc": "Help popup anchored near a ? icon — title · items · footer · wiki link.",
+      "group": "Overlays",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/infopopup.png"
+    },
+    {
+      "id": "toast",
+      "label": "ToastView",
+      "title": "ToastView",
+      "desc": "Toast notification stack — success · error · warning · info — auto-dismiss.",
+      "group": "Overlays",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/toast.png"
+    },
+    {
+      "id": "popover",
+      "label": "PopoverView",
+      "title": "PopoverView",
+      "desc": "Generic anchored floating-content primitive — the positioning engine behind SelectInputView/InfoPopupView, exposed standalone.",
+      "group": "Overlays",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/popover.png"
+    },
+    {
+      "id": "tooltip",
+      "label": "TooltipView",
+      "title": "TooltipView",
+      "desc": "Hover/focus tooltip primitive — top/bottom/left/right placement, configurable delay.",
+      "group": "Overlays",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/tooltip.png"
+    },
+    {
+      "id": "drawer",
+      "label": "DrawerView",
+      "title": "DrawerView",
+      "desc": "Slide-in overlay panel from any edge, with backdrop — navigation-drawer pattern.",
+      "group": "Overlays",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/drawer.png"
+    },
+    {
+      "id": "actionsheet",
+      "label": "ActionSheetView",
+      "title": "ActionSheetView",
+      "desc": "Bottom list of actions + destructive styling + cancel.",
+      "group": "Overlays",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/actionsheet.png"
+    },
+    {
+      "id": "bottomsheet",
+      "label": "BottomSheetView",
+      "title": "BottomSheetView",
+      "desc": "Drag-to-dismiss mobile sheet — distinct from the persistent, resizable BottomPanelView.",
+      "group": "Overlays",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/bottomsheet.png"
+    },
+    {
+      "id": "spotlighttour",
+      "label": "SpotlightTourView",
+      "title": "SpotlightTourView",
+      "desc": "Coach-mark onboarding — spotlight cutout around a target selector + step tooltip + progress dots.",
+      "group": "Overlays",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/spotlighttour.png"
+    },
+    {
+      "id": "resizablepanel",
+      "label": "ResizablePanelView",
+      "title": "ResizablePanelView",
+      "desc": "Single-pane panel with bottom-edge drag handle to resize height — no store dependency.",
+      "group": "Layout",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/resizablepanel.png"
+    },
+    {
+      "id": "splitpanel",
+      "label": "SplitPanelView",
+      "title": "SplitPanelView",
+      "desc": "Split-pane container — horizontal or vertical — drag pill, double-click to reset.",
+      "group": "Layout",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/splitpanel.png"
+    },
+    {
+      "id": "bottompanel",
+      "label": "BottomPanelView",
+      "title": "BottomPanelView",
+      "desc": "DevTools-style resizable bottom panel with tab bar and collapse toggle.",
+      "group": "Layout",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/bottompanel.png"
+    },
+    {
+      "id": "featurecategory",
+      "label": "FeatureCategoryView",
+      "title": "FeatureCategoryView",
+      "desc": "Expandable feature category with toggle switches and enabled count badge.",
+      "group": "Layout",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/featurecategory.png"
+    },
+    {
+      "id": "collapsiblesection",
+      "label": "CollapsibleSectionView",
+      "title": "CollapsibleSectionView",
+      "desc": "Expandable section with chevron toggle, colored chip title, count badge, and a right-side action slot.",
+      "group": "Layout",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/collapsiblesection.png"
+    },
+    {
+      "id": "spacerview",
+      "label": "SpacerView",
+      "title": "SpacerView",
+      "desc": "Thin divider line for separating groups in icon rails, toolbars, or any flex container.",
+      "group": "Layout",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/spacerview.png"
+    },
+    {
+      "id": "folderview",
+      "label": "FolderView",
+      "title": "FolderView",
+      "desc": "Generic folder tree component with expand/collapse, hover action buttons, DUI ContextMenuView on 3-dot, and DUI ModalView runner popup.",
+      "group": "Layout",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/folderview.png"
+    },
+    {
+      "id": "debugview",
+      "label": "DebugView",
+      "title": "DebugView",
+      "desc": "Editor-style Run & Debug sidebar panel — Variables (scoped tree), Watch expressions, Call Stack, Breakpoints. Fully abstract, no daakia store dependency.",
+      "group": "Layout",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/debugview.png"
+    },
+    {
+      "id": "hero",
+      "label": "HeroView",
+      "title": "HeroView",
+      "desc": "Banner section — title/subtitle/CTA, size-driven min-height.",
+      "group": "Layout",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/hero.png"
+    },
+    {
+      "id": "level",
+      "label": "LevelView",
+      "title": "LevelView",
+      "desc": "Space-between horizontal toolbar row primitive.",
+      "group": "Layout",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/level.png"
+    },
+    {
+      "id": "mediaobject",
+      "label": "MediaObjectView",
+      "title": "MediaObjectView",
+      "desc": "Avatar/icon + content + actions row.",
+      "group": "Layout",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/mediaobject.png"
+    },
+    {
+      "id": "tilegrid",
+      "label": "TileGridView",
+      "title": "TileGridView",
+      "desc": "Nested ancestor/parent/child tile grid.",
+      "group": "Layout",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/tilegrid.png"
+    },
+    {
+      "id": "panellist",
+      "label": "PanelListView",
+      "title": "PanelListView",
+      "desc": "Heading + tabs + filterable block list.",
+      "group": "Layout",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/panellist.png"
+    },
+    {
+      "id": "navbar",
+      "label": "NavbarView",
+      "title": "NavbarView",
+      "desc": "Top app bar — brand, link menu, burger collapse on narrow widths.",
+      "group": "Layout",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/navbar.png"
+    },
+    {
+      "id": "affix",
+      "label": "AffixView",
+      "title": "AffixView",
+      "desc": "Sticky-on-scroll wrapper — pins once it reaches offsetTop.",
+      "group": "Layout",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/affix.png"
+    },
+    {
+      "id": "anchor",
+      "label": "AnchorView",
+      "title": "AnchorView",
+      "desc": "Scroll-spy in-page navigation — highlights the section in view, click to jump.",
+      "group": "Layout",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/anchor.png"
+    },
+    {
+      "id": "stickyheader",
+      "label": "StickyHeaderView",
+      "title": "StickyHeaderView",
+      "desc": "Sticky section header that grows a shadow once pinned.",
+      "group": "Layout",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/stickyheader.png"
+    },
+    {
+      "id": "aspectratio",
+      "label": "AspectRatioView",
+      "title": "AspectRatioView",
+      "desc": "Fixed aspect-ratio box for image/video containers.",
+      "group": "Layout",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/aspectratio.png"
+    },
+    {
+      "id": "masonrygrid",
+      "label": "MasonryGridView",
+      "title": "MasonryGridView",
+      "desc": "Pinterest-style column-balanced layout — pure CSS columns, no JS measurement.",
+      "group": "Layout",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/masonrygrid.png"
+    },
+    {
+      "id": "scrollarea",
+      "label": "ScrollAreaView",
+      "title": "ScrollAreaView",
+      "desc": "Custom accent-tinted scrollbar container primitive.",
+      "group": "Layout",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/scrollarea.png"
+    },
+    {
+      "id": "backtotop",
+      "label": "BackToTopView",
+      "title": "BackToTopView",
+      "desc": "Floating scroll-to-top button — fades in past a scroll threshold.",
+      "group": "Layout",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/backtotop.png"
+    },
+    {
+      "id": "watermark",
+      "label": "WatermarkView",
+      "title": "WatermarkView",
+      "desc": "Repeated diagonal text/logo overlay.",
+      "group": "Layout",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/watermark.png"
+    },
+    {
+      "id": "descriptions",
+      "label": "DescriptionsView",
+      "title": "DescriptionsView",
+      "desc": "Read-only label/value grid for entity detail views.",
+      "group": "Data & Enterprise",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/descriptions.png"
+    },
+    {
+      "id": "statistic",
+      "label": "StatisticView",
+      "title": "StatisticView",
+      "desc": "Inline animated big-number stat with prefix/suffix.",
+      "group": "Data & Enterprise",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/statistic.png"
+    },
+    {
+      "id": "result",
+      "label": "ResultView",
+      "title": "ResultView",
+      "desc": "Full-page outcome state — success / error / 404 / 403 / warning / info.",
+      "group": "Data & Enterprise",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/result.png"
+    },
+    {
+      "id": "cascader",
+      "label": "CascaderView",
+      "title": "CascaderView",
+      "desc": "Multi-level cascading select — region/category trees.",
+      "group": "Data & Enterprise",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/cascader.png"
+    },
+    {
+      "id": "combobox",
+      "label": "ComboBoxView",
+      "title": "ComboBoxView",
+      "desc": "Free-text input + filtered dropdown suggestions — autocomplete pattern.",
+      "group": "Data & Enterprise",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/combobox.png"
+    },
+    {
+      "id": "listview",
+      "label": "ListView",
+      "title": "ListView",
+      "desc": "Generic avatar/title/subtitle/action list primitive.",
+      "group": "Data & Enterprise",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/listview.png"
+    },
+    {
+      "id": "virtualizedlist",
+      "label": "VirtualizedListView",
+      "title": "VirtualizedListView",
+      "desc": "Windowed rendering for large lists — only mounts rows in (or near) the viewport.",
+      "group": "Data & Enterprise",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/virtualizedlist.png"
+    },
+    {
+      "id": "stickytableheader",
+      "label": "StickyTableHeaderView",
+      "title": "StickyTableHeaderView",
+      "desc": "Sticky header + optional frozen first column for wide/tall tables.",
+      "group": "Data & Enterprise",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/stickytableheader.png"
+    },
+    {
+      "id": "tablepagination",
+      "label": "TablePaginationView",
+      "title": "TablePaginationView",
+      "desc": "Rows-per-page selector + page-number footer.",
+      "group": "Data & Enterprise",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/tablepagination.png"
+    },
+    {
+      "id": "filterbar",
+      "label": "FilterBarView",
+      "title": "FilterBarView",
+      "desc": "Chip-based row of active filters with a clear-all action.",
+      "group": "Data & Enterprise",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/filterbar.png"
+    },
+    {
+      "id": "sortableheader",
+      "label": "SortableHeaderView",
+      "title": "SortableHeaderView",
+      "desc": "Clickable table column header with a sort-direction arrow indicator.",
+      "group": "Data & Enterprise",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/sortableheader.png"
+    },
+    {
+      "id": "editablecell",
+      "label": "EditableCellView",
+      "title": "EditableCellView",
+      "desc": "Click-to-edit table cell — Enter commits, Escape cancels.",
+      "group": "Data & Enterprise",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/editablecell.png"
+    },
+    {
+      "id": "datagridtoolbar",
+      "label": "DataGridToolbarView",
+      "title": "DataGridToolbarView",
+      "desc": "Table toolbar — search + column-visibility + density cycle + export.",
+      "group": "Data & Enterprise",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/datagridtoolbar.png"
+    },
+    {
+      "id": "columnvisibility",
+      "label": "ColumnVisibilityMenuView",
+      "title": "ColumnVisibilityMenuView",
+      "desc": "Checkbox menu to toggle table column visibility.",
+      "group": "Data & Enterprise",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/columnvisibility.png"
+    },
+    {
+      "id": "kbd",
+      "label": "KbdView",
+      "title": "KbdView",
+      "desc": "Hotkey hint chip, composes multiple keys with a \"+\" separator.",
+      "group": "Advanced Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/kbd.png"
+    },
+    {
+      "id": "wizardstepper",
+      "label": "WizardStepperView",
+      "title": "WizardStepperView",
+      "desc": "Multi-step form wizard progress header.",
+      "group": "Advanced Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/wizardstepper.png"
+    },
+    {
+      "id": "accordiongroup",
+      "label": "AccordionGroupView",
+      "title": "AccordionGroupView",
+      "desc": "Managed single/multi-open accordion group, built on CollapsibleSectionView.",
+      "group": "Advanced Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/accordiongroup.png"
+    },
+    {
+      "id": "segmentedprogressbar",
+      "label": "SegmentedProgressBarView",
+      "title": "SegmentedProgressBarView",
+      "desc": "Multi-segment progress — e.g. upload/pipeline stages, each independently colored.",
+      "group": "Advanced Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/segmentedprogressbar.png"
+    },
+    {
+      "id": "checklist",
+      "label": "ChecklistView",
+      "title": "ChecklistView",
+      "desc": "Todo-style checklist — strikethrough + faded once complete.",
+      "group": "Advanced Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/checklist.png"
+    },
+    {
+      "id": "prioritypicker",
+      "label": "PriorityPickerView",
+      "title": "PriorityPickerView",
+      "desc": "Low/medium/high/urgent selector with color-coded dots.",
+      "group": "Advanced Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/prioritypicker.png"
+    },
+    {
+      "id": "tagcloud",
+      "label": "TagCloudView",
+      "title": "TagCloudView",
+      "desc": "Weighted tag cloud — font size scales with relative weight.",
+      "group": "Advanced Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/tagcloud.png"
+    },
+    {
+      "id": "rangeslider",
+      "label": "RangeSliderView",
+      "title": "RangeSliderView",
+      "desc": "Dual-handle min/max range — distinct from the single-handle SliderView.",
+      "group": "Advanced Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/rangeslider.png"
+    },
+    {
+      "id": "votewidget",
+      "label": "VoteWidgetView",
+      "title": "VoteWidgetView",
+      "desc": "Upvote/downvote counter control.",
+      "group": "Advanced Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/votewidget.png"
+    },
+    {
+      "id": "likebutton",
+      "label": "LikeButtonView",
+      "title": "LikeButtonView",
+      "desc": "Animated heart/like toggle button — pop animation on like.",
+      "group": "Advanced Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/likebutton.png"
+    },
+    {
+      "id": "bookmarkbutton",
+      "label": "BookmarkButtonView",
+      "title": "BookmarkButtonView",
+      "desc": "Animated bookmark/save toggle button.",
+      "group": "Advanced Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/bookmarkbutton.png"
+    },
+    {
+      "id": "followbutton",
+      "label": "FollowButtonView",
+      "title": "FollowButtonView",
+      "desc": "Follow/following state-toggle button — reveals \"Unfollow\" on hover.",
+      "group": "Advanced Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/followbutton.png"
+    },
+    {
+      "id": "shortcutrecorder",
+      "label": "ShortcutRecorderView",
+      "title": "ShortcutRecorderView",
+      "desc": "Captures a keybinding — click to record, press keys, renders via KbdView.",
+      "group": "Advanced Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/shortcutrecorder.png"
+    },
+    {
+      "id": "messagebubble",
+      "label": "MessageBubbleView",
+      "title": "MessageBubbleView",
+      "desc": "Chat message bubble — sent (right, filled) / received (left, neutral).",
+      "group": "Communication & Content",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/messagebubble.png"
+    },
+    {
+      "id": "chatinput",
+      "label": "ChatInputView",
+      "title": "ChatInputView",
+      "desc": "Message composer — auto-growing textarea + attach + send.",
+      "group": "Communication & Content",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/chatinput.png"
+    },
+    {
+      "id": "typingindicator",
+      "label": "TypingIndicatorView",
+      "title": "TypingIndicatorView",
+      "desc": "Animated \"…is typing\" dots.",
+      "group": "Communication & Content",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/typingindicator.png"
+    },
+    {
+      "id": "commentthread",
+      "label": "CommentThreadView",
+      "title": "CommentThreadView",
+      "desc": "Nested comment thread with reply action — GitHub/PR-style.",
+      "group": "Communication & Content",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/commentthread.png"
+    },
+    {
+      "id": "notificationcenter",
+      "label": "NotificationCenterView",
+      "title": "NotificationCenterView",
+      "desc": "Bell icon + dropdown notification list, unread-count badge.",
+      "group": "Communication & Content",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/notificationcenter.png"
+    },
+    {
+      "id": "alertdialog",
+      "label": "AlertDialogView",
+      "title": "AlertDialogView",
+      "desc": "Pre-built confirm/cancel dialog with danger styling — the standard \"Are you sure?\" pattern.",
+      "group": "Communication & Content",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/alertdialog.png"
+    },
+    {
+      "id": "feedbackwidget",
+      "label": "FeedbackWidgetView",
+      "title": "FeedbackWidgetView",
+      "desc": "Thumbs up/down + optional comment micro-survey.",
+      "group": "Communication & Content",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/feedbackwidget.png"
+    },
+    {
+      "id": "npssurvey",
+      "label": "NpsSurveyView",
+      "title": "NpsSurveyView",
+      "desc": "0-10 Net Promoter Score picker with an optional follow-up text field.",
+      "group": "Communication & Content",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/npssurvey.png"
+    },
+    {
+      "id": "sharesheet",
+      "label": "ShareSheetView",
+      "title": "ShareSheetView",
+      "desc": "Social share row + copy-link field.",
+      "group": "Communication & Content",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/sharesheet.png"
+    },
+    {
+      "id": "contactcard",
+      "label": "ContactCardView",
+      "title": "ContactCardView",
+      "desc": "Avatar + name + role + contact-icon row card.",
+      "group": "Communication & Content",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/contactcard.png"
+    },
+    {
+      "id": "articlecard",
+      "label": "ArticleCardView",
+      "title": "ArticleCardView",
+      "desc": "Image + title + excerpt + meta preview card — blog/article listing.",
+      "group": "Communication & Content",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/articlecard.png"
+    },
+    {
+      "id": "faqaccordion",
+      "label": "FaqAccordionView",
+      "title": "FaqAccordionView",
+      "desc": "Pre-styled Q&A accordion, built directly on AccordionGroupView.",
+      "group": "Communication & Content",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/faqaccordion.png"
+    },
+    {
+      "id": "messagebanner",
+      "label": "MessageBannerView",
+      "title": "MessageBannerView",
+      "desc": "Inline success/error/info/warning message strip.",
+      "group": "Communication & Content",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/messagebanner.png"
+    },
+    {
+      "id": "quoteblock",
+      "label": "QuoteBlockView",
+      "title": "QuoteBlockView",
+      "desc": "Styled blockquote with an optional avatar + attribution line.",
+      "group": "Communication & Content",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/quoteblock.png"
+    },
+    {
+      "id": "settingsrow",
+      "label": "SettingsRowView",
+      "title": "SettingsRowView",
+      "desc": "Label + description + control row — the standard settings-page primitive.",
+      "group": "Enterprise & Settings",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/settingsrow.png"
+    },
+    {
+      "id": "settingssection",
+      "label": "SettingsSectionView",
+      "title": "SettingsSectionView",
+      "desc": "Grouped settings card with a header — pairs with SettingsRowView.",
+      "group": "Enterprise & Settings",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/settingssection.png"
+    },
+    {
+      "id": "onboardingchecklist",
+      "label": "OnboardingChecklistView",
+      "title": "OnboardingChecklistView",
+      "desc": "Collapsible \"getting started\" progress checklist.",
+      "group": "Enterprise & Settings",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/onboardingchecklist.png"
+    },
+    {
+      "id": "keyvaluelist",
+      "label": "KeyValueListView",
+      "title": "KeyValueListView",
+      "desc": "Lightweight label:value stacked list — no edit, no toolbar.",
+      "group": "Enterprise & Settings",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/keyvaluelist.png"
+    },
+    {
+      "id": "environmentbadge",
+      "label": "EnvironmentBadgeView",
+      "title": "EnvironmentBadgeView",
+      "desc": "Colored environment chip with an optional pulsing live indicator.",
+      "group": "Enterprise & Settings",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/environmentbadge.png"
+    },
+    {
+      "id": "versionbadge",
+      "label": "VersionBadgeView",
+      "title": "VersionBadgeView",
+      "desc": "Version number chip with an \"update available\" dot indicator.",
+      "group": "Enterprise & Settings",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/versionbadge.png"
+    },
+    {
+      "id": "licensebadge",
+      "label": "LicenseBadgeView",
+      "title": "LicenseBadgeView",
+      "desc": "Plan/tier ribbon badge — Free / Pro / Enterprise.",
+      "group": "Enterprise & Settings",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/licensebadge.png"
+    },
+    {
+      "id": "usagemeter",
+      "label": "UsageMeterView",
+      "title": "UsageMeterView",
+      "desc": "Quota bar (used/limit) with warning-color thresholds.",
+      "group": "Enterprise & Settings",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/usagemeter.png"
+    },
+    {
+      "id": "permissionmatrix",
+      "label": "PermissionMatrixView",
+      "title": "PermissionMatrixView",
+      "desc": "Role x permission checkbox grid.",
+      "group": "Enterprise & Settings",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/permissionmatrix.png"
+    },
+    {
+      "id": "auditlogrow",
+      "label": "AuditLogRowView",
+      "title": "AuditLogRowView",
+      "desc": "Timestamped actor+action+target log row — audit trail primitive.",
+      "group": "Enterprise & Settings",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/auditlogrow.png"
+    },
+    {
+      "id": "webhookstatus",
+      "label": "WebhookStatusView",
+      "title": "WebhookStatusView",
+      "desc": "Webhook endpoint health row — last delivery, status code, retry action.",
+      "group": "Enterprise & Settings",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/webhookstatus.png"
+    },
+    {
+      "id": "apikeyrow",
+      "label": "ApiKeyRowView",
+      "title": "ApiKeyRowView",
+      "desc": "Masked API key row with reveal/copy/revoke actions.",
+      "group": "Enterprise & Settings",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/apikeyrow.png"
+    },
+    {
+      "id": "ratelimitmeter",
+      "label": "RateLimitMeterView",
+      "title": "RateLimitMeterView",
+      "desc": "Requests-remaining ring gauge with a reset countdown label.",
+      "group": "Enterprise & Settings",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/ratelimitmeter.png"
+    },
+    {
+      "id": "emptyinbox",
+      "label": "EmptyInboxView",
+      "title": "EmptyInboxView",
+      "desc": "Zero-notifications empty state — pre-styled variant of EmptyStateView.",
+      "group": "Enterprise & Settings",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/emptyinbox.png"
+    },
+    {
+      "id": "featurespotlightbadge",
+      "label": "FeatureSpotlightBadgeView",
+      "title": "FeatureSpotlightBadgeView",
+      "desc": "Pulsing \"New\" badge for recently shipped features.",
+      "group": "Enterprise & Settings",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/featurespotlightbadge.png"
+    },
+    {
+      "id": "cookieconsentbanner",
+      "label": "CookieConsentBannerView",
+      "title": "CookieConsentBannerView",
+      "desc": "Fixed bottom cookie-consent bar with accept/customize actions.",
+      "group": "Enterprise & Settings",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/cookieconsentbanner.png"
+    },
+    {
+      "id": "maintenancebanner",
+      "label": "MaintenanceBannerView",
+      "title": "MaintenanceBannerView",
+      "desc": "Scheduled-downtime notice strip.",
+      "group": "Enterprise & Settings",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/maintenancebanner.png"
+    },
+    {
+      "id": "trialcountdownbanner",
+      "label": "TrialCountdownBannerView",
+      "title": "TrialCountdownBannerView",
+      "desc": "\"N days left in trial\" strip with an upgrade CTA.",
+      "group": "Enterprise & Settings",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/trialcountdownbanner.png"
+    },
+    {
+      "id": "teammemberrow",
+      "label": "TeamMemberRowView",
+      "title": "TeamMemberRowView",
+      "desc": "Avatar + name + role + remove-action row — team management list item.",
+      "group": "Enterprise & Settings",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/teammemberrow.png"
+    },
+    {
+      "id": "inviteinput",
+      "label": "InviteInputView",
+      "title": "InviteInputView",
+      "desc": "Email-chip input specialized for multi-invite forms.",
+      "group": "Enterprise & Settings",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/inviteinput.png"
+    },
+    {
+      "id": "roleselect",
+      "label": "RoleSelectView",
+      "title": "RoleSelectView",
+      "desc": "Role dropdown with a per-option description shown beneath the label.",
+      "group": "Enterprise & Settings",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/roleselect.png"
+    },
+    {
+      "id": "integrationcard",
+      "label": "IntegrationCardView",
+      "title": "IntegrationCardView",
+      "desc": "Logo + name + connect/disconnect card — integrations/marketplace listing.",
+      "group": "Enterprise & Settings",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/integrationcard.png"
+    },
+    {
+      "id": "statuspagerow",
+      "label": "StatusPageRowView",
+      "title": "StatusPageRowView",
+      "desc": "Service + uptime% + status-dot row — status page primitive.",
+      "group": "Enterprise & Settings",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/statuspagerow.png"
+    },
+    {
+      "id": "changelogentry",
+      "label": "ChangelogEntryView",
+      "title": "ChangelogEntryView",
+      "desc": "Version + date + change-type badges + description block.",
+      "group": "Enterprise & Settings",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/changelogentry.png"
+    },
+    {
+      "id": "imagegallery",
+      "label": "ImageGalleryView",
+      "title": "ImageGalleryView",
+      "desc": "Grid gallery with a click-to-open lightbox — prev/next navigation, Escape to close.",
+      "group": "Media & Files",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/imagegallery.png"
+    },
+    {
+      "id": "imagecropper",
+      "label": "ImageCropperView",
+      "title": "ImageCropperView",
+      "desc": "Drag-crop + zoom image editor — fixed crop frame, pannable/zoomable image.",
+      "group": "Media & Files",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/imagecropper.png"
+    },
+    {
+      "id": "videoplayer",
+      "label": "VideoPlayerView",
+      "title": "VideoPlayerView",
+      "desc": "Custom video controls wrapper — play/pause, seek, volume.",
+      "group": "Media & Files",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/videoplayer.png"
+    },
+    {
+      "id": "audiowaveform",
+      "label": "AudioWaveformView",
+      "title": "AudioWaveformView",
+      "desc": "Static or animated waveform visualization primitive.",
+      "group": "Media & Files",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/audiowaveform.png"
+    },
+    {
+      "id": "audioplayer",
+      "label": "AudioPlayerView",
+      "title": "AudioPlayerView",
+      "desc": "Waveform + play/pause/seek audio player.",
+      "group": "Media & Files",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/audioplayer.png"
+    },
+    {
+      "id": "pdfviewer",
+      "label": "PdfViewerView",
+      "title": "PdfViewerView",
+      "desc": "Paginated PDF preview wrapper — browser native iframe renderer (needs a real PDF URL in production).",
+      "group": "Media & Files",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/pdfviewer.png"
+    },
+    {
+      "id": "fileicon",
+      "label": "FileIconView",
+      "title": "FileIconView",
+      "desc": "Extension-based file-type icon + name + size row.",
+      "group": "Media & Files",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/fileicon.png"
+    },
+    {
+      "id": "filelist",
+      "label": "FileListView",
+      "title": "FileListView",
+      "desc": "Uploaded-files list with per-row progress and remove action.",
+      "group": "Media & Files",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/filelist.png"
+    },
+    {
+      "id": "draghandle",
+      "label": "DragHandleView",
+      "title": "DragHandleView",
+      "desc": "Grab-handle primitive for reorderable lists — six-dot grip icon.",
+      "group": "Media & Files",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/draghandle.png"
+    },
+    {
+      "id": "signaturepad",
+      "label": "SignaturePadView",
+      "title": "SignaturePadView",
+      "desc": "Canvas signature capture — draw with mouse/touch/pen, exports a PNG data URL.",
+      "group": "Media & Files",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/signaturepad.png"
+    },
+    {
+      "id": "barcode",
+      "label": "BarcodeView",
+      "title": "BarcodeView",
+      "desc": "Deterministic bar-pattern generator, visually representative — not a scannable encoder.",
+      "group": "Media & Files",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/barcode.png"
+    },
+    {
+      "id": "imagezoom",
+      "label": "ImageZoomView",
+      "title": "ImageZoomView",
+      "desc": "Click-to-zoom lightbox for a single image.",
+      "group": "Media & Files",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/imagezoom.png"
+    },
+    {
+      "id": "timeline",
+      "label": "TimelineView",
+      "title": "TimelineView",
+      "desc": "Event trail with icon nodes — vertical (default) or horizontal.",
+      "group": "Data Display & Wow",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/timeline.png"
+    },
+    {
+      "id": "activityfeed",
+      "label": "ActivityFeedView",
+      "title": "ActivityFeedView",
+      "desc": "Chronological activity feed, entries grouped by day.",
+      "group": "Data Display & Wow",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/activityfeed.png"
+    },
+    {
+      "id": "kanbanboard",
+      "label": "KanbanBoardView",
+      "title": "KanbanBoardView",
+      "desc": "Draggable columns + cards board, native HTML5 drag-and-drop.",
+      "group": "Data Display & Wow",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/kanbanboard.png"
+    },
+    {
+      "id": "sparkline",
+      "label": "SparklineView",
+      "title": "SparklineView",
+      "desc": "Tiny inline SVG trend line, no axes — for table cells / stat cards.",
+      "group": "Data Display & Wow",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/sparkline.png"
+    },
+    {
+      "id": "heatmapcalendar",
+      "label": "HeatmapCalendarView",
+      "title": "HeatmapCalendarView",
+      "desc": "GitHub-style contribution heatmap — day cells shaded by count, tooltip on hover.",
+      "group": "Data Display & Wow",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/heatmapcalendar.png"
+    },
+    {
+      "id": "comparisonslider",
+      "label": "ComparisonSliderView",
+      "title": "ComparisonSliderView",
+      "desc": "Before/after drag slider for image comparison.",
+      "group": "Data Display & Wow",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/comparisonslider.png"
+    },
+    {
+      "id": "carousel",
+      "label": "CarouselView",
+      "title": "CarouselView",
+      "desc": "Swipeable card carousel with dot indicators — autoplay pauses on hover.",
+      "group": "Data Display & Wow",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/carousel.png"
+    },
+    {
+      "id": "qrcode",
+      "label": "QRCodeView",
+      "title": "QRCodeView",
+      "desc": "QR-style module grid with finder-pattern corners — visual, not spec-compliant/scannable.",
+      "group": "Data Display & Wow",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/qrcode.png"
+    },
+    {
+      "id": "stattrendcard",
+      "label": "StatTrendCardView",
+      "title": "StatTrendCardView",
+      "desc": "Animated count-up number + sparkline trend — distinct from the static StatsCardView.",
+      "group": "Data Display & Wow",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/stattrendcard.png"
+    },
+    {
+      "id": "pricingcard",
+      "label": "PricingCardView",
+      "title": "PricingCardView",
+      "desc": "Plan comparison card with a \"popular\" ribbon.",
+      "group": "Data Display & Wow",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/pricingcard.png"
+    },
+    {
+      "id": "testimonialcard",
+      "label": "TestimonialCardView",
+      "title": "TestimonialCardView",
+      "desc": "Quote + avatar testimonial card.",
+      "group": "Data Display & Wow",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/testimonialcard.png"
+    },
+    {
+      "id": "ratingbreakdown",
+      "label": "RatingBreakdownView",
+      "title": "RatingBreakdownView",
+      "desc": "5-star rating distribution bars — App Store-style rating breakdown.",
+      "group": "Data Display & Wow",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/ratingbreakdown.png"
+    },
+    {
+      "id": "treeselect",
+      "label": "TreeSelectView",
+      "title": "TreeSelectView",
+      "desc": "Checkbox-driven hierarchical select — tri-state parent checkboxes over a folder-style tree.",
+      "group": "Data Display & Wow",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/treeselect.png"
+    },
+    {
+      "id": "richtexttoolbar",
+      "label": "RichTextToolbarView",
+      "title": "RichTextToolbarView",
+      "desc": "Formatting toolbar primitive — bold/italic/underline/link/list/code.",
+      "group": "Data Display & Wow",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/richtexttoolbar.png"
+    },
+    {
+      "id": "mentioninput",
+      "label": "MentionInputView",
+      "title": "MentionInputView",
+      "desc": "@mention autocomplete textarea.",
+      "group": "Data Display & Wow",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/mentioninput.png"
+    },
+    {
+      "id": "gradienttext",
+      "label": "GradientTextView",
+      "title": "GradientTextView",
+      "desc": "Animated gradient-shifting text.",
+      "group": "Fun & Micro-interactions",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/gradienttext.png"
+    },
+    {
+      "id": "typewritertext",
+      "label": "TypewriterTextView",
+      "title": "TypewriterTextView",
+      "desc": "Animated typing-effect text.",
+      "group": "Fun & Micro-interactions",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/typewritertext.png"
+    },
+    {
+      "id": "countupnumber",
+      "label": "CountUpNumberView",
+      "title": "CountUpNumberView",
+      "desc": "Standalone animated number count-up primitive.",
+      "group": "Fun & Micro-interactions",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/countupnumber.png"
+    },
+    {
+      "id": "magneticbutton",
+      "label": "MagneticButtonView",
+      "title": "MagneticButtonView",
+      "desc": "Cursor-attraction hover button effect.",
+      "group": "Fun & Micro-interactions",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/magneticbutton.png"
+    },
+    {
+      "id": "tiltcard",
+      "label": "TiltCardView",
+      "title": "TiltCardView",
+      "desc": "3D perspective tilt-on-hover card.",
+      "group": "Fun & Micro-interactions",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/tiltcard.png"
+    },
+    {
+      "id": "particlebackground",
+      "label": "ParticleBackgroundView",
+      "title": "ParticleBackgroundView",
+      "desc": "Subtle animated particle/dot background.",
+      "group": "Fun & Micro-interactions",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/particlebackground.png"
+    },
+    {
+      "id": "glowborder",
+      "label": "GlowBorderView",
+      "title": "GlowBorderView",
+      "desc": "Animated gradient glowing-border wrapper.",
+      "group": "Fun & Micro-interactions",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/glowborder.png"
+    },
+    {
+      "id": "revealonscroll",
+      "label": "RevealOnScrollView",
+      "title": "RevealOnScrollView",
+      "desc": "Fade/slide-in-on-scroll wrapper.",
+      "group": "Fun & Micro-interactions",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/revealonscroll.png"
+    },
+    {
+      "id": "floatinglabelinput",
+      "label": "FloatingLabelInputView",
+      "title": "FloatingLabelInputView",
+      "desc": "Floating-label input, distinct from TextInputView's static placeholder.",
+      "group": "Fun & Micro-interactions",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/floatinglabelinput.png"
+    },
+    {
+      "id": "pulsedot",
+      "label": "PulseDotView",
+      "title": "PulseDotView",
+      "desc": "Attention-grabbing pulsing dot primitive — complements StatusIndicatorView.",
+      "group": "Fun & Micro-interactions",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/pulsedot.png"
+    },
+    {
+      "id": "requestflow",
+      "label": "RequestFlowView",
+      "title": "RequestFlowView",
+      "desc": "Animated network waterfall — particles travel a DNS→TCP→TLS→Request→Response pipe, speed/color mapped to real phase timing.",
+      "group": "DUI Signature Series",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/requestflow.png"
+    },
+    {
+      "id": "latencypulse",
+      "label": "LatencyPulseView",
+      "title": "LatencyPulseView",
+      "desc": "EKG/vitals-monitor style live pulse line for request latency — a metric that visually \"beats\" instead of a static line chart.",
+      "group": "DUI Signature Series",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/latencypulse.png"
+    },
+    {
+      "id": "aistreamingtext",
+      "label": "AIStreamingTextView",
+      "title": "AIStreamingTextView",
+      "desc": "Token-by-token LLM output renderer — per-token fade-in, thinking shimmer, soft blink cursor.",
+      "group": "DUI Signature Series",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/aistreamingtext.png"
+    },
+    {
+      "id": "commandorb",
+      "label": "CommandOrbView",
+      "title": "CommandOrbView",
+      "desc": "Floating, breathing circular AI-assistant orb — idle pulse → thinking ripple → speaking waveform, expands into a chat panel.",
+      "group": "DUI Signature Series",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/commandorb.png"
+    },
+    {
+      "id": "timetravelslider",
+      "label": "TimeTravelSliderView",
+      "title": "TimeTravelSliderView",
+      "desc": "Scrub a draggable playhead across a sparkline of past states — a time-travel state scrubber, generalized into a reusable primitive.",
+      "group": "DUI Signature Series",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/timetravelslider.png"
+    },
+    {
+      "id": "diffmorph",
+      "label": "DiffMorphView",
+      "title": "DiffMorphView",
+      "desc": "Old→new text FLIP-animates unchanged words into their new position while changed words fade/strike — an edit visually \"reflows\".",
+      "group": "DUI Signature Series",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/diffmorph.png"
+    },
+    {
+      "id": "schemablueprint",
+      "label": "SchemaBlueprintView",
+      "title": "SchemaBlueprintView",
+      "desc": "JSON Schema / OpenAPI spec rendered as an architectural blueprint — graph-paper background, dashed right-angle connectors.",
+      "group": "DUI Signature Series",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/schemablueprint.png"
+    },
+    {
+      "id": "livecursorpresence",
+      "label": "LiveCursorPresenceView",
+      "title": "LiveCursorPresenceView",
+      "desc": "Collaborative cursors with name tags, overlaid on arbitrary content.",
+      "group": "DUI Signature Series",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/livecursorpresence.png"
+    },
+    {
+      "id": "undoredotimeline",
+      "label": "UndoRedoTimelineView",
+      "title": "UndoRedoTimelineView",
+      "desc": "History rendered as a branching git-log graph — jump to any node, diverging edits show as visible branches instead of discarding redo state.",
+      "group": "DUI Signature Series",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/undoredotimeline.png"
+    },
+    {
+      "id": "dialknobinput",
+      "label": "DialKnobInputView",
+      "title": "DialKnobInputView",
+      "desc": "Rotary analog knob (drag in a circle) with snap-ticks and a haptic-style micro-bounce at each notch — for tactile numeric tuning.",
+      "group": "DUI Signature Series",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/dialknobinput.png"
+    },
+    {
+      "id": "holdtoconfirm",
+      "label": "HoldToConfirmView",
+      "title": "HoldToConfirmView",
+      "desc": "Press-and-hold with a radial fill that must complete before the destructive action fires — replaces \"type DELETE to confirm\" modals.",
+      "group": "DUI Signature Series",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/holdtoconfirm.png"
+    },
+    {
+      "id": "morphingiconbutton",
+      "label": "MorphingIconButtonView",
+      "title": "MorphingIconButtonView",
+      "desc": "The icon itself SVG-path-morphs between two states (play↔pause, menu↔close, sun↔moon) instead of a crossfade/swap.",
+      "group": "DUI Signature Series",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/morphingiconbutton.png"
+    },
+    {
+      "id": "stackedswipecard",
+      "label": "StackedSwipeCardView",
+      "title": "StackedSwipeCardView",
+      "desc": "Swipeable card stack for one-at-a-time approve/reject flows.",
+      "group": "DUI Signature Series",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/stackedswipecard.png"
+    },
+    {
+      "id": "networkweather",
+      "label": "NetworkWeatherView",
+      "title": "NetworkWeatherView",
+      "desc": "System health/error-rate expressed as literal weather (sunny → cloudy → stormy) instead of a number or status dot.",
+      "group": "DUI Signature Series",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/networkweather.png"
+    },
+    {
+      "id": "constellationloader",
+      "label": "ConstellationLoaderView",
+      "title": "ConstellationLoaderView",
+      "desc": "Loading dots drift and connect into shifting constellation lines — ties back to NetworkGraphView's node-link visual identity.",
+      "group": "DUI Signature Series",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/constellationloader.png"
+    },
+    {
+      "id": "holocard",
+      "label": "HoloCardView",
+      "title": "HoloCardView",
+      "desc": "A card with a mouse-position-reactive holographic/iridescent sheen — pure premium-feel \"wow\" for pricing/feature callouts.",
+      "group": "DUI Signature Series",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/holocard.png"
+    },
+    {
+      "id": "ghosttypingplaceholder",
+      "label": "GhostTypingPlaceholderView",
+      "title": "GhostTypingPlaceholderView",
+      "desc": "An input placeholder that types out rotating example queries, pauses, then backspaces into the next one.",
+      "group": "DUI Signature Series",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/ghosttypingplaceholder.png"
+    },
+    {
+      "id": "connectionpulseline",
+      "label": "ConnectionPulseLineView",
+      "title": "ConnectionPulseLineView",
+      "desc": "A dashed/gradient SVG line connecting two arbitrary DOM elements, with a traveling pulse dot — visually links spatially separate but logically related UI.",
+      "group": "DUI Signature Series",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/connectionpulseline.png"
+    },
+    {
+      "id": "stackedtoastdeck",
+      "label": "StackedToastDeckView",
+      "title": "StackedToastDeckView",
+      "desc": "Toasts don't stack vertically — older ones shrink and recede behind the newest like a physical card deck; click the deck to fan them back out.",
+      "group": "DUI Signature Series",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/stackedtoastdeck.png"
+    },
+    {
+      "id": "pathreveal",
+      "label": "PathRevealView",
+      "title": "PathRevealView",
+      "desc": "Generic SVG stroke-draw reveal primitive — any path/diagram/signature \"draws itself\" on mount instead of just fading in.",
+      "group": "DUI Signature Series",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/pathreveal.png"
+    },
+    {
+      "id": "spectrumslider",
+      "label": "SpectrumSliderView",
+      "title": "SpectrumSliderView",
+      "desc": "The slider track itself is a live rendered gradient spectrum, and the handle shows a magnified live-color preview bubble as you drag.",
+      "group": "DUI Signature Series",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/spectrumslider.png"
+    },
+    {
+      "id": "breathingloader",
+      "label": "BreathingLoaderView",
+      "title": "BreathingLoaderView",
+      "desc": "An ultra-minimal loading state — a single circle slowly scales/fades in a breathing rhythm — a calmer alternative to a spinner.",
+      "group": "DUI Signature Series",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/breathingloader.png"
+    },
+    {
+      "id": "duiprovider",
+      "label": "DuiProvider (Size)",
+      "title": "DuiProvider — Size System",
+      "desc": "Wrap any subtree with <DuiProvider size=\"sm|md|lg|xl\"> and ALL nested DUI components inherit that size — no prop drilling.",
+      "group": "More",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/duiprovider.png"
+    },
+    {
+      "id": "livecolorpanel",
+      "label": "LiveColorCustomizer",
+      "title": "LiveColorCustomizer",
+      "desc": "Interactive color editor that applies CSS custom property changes directly to the document root in real time.",
+      "group": "More",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/livecolorpanel.png"
+    },
+    {
+      "id": "patterns",
+      "label": "Patterns",
+      "title": "Real-world Patterns",
+      "desc": "How DUI components assemble into actual Daakia UI — URL bar · tabs · tree.",
+      "group": "More",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/patterns.png"
+    },
+    {
+      "id": "iconsgallery",
+      "label": "Icons Gallery",
+      "title": "Icons Gallery",
+      "desc": "All Daakia icons — searchable by name — click to copy icon name.",
+      "group": "More",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/iconsgallery.png"
+    },
+    {
+      "id": "themeconfig",
+      "label": "Theme Customization",
+      "title": "Theme Customization",
+      "desc": "Export / upload YAML theme files — all 63 CSS color vars, live hot-swap, no rebuild.",
+      "group": "More",
+      "hasExamples": false,
+      "hasDocs": false,
+      "image": "media/components/themeconfig.png"
+    },
+    {
+      "id": "themeaddvar",
+      "label": "Add Theme Variable",
+      "title": "Add Theme Variable",
+      "desc": "Step-by-step guide: register a new CSS color variable in SCHEMA, declare it in index.css, use it in any DUI component, and test it live.",
+      "group": "More",
+      "hasExamples": false,
+      "hasDocs": false,
+      "image": "media/components/themeaddvar.png"
+    }
+  ]
+}
