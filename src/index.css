@@ -789,33 +789,46 @@ input[type="number"] {
   to   { transform: rotate(360deg); }
 }
 
-/* ─── Custom scrollbar (protocol-aware, thin & colorful) ─── */
+/* ─── Custom scrollbar (accent-tinted, thin, always visible) ─── */
 
-/* Base scrollbar — always visible track + thumb */
+/*
+  `--color-accent` is not a variable this stylesheet defines — it is the hook a
+  host app overrides to tint one region differently, and everywhere else in this
+  file it is written `var(--color-accent, var(--color-primary))` for exactly
+  that reason. These three rules were missing the fallback, and that is not a
+  small difference: `color-mix()` given an empty custom property is invalid, an
+  invalid value drops the whole declaration, and the browser falls back to its
+  own grey scrollbar. The accent scrollbar had therefore never once rendered.
+*/
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: color-mix(in srgb, var(--color-surface-border) 60%, var(--color-surface));
-  border-radius: 99px;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: color-mix(in srgb, var(--color-accent) 55%, var(--color-surface-border));
+  background: color-mix(in srgb, var(--color-accent, var(--color-primary)) 55%, var(--color-surface-border));
   border-radius: 99px;
   min-height: 24px;
+  /* A transparent border clipped to the content box insets the thumb inside
+     the gutter, so it reads as a rounded pill with air around it rather than a
+     bar wedged against the edge of the pane. */
+  border: 2px solid transparent;
+  background-clip: content-box;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: color-mix(in srgb, var(--color-accent) 85%, var(--color-surface-border));
+  background: color-mix(in srgb, var(--color-accent, var(--color-primary)) 90%, var(--color-surface-border));
+  background-clip: content-box;
 }
 ::-webkit-scrollbar-corner {
   background: transparent;
 }
 
-/* Firefox scrollbar — always visible */
+/* Firefox, which has two properties and no pseudo-elements. */
 * {
   scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-surface-border)) color-mix(in srgb, var(--color-surface-border) 60%, var(--color-surface));
+  scrollbar-color: color-mix(in srgb, var(--color-accent, var(--color-primary)) 55%, var(--color-surface-border)) transparent;
 }
 
 /* ─── Utility ─── */
