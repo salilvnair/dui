@@ -58,6 +58,8 @@ import { ChipView, SideNavView, SegmentedControlView } from '@/dui';
 import type { LiveColorVar, SideNavItem } from '@/dui';
 import { applyMonacoTheme } from '@/monaco-setup';
 import { ShowcasePanel } from './ShowcasePanel';
+import { parseHash, formatHash } from './deepLink';
+import type { ShowcaseTabId } from './deepLink';
 
 // ── Extracted live panels ──────────────────────────────────────────────────────
 import { ChipsViewLive }          from './components/chipsview/live/ChipsViewLive';
@@ -1324,9 +1326,26 @@ const THEME_OPTIONS: { id: DuiThemeMode; label: string; icon: React.ReactNode }[
 
 // ─── Main showcase ────────────────────────────────────────────────────────────
 
+/** The opening address, read once so the first paint is already the right panel. */
+function initialRoute() {
+  const route = parseHash(typeof window === 'undefined' ? '' : window.location.hash);
+  const category = route.category && route.category in PANELS
+    ? (route.category as CategoryId)
+    : 'textinput';
+  return {
+    category,
+    tab: route.tab,
+    theme: route.theme ?? 'dark' as DuiThemeMode,
+    capture: route.capture,
+  };
+}
+
 export function DuiShowcase() {
-  const [activeCategory, setActiveCategory] = useState<CategoryId>('textinput');
-  const [themeMode, setThemeMode] = useState<DuiThemeMode>('dark');
+  const opening = initialRoute();
+  const [activeCategory, setActiveCategory] = useState<CategoryId>(opening.category);
+  const [activeTab, setActiveTab] = useState<ShowcaseTabId>(opening.tab);
+  const [themeMode, setThemeMode] = useState<DuiThemeMode>(opening.theme);
+  const [capture, setCapture] = useState(opening.capture);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const panel = PANELS[activeCategory];
 
@@ -1344,6 +1363,106 @@ export function DuiShowcase() {
   }, [themeMode]);
 
   useEffect(() => { applyTheme(themeMode); }, []);
+
+  /*
+    ── The address bar, both ways ──
+
+    Writing: every selection lands in the hash, so the URL a reader copies is
+    the panel they are looking at. `replaceState` rather than assigning to
+    `location.hash`, because clicking down a sidebar of two hundred components
+    should not bury the page they arrived from under two hundred back presses.
+
+    Reading: `hashchange` covers a pasted link, the back button, and — the
+    reason this exists — a capture script setting `location.hash` between
+    frames without reloading the app each time.
+  */
+  useEffect(() => {
+    const next = formatHash({
+      category: activeCategory,
+      tab: activeTab,
+      theme: themeMode === 'dark' ? null : themeMode,
+      capture,
+    });
+    if (window.location.hash !== next) {
+      window.history.replaceState(null, '', next);
+    }
+  }, [activeCategory, activeTab, themeMode]);
+
+  useEffect(() => {
+    const onHashChange = () => {
+      const route = parseHash(window.location.hash);
+      if (route.category && route.category in PANELS) setActiveCategory(route.category as CategoryId);
+      setActiveTab(route.tab);
+      setCapture(route.capture);
+      const theme = route.theme ?? 'dark';
+      setThemeMode(theme);
+      applyTheme(theme);
+    };
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
+
+  /*
+    What the screenshot and demo-video runs enumerate.
+
+    They need the same list the sidebar draws, and the alternative — a copy of
+    two hundred and thirty-eight ids in a script — is a list that silently goes
+    stale the first time a component is added. Publishing the real one costs a
+    few lines and cannot drift.
+  */
+  useEffect(() => {
+    (window as unknown as Record<string, unknown>).__DUI_SHOWCASE__ = {
+      total: TOTAL_COMPONENT_COUNT,
+      groups: SIDEBAR_GROUPS.map(g => ({
+        title: g.title,
+        items: g.items.map(i => ({
+          id: i.id,
+          label: i.label,
+          title: PANELS[i.id]?.title ?? i.label,
+          desc: PANELS[i.id]?.desc ?? '',
+          hasExamples: Boolean(PANELS[i.id]?.examples),
+          hasDocs: Boolean(PANELS[i.id]?.docs),
+        })),
+      })),
+    };
+  }, []);
+
+  /*
+    ── Capture mode ──
+
+    One component, on the page, with nothing else on it.
+
+    The catalog images were first taken of the ordinary panel, and every one of
+    them came out as a picture of the same breadcrumb, the same three tabs and
+    the same code editor, with the component itself a small thing near the
+    bottom. Two hundred and thirty-eight of those tell a reader nothing. This
+    draws the examples alone, so the photograph is of the component — and the
+    site can embed a single component in a frame using the same address.
+
+    `data-capture-body` is what the screenshot clips to, and it is sized by its
+    content rather than the window, so a small component yields a small image
+    instead of a chip marooned in nine hundred pixels of background.
+  */
+  if (capture) {
+    return (
+      <div
+        data-showcase-capture
+        style={{
+          minHeight: '100vh', display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
+          background: 'var(--color-panel)', color: 'var(--color-text-primary)',
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif',
+        }}
+      >
+        <div data-capture-body style={{ width: '100%', maxWidth: 880, padding: '28px 32px' }}>
+          {panel.examples ?? panel.liveContent ?? (
+            <div style={{ padding: '40px 0', textAlign: 'center', color: 'var(--color-text-muted)', fontSize: 13 }}>
+              {panel.title}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{
@@ -1424,8 +1543,10 @@ export function DuiShowcase() {
         />
 
         {/* ── Content ── */}
-        <div style={{ flex: 1, overflow: 'auto', padding: '36px 48px 64px' }}>
-          <div style={{ maxWidth: 880, margin: '0 auto' }}>
+        {/* `data-showcase-content` is what the screenshot run clips to: the panel
+            without the chrome around it. */}
+        <div data-showcase-content style={{ flex: 1, overflow: 'auto', padding: '36px 48px 64px' }}>
+          <div data-showcase-column style={{ maxWidth: 880, margin: '0 auto' }}>
 
             {/* Breadcrumb */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 20 }}>
@@ -1450,6 +1571,8 @@ export function DuiShowcase() {
 
             {/* ShowcasePanel wraps Live + Docs tabs */}
             <ShowcasePanel
+              tab={activeTab}
+              onTabChange={setActiveTab}
               live={
                 <>
                   {panel.code && (
