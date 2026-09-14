@@ -1,0 +1,150 @@
+{
+  "appUrl": "http://localhost:5180",
+  "output": {
+    "name": "dui_showcase",
+    "width": 1440,
+    "height": 900,
+    "fps": 25
+  },
+  "transitions": {
+    "type": "fade",
+    "durationSec": 0.55
+  },
+  "intro": {
+    "enabled": true,
+    "title": "DUI",
+    "tagline": "238 components. One theme system. Nothing you have to keep.",
+    "badges": [
+      "React 19",
+      "TypeScript",
+      "Tailwind v4",
+      "Themeable",
+      "Monaco",
+      "Tree-shakeable",
+      "MIT"
+    ],
+    "accentColor": "#7c8cff",
+    "effect": "static",
+    "holdSec": 4.5
+  },
+  "segments": [
+    {
+      "id": "catalog",
+      "label": "238 components, searchable",
+      "recipe": "catalog",
+      "effect": "static"
+    },
+    {
+      "id": "playground",
+      "label": "Live playground",
+      "recipe": "playground",
+      "effect": "zoom-in"
+    },
+    {
+      "id": "theming",
+      "label": "Retheme live",
+      "recipe": "theming",
+      "effect": "zoom-in"
+    },
+    {
+      "id": "themes",
+      "label": "Light and dark",
+      "recipe": "themes",
+      "effect": "static"
+    },
+    {
+      "id": "inputs",
+      "label": "Inputs",
+      "recipe": "tour",
+      "effect": "static",
+      "options": {
+        "components": [
+          "textinput",
+          "selectinput",
+          "taginput",
+          "keyvaluetable"
+        ],
+        "expect": "KeyValueTableView"
+      }
+    },
+    {
+      "id": "dates",
+      "label": "Date and time",
+      "recipe": "tour",
+      "effect": "static",
+      "options": {
+        "components": [
+          "calendar",
+          "daterangepicker",
+          "timewheel"
+        ],
+        "expect": "TimeWheelView"
+      }
+    },
+    {
+      "id": "data",
+      "label": "Tables and grids",
+      "recipe": "examples",
+      "effect": "static",
+      "options": {
+        "component": "datatable"
+      }
+    },
+    {
+      "id": "dashboards",
+      "label": "Dashboards",
+      "recipe": "tour",
+      "effect": "static",
+      "options": {
+        "components": [
+          "statscard",
+          "sparkline",
+          "heatmapcalendar",
+          "kanbanboard"
+        ],
+        "expect": "KanbanBoardView"
+      }
+    },
+    {
+      "id": "overlays",
+      "label": "Overlays",
+      "recipe": "overlay",
+      "effect": "static",
+      "options": {
+        "component": "modal",
+        "open": "Delete Collection",
+        "expect": "cannot be undone"
+      }
+    },
+    {
+      "id": "motion",
+      "label": "Motion",
+      "recipe": "tour",
+      "effect": "static",
+      "options": {
+        "components": [
+          "constellationloader",
+          "breathingloader",
+          "aistreamingtext",
+          "commandorb"
+        ],
+        "expect": "CommandOrbView"
+      }
+    },
+    {
+      "id": "editor",
+      "label": "Monaco, optional",
+      "recipe": "editor",
+      "effect": "static"
+    },
+    {
+      "id": "docs",
+      "label": "Every prop documented",
+      "recipe": "docs",
+      "effect": "static",
+      "options": {
+        "component": "textinput"
+      }
+    }
+  ]
+}

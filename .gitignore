@@ -27,3 +27,12 @@ yarn-error.log*
 
 plan
 .claude
+# Demo video scratch — record.js writes it, compose.js rewrites it, and
+# publish.js copies the finished files into media/. Nothing here is linked to.
+scripts/demo-video/.output/
+
+# The light-theme captures of all 238 components: 36 MB of intermediate that
+# only exists to build media/sheets-light/, which is committed. Regenerate with
+#   npm run shots:light && npm run sheets -- --theme light
+media/components-light/
+demo-dist/

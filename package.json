@@ -1,7 +1,7 @@
 {
   "name": "@salilvnair/dui",
   "version": "1.0.11",
-  "description": "Daakia UI component library — shared across ck8t and daakia",
+  "description": "Daakia UI component library \u2014 shared across ck8t and daakia",
   "type": "module",
   "license": "MIT",
   "author": "Salil V Nair",
@@ -65,10 +65,24 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:demo": "vite build --outDir demo-dist",
     "build:lib": "vite build --config vite.publish.config.ts",
     "prepublishOnly": "npm run build:lib",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "shots": "node scripts/screenshots/capture.mjs",
+    "shots:light": "node scripts/screenshots/capture.mjs --theme light --no-hero",
+    "sheets": "node scripts/screenshots/sheets.mjs",
+    "catalog": "node scripts/screenshots/readme-catalog.mjs",
+    "catalog:check": "node scripts/screenshots/readme-catalog.mjs --check",
+    "demo-video:record": "node scripts/demo-video/record.js",
+    "demo-video:compose": "node scripts/demo-video/compose.js",
+    "demo-video:refine": "node scripts/demo-video/refine.js",
+    "demo-video:gif": "node scripts/demo-video/gif.js",
+    "demo-video:gif:short": "node scripts/demo-video/gif.js --highlights",
+    "demo-video": "npm run demo-video:record && npm run demo-video:compose",
+    "showcase": "npm run demo-video && npm run demo-video:refine && npm run demo-video:gif:short && npm run demo-video:publish",
+    "demo-video:publish": "node scripts/demo-video/publish.js"
   },
   "dependencies": {
     "highlight.js": "^11.10.0",
@@ -105,6 +119,7 @@
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.0",
     "monaco-editor": "^0.55.1",
+    "playwright": "^1.63.0",
     "sucrase": "^3.35.1",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.7.0",
