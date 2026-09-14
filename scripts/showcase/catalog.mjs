@@ -51,6 +51,17 @@ export async function openShowcase({ width = 1440, height = 900, scale = 2, them
      so the first paint is genuinely slow — this is not a hung page. */
   await page.waitForSelector('[data-showcase-content]', { timeout: 120_000 });
   await page.waitForFunction(() => Boolean(window.__DUI_SHOWCASE__), null, { timeout: 30_000 });
+  /*
+    And wait for Monaco, once, before any component is photographed.
+
+    It is fetched in the background now rather than bundled into the first
+    chunk, and EditorView, DebugEditorView and DiffEditorView all render a
+    plain-text fallback until it lands. Shooting before then yields a catalog
+    image of the fallback — a picture of the wrong component, and one that
+    looks plausible enough to go unnoticed.
+  */
+  await page.waitForFunction(() => window.__DUI_MONACO_READY__ === true, null, { timeout: 60_000 })
+    .catch(() => console.log('  (Monaco never signalled ready — editor panels may show the fallback)'));
 
   return { browser, context, page };
 }

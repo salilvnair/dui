@@ -37,6 +37,21 @@ export default defineConfig({
          */
         manualChunks(id) {
           const path = id.replace(/\\/g, '/');
+          /*
+            Vite's preload helper, pinned somewhere harmless.
+
+            Left to Rollup it was placed inside the monaco chunk — and since
+            the entry imports the helper to perform any dynamic import at all,
+            that made the entry statically import 4.2 MB of Monaco. Monaco was
+            lazily loaded and eagerly downloaded at the same time, which looks
+            exactly like lazy-loading not working and is very hard to see: the
+            only trace is a one-line `import{_ as yy}from"./monaco-editor…"` at
+            the top of the entry chunk.
+
+            It belongs with the library chunk, which every other chunk already
+            depends on, so this costs no extra request.
+          */
+          if (path.includes('vite/preload-helper')) return 'dui-lib';
           if (path.includes('node_modules/monaco-editor')) return 'monaco-editor';
           /*
             The library and the icon set, named explicitly.

@@ -3,6 +3,10 @@ import MonacoEditor, { type OnMount } from '@monaco-editor/react';
 import { CodeIcon, RefreshIcon, PaletteIcon } from '@/icons';
 import { LiveColorCustomizer, ResizablePanelView } from '@/dui';
 import type { LiveColorVar } from '@/dui';
+/* The internal module, not the package barrel: this gate is the library's
+   own plumbing rather than part of its public surface. */
+import { useMonacoRuntimeStatus } from '@/lib/monaco-runtime';
+import { loadMonaco } from '../../monaco';
 import { ErrorBoundary } from './ErrorBoundary';
 import { buildAndEval } from './buildAndEval';
 import * as ReactNS from 'react';
@@ -28,6 +32,11 @@ export function LivePlayground({ code: initialCode, content, themeMode, vars }: 
   const [code, setCode] = useState(initialCode);
   const [PreviewComp, setPreviewComp] = useState<ReactNS.ComponentType | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const monacoStatus = useMonacoRuntimeStatus();
+  /* main.tsx already starts this; doing it here too means the playground works
+     wherever it is mounted, without depending on who loaded it. */
+  useEffect(() => { loadMonaco(); }, []);
+
   const [editorOpen, setEditorOpen] = useState(true);   // open by default
   const [colorsOpen, setColorsOpen] = useState(false);
   const [ebKey, setEbKey] = useState(0);
@@ -231,6 +240,7 @@ export function LivePlayground({ code: initialCode, content, themeMode, vars }: 
             }}>
               JSX
             </div>
+            {monacoStatus === 'ready' ? (
             <MonacoEditor
               height={calcEditorHeight(code)}
               language="typescript"
@@ -256,6 +266,33 @@ export function LivePlayground({ code: initialCode, content, themeMode, vars }: 
                 overviewRulerLanes: 0,
               }}
             />
+            ) : (
+              /*
+                Monaco is fetched in the background, so for the first moment
+                there is nothing to mount. This is a box of exactly the height
+                the editor will take, which keeps the preview below it from
+                jumping when it arrives.
+
+                It is a gate, not just a placeholder: @monaco-editor/react
+                falls back to a public CDN if loader.config has not run, and
+                this package's position is that the CDN path is never taken.
+                `useMonacoRuntimeStatus` flips only after monaco-setup.core has
+                configured the loader, so mounting behind it cannot race.
+              */
+              <div
+                data-monaco-pending
+                style={{
+                  height: calcEditorHeight(code),
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 12, color: 'var(--color-text-muted)',
+                  background: isDark
+                    ? 'color-mix(in srgb, var(--color-surface) 40%, #000)'
+                    : 'var(--color-panel)',
+                }}
+              >
+                Loading editor…
+              </div>
+            )}
           </div>
 
           {/* Live preview — full width, user-resizable height */}

@@ -3,7 +3,7 @@ import type { ComponentType } from 'react';
 import { LivePlayground } from './panels/LivePlayground';
 import { ChipView, SideNavView, SegmentedControlView, SplitPanelView } from '@/dui';
 import type { LiveColorVar, SideNavItem } from '@/dui';
-import { applyMonacoTheme } from './monacoSetup';
+import { applyMonacoThemeWhenReady } from './monaco';
 import { ShowcasePanel } from './ShowcasePanel';
 import { parseHash, formatHash } from './deepLink';
 import type { ShowcaseTabId } from './deepLink';
@@ -851,10 +851,10 @@ function applyTheme(mode: DuiThemeMode) {
   if (mode === 'system') {
     const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-    applyMonacoTheme(isDark ? 'dark' : 'light');
+    applyMonacoThemeWhenReady(isDark ? 'dark' : 'light');
   } else {
     document.documentElement.setAttribute('data-theme', mode);
-    applyMonacoTheme(mode);
+    applyMonacoThemeWhenReady(mode);
   }
 }
 

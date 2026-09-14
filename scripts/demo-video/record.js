@@ -248,6 +248,10 @@ function trimFromMarks(marks, fallbackStart) {
              first hit of a run, so this wait is long on purpose. */
           await page.waitForSelector('[data-showcase-content]', { timeout: 120_000 });
           await page.waitForFunction(() => Boolean(window.__DUI_SHOWCASE__), null, { timeout: 30_000 });
+          /* Monaco arrives in the background now; filming a code panel before
+             it does records the plain-text fallback. */
+          await page.waitForFunction(() => window.__DUI_MONACO_READY__ === true, null, { timeout: 60_000 })
+            .catch(() => {});
           const health = await appHealth(page);
           if (!health.catalog) throw new Error('the showcase never published its catalog');
           if (seg.warmupMs) await page.waitForTimeout(seg.warmupMs);
