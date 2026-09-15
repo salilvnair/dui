@@ -1,7 +1,7 @@
 {
   "generatedAt": "2026-09-15",
   "theme": "dark",
-  "total": 238,
+  "total": 239,
   "groups": [
     "Inputs",
     "Date & Time",
@@ -612,6 +612,16 @@
       "hasExamples": true,
       "hasDocs": true,
       "image": "media/components/chips.png"
+    },
+    {
+      "id": "badgechip",
+      "label": "BadgeChipView",
+      "title": "BadgeChipView",
+      "desc": "The pill that labels a thing — fifty skins, chosen by `variant` or set for the whole product by DuiProvider.",
+      "group": "Display",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/badgechip.png"
     },
     {
       "id": "statusindicator",
