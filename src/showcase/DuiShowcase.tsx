@@ -8,6 +8,10 @@ import { ShowcasePanel } from './ShowcasePanel';
 import { parseHash, formatHash } from './deepLink';
 import type { ShowcaseTabId } from './deepLink';
 
+/* Home takes props, so it is an ordinary lazy component rather than a `slot`,
+   which is typed for the prop-less panels in the map. */
+const HomePanel = lazy(() => import('./panels/HomePanel').then(m => ({ default: m.HomePanel })));
+
 // ── Icons ─────────────────────────────────────────────────────────────────────
 import {
   TrashIcon,
@@ -64,6 +68,8 @@ import { StackedToastDeckViewDocs } from './components/stackedtoastdeck/docs/Sta
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type CategoryId =
+  | 'home'
+  | 'badgechip'
   | 'chips' | 'textinput' | 'selectinput' | 'selecttextinput' | 'button'
   | 'iconbutton' | 'dropdownbutton' | 'contextmenu'
   | 'tabs' | 'tabbar' | 'editor' | 'patterns'
@@ -215,6 +221,7 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
     title: 'Display',
     items: [
       { id: 'chips',           label: 'ChipView',             icon: <DotIcon size={13} /> },
+      { id: 'badgechip',       label: 'BadgeChipView',        icon: <DotIcon size={13} /> },
       { id: 'statusindicator', label: 'StatusIndicatorView',  icon: <CheckCircleIcon size={13} /> },
       { id: 'loader',          label: 'LoaderView',           icon: <SpinnerIcon size={13} /> },
       { id: 'emptystate',      label: 'EmptyStateView',       icon: <FolderIcon size={13} /> },
@@ -453,13 +460,19 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
   },
 ];
 
-const NAV_ITEMS: SideNavItem[] = SIDEBAR_GROUPS.map(g => ({
-  id: g.title,
-  label: g.title,
-  isGroup: true,
-  count: g.items.length,
-  children: g.items.map(i => ({ id: i.id, label: i.label, icon: i.icon })),
-}));
+const NAV_ITEMS: SideNavItem[] = [
+  /* A plain row above the groups, deliberately outside SIDEBAR_GROUPS: the
+     count in the header and the catalog the capture scripts read are both
+     derived from that list, and Home is a page rather than a component. */
+  { id: 'home', label: 'Home', icon: <SparkleIcon size={13} /> },
+  ...SIDEBAR_GROUPS.map(g => ({
+    id: g.title,
+    label: g.title,
+    isGroup: true,
+    count: g.items.length,
+    children: g.items.map(i => ({ id: i.id, label: i.label, icon: i.icon })),
+  })),
+];
 
 const TOTAL_COMPONENT_COUNT = SIDEBAR_GROUPS.reduce((s, g) => s + g.items.length, 0);
 
@@ -584,6 +597,11 @@ const PANELS: Record<CategoryId, {
   code?: string;
   noExamplesHeader?: boolean;
 }> = {
+  /* The body is rendered specially — no breadcrumb, no tabs — so only the
+     title and description here are used, by the document title and nothing
+     else. `liveContent` is required by the type and never drawn. */
+  badgechip:         { title: 'BadgeChipView',          desc: 'The pill that labels a thing — fifty skins, chosen by `variant` or set for the whole product by DuiProvider.', vars: VARS_ACCENT, liveContent: slot(() => import('./components/badgechip/examples/BadgeChipViewExamples').then(m => m.BadgeChipViewExamples)), examples: slot(() => import('./components/badgechip/examples/BadgeChipViewExamples').then(m => m.BadgeChipViewExamples)), docs: slot(() => import('./components/badgechip/docs/BadgeChipViewDocs').then(m => m.BadgeChipViewDocs)), noExamplesHeader: true, code: `<BadgeChipView variant="github-label" tone="var(--color-success)">200 OK</BadgeChipView>` },
+  home:              { title: 'DUI',                    desc: 'The component library behind daakia and ck8t.', liveContent: slot(() => import('./panels/HomePanel').then(m => m.HomePanel)), noExamplesHeader: true },
   chips:             { title: 'ChipView',              desc: 'Colored badge chips for methods, protocols, status codes, filter tags.',            vars: VARS_CHIP,       liveContent: slot(() => import('./components/chipsview/live/ChipsViewLive').then(m => m.ChipsViewLive)), examples: slot(() => import('./components/chipsview/examples/ChipsViewExamples').then(m => m.ChipsViewExamples)), docs: slot(() => import('./components/chipsview/docs/ChipsViewDocs').then(m => m.ChipsViewDocs)),             code: `<ChipView label="GET"  color="var(--color-success)" />\n<ChipView label="POST" color="var(--color-primary)" />\n<ChipView label="404"  color="var(--color-error)"   size="sm" />\n<ChipView label="beta" color="var(--color-warning)"  size="xs" />` },
   textinput:         { title: 'TextInputView',          desc: 'Standard text input — sizes match ButtonView and SelectInputView exactly.',         vars: VARS_INPUT,      liveContent: slot(() => import('./components/textinputview/live/TextInputViewLive').then(m => m.TextInputViewLive)), examples: slot(() => import('./components/textinputview/examples/TextInputViewExamples').then(m => m.TextInputViewExamples)), docs: slot(() => import('./components/textinputview/docs/TextInputViewDocs').then(m => m.TextInputViewDocs)),         code: `function Preview() {\n  const [val, setVal] = useState('');\n  return (\n    <TextInputView\n      placeholder="Enter URL…"\n      value={val}\n      onChange={e => setVal(e.target.value)}\n      size="md"\n      iconLeft={<GlobeIcon size={13} />}\n      style={{ width: 260 }}\n    />\n  );\n}` },
   selecttextinput:   { title: 'SelectTextInputView',    desc: 'Combined method selector + URL input in one bordered pill — URL bar pattern.',  vars: VARS_INPUT,  liveContent: slot(() => import('./components/selecttextinputview/live/SelectTextInputViewLive').then(m => m.SelectTextInputViewLive)), examples: slot(() => import('./components/selecttextinputview/examples/SelectTextInputViewExamples').then(m => m.SelectTextInputViewExamples)), docs: slot(() => import('./components/selecttextinputview/docs/SelectTextInputViewDocs').then(m => m.SelectTextInputViewDocs)),   code: `function Preview() {\n  const [method, setMethod] = useState('GET');\n  const [url, setUrl] = useState('https://api.example.com/users');\n  const opts = [\n    { value: 'GET',    label: 'GET',    color: 'var(--color-method-get)' },\n    { value: 'POST',   label: 'POST',   color: 'var(--color-method-post)' },\n    { value: 'DELETE', label: 'DELETE', color: 'var(--color-method-delete)' },\n  ];\n  return (\n    <SelectTextInputView\n      selectValue={method}\n      selectOptions={opts}\n      onSelectChange={setMethod}\n      inputValue={url}\n      onInputChange={setUrl}\n      placeholder="Enter URL or paste text"\n    />\n  );\n}` },
@@ -893,7 +911,7 @@ function initialRoute() {
   const route = parseHash(typeof window === 'undefined' ? '' : window.location.hash);
   const category = route.category && route.category in PANELS
     ? (route.category as CategoryId)
-    : 'textinput';
+    : 'home';
   return {
     category,
     tab: route.tab,
@@ -1186,6 +1204,22 @@ export function DuiShowcase() {
         <div data-showcase-content style={{ height: '100%', overflow: 'auto', padding: '36px 48px 64px' }}>
           <div data-showcase-column style={{ maxWidth: 880, margin: '0 auto' }}>
 
+            {/*
+              Home is a page, not a panel: no breadcrumb telling you where you
+              are when you have not gone anywhere yet, and no Live/Examples/Docs
+              tabs over a thing that has no props.
+            */}
+            {activeCategory === 'home' ? (
+              <Suspense fallback={<PanelPending />}>
+                <HomePanel
+                  total={TOTAL_COMPONENT_COUNT}
+                  groups={SIDEBAR_GROUPS.length}
+                  onOpen={id => setActiveCategory(id as CategoryId)}
+                />
+              </Suspense>
+            ) : (
+            <>
+
             {/* Breadcrumb */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 20 }}>
               <span style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>DUI</span>
@@ -1256,6 +1290,8 @@ export function DuiShowcase() {
                   </div>
                 )}
             />
+            </>
+            )}
           </div>
         </div>
         </>
