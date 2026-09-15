@@ -1,7 +1,7 @@
 {
   "name": "@salilvnair/dui",
-  "version": "1.0.11",
-  "description": "Daakia UI component library \u2014 shared across ck8t and daakia",
+  "version": "1.0.12",
+  "description": "Daakia UI component library — shared across ck8t and daakia",
   "type": "module",
   "license": "MIT",
   "author": "Salil V Nair",
