@@ -179,16 +179,30 @@ export function SegmentedControlView({ testId,
           ? 'var(--color-input-bg, var(--color-panel))'
           : 'var(--color-surface)',
         border: '1px solid var(--color-surface-border)',
-        width: fullWidth ? '100%' : base.width,
         // `fullWidth={false}` means "size to my content", and it has to hold
         // even when the control is a flex item. An inline-flex box placed in a
-        // flex container is blockified, and the container's default
+        // flex container is blockified, and in a column container the default
         // `align-items: stretch` then pulls it to the full cross-axis width —
         // so a control in an ordinary `flex flex-col` field wrapper rendered
         // with its border drawn around a wide empty tail after the last
-        // segment. Opting out of the stretch makes the prop mean what it says;
-        // callers who want it stretched have `fullWidth`.
-        alignSelf: fullWidth ? 'stretch' : 'flex-start',
+        // segment.
+        //
+        // `fit-content` is what fixes that, and not `align-self: flex-start`,
+        // which is what used to. Stretch only applies to a cross-size of
+        // `auto`, so a definite width opts out of it on its own — whereas
+        // `align-self` is one property for both axes, and pinning the control
+        // to the start of the cross axis to control its *width* in a column
+        // also pinned it to the *top* in a row. In any ordinary toolbar it sat
+        // hard against the top edge and could not be centred from outside,
+        // because an item's own `align-self` beats the container's
+        // `align-items`. Callers who want it stretched have `fullWidth`.
+        width: fullWidth ? '100%' : base.width,
+        // `max-width`, not `width`: the stretch still happens and is simply
+        // capped at the content width. Setting `width: fit-content` instead
+        // looked equivalent and was not — measured in Chrome it resolved to
+        // the full available width for a flex item, which put every control in
+        // a column container back to the stretched state this guards against.
+        ...(fullWidth ? { alignSelf: 'stretch' as const } : { maxWidth: 'fit-content' }),
         boxSizing: 'border-box',
         flexShrink: 0,
         opacity: disabled ? 0.5 : 1,
