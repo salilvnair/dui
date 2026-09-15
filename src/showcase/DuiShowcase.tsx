@@ -866,6 +866,28 @@ const THEME_OPTIONS: { id: DuiThemeMode; label: string; icon: React.ReactNode }[
 
 // ─── Main showcase ────────────────────────────────────────────────────────────
 
+/**
+ * Is the window at least this wide?
+ *
+ * The header carries three pieces of text that are nice to have and not worth
+ * crowding the controls for, so they come and go with the width. A hook rather
+ * than a CSS class because `index.css` is the published stylesheet — a rule
+ * that exists only for this demo page does not belong in what consumers ship.
+ */
+function useMinWidth(px: number) {
+  const [matches, setMatches] = useState(
+    () => typeof window !== 'undefined' && window.innerWidth >= px,
+  );
+  useEffect(() => {
+    const mq = window.matchMedia(`(min-width: ${px}px)`);
+    const update = () => setMatches(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, [px]);
+  return matches;
+}
+
 /** The opening address, read once so the first paint is already the right panel. */
 function initialRoute() {
   const route = parseHash(typeof window === 'undefined' ? '' : window.location.hash);
@@ -891,6 +913,8 @@ export function DuiShowcase() {
      260px — a little wider than the old fixed rail, which was already clipping
      the longer component names. */
   const [navSplit, setNavSplit] = useState(18);
+  const wide = useMinWidth(720);
+  const roomy = useMinWidth(1040);
   const panel = PANELS[activeCategory];
   /* Capitalised bindings, because JSX only renders a component through one.
      Each is a lazy component; none of them fetches anything until rendered. */
@@ -1055,12 +1079,42 @@ export function DuiShowcase() {
           <span style={{ fontSize: 14, fontWeight: 800, letterSpacing: '-0.02em' }}>DUI</span>
           <ChipView label="v1.0" color="var(--color-primary)" size="sm" />
         </div>
-        <div style={{ width: 1, height: 16, background: 'var(--color-surface-border)' }} />
-        <span style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>Daakia UI Component Library</span>
+        {wide && <>
+          <div style={{ width: 1, height: 16, background: 'var(--color-surface-border)' }} />
+          <span style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>Daakia UI Component Library</span>
+        </>}
 
         <div style={{ flex: 1 }} />
 
-        {/* Theme switcher */}
+        {/*
+          ── The right-hand side ──
+
+          This used to be the theme switcher followed by three outlined chips in
+          three different colours. Two things were wrong with it. The chips were
+          decoration in three competing hues sitting next to an already-coloured
+          control, so the eye had five things to sort out in one 44px row. And
+          the switcher — the only thing here you can actually operate — was
+          buried in the middle of them, with ornament between it and the edge
+          where a control belongs.
+
+          So the facts are quiet text, the control sits at the edge, and the one
+          number worth reading is the only thing with any weight on it.
+        */}
+        {roomy && (
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 8,
+            fontSize: 11, color: 'var(--color-text-muted)', whiteSpace: 'nowrap',
+          }}>
+            <span style={{ color: 'var(--color-text-primary)', fontWeight: 600 }}>
+              {TOTAL_COMPONENT_COUNT} components
+            </span>
+            <span aria-hidden>·</span>
+            <span>React 19</span>
+            <span aria-hidden>·</span>
+            <span>Tailwind v4</span>
+          </div>
+        )}
+
         <SegmentedControlView
           size="sm"
           variant="pill"
@@ -1068,12 +1122,6 @@ export function DuiShowcase() {
           onChange={v => handleTheme(v as DuiThemeMode)}
           options={THEME_OPTIONS.map(opt => ({ value: opt.id, label: opt.label, icon: opt.icon }))}
         />
-
-        <div style={{ display: 'flex', gap: 6, marginLeft: 8 }}>
-          <ChipView label="React 19"      color="var(--color-info)"    size="sm" />
-          <ChipView label="Tailwind v4"   color="var(--color-success)" size="sm" />
-          <ChipView label={`${TOTAL_COMPONENT_COUNT} components`} color="var(--color-primary)" size="sm" />
-        </div>
       </div>
 
       {/* ── Body ── */}
@@ -1125,9 +1173,17 @@ export function DuiShowcase() {
         <>
 
         {/* ── Content ── */}
-        {/* `data-showcase-content` is what the screenshot run clips to: the panel
-            without the chrome around it. */}
-        <div data-showcase-content style={{ flex: 1, overflow: 'auto', padding: '36px 48px 64px' }}>
+        {/*
+          `data-showcase-content` is what the screenshot run clips to: the panel
+          without the chrome around it.
+
+          `height: 100%`, not `flex: 1`. SplitPanelView's pane is `height: 100%`
+          with `overflow: hidden` and is not itself a flex container, so `flex: 1`
+          resolved to nothing, this div grew to its content's full height, and the
+          pane quietly clipped the overflow — a long component just stopped,
+          with no scrollbar to say there was more.
+        */}
+        <div data-showcase-content style={{ height: '100%', overflow: 'auto', padding: '36px 48px 64px' }}>
           <div data-showcase-column style={{ maxWidth: 880, margin: '0 auto' }}>
 
             {/* Breadcrumb */}
