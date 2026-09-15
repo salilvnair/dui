@@ -59,9 +59,22 @@ Dates are the day the version was tagged.
   names like `SegmentedProgressBarView` was truncating itself in a fixed 232px
   rail. The header's toggle now hides the nav outright rather than narrowing it
   to an icon rail, which is what that button's tooltip always claimed it did.
+- **A quieter header.** The right side was the theme switcher followed by three
+  outlined chips in three different colours — five coloured things to sort out
+  in one 44px row, with the only control among them buried in the middle and
+  ornament between it and the edge. The facts are quiet text now, the switcher
+  sits at the edge where a control belongs, and the component count is the one
+  thing carrying any weight. The descriptive text drops out at narrow widths
+  rather than crowding the controls.
 
 ### Fixed
 
+- **The showcase's panel pane scrolls again.** Moving the sidebar into a
+  `SplitPanelView` cost the content pane its height: the pane is `height: 100%`
+  with `overflow: hidden` and is not a flex container, so the `flex: 1` the
+  content had been relying on resolved to nothing. The panel grew to its full
+  height and the pane silently clipped it — a long component simply stopped,
+  with no scrollbar to say there was more below.
 - **The accent scrollbar had never rendered.** Its three rules in `index.css`
   read `var(--color-accent)` with no fallback, unlike every other use of that
   hook in the same file. `--color-accent` is not defined by the library — it is

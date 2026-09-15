@@ -17,11 +17,19 @@
  *
  * ── On the section GIFs ──
  *
- * Narrower and shorter than the headline loop, because there are eight of them
+ * Narrower and shorter than the headline loop, because there are ten of them
  * and they sit *inside* the page rather than at the top of it: a reader
- * scrolling to "Theming" wants four seconds of a colour changing, not a
- * megabyte and a half of it. GitHub stops rendering a GIF somewhere around ten
+ * scrolling to "Theming" wants four seconds of a colour changing, not two
+ * megabytes of it. GitHub stops rendering a GIF somewhere around ten
  * megabytes, and the budget is the whole page, not each image.
+ *
+ * The numbers below were tightened once the content pane started scrolling
+ * properly: real scrolling is far more inter-frame change than a static panel,
+ * GIF has no interframe compression worth the name, and the same ten clips
+ * went from 4.9 MB to 11.1 MB without a line of the recipes changing. 640px at
+ * 10fps brings the set back to about 8.8 MB, which is under the budget but not
+ * comfortably — if more sections get GIFs, drop the width again rather than
+ * adding to the page.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -41,9 +49,9 @@ const flag = (name, fallback) => {
   const at = argv.indexOf(name);
   return at === -1 ? fallback : argv[at + 1];
 };
-const width = Number(flag('--width', 720));
-const fps = Number(flag('--fps', 12));
-const seconds = Number(flag('--seconds', 5));
+const width = Number(flag('--width', 640));
+const fps = Number(flag('--fps', 10));
+const seconds = Number(flag('--seconds', 4.5));
 
 const ffmpeg = (a) => execFileSync('ffmpeg', ['-y', '-loglevel', 'error', ...a], { stdio: ['ignore', 'ignore', 'inherit'] });
 const mb = (f) => (fs.statSync(f).size / 1024 / 1024).toFixed(1);
