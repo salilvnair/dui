@@ -1,7 +1,7 @@
 {
   "generatedAt": "2026-09-15",
   "theme": "dark",
-  "total": 239,
+  "total": 281,
   "groups": [
     "Inputs",
     "Date & Time",
@@ -23,6 +23,76 @@
     "More"
   ],
   "components": [
+    {
+      "id": "keyvaluerow",
+      "label": "KeyValueTableRowView",
+      "title": "KeyValueTableRowView",
+      "desc": "The row KeyValueTableView is built from, exported on its own — and HiddenKeyValueItemView, the same pair when it cannot be edited.",
+      "group": "Inputs",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/keyvaluerow.png"
+    },
+    {
+      "id": "diffeditor",
+      "label": "DiffEditorView",
+      "title": "DiffEditorView",
+      "desc": "The diff twin of EditorView — a line diff out of the box, upgrading itself to Monaco the moment a consumer opts in.",
+      "group": "Inputs",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/diffeditor.png"
+    },
+    {
+      "id": "markdowneditor",
+      "label": "MarkdownEditorView",
+      "title": "MarkdownEditorView",
+      "desc": "A rich editor over one Markdown document — rich text and raw source over the same value, and dialogs the host cannot forbid.",
+      "group": "Inputs",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/markdowneditor.png"
+    },
+    {
+      "id": "multilineinput",
+      "label": "MultilineInputView",
+      "title": "MultilineInputView",
+      "desc": "The textarea wearing the same clothes as the rest of the input family — same heights, border and focus ring.",
+      "group": "Inputs",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/multilineinput.png"
+    },
+    {
+      "id": "inlineedittext",
+      "label": "InlineEditTextView",
+      "title": "InlineEditTextView",
+      "desc": "A field that does not look like one — reads as text until double-clicked, and its onSave may be async.",
+      "group": "Inputs",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/inlineedittext.png"
+    },
+    {
+      "id": "searchfield",
+      "label": "SearchFieldView",
+      "title": "SearchFieldView",
+      "desc": "The filter box's sibling that runs something — Enter acts, and it offers what you searched before.",
+      "group": "Inputs",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/searchfield.png"
+    },
+    {
+      "id": "filterinput",
+      "label": "FilterInputView",
+      "title": "FilterInputView",
+      "desc": "The box above a list that narrows it — acts on every keystroke, and keeps saying it is a filter rather than a search.",
+      "group": "Inputs",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/filterinput.png"
+    },
     {
       "id": "textinput",
       "label": "TextInputView",
@@ -184,6 +254,26 @@
       "image": "media/components/segmentedcontrol.png"
     },
     {
+      "id": "timezoneselect",
+      "label": "TimeZoneSelectView",
+      "title": "TimeZoneSelectView",
+      "desc": "Every zone the platform knows, searchable — from the platform rather than a bundled table, so it does not go stale.",
+      "group": "Date & Time",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/timezoneselect.png"
+    },
+    {
+      "id": "datetimeinput",
+      "label": "DateTimeInputView",
+      "title": "DateTimeInputView",
+      "desc": "A date and a time in one field, returning one ISO string — with null as a real state rather than an empty one.",
+      "group": "Date & Time",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/datetimeinput.png"
+    },
+    {
       "id": "calendar",
       "label": "CalendarView",
       "title": "CalendarView",
@@ -232,6 +322,26 @@
       "hasExamples": true,
       "hasDocs": true,
       "image": "media/components/countdownring.png"
+    },
+    {
+      "id": "swatchpicker",
+      "label": "SwatchPickerView",
+      "title": "SwatchPickerView",
+      "desc": "Choosing between things identified by colour. The name is the tooltip, never visible text — a swatch row is picked by eye.",
+      "group": "Form & Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/swatchpicker.png"
+    },
+    {
+      "id": "togglepill",
+      "label": "TogglePillView",
+      "title": "TogglePillView",
+      "desc": "A chip that is a control — the pill above a list that switches one facet on and off, with an optional count inside it.",
+      "group": "Form & Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/togglepill.png"
     },
     {
       "id": "radiogroup",
@@ -374,6 +484,46 @@
       "image": "media/components/switchgroup.png"
     },
     {
+      "id": "tableskeleton",
+      "label": "TableSkeletonView",
+      "title": "TableSkeletonView",
+      "desc": "The placeholder a table shows while its rows load — declared with the same column widths, so nothing jumps when the data lands.",
+      "group": "Feedback & Status",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/tableskeleton.png"
+    },
+    {
+      "id": "loadingstate",
+      "label": "LoadingStateView",
+      "title": "LoadingStateView",
+      "desc": "The screen shown while something is fetched — the subject drawn large, and a component that says so itself once the wait stops being ordinary.",
+      "group": "Feedback & Status",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/loadingstate.png"
+    },
+    {
+      "id": "infoview",
+      "label": "InfoView",
+      "title": "InfoView",
+      "desc": "An explanatory block for settings and empty states — what this is, and where on disk it lives, with paths as pills rather than prose.",
+      "group": "Feedback & Status",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/infoview.png"
+    },
+    {
+      "id": "callout",
+      "label": "CalloutView",
+      "title": "CalloutView",
+      "desc": "The titled block that interrupts a page to say something the reader needs — info, tip, warning, danger.",
+      "group": "Feedback & Status",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/callout.png"
+    },
+    {
       "id": "snackbar",
       "label": "SnackbarView",
       "title": "SnackbarView",
@@ -474,6 +624,46 @@
       "image": "media/components/confettiburst.png"
     },
     {
+      "id": "themetoggle",
+      "label": "ThemeToggleView",
+      "title": "ThemeToggleView",
+      "desc": "One button, two states — the sun and the moon tinted independently, for a header with no room for three segments.",
+      "group": "Buttons",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/themetoggle.png"
+    },
+    {
+      "id": "segmented",
+      "label": "SegmentedView",
+      "title": "SegmentedView",
+      "desc": "The flat cousin of SegmentedControlView — no track, no sliding indicator, for switching a view rather than operating a control.",
+      "group": "Buttons",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/segmented.png"
+    },
+    {
+      "id": "splitbutton",
+      "label": "SplitButtonView",
+      "title": "SplitButtonView",
+      "desc": "A default action and its close relatives in one control — Save, with Save As and Export behind the chevron.",
+      "group": "Buttons",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/splitbutton.png"
+    },
+    {
+      "id": "actionbutton",
+      "label": "ActionButtonView",
+      "title": "ActionButtonView",
+      "desc": "The toolbar button — quieter than ButtonView, louder than IconButtonView, and sized on the same scale as both.",
+      "group": "Buttons",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/actionbutton.png"
+    },
+    {
       "id": "button",
       "label": "ButtonView",
       "title": "ButtonView",
@@ -512,6 +702,26 @@
       "hasExamples": true,
       "hasDocs": true,
       "image": "media/components/aibutton.png"
+    },
+    {
+      "id": "underlinetabs",
+      "label": "UnderlineTabsView",
+      "title": "UnderlineTabsView",
+      "desc": "The page-level tab row — active marked by a rule rather than a box, with counts beside the labels.",
+      "group": "Navigation",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/underlinetabs.png"
+    },
+    {
+      "id": "pilledtab",
+      "label": "PilledTabView",
+      "title": "PilledTabView",
+      "desc": "A compact tab row for inside a panel — a filled pill marks the active one, rounded or fully pilled.",
+      "group": "Navigation",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/pilledtab.png"
     },
     {
       "id": "tabs",
@@ -602,6 +812,66 @@
       "hasExamples": true,
       "hasDocs": true,
       "image": "media/components/fab.png"
+    },
+    {
+      "id": "linediff",
+      "label": "LineDiffView",
+      "title": "LineDiffView",
+      "desc": "Two texts side by side with the changed lines marked — and no Monaco anywhere near it.",
+      "group": "Display",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/linediff.png"
+    },
+    {
+      "id": "setupoption",
+      "label": "SetupOptionView",
+      "title": "SetupOptionView",
+      "desc": "One card per route to getting installed — winget, Homebrew, apt — turning a wall of platform instructions into a list you pick from.",
+      "group": "Display",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/setupoption.png"
+    },
+    {
+      "id": "prioritymark",
+      "label": "PriorityMarkView",
+      "title": "PriorityMarkView",
+      "desc": "The priority marker on an issue row — the ring is the signal, the word is a courtesy that a dense table can drop.",
+      "group": "Display",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/prioritymark.png"
+    },
+    {
+      "id": "groupheader",
+      "label": "GroupHeaderView",
+      "title": "GroupHeaderView",
+      "desc": "The row above a group in a grouped list or a board column — set as a label, not a heading, so eight of them do not read as eight sections.",
+      "group": "Display",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/groupheader.png"
+    },
+    {
+      "id": "terminalblock",
+      "label": "TerminalBlockView",
+      "title": "TerminalBlockView",
+      "desc": "Commands and their output on a terminal ground — a terminal, whether it holds what you type or what came back.",
+      "group": "Display",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/terminalblock.png"
+    },
+    {
+      "id": "commandchip",
+      "label": "CommandChipView",
+      "title": "CommandChipView",
+      "desc": "A command rendered inline that copies itself when clicked — for the places a reader is about to retype something they could have taken.",
+      "group": "Display",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/commandchip.png"
     },
     {
       "id": "chips",
@@ -804,6 +1074,26 @@
       "image": "media/components/yamlkeychip.png"
     },
     {
+      "id": "sheet",
+      "label": "SheetView",
+      "title": "SheetView",
+      "desc": "A panel that slides in from any edge — for content that is a sidebar on a wide screen and a bottom sheet on a narrow one.",
+      "group": "Overlays",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/sheet.png"
+    },
+    {
+      "id": "commandpalette",
+      "label": "CommandPaletteView",
+      "title": "CommandPaletteView",
+      "desc": "The Ctrl+K box. Keywords are the part worth knowing — Send request should still be found by typing run.",
+      "group": "Overlays",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/commandpalette.png"
+    },
+    {
       "id": "modal",
       "label": "ModalView",
       "title": "ModalView",
@@ -892,6 +1182,26 @@
       "hasExamples": true,
       "hasDocs": true,
       "image": "media/components/spotlighttour.png"
+    },
+    {
+      "id": "inspectorpanel",
+      "label": "InspectorPanelView",
+      "title": "InspectorPanelView",
+      "desc": "The detail panel beside a list — an overlay on a narrow screen and a permanent third column on a wide one, from one prop.",
+      "group": "Layout",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/inspectorpanel.png"
+    },
+    {
+      "id": "fanstack",
+      "label": "FanStackView",
+      "title": "FanStackView",
+      "desc": "A small set of actions that spring out of a floating anchor — straight up, or swept into an arc.",
+      "group": "Layout",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/fanstack.png"
     },
     {
       "id": "resizablepanel",
@@ -1114,6 +1424,26 @@
       "image": "media/components/watermark.png"
     },
     {
+      "id": "issuecard",
+      "label": "IssueCardView",
+      "title": "IssueCardView",
+      "desc": "The card a tracker board is built from — everything but the title is a slot, with a matching skeleton so the board never reflows.",
+      "group": "Data & Enterprise",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/issuecard.png"
+    },
+    {
+      "id": "findingcard",
+      "label": "FindingCardView",
+      "title": "FindingCardView",
+      "desc": "One finding from an analysis — with remediation kept apart from the detail, because what was found and what to do are read at different moments.",
+      "group": "Data & Enterprise",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/findingcard.png"
+    },
+    {
       "id": "descriptions",
       "label": "DescriptionsView",
       "title": "DescriptionsView",
@@ -1252,6 +1582,26 @@
       "hasExamples": true,
       "hasDocs": true,
       "image": "media/components/columnvisibility.png"
+    },
+    {
+      "id": "sortable",
+      "label": "SortableView",
+      "title": "SortableView",
+      "desc": "Reordering for rows you draw yourself — it supplies the handle, the drop indicator and the indices, nothing else.",
+      "group": "Advanced Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/sortable.png"
+    },
+    {
+      "id": "rearrange",
+      "label": "RearrangeView",
+      "title": "RearrangeView",
+      "desc": "The column-picker shape — which fields to show and in what order, both questions in one list.",
+      "group": "Advanced Selection",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/rearrange.png"
     },
     {
       "id": "kbd",
@@ -1764,6 +2114,26 @@
       "image": "media/components/changelogentry.png"
     },
     {
+      "id": "pathbreadcrumb",
+      "label": "PathBreadcrumbView",
+      "title": "PathBreadcrumbView",
+      "desc": "The path bar above a file listing — every segment a link back, and a double-click turns the whole thing into a text box.",
+      "group": "Media & Files",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/pathbreadcrumb.png"
+    },
+    {
+      "id": "filebrowser",
+      "label": "FileBrowserView",
+      "title": "FileBrowserView",
+      "desc": "A directory listing — files, folders and symlinks, with selection and arrival as two separate states in two separate colours.",
+      "group": "Media & Files",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/filebrowser.png"
+    },
+    {
       "id": "imagegallery",
       "label": "ImageGalleryView",
       "title": "ImageGalleryView",
@@ -1882,6 +2252,56 @@
       "hasExamples": true,
       "hasDocs": true,
       "image": "media/components/imagezoom.png"
+    },
+    {
+      "id": "swimlanechart",
+      "label": "SwimlaneChartView",
+      "title": "SwimlaneChartView",
+      "desc": "What each of several things was doing over a period — threads by state, pods by phase — each stretch coloured by the caller's map.",
+      "group": "Data Display & Wow",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/swimlanechart.png"
+    },
+    {
+      "id": "lanechart",
+      "label": "LaneChartView",
+      "title": "LaneChartView",
+      "desc": "Several metrics over the same period, each in its own lane with its own scale — so a small signal is not flattened by a large one.",
+      "group": "Data Display & Wow",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/lanechart.png"
+    },
+    {
+      "id": "flamegraph",
+      "label": "FlameGraphView",
+      "title": "FlameGraphView",
+      "desc": "The profiler flame graph — a frame is as wide as it is expensive, and clicking one makes it the new root.",
+      "group": "Data Display & Wow",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/flamegraph.png"
+    },
+    {
+      "id": "sunburst",
+      "label": "SunburstView",
+      "title": "SunburstView",
+      "desc": "Where a total went, one level at a time — a ring per level, drawn outward. Shares its HierarchyNode with FlameGraphView.",
+      "group": "Data Display & Wow",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/sunburst.png"
+    },
+    {
+      "id": "donut",
+      "label": "DonutView",
+      "title": "DonutView",
+      "desc": "A share-of-total ring, with maxSlices to roll the unreadable tail into one named remainder.",
+      "group": "Data Display & Wow",
+      "hasExamples": true,
+      "hasDocs": true,
+      "image": "media/components/donut.png"
     },
     {
       "id": "timeline",
