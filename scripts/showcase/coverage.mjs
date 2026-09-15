@@ -82,12 +82,25 @@ for (const label of shown) {
     if (t) shownFlat.add(t);
   }
 }
-/* Anything named in a code sample or an examples import is demonstrated too,
-   even without a panel of its own — that is coverage, just not a top-level
-   entry. */
+/*
+  Anything rendered anywhere in the showcase is demonstrated, even without a
+  panel of its own — a skeleton shown beside the card it stands in for is
+  covered, and reporting it as missing would be wrong.
+
+  Scanning only DuiShowcase.tsx was not enough: it reported
+  IssueCardSkeletonView as undocumented while the IssueCardView panel was
+  rendering three of them.
+*/
 const mentioned = new Set();
-for (const m of showcase.matchAll(/<([A-Z][A-Za-z0-9]*View)\b/g)) mentioned.add(m[1]);
-for (const m of showcase.matchAll(/\b([A-Z][A-Za-z0-9]*View)\b/g)) mentioned.add(m[1]);
+(function scan(dir) {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) { scan(full); continue; }
+    if (!/\.tsx?$/.test(entry.name)) continue;
+    const text = fs.readFileSync(full, 'utf8');
+    for (const m of text.matchAll(/\b([A-Z][A-Za-z0-9]*View)\b/g)) mentioned.add(m[1]);
+  }
+})(path.join(ROOT, 'src/showcase'));
 
 const missing = [];
 const onlyMentioned = [];

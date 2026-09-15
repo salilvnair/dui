@@ -14,6 +14,7 @@ const HomePanel = lazy(() => import('./panels/HomePanel').then(m => ({ default: 
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 import {
+  DragHandleIcon,
   TrashIcon,
   PlusIcon,
   SearchIcon,
@@ -69,6 +70,48 @@ import { StackedToastDeckViewDocs } from './components/stackedtoastdeck/docs/Sta
 
 type CategoryId =
   | 'home'
+  | 'keyvaluerow'
+  | 'inspectorpanel'
+  | 'issuecard'
+  | 'findingcard'
+  | 'sortable'
+  | 'rearrange'
+  | 'fanstack'
+  | 'sheet'
+  | 'timezoneselect'
+  | 'datetimeinput'
+  | 'commandpalette'
+  | 'diffeditor'
+  | 'linediff'
+  | 'markdowneditor'
+  | 'pathbreadcrumb'
+  | 'filebrowser'
+  | 'swimlanechart'
+  | 'lanechart'
+  | 'flamegraph'
+  | 'sunburst'
+  | 'donut'
+  | 'setupoption'
+  | 'prioritymark'
+  | 'groupheader'
+  | 'terminalblock'
+  | 'tableskeleton'
+  | 'loadingstate'
+  | 'infoview'
+  | 'callout'
+  | 'underlinetabs'
+  | 'pilledtab'
+  | 'commandchip'
+  | 'themetoggle'
+  | 'segmented'
+  | 'splitbutton'
+  | 'actionbutton'
+  | 'swatchpicker'
+  | 'togglepill'
+  | 'multilineinput'
+  | 'inlineedittext'
+  | 'searchfield'
+  | 'filterinput'
   | 'badgechip'
   | 'chips' | 'textinput' | 'selectinput' | 'selecttextinput' | 'button'
   | 'iconbutton' | 'dropdownbutton' | 'contextmenu'
@@ -132,6 +175,13 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
   {
     title: 'Inputs',
     items: [
+      { id: 'keyvaluerow', label: 'KeyValueTableRowView', icon: <FilterIcon size={13} /> },
+      { id: 'diffeditor', label: 'DiffEditorView', icon: <CodeIcon size={13} /> },
+      { id: 'markdowneditor', label: 'MarkdownEditorView', icon: <DocumentIcon size={13} /> },
+      { id: 'multilineinput', label: 'MultilineInputView', icon: <DocumentIcon size={13} /> },
+      { id: 'inlineedittext', label: 'InlineEditTextView', icon: <KeyIcon size={13} /> },
+      { id: 'searchfield', label: 'SearchFieldView', icon: <SearchIcon size={13} /> },
+      { id: 'filterinput', label: 'FilterInputView', icon: <FilterIcon size={13} /> },
       { id: 'textinput',         label: 'TextInputView',         icon: <KeyIcon size={13} /> },
       { id: 'selectinput',       label: 'SelectInputView',       icon: <FilterIcon size={13} /> },
       { id: 'selecttextinput',   label: 'SelectTextInputView',   icon: <GlobeIcon size={13} /> },
@@ -153,6 +203,8 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
   {
     title: 'Date & Time',
     items: [
+      { id: 'timezoneselect', label: 'TimeZoneSelectView', icon: <ClockIcon size={13} /> },
+      { id: 'datetimeinput', label: 'DateTimeInputView', icon: <CalendarIcon size={13} /> },
       { id: 'calendar',         label: 'CalendarView',         icon: <CalendarIcon size={13} /> },
       { id: 'dateinput',        label: 'DateInputView',        icon: <CalendarIcon size={13} /> },
       { id: 'daterangepicker',  label: 'DateRangePickerView',  icon: <CalendarIcon size={13} /> },
@@ -163,6 +215,8 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
   {
     title: 'Form & Selection',
     items: [
+      { id: 'swatchpicker', label: 'SwatchPickerView', icon: <SunIcon size={13} /> },
+      { id: 'togglepill', label: 'TogglePillView', icon: <FilterIcon size={13} /> },
       { id: 'radiogroup',     label: 'RadioGroupView',     icon: <CheckCircleIcon size={13} /> },
       { id: 'radiocard',      label: 'RadioCardView',      icon: <CheckCircleIcon size={13} /> },
       { id: 'rating',         label: 'RatingView',         icon: <SparkleIcon size={13} /> },
@@ -182,6 +236,10 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
   {
     title: 'Feedback & Status',
     items: [
+      { id: 'tableskeleton', label: 'TableSkeletonView', icon: <LayersIcon size={13} /> },
+      { id: 'loadingstate', label: 'LoadingStateView', icon: <SpinnerIcon size={13} /> },
+      { id: 'infoview', label: 'InfoView', icon: <InfoCircleIcon size={13} /> },
+      { id: 'callout', label: 'CalloutView', icon: <InfoCircleIcon size={13} /> },
       { id: 'snackbar',           label: 'SnackbarView',           icon: <InfoCircleIcon size={13} /> },
       { id: 'banner',             label: 'BannerView',             icon: <InfoCircleIcon size={13} /> },
       { id: 'progressring',       label: 'ProgressRingView',       icon: <GaugeIcon size={13} /> },
@@ -197,6 +255,10 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
   {
     title: 'Buttons',
     items: [
+      { id: 'themetoggle', label: 'ThemeToggleView', icon: <SunIcon size={13} /> },
+      { id: 'segmented', label: 'SegmentedView', icon: <LayersIcon size={13} /> },
+      { id: 'splitbutton', label: 'SplitButtonView', icon: <ChevronDownIcon size={13} /> },
+      { id: 'actionbutton', label: 'ActionButtonView', icon: <PlayIcon size={13} /> },
       { id: 'button',         label: 'ButtonView',         icon: <PlayIcon size={13} /> },
       { id: 'iconbutton',     label: 'IconButtonView',     icon: <SparkleIcon size={13} /> },
       { id: 'dropdownbutton', label: 'DropDownButtonView', icon: <ChevronDownIcon size={13} /> },
@@ -206,6 +268,8 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
   {
     title: 'Navigation',
     items: [
+      { id: 'underlinetabs', label: 'UnderlineTabsView', icon: <ChevronRightIcon size={13} /> },
+      { id: 'pilledtab', label: 'PilledTabView', icon: <LayersIcon size={13} /> },
       { id: 'tabs',        label: 'TabView',         icon: <LayersIcon size={13} /> },
       { id: 'tabbar',      label: 'TabBarView',      icon: <LayersIcon size={13} /> },
       { id: 'contextmenu', label: 'ContextMenuView', icon: <MoreHorizontalIcon size={13} /> },
@@ -220,6 +284,12 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
   {
     title: 'Display',
     items: [
+      { id: 'linediff', label: 'LineDiffView', icon: <CodeBracketsIcon size={13} /> },
+      { id: 'setupoption', label: 'SetupOptionView', icon: <DocumentIcon size={13} /> },
+      { id: 'prioritymark', label: 'PriorityMarkView', icon: <CheckCircleIcon size={13} /> },
+      { id: 'groupheader', label: 'GroupHeaderView', icon: <FilterIcon size={13} /> },
+      { id: 'terminalblock', label: 'TerminalBlockView', icon: <TerminalIcon size={13} /> },
+      { id: 'commandchip', label: 'CommandChipView', icon: <TerminalIcon size={13} /> },
       { id: 'chips',           label: 'ChipView',             icon: <DotIcon size={13} /> },
       { id: 'badgechip',       label: 'BadgeChipView',        icon: <DotIcon size={13} /> },
       { id: 'statusindicator', label: 'StatusIndicatorView',  icon: <CheckCircleIcon size={13} /> },
@@ -245,6 +315,8 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
   {
     title: 'Overlays',
     items: [
+      { id: 'sheet', label: 'SheetView', icon: <PanelRightIcon size={13} /> },
+      { id: 'commandpalette', label: 'CommandPaletteView', icon: <SearchIcon size={13} /> },
       { id: 'modal',     label: 'ModalView',     icon: <PlusSquareIcon size={13} /> },
       { id: 'infopopup', label: 'InfoPopupView', icon: <InfoCircleIcon size={13} /> },
       { id: 'toast',     label: 'ToastView',     icon: <InfoCircleIcon size={13} /> },
@@ -259,6 +331,8 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
   {
     title: 'Layout',
     items: [
+      { id: 'inspectorpanel', label: 'InspectorPanelView', icon: <PanelRightIcon size={13} /> },
+      { id: 'fanstack', label: 'FanStackView', icon: <LayersIcon size={13} /> },
       { id: 'resizablepanel',     label: 'ResizablePanelView',     icon: <PanelRightIcon size={13} /> },
       { id: 'splitpanel',         label: 'SplitPanelView',         icon: <SidebarLeftIcon size={13} /> },
       { id: 'bottompanel',        label: 'BottomPanelView',        icon: <TerminalIcon size={13} /> },
@@ -286,6 +360,8 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
   {
     title: 'Data & Enterprise',
     items: [
+      { id: 'issuecard', label: 'IssueCardView', icon: <DocumentIcon size={13} /> },
+      { id: 'findingcard', label: 'FindingCardView', icon: <InfoCircleIcon size={13} /> },
       { id: 'descriptions',        label: 'DescriptionsView',        icon: <FilterIcon size={13} /> },
       { id: 'statistic',           label: 'StatisticView',           icon: <GaugeIcon size={13} /> },
       { id: 'result',              label: 'ResultView',              icon: <CheckCircleIcon size={13} /> },
@@ -305,6 +381,8 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
   {
     title: 'Advanced Selection',
     items: [
+      { id: 'sortable', label: 'SortableView', icon: <DragHandleIcon size={13} /> },
+      { id: 'rearrange', label: 'RearrangeView', icon: <LayersIcon size={13} /> },
       { id: 'kbd',                 label: 'KbdView',                 icon: <TerminalIcon size={13} /> },
       { id: 'wizardstepper',       label: 'WizardStepperView',       icon: <LayersIcon size={13} /> },
       { id: 'accordiongroup',      label: 'AccordionGroupView',      icon: <ChevronRightIcon size={13} /> },
@@ -371,6 +449,8 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
   {
     title: 'Media & Files',
     items: [
+      { id: 'pathbreadcrumb', label: 'PathBreadcrumbView', icon: <ChevronRightIcon size={13} /> },
+      { id: 'filebrowser', label: 'FileBrowserView', icon: <FolderIcon size={13} /> },
       { id: 'imagegallery',   label: 'ImageGalleryView',   icon: <ImageIcon size={13} /> },
       { id: 'imagecropper',   label: 'ImageCropperView',   icon: <ImageIcon size={13} /> },
       { id: 'videoplayer',    label: 'VideoPlayerView',    icon: <VideoIcon size={13} /> },
@@ -388,6 +468,11 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
   {
     title: 'Data Display & Wow',
     items: [
+      { id: 'swimlanechart', label: 'SwimlaneChartView', icon: <LayersIcon size={13} /> },
+      { id: 'lanechart', label: 'LaneChartView', icon: <GaugeIcon size={13} /> },
+      { id: 'flamegraph', label: 'FlameGraphView', icon: <LayersIcon size={13} /> },
+      { id: 'sunburst', label: 'SunburstView', icon: <GaugeIcon size={13} /> },
+      { id: 'donut', label: 'DonutView', icon: <GaugeIcon size={13} /> },
       { id: 'timeline',          label: 'TimelineView',          icon: <ClockIcon size={13} /> },
       { id: 'activityfeed',      label: 'ActivityFeedView',      icon: <LayersIcon size={13} /> },
       { id: 'kanbanboard',       label: 'KanbanBoardView',       icon: <LayersIcon size={13} /> },
@@ -601,6 +686,48 @@ const PANELS: Record<CategoryId, {
      title and description here are used, by the document title and nothing
      else. `liveContent` is required by the type and never drawn. */
   badgechip:         { title: 'BadgeChipView',          desc: 'The pill that labels a thing — fifty skins, chosen by `variant` or set for the whole product by DuiProvider.', vars: VARS_ACCENT, liveContent: slot(() => import('./components/badgechip/examples/BadgeChipViewExamples').then(m => m.BadgeChipViewExamples)), examples: slot(() => import('./components/badgechip/examples/BadgeChipViewExamples').then(m => m.BadgeChipViewExamples)), docs: slot(() => import('./components/badgechip/docs/BadgeChipViewDocs').then(m => m.BadgeChipViewDocs)), noExamplesHeader: true, code: `<BadgeChipView variant="github-label" tone="var(--color-success)">200 OK</BadgeChipView>` },
+  filterinput: { title: "FilterInputView", desc: "The box above a list that narrows it — acts on every keystroke, and keeps saying it is a filter rather than a search.", vars: VARS_INPUT, liveContent: slot(() => import('./components/filterinput/examples/FilterInputViewExamples').then(m => m.FilterInputViewExamples)), examples: slot(() => import('./components/filterinput/examples/FilterInputViewExamples').then(m => m.FilterInputViewExamples)), docs: slot(() => import('./components/filterinput/docs/FilterInputViewDocs').then(m => m.FilterInputViewDocs)), noExamplesHeader: true, code: "function Preview() {\n  const [q, setQ] = useState('');\n  return <FilterInputView value={q} onChange={setQ} placeholder=\"Filter requests…\" width={280} />;\n}" },
+  searchfield: { title: "SearchFieldView", desc: "The filter box's sibling that runs something — Enter acts, and it offers what you searched before.", vars: VARS_INPUT, liveContent: slot(() => import('./components/searchfield/examples/SearchFieldViewExamples').then(m => m.SearchFieldViewExamples)), examples: slot(() => import('./components/searchfield/examples/SearchFieldViewExamples').then(m => m.SearchFieldViewExamples)), docs: slot(() => import('./components/searchfield/docs/SearchFieldViewDocs').then(m => m.SearchFieldViewDocs)), noExamplesHeader: true, code: "function Preview() {\n  const [q, setQ] = useState('');\n  return (\n    <SearchFieldView\n      value={q}\n      onChange={setQ}\n      onSearch={v => console.log('run', v)}\n      placeholder=\"Search requests…\"\n      width={300}\n    />\n  );\n}" },
+  inlineedittext: { title: "InlineEditTextView", desc: "A field that does not look like one — reads as text until double-clicked, and its onSave may be async.", vars: VARS_INPUT, liveContent: slot(() => import('./components/inlineedittext/examples/InlineEditTextViewExamples').then(m => m.InlineEditTextViewExamples)), examples: slot(() => import('./components/inlineedittext/examples/InlineEditTextViewExamples').then(m => m.InlineEditTextViewExamples)), docs: slot(() => import('./components/inlineedittext/docs/InlineEditTextViewDocs').then(m => m.InlineEditTextViewDocs)), noExamplesHeader: true, code: "function Preview() {\n  const [title, setTitle] = useState('List all users');\n  return <InlineEditTextView value={title} onSave={setTitle} multiline={false} />;\n}" },
+  multilineinput: { title: "MultilineInputView", desc: "The textarea wearing the same clothes as the rest of the input family — same heights, border and focus ring.", vars: VARS_INPUT, liveContent: slot(() => import('./components/multilineinput/examples/MultilineInputViewExamples').then(m => m.MultilineInputViewExamples)), examples: slot(() => import('./components/multilineinput/examples/MultilineInputViewExamples').then(m => m.MultilineInputViewExamples)), docs: slot(() => import('./components/multilineinput/docs/MultilineInputViewDocs').then(m => m.MultilineInputViewDocs)), noExamplesHeader: true, code: "function Preview() {\n  const [body, setBody] = useState('{\\n  \"name\": \"Ada\"\\n}');\n  return (\n    <MultilineInputView\n      value={body}\n      onChange={e => setBody(e.target.value)}\n      rows={5}\n      style={{ width: 380 }}\n    />\n  );\n}" },
+  togglepill: { title: "TogglePillView", desc: "A chip that is a control — the pill above a list that switches one facet on and off, with an optional count inside it.", vars: VARS_ACCENT, liveContent: slot(() => import('./components/togglepill/examples/TogglePillViewExamples').then(m => m.TogglePillViewExamples)), examples: slot(() => import('./components/togglepill/examples/TogglePillViewExamples').then(m => m.TogglePillViewExamples)), docs: slot(() => import('./components/togglepill/docs/TogglePillViewDocs').then(m => m.TogglePillViewDocs)), noExamplesHeader: true, code: "function Preview() {\n  const [on, setOn] = useState(true);\n  return (\n    <TogglePillView active={on} count={12} onClick={() => setOn(v => !v)}>\n      Errors\n    </TogglePillView>\n  );\n}" },
+  swatchpicker: { title: "SwatchPickerView", desc: "Choosing between things identified by colour. The name is the tooltip, never visible text — a swatch row is picked by eye.", vars: VARS_ACCENT, liveContent: slot(() => import('./components/swatchpicker/examples/SwatchPickerViewExamples').then(m => m.SwatchPickerViewExamples)), examples: slot(() => import('./components/swatchpicker/examples/SwatchPickerViewExamples').then(m => m.SwatchPickerViewExamples)), docs: slot(() => import('./components/swatchpicker/docs/SwatchPickerViewDocs').then(m => m.SwatchPickerViewDocs)), noExamplesHeader: true, code: "function Preview() {\n  const [theme, setTheme] = useState('indigo');\n  return (\n    <SwatchPickerView\n      value={theme}\n      onChange={setTheme}\n      options={[\n        { id: 'indigo', label: 'Indigo', color: '#6366f1' },\n        { id: 'teal',   label: 'Teal',   color: '#2ad4a8' },\n        { id: 'rose',   label: 'Rose',   color: '#f43f5e' },\n      ]}\n    />\n  );\n}" },
+  actionbutton: { title: "ActionButtonView", desc: "The toolbar button — quieter than ButtonView, louder than IconButtonView, and sized on the same scale as both.", vars: VARS_BTN, liveContent: slot(() => import('./components/actionbutton/examples/ActionButtonViewExamples').then(m => m.ActionButtonViewExamples)), examples: slot(() => import('./components/actionbutton/examples/ActionButtonViewExamples').then(m => m.ActionButtonViewExamples)), docs: slot(() => import('./components/actionbutton/docs/ActionButtonViewDocs').then(m => m.ActionButtonViewDocs)), noExamplesHeader: true, code: "<ActionButtonView icon={<PlayIcon size={12} />} label=\"Send\" />" },
+  splitbutton: { title: "SplitButtonView", desc: "A default action and its close relatives in one control — Save, with Save As and Export behind the chevron.", vars: VARS_BTN, liveContent: slot(() => import('./components/splitbutton/examples/SplitButtonViewExamples').then(m => m.SplitButtonViewExamples)), examples: slot(() => import('./components/splitbutton/examples/SplitButtonViewExamples').then(m => m.SplitButtonViewExamples)), docs: slot(() => import('./components/splitbutton/docs/SplitButtonViewDocs').then(m => m.SplitButtonViewDocs)), noExamplesHeader: true, code: "function Preview() {\n  const items = [\n    { id: 'save-as', label: 'Save As…', shortcut: 'Ctrl+Shift+S', onClick: () => {} },\n    { id: 'export',  label: 'Export', onClick: () => {} },\n  ];\n  return <SplitButtonView label=\"Save\" items={items} onClick={() => {}} />;\n}" },
+  segmented: { title: "SegmentedView", desc: "The flat cousin of SegmentedControlView — no track, no sliding indicator, for switching a view rather than operating a control.", vars: VARS_ACCENT, liveContent: slot(() => import('./components/segmented/examples/SegmentedViewExamples').then(m => m.SegmentedViewExamples)), examples: slot(() => import('./components/segmented/examples/SegmentedViewExamples').then(m => m.SegmentedViewExamples)), docs: slot(() => import('./components/segmented/docs/SegmentedViewDocs').then(m => m.SegmentedViewDocs)), noExamplesHeader: true, code: "function Preview() {\n  const [view, setView] = useState('pretty');\n  return (\n    <SegmentedView\n      value={view}\n      onChange={setView}\n      options={[\n        { id: 'pretty', label: 'Pretty' },\n        { id: 'raw',    label: 'Raw' },\n      ]}\n    />\n  );\n}" },
+  themetoggle: { title: "ThemeToggleView", desc: "One button, two states — the sun and the moon tinted independently, for a header with no room for three segments.", vars: VARS_ACCENT, liveContent: slot(() => import('./components/themetoggle/examples/ThemeToggleViewExamples').then(m => m.ThemeToggleViewExamples)), examples: slot(() => import('./components/themetoggle/examples/ThemeToggleViewExamples').then(m => m.ThemeToggleViewExamples)), docs: slot(() => import('./components/themetoggle/docs/ThemeToggleViewDocs').then(m => m.ThemeToggleViewDocs)), noExamplesHeader: true, code: "function Preview() {\n  const [theme, setTheme] = useState('dark');\n  return (\n    <ThemeToggleView\n      theme={theme}\n      onToggle={() => setTheme(t => (t === 'dark' ? 'light' : 'dark'))}\n    />\n  );\n}" },
+  commandchip: { title: "CommandChipView", desc: "A command rendered inline that copies itself when clicked — for the places a reader is about to retype something they could have taken.", vars: VARS_ACCENT, liveContent: slot(() => import('./components/commandchip/examples/CommandChipViewExamples').then(m => m.CommandChipViewExamples)), examples: slot(() => import('./components/commandchip/examples/CommandChipViewExamples').then(m => m.CommandChipViewExamples)), docs: slot(() => import('./components/commandchip/docs/CommandChipViewDocs').then(m => m.CommandChipViewDocs)), noExamplesHeader: true, code: "<CommandChipView command=\"npm install @salilvnair/dui\" />" },
+  pilledtab: { title: "PilledTabView", desc: "A compact tab row for inside a panel — a filled pill marks the active one, rounded or fully pilled.", vars: VARS_PILLTAB, liveContent: slot(() => import('./components/pilledtab/examples/PilledTabViewExamples').then(m => m.PilledTabViewExamples)), examples: slot(() => import('./components/pilledtab/examples/PilledTabViewExamples').then(m => m.PilledTabViewExamples)), docs: slot(() => import('./components/pilledtab/docs/PilledTabViewDocs').then(m => m.PilledTabViewDocs)), noExamplesHeader: true, code: "function Preview() {\n  const [id, setId] = useState('body');\n  return (\n    <PilledTabView\n      activeId={id}\n      onChange={setId}\n      tabs={[\n        { id: 'body',    label: 'Body' },\n        { id: 'headers', label: 'Headers' },\n        { id: 'cookies', label: 'Cookies' },\n      ]}\n    />\n  );\n}" },
+  underlinetabs: { title: "UnderlineTabsView", desc: "The page-level tab row — active marked by a rule rather than a box, with counts beside the labels.", vars: VARS_ACCENT, liveContent: slot(() => import('./components/underlinetabs/examples/UnderlineTabsViewExamples').then(m => m.UnderlineTabsViewExamples)), examples: slot(() => import('./components/underlinetabs/examples/UnderlineTabsViewExamples').then(m => m.UnderlineTabsViewExamples)), docs: slot(() => import('./components/underlinetabs/docs/UnderlineTabsViewDocs').then(m => m.UnderlineTabsViewDocs)), noExamplesHeader: true, code: "function Preview() {\n  const [id, setId] = useState('issues');\n  return (\n    <UnderlineTabsView\n      activeId={id}\n      onChange={setId}\n      tabs={[\n        { id: 'issues', label: 'Issues', count: 24 },\n        { id: 'prs',    label: 'Pull requests', count: 3 },\n      ]}\n    />\n  );\n}" },
+  callout: { title: "CalloutView", desc: "The titled block that interrupts a page to say something the reader needs — info, tip, warning, danger.", vars: VARS_STATUS, liveContent: slot(() => import('./components/callout/examples/CalloutViewExamples').then(m => m.CalloutViewExamples)), examples: slot(() => import('./components/callout/examples/CalloutViewExamples').then(m => m.CalloutViewExamples)), docs: slot(() => import('./components/callout/docs/CalloutViewDocs').then(m => m.CalloutViewDocs)), noExamplesHeader: true, code: "<CalloutView variant=\"warning\" title=\"This endpoint is rate limited\">\n  Sixty requests a minute per token. Beyond that you get a 429.\n</CalloutView>" },
+  infoview: { title: "InfoView", desc: "An explanatory block for settings and empty states — what this is, and where on disk it lives, with paths as pills rather than prose.", vars: VARS_ACCENT, liveContent: slot(() => import('./components/infoview/examples/InfoViewExamples').then(m => m.InfoViewExamples)), examples: slot(() => import('./components/infoview/examples/InfoViewExamples').then(m => m.InfoViewExamples)), docs: slot(() => import('./components/infoview/docs/InfoViewDocs').then(m => m.InfoViewDocs)), noExamplesHeader: true, code: "<InfoView\n  title=\"Where collections are stored\"\n  description=\"Everything is local.\"\n  paths={['~/.salilvnair/daakia/db/daakia.db']}\n/>" },
+  loadingstate: { title: "LoadingStateView", desc: "The screen shown while something is fetched — the subject drawn large, and a component that says so itself once the wait stops being ordinary.", vars: VARS_ACCENT, liveContent: slot(() => import('./components/loadingstate/examples/LoadingStateViewExamples').then(m => m.LoadingStateViewExamples)), examples: slot(() => import('./components/loadingstate/examples/LoadingStateViewExamples').then(m => m.LoadingStateViewExamples)), docs: slot(() => import('./components/loadingstate/docs/LoadingStateViewDocs').then(m => m.LoadingStateViewDocs)), noExamplesHeader: true, code: "<LoadingStateView\n  title=\"Connecting to the cluster\"\n  message=\"Reading your kubeconfig.\"\n  slowAfterSeconds={3}\n  slowMessage=\"Still going. The cluster may be behind a VPN.\"\n/>" },
+  tableskeleton: { title: "TableSkeletonView", desc: "The placeholder a table shows while its rows load — declared with the same column widths, so nothing jumps when the data lands.", vars: VARS_ACCENT, liveContent: slot(() => import('./components/tableskeleton/examples/TableSkeletonViewExamples').then(m => m.TableSkeletonViewExamples)), examples: slot(() => import('./components/tableskeleton/examples/TableSkeletonViewExamples').then(m => m.TableSkeletonViewExamples)), docs: slot(() => import('./components/tableskeleton/docs/TableSkeletonViewDocs').then(m => m.TableSkeletonViewDocs)), noExamplesHeader: true, code: "<TableSkeletonView\n  rows={5}\n  rowHeight={34}\n  columns={[\n    { width: 60 },\n    { width: 'flex', fill: 0.7 },\n    { width: 70, align: 'right', fill: 0.5 },\n  ]}\n/>" },
+  terminalblock: { title: "TerminalBlockView", desc: "Commands and their output on a terminal ground — a terminal, whether it holds what you type or what came back.", vars: VARS_CODE, liveContent: slot(() => import('./components/terminalblock/examples/TerminalBlockViewExamples').then(m => m.TerminalBlockViewExamples)), examples: slot(() => import('./components/terminalblock/examples/TerminalBlockViewExamples').then(m => m.TerminalBlockViewExamples)), docs: slot(() => import('./components/terminalblock/docs/TerminalBlockViewDocs').then(m => m.TerminalBlockViewDocs)), noExamplesHeader: true, code: "<TerminalBlockView title=\"Install\" code={'npm install @salilvnair/dui'} />" },
+  groupheader: { title: "GroupHeaderView", desc: "The row above a group in a grouped list or a board column — set as a label, not a heading, so eight of them do not read as eight sections.", vars: VARS_ACCENT, liveContent: slot(() => import('./components/groupheader/examples/GroupHeaderViewExamples').then(m => m.GroupHeaderViewExamples)), examples: slot(() => import('./components/groupheader/examples/GroupHeaderViewExamples').then(m => m.GroupHeaderViewExamples)), docs: slot(() => import('./components/groupheader/docs/GroupHeaderViewDocs').then(m => m.GroupHeaderViewDocs)), noExamplesHeader: true, code: "<GroupHeaderView name=\"Unassigned\" count={7} tone=\"var(--color-warning)\" summary=\"oldest 42 days\" />" },
+  prioritymark: { title: "PriorityMarkView", desc: "The priority marker on an issue row — the ring is the signal, the word is a courtesy that a dense table can drop.", vars: VARS_STATUS, liveContent: slot(() => import('./components/prioritymark/examples/PriorityMarkViewExamples').then(m => m.PriorityMarkViewExamples)), examples: slot(() => import('./components/prioritymark/examples/PriorityMarkViewExamples').then(m => m.PriorityMarkViewExamples)), docs: slot(() => import('./components/prioritymark/docs/PriorityMarkViewDocs').then(m => m.PriorityMarkViewDocs)), noExamplesHeader: true, code: "<PriorityMarkView level=\"urgent\" />" },
+  setupoption: { title: "SetupOptionView", desc: "One card per route to getting installed — winget, Homebrew, apt — turning a wall of platform instructions into a list you pick from.", vars: VARS_ACCENT, liveContent: slot(() => import('./components/setupoption/examples/SetupOptionViewExamples').then(m => m.SetupOptionViewExamples)), examples: slot(() => import('./components/setupoption/examples/SetupOptionViewExamples').then(m => m.SetupOptionViewExamples)), docs: slot(() => import('./components/setupoption/docs/SetupOptionViewDocs').then(m => m.SetupOptionViewDocs)), noExamplesHeader: true, code: "<SetupOptionView\n  title=\"winget\"\n  tag=\"recommended\"\n  recommended\n  command=\"winget install Kubernetes.kubectl\"\n  note=\"Ships with Windows 11 and keeps itself updated.\"\n/>" },
+  donut: { title: "DonutView", desc: "A share-of-total ring, with maxSlices to roll the unreadable tail into one named remainder.", vars: VARS_ACCENT, liveContent: slot(() => import('./components/donut/examples/DonutViewExamples').then(m => m.DonutViewExamples)), examples: slot(() => import('./components/donut/examples/DonutViewExamples').then(m => m.DonutViewExamples)), docs: slot(() => import('./components/donut/docs/DonutViewDocs').then(m => m.DonutViewDocs)), noExamplesHeader: true, code: "<DonutView\n  legend\n  centerLabel=\"requests\"\n  items={[\n    { name: '200 OK',  value: 1842, color: 'var(--color-success)' },\n    { name: '404',     value: 318,  color: 'var(--color-warning)' },\n    { name: '500',     value: 96,   color: 'var(--color-error)' },\n  ]}\n/>" },
+  sunburst: { title: "SunburstView", desc: "Where a total went, one level at a time — a ring per level, drawn outward. Shares its HierarchyNode with FlameGraphView.", vars: VARS_ACCENT, liveContent: slot(() => import('./components/sunburst/examples/SunburstViewExamples').then(m => m.SunburstViewExamples)), examples: slot(() => import('./components/sunburst/examples/SunburstViewExamples').then(m => m.SunburstViewExamples)), docs: slot(() => import('./components/sunburst/docs/SunburstViewDocs').then(m => m.SunburstViewDocs)), noExamplesHeader: true, code: "<SunburstView\n  size={240}\n  centerLabel=\"heap\"\n  root={{\n    name: 'heap',\n    children: [\n      { name: 'byte[]', value: 5200 },\n      { name: 'String', value: 2400 },\n      { name: 'HashMap', value: 3100 },\n    ],\n  }}\n/>" },
+  flamegraph: { title: "FlameGraphView", desc: "The profiler flame graph — a frame is as wide as it is expensive, and clicking one makes it the new root.", vars: VARS_ACCENT, liveContent: slot(() => import('./components/flamegraph/examples/FlameGraphViewExamples').then(m => m.FlameGraphViewExamples)), examples: slot(() => import('./components/flamegraph/examples/FlameGraphViewExamples').then(m => m.FlameGraphViewExamples)), docs: slot(() => import('./components/flamegraph/docs/FlameGraphViewDocs').then(m => m.FlameGraphViewDocs)), noExamplesHeader: true, code: "<FlameGraphView\n  width={600}\n  format={v => v + 'ms'}\n  root={{\n    name: 'request',\n    children: [\n      { name: 'db.query',  value: 380 },\n      { name: 'serialize', value: 90 },\n      { name: 'auth',      value: 160 },\n    ],\n  }}\n/>" },
+  lanechart: { title: "LaneChartView", desc: "Several metrics over the same period, each in its own lane with its own scale — so a small signal is not flattened by a large one.", vars: VARS_ACCENT, liveContent: slot(() => import('./components/lanechart/examples/LaneChartViewExamples').then(m => m.LaneChartViewExamples)), examples: slot(() => import('./components/lanechart/examples/LaneChartViewExamples').then(m => m.LaneChartViewExamples)), docs: slot(() => import('./components/lanechart/docs/LaneChartViewDocs').then(m => m.LaneChartViewDocs)), noExamplesHeader: true, code: "<LaneChartView\n  series={[\n    { id: 'cpu', label: 'CPU', color: 'var(--color-primary)', filled: true,\n      points: [{ at: 0, value: 20 }, { at: 1000, value: 55 }, { at: 2000, value: 38 }] },\n  ]}\n  markers={[{ at: 1500, label: 'deploy', color: 'var(--color-warning)' }]}\n/>" },
+  swimlanechart: { title: "SwimlaneChartView", desc: "What each of several things was doing over a period — threads by state, pods by phase — each stretch coloured by the caller's map.", vars: VARS_STATUS, liveContent: slot(() => import('./components/swimlanechart/examples/SwimlaneChartViewExamples').then(m => m.SwimlaneChartViewExamples)), examples: slot(() => import('./components/swimlanechart/examples/SwimlaneChartViewExamples').then(m => m.SwimlaneChartViewExamples)), docs: slot(() => import('./components/swimlanechart/docs/SwimlaneChartViewDocs').then(m => m.SwimlaneChartViewDocs)), noExamplesHeader: true, code: "<SwimlaneChartView\n  colors={{ running: 'var(--color-success)', blocked: 'var(--color-error)' }}\n  rows={[\n    { id: 't1', label: 'http-nio-1', segments: [\n      { from: 0, to: 1200, state: 'running' },\n      { from: 1200, to: 2600, state: 'blocked' },\n    ] },\n  ]}\n/>" },
+  filebrowser: { title: "FileBrowserView", desc: "A directory listing — files, folders and symlinks, with selection and arrival as two separate states in two separate colours.", vars: VARS_ACCENT, liveContent: slot(() => import('./components/filebrowser/examples/FileBrowserViewExamples').then(m => m.FileBrowserViewExamples)), examples: slot(() => import('./components/filebrowser/examples/FileBrowserViewExamples').then(m => m.FileBrowserViewExamples)), docs: slot(() => import('./components/filebrowser/docs/FileBrowserViewDocs').then(m => m.FileBrowserViewDocs)), noExamplesHeader: true, code: "function Preview() {\n  const [id, setId] = useState('pkg');\n  return (\n    <FileBrowserView\n      selectedId={id}\n      onSelect={e => setId(e.id)}\n      onParent={() => {}}\n      entries={[\n        { id: 'src', name: 'src', kind: 'dir' },\n        { id: 'pkg', name: 'package.json', kind: 'file', size: 2789, badge: 'modified', badgeTone: 'warning' },\n      ]}\n    />\n  );\n}" },
+  pathbreadcrumb: { title: "PathBreadcrumbView", desc: "The path bar above a file listing — every segment a link back, and a double-click turns the whole thing into a text box.", vars: VARS_ACCENT, liveContent: slot(() => import('./components/pathbreadcrumb/examples/PathBreadcrumbViewExamples').then(m => m.PathBreadcrumbViewExamples)), examples: slot(() => import('./components/pathbreadcrumb/examples/PathBreadcrumbViewExamples').then(m => m.PathBreadcrumbViewExamples)), docs: slot(() => import('./components/pathbreadcrumb/docs/PathBreadcrumbViewDocs').then(m => m.PathBreadcrumbViewDocs)), noExamplesHeader: true, code: "function Preview() {\n  const [path, setPath] = useState('/home/salil/workspace/dui/src/lib');\n  return <PathBreadcrumbView path={path} onNavigate={setPath} />;\n}" },
+  markdowneditor: { title: "MarkdownEditorView", desc: "A rich editor over one Markdown document — rich text and raw source over the same value, and dialogs the host cannot forbid.", vars: VARS_INPUT, liveContent: slot(() => import('./components/markdowneditor/examples/MarkdownEditorViewExamples').then(m => m.MarkdownEditorViewExamples)), examples: slot(() => import('./components/markdowneditor/examples/MarkdownEditorViewExamples').then(m => m.MarkdownEditorViewExamples)), docs: slot(() => import('./components/markdowneditor/docs/MarkdownEditorViewDocs').then(m => m.MarkdownEditorViewDocs)), noExamplesHeader: true, code: "function Preview() {\n  const [md, setMd] = useState('# Hello\\n\\nThe look is **data** now.');\n  return <MarkdownEditorView value={md} onChange={setMd} />;\n}" },
+  linediff: { title: "LineDiffView", desc: "Two texts side by side with the changed lines marked — and no Monaco anywhere near it.", vars: VARS_CODE, liveContent: slot(() => import('./components/linediff/examples/LineDiffViewExamples').then(m => m.LineDiffViewExamples)), examples: slot(() => import('./components/linediff/examples/LineDiffViewExamples').then(m => m.LineDiffViewExamples)), docs: slot(() => import('./components/linediff/docs/LineDiffViewDocs').then(m => m.LineDiffViewDocs)), noExamplesHeader: true, code: "<LineDiffView\n  left={'version: 1.0.10'}\n  right={'version: 1.0.11'}\n  leftLabel=\"Before\"\n  rightLabel=\"After\"\n  height={160}\n/>" },
+  diffeditor: { title: "DiffEditorView", desc: "The diff twin of EditorView — a line diff out of the box, upgrading itself to Monaco the moment a consumer opts in.", vars: VARS_CODE, liveContent: slot(() => import('./components/diffeditor/examples/DiffEditorViewExamples').then(m => m.DiffEditorViewExamples)), examples: slot(() => import('./components/diffeditor/examples/DiffEditorViewExamples').then(m => m.DiffEditorViewExamples)), docs: slot(() => import('./components/diffeditor/docs/DiffEditorViewDocs').then(m => m.DiffEditorViewDocs)), noExamplesHeader: true, code: "<DiffEditorView\n  original={'a\\nb\\nc'}\n  modified={'a\\nB\\nc\\nd'}\n  language=\"text\"\n  height={220}\n/>" },
+  commandpalette: { title: "CommandPaletteView", desc: "The Ctrl+K box. Keywords are the part worth knowing — Send request should still be found by typing run.", vars: VARS_ACCENT, liveContent: slot(() => import('./components/commandpalette/examples/CommandPaletteViewExamples').then(m => m.CommandPaletteViewExamples)), examples: slot(() => import('./components/commandpalette/examples/CommandPaletteViewExamples').then(m => m.CommandPaletteViewExamples)), docs: slot(() => import('./components/commandpalette/docs/CommandPaletteViewDocs').then(m => m.CommandPaletteViewDocs)), noExamplesHeader: true, code: "function Preview() {\n  const [open, setOpen] = useState(false);\n  return (\n    <>\n      <ButtonView onClick={() => setOpen(true)}>Open</ButtonView>\n      <CommandPaletteView\n        open={open}\n        onClose={() => setOpen(false)}\n        commands={[\n          { id: 'send', label: 'Send request', hint: 'Ctrl+Enter', keywords: ['run'], action: () => {} },\n        ]}\n      />\n    </>\n  );\n}" },
+  datetimeinput: { title: "DateTimeInputView", desc: "A date and a time in one field, returning one ISO string — with null as a real state rather than an empty one.", vars: VARS_INPUT, liveContent: slot(() => import('./components/datetimeinput/examples/DateTimeInputViewExamples').then(m => m.DateTimeInputViewExamples)), examples: slot(() => import('./components/datetimeinput/examples/DateTimeInputViewExamples').then(m => m.DateTimeInputViewExamples)), docs: slot(() => import('./components/datetimeinput/docs/DateTimeInputViewDocs').then(m => m.DateTimeInputViewDocs)), noExamplesHeader: true, code: "function Preview() {\n  const [when, setWhen] = useState('2026-09-15T14:30');\n  return <DateTimeInputView value={when} onChange={setWhen} minuteStep={15} />;\n}" },
+  timezoneselect: { title: "TimeZoneSelectView", desc: "Every zone the platform knows, searchable — from the platform rather than a bundled table, so it does not go stale.", vars: VARS_INPUT, liveContent: slot(() => import('./components/timezoneselect/examples/TimeZoneSelectViewExamples').then(m => m.TimeZoneSelectViewExamples)), examples: slot(() => import('./components/timezoneselect/examples/TimeZoneSelectViewExamples').then(m => m.TimeZoneSelectViewExamples)), docs: slot(() => import('./components/timezoneselect/docs/TimeZoneSelectViewDocs').then(m => m.TimeZoneSelectViewDocs)), noExamplesHeader: true, code: "function Preview() {\n  const [tz, setTz] = useState('Asia/Kolkata');\n  return <TimeZoneSelectView value={tz} onChange={setTz} width={300} />;\n}" },
+  sheet: { title: "SheetView", desc: "A panel that slides in from any edge — for content that is a sidebar on a wide screen and a bottom sheet on a narrow one.", vars: VARS_ACCENT, liveContent: slot(() => import('./components/sheet/examples/SheetViewExamples').then(m => m.SheetViewExamples)), examples: slot(() => import('./components/sheet/examples/SheetViewExamples').then(m => m.SheetViewExamples)), docs: slot(() => import('./components/sheet/docs/SheetViewDocs').then(m => m.SheetViewDocs)), noExamplesHeader: true, code: "function Preview() {\n  const [open, setOpen] = useState(false);\n  return (\n    <>\n      <ButtonView onClick={() => setOpen(true)}>Open sheet</ButtonView>\n      <SheetView open={open} onClose={() => setOpen(false)} edge=\"right\" title=\"Filters\">\n        Anything at all.\n      </SheetView>\n    </>\n  );\n}" },
+  fanstack: { title: "FanStackView", desc: "A small set of actions that spring out of a floating anchor — straight up, or swept into an arc.", vars: VARS_ACCENT, liveContent: slot(() => import('./components/fanstack/examples/FanStackViewExamples').then(m => m.FanStackViewExamples)), examples: slot(() => import('./components/fanstack/examples/FanStackViewExamples').then(m => m.FanStackViewExamples)), docs: slot(() => import('./components/fanstack/docs/FanStackViewDocs').then(m => m.FanStackViewDocs)), noExamplesHeader: true, code: "function Preview() {\n  const [open, setOpen] = useState(true);\n  return (\n    <div style={{ position: 'relative', height: 200 }}>\n      <FanStackView\n        open={open}\n        onSelect={() => setOpen(false)}\n        angleStep={18}\n        items={[\n          { id: 'run', icon: <PlayIcon size={14} />, label: 'Run' },\n          { id: 'add', icon: <PlusIcon size={14} />, label: 'Add' },\n        ]}\n      />\n    </div>\n  );\n}" },
+  rearrange: { title: "RearrangeView", desc: "The column-picker shape — which fields to show and in what order, both questions in one list.", vars: VARS_ACCENT, liveContent: slot(() => import('./components/rearrange/examples/RearrangeViewExamples').then(m => m.RearrangeViewExamples)), examples: slot(() => import('./components/rearrange/examples/RearrangeViewExamples').then(m => m.RearrangeViewExamples)), docs: slot(() => import('./components/rearrange/docs/RearrangeViewDocs').then(m => m.RearrangeViewDocs)), noExamplesHeader: true, code: "function Preview() {\n  const [cols, setCols] = useState([\n    { id: 'method', label: 'Method', enabled: true },\n    { id: 'url',    label: 'URL',    enabled: true },\n    { id: 'time',   label: 'Time',   enabled: false },\n  ]);\n  return <RearrangeView items={cols} onChange={setCols} />;\n}" },
+  sortable: { title: "SortableView", desc: "Reordering for rows you draw yourself — it supplies the handle, the drop indicator and the indices, nothing else.", vars: VARS_ACCENT, liveContent: slot(() => import('./components/sortable/examples/SortableViewExamples').then(m => m.SortableViewExamples)), examples: slot(() => import('./components/sortable/examples/SortableViewExamples').then(m => m.SortableViewExamples)), docs: slot(() => import('./components/sortable/docs/SortableViewDocs').then(m => m.SortableViewDocs)), noExamplesHeader: true, code: "function Preview() {\n  const [rows, setRows] = useState(['Auth', 'Logging', 'Compression']);\n  const move = (from, to) => setRows(prev => {\n    const next = prev.slice();\n    next.splice(to, 0, next.splice(from, 1)[0]);\n    return next;\n  });\n  return (\n    <SortableView\n      onReorder={move}\n      rows={rows.map(r => ({ id: r, node: <div style={{ padding: 8 }}>{r}</div> }))}\n    />\n  );\n}" },
+  findingcard: { title: "FindingCardView", desc: "One finding from an analysis — with remediation kept apart from the detail, because what was found and what to do are read at different moments.", vars: VARS_STATUS, liveContent: slot(() => import('./components/findingcard/examples/FindingCardViewExamples').then(m => m.FindingCardViewExamples)), examples: slot(() => import('./components/findingcard/examples/FindingCardViewExamples').then(m => m.FindingCardViewExamples)), docs: slot(() => import('./components/findingcard/docs/FindingCardViewDocs').then(m => m.FindingCardViewDocs)), noExamplesHeader: true, code: "<FindingCardView\n  severity=\"critical\"\n  title=\"Heap grew 412 MB across 3 dumps\"\n  meta=\"LEAK-001\"\n  detail=\"byte[] retained by OrderCache rose from 88 MB to 500 MB.\"\n  remediation=\"Cap the cache, or give it a time-based eviction policy.\"\n/>" },
+  issuecard: { title: "IssueCardView", desc: "The card a tracker board is built from — everything but the title is a slot, with a matching skeleton so the board never reflows.", vars: VARS_ACCENT, liveContent: slot(() => import('./components/issuecard/examples/IssueCardViewExamples').then(m => m.IssueCardViewExamples)), examples: slot(() => import('./components/issuecard/examples/IssueCardViewExamples').then(m => m.IssueCardViewExamples)), docs: slot(() => import('./components/issuecard/docs/IssueCardViewDocs').then(m => m.IssueCardViewDocs)), noExamplesHeader: true, code: "<IssueCardView\n  reference=\"#41\"\n  title=\"Editor drops the last character on paste\"\n  meta={<span>4d · 3 comments</span>}\n/>" },
+  inspectorpanel: { title: "InspectorPanelView", desc: "The detail panel beside a list — an overlay on a narrow screen and a permanent third column on a wide one, from one prop.", vars: VARS_ACCENT, liveContent: slot(() => import('./components/inspectorpanel/examples/InspectorPanelViewExamples').then(m => m.InspectorPanelViewExamples)), examples: slot(() => import('./components/inspectorpanel/examples/InspectorPanelViewExamples').then(m => m.InspectorPanelViewExamples)), docs: slot(() => import('./components/inspectorpanel/docs/InspectorPanelViewDocs').then(m => m.InspectorPanelViewDocs)), noExamplesHeader: true, code: "<InspectorPanelView embedded title=\"api-7d4f9c8b6\" subtitle=\"pod\">\n  <InspectorSectionView label=\"Identity\">\n    <div style={{ fontSize: 12 }}>namespace: production</div>\n  </InspectorSectionView>\n</InspectorPanelView>" },
+  keyvaluerow: { title: "KeyValueTableRowView", desc: "The row KeyValueTableView is built from, exported on its own — and HiddenKeyValueItemView, the same pair when it cannot be edited.", vars: VARS_INPUT, liveContent: slot(() => import('./components/keyvaluerow/examples/KeyValueTableRowViewExamples').then(m => m.KeyValueTableRowViewExamples)), examples: slot(() => import('./components/keyvaluerow/examples/KeyValueTableRowViewExamples').then(m => m.KeyValueTableRowViewExamples)), docs: slot(() => import('./components/keyvaluerow/docs/KeyValueTableRowViewDocs').then(m => m.KeyValueTableRowViewDocs)), noExamplesHeader: true, code: "<KeyValueTableRowView\n  rowKey=\"Authorization\"\n  value=\"Bearer eyJhbGciOiJIUzI1NiIs\"\n  enabled\n  maskSensitive\n  deletable\n/>" },
   home:              { title: 'DUI',                    desc: 'The component library behind daakia and ck8t.', liveContent: slot(() => import('./panels/HomePanel').then(m => m.HomePanel)), noExamplesHeader: true },
   chips:             { title: 'ChipView',              desc: 'Colored badge chips for methods, protocols, status codes, filter tags.',            vars: VARS_CHIP,       liveContent: slot(() => import('./components/chipsview/live/ChipsViewLive').then(m => m.ChipsViewLive)), examples: slot(() => import('./components/chipsview/examples/ChipsViewExamples').then(m => m.ChipsViewExamples)), docs: slot(() => import('./components/chipsview/docs/ChipsViewDocs').then(m => m.ChipsViewDocs)),             code: `<ChipView label="GET"  color="var(--color-success)" />\n<ChipView label="POST" color="var(--color-primary)" />\n<ChipView label="404"  color="var(--color-error)"   size="sm" />\n<ChipView label="beta" color="var(--color-warning)"  size="xs" />` },
   textinput:         { title: 'TextInputView',          desc: 'Standard text input — sizes match ButtonView and SelectInputView exactly.',         vars: VARS_INPUT,      liveContent: slot(() => import('./components/textinputview/live/TextInputViewLive').then(m => m.TextInputViewLive)), examples: slot(() => import('./components/textinputview/examples/TextInputViewExamples').then(m => m.TextInputViewExamples)), docs: slot(() => import('./components/textinputview/docs/TextInputViewDocs').then(m => m.TextInputViewDocs)),         code: `function Preview() {\n  const [val, setVal] = useState('');\n  return (\n    <TextInputView\n      placeholder="Enter URL…"\n      value={val}\n      onChange={e => setVal(e.target.value)}\n      size="md"\n      iconLeft={<GlobeIcon size={13} />}\n      style={{ width: 260 }}\n    />\n  );\n}` },
