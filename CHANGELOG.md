@@ -19,6 +19,22 @@ Dates are the day the version was tagged.
 
 ### Added
 
+- **A home page.** The showcase opened on `TextInputView`, which tells a
+  first-time reader nothing — not what the library is, not how big it is, not
+  how to install it. There is a front door now, built out of the library's own
+  components, with each feature card linking to the panel that proves it.
+- **43 components that existed in the code but nowhere in the showcase** —
+  essentially everything added since 1.0.7, including `BadgeChipView` and its
+  fifty skins, the five charts (`DonutView`, `SunburstView`, `FlameGraphView`,
+  `LaneChartView`, `SwimlaneChartView`), `FileBrowserView`,
+  `MarkdownEditorView`, `SheetView`, `CommandPaletteView` and the rest. Each
+  has live examples and a full props table. The sidebar went from 238 entries
+  to 281.
+- **`npm run coverage`** — reads the public barrel for every exported
+  component, reads the showcase for every panel, and prints the difference.
+  `--check` exits non-zero, which is the version worth running in CI. This is
+  the durable half of the fix above: the drift was invisible because nothing
+  ever compared the two.
 - **Addressable components.** Every panel in the showcase now has a URL:
   `#/chips`, `#/chips/docs`, `#/chips?theme=light`. The README, the demo site
   and the capture scripts all link straight to a component instead of saying

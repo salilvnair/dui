@@ -13,7 +13,7 @@
   "intro": {
     "enabled": true,
     "title": "DUI",
-    "tagline": "238 components. One theme system. Nothing you have to keep.",
+    "tagline": "281 components. One theme system. Nothing you have to keep.",
     "badges": [
       "React 19",
       "TypeScript",
