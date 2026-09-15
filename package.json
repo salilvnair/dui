@@ -1,7 +1,7 @@
 {
   "name": "@salilvnair/dui",
   "version": "1.0.12",
-  "description": "Daakia UI component library — shared across ck8t and daakia",
+  "description": "Daakia UI component library \u2014 shared across ck8t and daakia",
   "type": "module",
   "license": "MIT",
   "author": "Salil V Nair",
@@ -75,6 +75,8 @@
     "sheets": "node scripts/screenshots/sheets.mjs",
     "catalog": "node scripts/screenshots/readme-catalog.mjs",
     "catalog:check": "node scripts/screenshots/readme-catalog.mjs --check",
+    "coverage": "node scripts/showcase/coverage.mjs",
+    "coverage:check": "node scripts/showcase/coverage.mjs --check",
     "demo-video:record": "node scripts/demo-video/record.js",
     "demo-video:compose": "node scripts/demo-video/compose.js",
     "demo-video:refine": "node scripts/demo-video/refine.js",
