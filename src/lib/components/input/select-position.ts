@@ -64,7 +64,10 @@ export function placeSelectMenu(
   viewportHeight: number,
 ): MenuPlacement {
   const cap = Math.min(MAX_MENU_H, viewportHeight * 0.7);
-  const wanted = Math.min(contentHeight || 200, cap);
+  const content = contentHeight || 200;
+  /* Only for choosing a side: "would it fit below?" is asked of the height the
+     menu would like, not of the ceiling it is allowed. */
+  const wanted = Math.min(content, cap);
 
   const spaceBelow = viewportHeight - rect.bottom - VIEWPORT_MARGIN;
   const spaceAbove = rect.top - VIEWPORT_MARGIN;
@@ -73,11 +76,30 @@ export function placeSelectMenu(
      is cramped either way should at least be cramped on the roomier side. */
   const below = spaceBelow >= wanted || spaceBelow >= spaceAbove;
 
-  /* The window is the last word on height: a menu taller than the thing it is
-     drawn in has nowhere to put the difference. */
+  /*
+    ── A ceiling, not a height ──
+
+    This is `max-height`: the menu sizes itself to its own content and scrolls
+    only past this. Setting it to the content's own height therefore does
+    nothing useful and one thing harmful — the box is `border-box`, so a
+    `max-height` equal to `scrollHeight` leaves a content area a pixel or two
+    SHORTER than the content it was measured from, and the menu grows a
+    scrollbar to cover the difference.
+
+    That is how a five-item list with a thousand pixels of clear space under it
+    ended up scrolling: 151px of content, capped at 151px, 150px to put it in.
+
+    So the ceiling is the room there is, capped. Content decides the height;
+    this only decides when it stops growing.
+  */
   const limit = Math.max(0, viewportHeight - 2 * VIEWPORT_MARGIN);
   const room = Math.max(0, (below ? spaceBelow : spaceAbove) - GAP);
-  const maxHeight = Math.min(Math.max(Math.min(room, wanted), MIN_MENU_H), limit);
+  const maxHeight = Math.min(Math.max(Math.min(room, cap), MIN_MENU_H), limit);
+
+  /* How tall it will actually be, which is what the position has to be built
+     from — a short menu placed as though it were the full ceiling would float
+     a couple of hundred pixels above the trigger it belongs to. */
+  const height = Math.min(maxHeight, content);
 
   /*
     Then put it on screen, which is a separate question from how tall it is.
@@ -91,8 +113,8 @@ export function placeSelectMenu(
     a control the reader has already finished with, rather than on the window
     edge, which eats it.
   */
-  const preferred = below ? rect.bottom + GAP : rect.top - maxHeight - GAP;
-  const lowest = Math.max(VIEWPORT_MARGIN, viewportHeight - VIEWPORT_MARGIN - maxHeight);
+  const preferred = below ? rect.bottom + GAP : rect.top - height - GAP;
+  const lowest = Math.max(VIEWPORT_MARGIN, viewportHeight - VIEWPORT_MARGIN - height);
   const top = Math.min(Math.max(VIEWPORT_MARGIN, preferred), lowest);
 
   return { side: below ? 'below' : 'above', top, maxHeight };

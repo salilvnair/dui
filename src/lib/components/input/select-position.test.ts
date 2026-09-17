@@ -14,10 +14,22 @@ const place = (
   viewportH: number,
 ) => placeSelectMenu(r, contentH, viewportH);
 
-/** Nothing may leave the window, on either edge. */
-function onScreen(p: { top: number; maxHeight: number }, viewportH: number) {
+/**
+ * Nothing may leave the window, on either edge.
+ *
+ * Measured on the box that is actually drawn. `maxHeight` is a ceiling the
+ * menu only reaches when its content is that tall — a 60px list allowed 120px
+ * still draws 60 — so asserting on the ceiling would fail placements that put
+ * every visible pixel on screen.
+ */
+function onScreen(
+  p: { top: number; maxHeight: number },
+  viewportH: number,
+  contentH: number,
+) {
+  const drawn = Math.min(p.maxHeight, contentH);
   expect(p.top).toBeGreaterThanOrEqual(0);
-  expect(p.top + p.maxHeight).toBeLessThanOrEqual(viewportH);
+  expect(p.top + drawn).toBeLessThanOrEqual(viewportH);
 }
 
 describe('select menu placement', () => {
@@ -38,15 +50,15 @@ describe('select menu placement', () => {
     const p = place({ top: 700, bottom: 724 }, 12_000, 800);
     expect(p.side).toBe('above');
     expect(p.top + p.maxHeight).toBeLessThanOrEqual(724);
-    onScreen(p, 800);
+    onScreen(p, 800, 12_000);
   });
 
   it('never runs past the bottom of the window', () => {
-    onScreen(place({ top: 300, bottom: 324 }, 12_000, 800), 800);
+    onScreen(place({ top: 300, bottom: 324 }, 12_000, 800), 800, 12_000);
   });
 
   it('never runs past the top of the window', () => {
-    onScreen(place({ top: 760, bottom: 784 }, 12_000, 800), 800);
+    onScreen(place({ top: 760, bottom: 784 }, 12_000, 800), 800, 12_000);
   });
 
   it('stays on the side with more room when neither side fits', () => {
@@ -73,29 +85,65 @@ describe('select menu placement', () => {
       const p = place({ top: 70, bottom: 94 }, 12_000, 200);
       expect(p.side).toBe('below');
       expect(p.maxHeight).toBe(MIN_MENU_H);
-      onScreen(p, 200);
+      onScreen(p, 200, 12_000);
     });
 
     it('keeps a menu opening upward inside the window', () => {
       const p = place({ top: 120, bottom: 150 }, 12_000, 200);
       expect(p.side).toBe('above');
       expect(p.maxHeight).toBe(MIN_MENU_H);
-      onScreen(p, 200);
+      onScreen(p, 200, 12_000);
     });
 
     it('never asks for more height than the window itself has', () => {
       const p = place({ top: 40, bottom: 64 }, 12_000, 100);
       expect(p.maxHeight).toBeLessThanOrEqual(100);
-      onScreen(p, 100);
+      onScreen(p, 100, 12_000);
+    });
+  });
+
+  /*
+    ── A list short enough to fit must not scroll ──
+
+    The third bug. `maxHeight` was being set to the menu's own `scrollHeight`,
+    which reads as harmless and is not: the box is `border-box`, so a ceiling
+    equal to the content height leaves a content area a pixel or two shorter
+    than the content, and the menu grows a scrollbar to cover the difference.
+
+    Five options, 151px of them, a thousand pixels of clear space underneath,
+    and a scrollbar. `max-height` is a ceiling — the content decides the
+    height, and this only decides when it stops growing.
+  */
+  describe('a list that fits', () => {
+    it('is not capped at its own height', () => {
+      const p = place({ top: 142, bottom: 170 }, 151, 1270);
+      expect(p.side).toBe('below');
+      expect(p.maxHeight).toBeGreaterThan(151);
+    });
+
+    it('still sits directly under the trigger', () => {
+      expect(place({ top: 142, bottom: 170 }, 151, 1270).top).toBe(174);
+    });
+
+    it('sits directly above the trigger when it flips', () => {
+      /* Positioned from the height it will really be. Built from the ceiling
+         instead, a 151px menu would hang 380px up and leave a gap. */
+      const p = place({ top: 700, bottom: 724 }, 151, 800);
+      expect(p.side).toBe('above');
+      expect(p.top + 151).toBe(696);
     });
   });
 
   it('stays on screen wherever the trigger is, at any window height', () => {
     for (const viewportH of [100, 200, 360, 800, 1440]) {
-      for (let top = 0; top <= viewportH; top += 17) {
-        const p = place({ top, bottom: top + 24 }, 12_000, viewportH);
-        onScreen(p, viewportH);
-        expect(p.maxHeight).toBeGreaterThan(0);
+      for (const contentH of [60, 151, 400, 12_000]) {
+        for (let top = 0; top <= viewportH; top += 17) {
+          const p = place({ top, bottom: top + 24 }, contentH, viewportH);
+          onScreen(p, viewportH, contentH);
+          expect(p.maxHeight).toBeGreaterThan(0);
+          /* A menu short enough to fit its ceiling never scrolls. */
+          if (contentH <= p.maxHeight) expect(p.maxHeight).toBeGreaterThanOrEqual(contentH);
+        }
       }
     }
   });
