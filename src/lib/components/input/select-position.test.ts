@@ -1,26 +1,23 @@
 import { describe, it, expect } from 'vitest';
+import { placeSelectMenu, MIN_MENU_H } from './select-position';
 
 /**
- * The vertical placement rule, extracted so it can be reasoned about.
+ * The vertical placement rule.
  *
- * Kept in step with SelectInputView by construction: this is the same
- * arithmetic, and the test that matters is the one with hundreds of options,
- * because that is the case the old code got exactly backwards.
+ * Imported rather than copied. It used to be re-implemented here, with a
+ * comment saying the two were kept in step by construction — which is a thing
+ * a test cannot check, and the only thing this test is for.
  */
-const MIN_MENU_H = 120;
+const place = (
+  r: { top: number; bottom: number },
+  contentH: number,
+  viewportH: number,
+) => placeSelectMenu(r, contentH, viewportH);
 
-function place(r: { top: number; bottom: number }, contentH: number, viewportH: number) {
-  const M = 8;
-  const cap = Math.min(380, viewportH * 0.7);
-  const wanted = Math.min(contentH || 200, cap);
-  const spaceBelow = viewportH - r.bottom - M;
-  const spaceAbove = r.top - M;
-
-  if (spaceBelow >= wanted || spaceBelow >= spaceAbove) {
-    return { side: 'below' as const, top: r.bottom + 4, maxHeight: Math.max(MIN_MENU_H, spaceBelow - 4) };
-  }
-  const h = Math.max(MIN_MENU_H, Math.min(wanted, spaceAbove - 4));
-  return { side: 'above' as const, top: r.top - h - 4, maxHeight: h };
+/** Nothing may leave the window, on either edge. */
+function onScreen(p: { top: number; maxHeight: number }, viewportH: number) {
+  expect(p.top).toBeGreaterThanOrEqual(0);
+  expect(p.top + p.maxHeight).toBeLessThanOrEqual(viewportH);
 }
 
 describe('select menu placement', () => {
@@ -32,26 +29,24 @@ describe('select menu placement', () => {
 
   it('flips up for a long list near the bottom', () => {
     /*
-      The bug. 419 timezones is ~12,000px of content, and the old rule compared
-      that raw height against the space on each side: nothing was ever big
-      enough, so it fell through to opening downward and ran off the screen.
-      The longer the list, the more certain it was to do the wrong thing.
+      The bug it was written for. 419 timezones is ~12,000px of content, and
+      the old rule compared that raw height against the space on each side:
+      nothing was ever big enough, so it fell through to opening downward and
+      ran off the screen. The longer the list, the more certain it was to do
+      the wrong thing.
     */
     const p = place({ top: 700, bottom: 724 }, 12_000, 800);
     expect(p.side).toBe('above');
-    expect(p.top).toBeGreaterThanOrEqual(0);
     expect(p.top + p.maxHeight).toBeLessThanOrEqual(724);
+    onScreen(p, 800);
   });
 
   it('never runs past the bottom of the window', () => {
-    const viewportH = 800;
-    const p = place({ top: 300, bottom: 324 }, 12_000, viewportH);
-    expect(p.top + p.maxHeight).toBeLessThanOrEqual(viewportH);
+    onScreen(place({ top: 300, bottom: 324 }, 12_000, 800), 800);
   });
 
   it('never runs past the top of the window', () => {
-    const p = place({ top: 760, bottom: 784 }, 12_000, 800);
-    expect(p.top).toBeGreaterThanOrEqual(0);
+    onScreen(place({ top: 760, bottom: 784 }, 12_000, 800), 800);
   });
 
   it('stays on the side with more room when neither side fits', () => {
@@ -60,16 +55,48 @@ describe('select menu placement', () => {
     expect(place({ top: 600, bottom: 700 }, 12_000, 808).side).toBe('above');
   });
 
-  it('stays usable for a trigger pinned to an edge', () => {
-    // A 12px menu is not a menu. Better to overlap slightly and be readable.
-    const p = place({ top: 790, bottom: 798 }, 12_000, 800);
-    expect(p.maxHeight).toBeGreaterThanOrEqual(MIN_MENU_H);
+  /*
+    ── A panel too short for the minimum ──
+
+    The second bug. `Math.max(MIN_MENU_H, room)` put the floor ABOVE the space
+    available, so a 200px panel opened a 120px menu into 98px of room and hung
+    18px past the bottom edge — the exact failure the rest of this arithmetic
+    exists to prevent, arriving through the floor instead of the ceiling.
+
+    The minimum is still honoured, because a 12px menu is unusable. What gives
+    is the POSITION: the menu slides back inside and overlaps the trigger, a
+    control the reader has already finished with, instead of the window edge,
+    which would simply eat that part of the list.
+  */
+  describe('a window too short for the preferred height', () => {
+    it('keeps a menu opening downward inside the window', () => {
+      const p = place({ top: 70, bottom: 94 }, 12_000, 200);
+      expect(p.side).toBe('below');
+      expect(p.maxHeight).toBe(MIN_MENU_H);
+      onScreen(p, 200);
+    });
+
+    it('keeps a menu opening upward inside the window', () => {
+      const p = place({ top: 120, bottom: 150 }, 12_000, 200);
+      expect(p.side).toBe('above');
+      expect(p.maxHeight).toBe(MIN_MENU_H);
+      onScreen(p, 200);
+    });
+
+    it('never asks for more height than the window itself has', () => {
+      const p = place({ top: 40, bottom: 64 }, 12_000, 100);
+      expect(p.maxHeight).toBeLessThanOrEqual(100);
+      onScreen(p, 100);
+    });
   });
 
-  it('does not grow a short list to fill the space', () => {
-    const p = place({ top: 100, bottom: 124 }, 90, 900);
-    expect(p.side).toBe('below');
-    // The cap is a ceiling, not a target — the menu is its content's height.
-    expect(p.maxHeight).toBeGreaterThanOrEqual(90);
+  it('stays on screen wherever the trigger is, at any window height', () => {
+    for (const viewportH of [100, 200, 360, 800, 1440]) {
+      for (let top = 0; top <= viewportH; top += 17) {
+        const p = place({ top, bottom: top + 24 }, 12_000, viewportH);
+        onScreen(p, viewportH);
+        expect(p.maxHeight).toBeGreaterThan(0);
+      }
+    }
   });
 });
