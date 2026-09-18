@@ -4,6 +4,7 @@ import { SearchIcon, ServerIcon } from '../../../icons';
 import type { DuiSize } from '../../core/DuiTypes';
 import { useInputBase } from '../../core/InputBase';
 import { buildHighlightedHTML, getCaretOffset, setCaretOffset, createEditableHistory, isUndoKey, isRedoKey } from '../../core/VariableToken';
+import { useCaret, useSuggested, GhostText, isAcceptGhostKey } from './url-ghost';
 import './HighlightedInputView.css';
 
 export interface MockServerSuggestion {
@@ -81,6 +82,7 @@ export function HighlightedInputView({ testId,
   // to block the browser's native pass rather than apply a second one.
   const historyHandledRef = useRef(false);
   const [focused,     setFocused]     = useState(false);
+  const [dismissed,   setDismissed]   = useState(false);
   const [selectedIdx, setSelectedIdx] = useState(0);
   const [dropPos,     setDropPos]     = useState({ top: 0, left: 0, width: 0 });
 
@@ -119,20 +121,32 @@ export function HighlightedInputView({ testId,
     onChange(text);
   }, [onChange]);
 
-  const filtered = useMemo(() => {
-    if (!focused || !suggestions.length) return [];
-    const lower = value.toLowerCase().trim();
-    if (!lower) return [...new Set(suggestions)].slice(0, 8);
-    return [...new Set(suggestions.filter(s => s.toLowerCase().includes(lower) && s !== value))].slice(0, 8);
-  }, [value, focused, suggestions]);
+  /*
+    Matched against the text BEFORE the caret, not against the whole value —
+    see url-suggest.ts. Editing the middle of a URL used to show nothing at
+    all, because the entire string, tail and all, is never a substring of
+    anything in history.
+  */
+  const { caret, syncCaret, setCaret } = useCaret(editorRef, value.length);
+  const suggested = useSuggested(value, caret, suggestions);
+  const prefix = value.slice(0, Math.min(caret, value.length)).toLowerCase();
+
+  const filtered = useMemo(
+    () => (focused && !dismissed ? suggested.matches : []),
+    [focused, dismissed, suggested],
+  );
 
   const filteredMockServers = useMemo(() => {
-    if (!focused || !mockServers.length) return [];
-    const lower = value.toLowerCase().trim();
+    if (!focused || dismissed || !mockServers.length) return [];
     const deduped = mockServers.filter((s, i) => mockServers.findIndex(o => o.url === s.url) === i);
-    if (!lower) return deduped.slice(0, 8);
-    return deduped.filter(s => s.url.toLowerCase().includes(lower) || s.name.toLowerCase().includes(lower)).slice(0, 8);
-  }, [value, focused, mockServers]);
+    if (!prefix.trim()) return deduped.slice(0, 8);
+    return deduped
+      .filter(s => s.url.toLowerCase().includes(prefix) || s.name.toLowerCase().includes(prefix))
+      .slice(0, 8);
+  }, [prefix, focused, dismissed, mockServers]);
+
+  /* Escape puts both away until the next keystroke — see handleKeyDown. */
+  const ghost = focused && !dismissed ? suggested.ghost : '';
 
   useEffect(() => { setSelectedIdx(0); }, [filtered.length, filteredMockServers.length, value]);
 
@@ -166,10 +180,12 @@ export function HighlightedInputView({ testId,
     const offset = getCaretOffset(el);
     el.innerHTML = buildHighlightedHTML(text);
     setCaretOffset(el, offset);
+    setCaret(offset);
+    setDismissed(false);
     lastValue.current = text;
     historyRef.current.push(text, offset);
     onChange(text);
-  }, [onChange]);
+  }, [onChange, setCaret]);
 
   const allDropItems = useMemo(() => [
     ...filteredMockServers.map(s => s.url),
@@ -186,12 +202,23 @@ export function HighlightedInputView({ testId,
       if (entry) applyValue(entry.text, entry.caret);
       return;
     }
+    if (ghost && isAcceptGhostKey(e)) {
+      e.preventDefault();
+      const full = value + ghost;
+      applyValue(full, full.length);
+      setCaret(full.length);
+      return;
+    }
     if (e.key === 'Enter') e.preventDefault();
+    if (e.key === 'Escape' && (ghost || allDropItems.length > 0)) {
+      e.preventDefault();
+      setDismissed(true);
+      return;
+    }
     if (allDropItems.length > 0) {
       if (e.key === 'ArrowDown') { e.preventDefault(); setSelectedIdx(i => (i + 1) % allDropItems.length); return; }
       if (e.key === 'ArrowUp')   { e.preventDefault(); setSelectedIdx(i => (i - 1 + allDropItems.length) % allDropItems.length); return; }
       if (e.key === 'Enter' && allDropItems[selectedIdx] !== value) { e.preventDefault(); handleSelect(allDropItems[selectedIdx]); return; }
-      if (e.key === 'Escape')    { setFocused(false); return; }
     }
     onKeyDown?.(e);
   };
@@ -213,7 +240,7 @@ export function HighlightedInputView({ testId,
     document.execCommand('insertText', false, text);
   };
 
-  const showDrop = focused && (filtered.length > 0 || filteredMockServers.length > 0);
+  const showDrop = focused && !dismissed && (filtered.length > 0 || filteredMockServers.length > 0);
 
   return (
     <div className={`dui_highlighted-input ${className}`} style={style}>
@@ -235,8 +262,10 @@ export function HighlightedInputView({ testId,
         onInput={handleInput}
         onBeforeInput={handleBeforeInput}
         onKeyDown={handleKeyDown}
+        onKeyUp={syncCaret}
+        onMouseUp={syncCaret}
         onPaste={handlePaste}
-        onFocus={() => setFocused(true)}
+        onFocus={() => { setFocused(true); setDismissed(false); syncCaret(); }}
         onBlur={() => { setTimeout(() => setFocused(false), 150); onBlur?.(); }}
         onCompositionStart={() => { composing.current = true; }}
         onCompositionEnd={() => { composing.current = false; handleInput(); }}
@@ -254,6 +283,17 @@ export function HighlightedInputView({ testId,
           paddingBottom: editorPadY,
           borderRadius: resolvedBorderRadius,
           borderColor: focused ? accent : undefined,
+        }}
+      />
+      <GhostText
+        value={value}
+        ghost={ghost}
+        style={{
+          padding: '0 12px',
+          fontSize: 13,
+          lineHeight: `${editorLineHeight}px`,
+          paddingTop: editorPadY,
+          paddingBottom: editorPadY,
         }}
       />
       {showDrop && createPortal(

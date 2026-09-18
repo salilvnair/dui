@@ -5,6 +5,7 @@ import type { DuiSize, DuiRadius, DuiWidth, DuiFontStyle } from '../../core/DuiT
 import { useInputBase } from '../../core/InputBase';
 import { useDui } from '../../core/DuiContext';
 import { buildHighlightedHTML, getCaretOffset, setCaretOffset, createEditableHistory, isUndoKey, isRedoKey } from '../../core/VariableToken';
+import { useCaret, useSuggested, GhostText, isAcceptGhostKey } from './url-ghost';
 import './SelectTextInputView.css';
 
 export interface SelectTextOption {
@@ -69,6 +70,9 @@ const SELECT_WIDTH: Record<DuiSize, number> = {
   xxs: 44, xs: 52, sm: 64, md: 80, lg: 96, xl: 112, xxl: 128, xxxl: 148,
 };
 
+const EMPTY: string[] = [];
+const EMPTY_MOCKS: MockServerSuggestion[] = [];
+
 export function SelectTextInputView({ testId,
   selectValue,
   selectOptions,
@@ -115,6 +119,8 @@ export function SelectTextInputView({ testId,
   const [focused, setFocused] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [highlightedIdx, setHighlightedIdx] = useState(-1);
+  const [dismissed, setDismissed] = useState(false);
+
 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
@@ -127,6 +133,9 @@ export function SelectTextInputView({ testId,
   const lastValueRef = useRef<string | null>(null);
   // Own undo stack — rewriting innerHTML per keystroke destroys the native one.
   const historyRef = useRef(createEditableHistory());
+
+  /* Declared up here because the edit handlers below write to it. */
+  const { caret, syncCaret, setCaret } = useCaret(inputRef, inputValue.length);
   const [methodDropPos, setMethodDropPos] = useState({ top: 0, left: 0, width: 0 });
   const [suggDropPos, setSuggDropPos] = useState({ top: 0, left: 0, width: 0 });
 
@@ -176,10 +185,12 @@ export function SelectTextInputView({ testId,
     const offset = getCaretOffset(el);
     el.innerHTML = buildHighlightedHTML(text);
     setCaretOffset(el, offset);
+    setCaret(offset);
+    setDismissed(false);
     lastValueRef.current = text;
     historyRef.current.push(text, offset);
     onInputChange(text);
-  }, [onInputChange]);
+  }, [onInputChange, setCaret]);
 
   // preventDefault() on keydown does NOT reliably stop a contentEditable's native undo
   // (the Edit menu and some key routes bypass it). When it slips through, the browser
@@ -202,19 +213,27 @@ export function SelectTextInputView({ testId,
 
   // ── Filtered suggestions ──────────────────────────────────────────────────
 
-  const filteredSuggestions = useMemo(() => {
-    if (!suggestions.length) return [];
-    if (!inputValue.trim()) return [...new Set(suggestions)].slice(0, 8);
-    const lower = inputValue.toLowerCase();
-    return [...new Set(suggestions.filter(s => s.toLowerCase().includes(lower) && s !== inputValue))].slice(0, 8);
-  }, [inputValue, suggestions]);
+  /*
+    Matched against the text BEFORE the caret, not against the whole value —
+    see url-suggest.ts. Editing the middle of a URL used to show nothing at
+    all, because the entire string, tail and all, is never a substring of
+    anything in history.
+  */
+  const suggested = useSuggested(inputValue, caret, suggestions);
+  const prefix = inputValue.slice(0, Math.min(caret, inputValue.length)).toLowerCase();
+
+  const filteredSuggestions = dismissed ? EMPTY : suggested.matches;
 
   const filteredMockServers = useMemo(() => {
-    if (!mockServers.length) return [];
-    if (!inputValue.trim()) return mockServers.slice(0, 8);
-    const lower = inputValue.toLowerCase();
-    return mockServers.filter(s => s.url.toLowerCase().includes(lower) || s.name.toLowerCase().includes(lower)).slice(0, 8);
-  }, [inputValue, mockServers]);
+    if (dismissed || !mockServers.length) return EMPTY_MOCKS;
+    if (!prefix.trim()) return mockServers.slice(0, 8);
+    return mockServers
+      .filter(s => s.url.toLowerCase().includes(prefix) || s.name.toLowerCase().includes(prefix))
+      .slice(0, 8);
+  }, [prefix, dismissed, mockServers]);
+
+  /* Escape puts both away until the next keystroke — see handleInputKeyDown. */
+  const ghost = focused && !dismissed ? suggested.ghost : '';
 
   // ── Method dropdown ────────────────────────────────────────────────────────
 
@@ -322,12 +341,25 @@ export function SelectTextInputView({ testId,
     }
     // contentEditable inserts a <div>/<br> on Enter by default — this is a single-line
     // field, so always suppress that; the suggestion-select branch below still runs.
+    if (ghost && isAcceptGhostKey(e)) {
+      e.preventDefault();
+      const full = inputValue + ghost;
+      applyValue(full, full.length);
+      setCaret(full.length);
+      return;
+    }
     if (e.key === 'Enter') e.preventDefault();
+    if (e.key === 'Escape' && (ghost || allItems.length > 0)) {
+      e.preventDefault();
+      setDismissed(true);
+      setShowSuggestions(false);
+      setHighlightedIdx(-1);
+      return;
+    }
     if (showSuggestions && allItems.length > 0) {
       if (e.key === 'ArrowDown') { e.preventDefault(); setHighlightedIdx(i => Math.min(i + 1, allItems.length - 1)); return; }
       if (e.key === 'ArrowUp')   { e.preventDefault(); setHighlightedIdx(i => Math.max(i - 1, -1)); return; }
       if (e.key === 'Enter' && highlightedIdx >= 0) { e.preventDefault(); handleSuggestionSelect(allItems[highlightedIdx]); return; }
-      if (e.key === 'Escape')    { setShowSuggestions(false); setHighlightedIdx(-1); return; }
     }
     onKeyDown?.(e);
   };
@@ -420,9 +452,11 @@ export function SelectTextInputView({ testId,
             onInput={handleEditorInput}
             onBeforeInput={handleBeforeInput}
             onPaste={handleEditorPaste}
-            onFocus={() => setFocused(true)}
+            onFocus={() => { setFocused(true); setDismissed(false); syncCaret(); }}
             onBlur={() => setTimeout(() => setFocused(false), 120)}
             onKeyDown={handleInputKeyDown}
+            onKeyUp={syncCaret}
+            onMouseUp={syncCaret}
             onCompositionStart={() => { composingRef.current = true; }}
             onCompositionEnd={() => { composingRef.current = false; handleEditorInput(); }}
             data-testid={testId}
@@ -445,6 +479,16 @@ export function SelectTextInputView({ testId,
               whiteSpace: 'nowrap', overflow: 'hidden',
               cursor: disabled ? 'not-allowed' : 'text',
               caretColor: base.color ?? 'var(--color-text-primary)',
+            }}
+          />
+          <GhostText
+            value={inputValue}
+            ghost={ghost}
+            style={{
+              border: 'none',
+              padding: `${editorPadY}px ${base.paddingX}`,
+              fontSize: base.fontSize,
+              lineHeight: `${editorLineHeight}px`,
             }}
           />
         </div>
