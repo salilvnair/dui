@@ -47,6 +47,8 @@ export interface KeyValueTableViewProps {
   showDescription?: boolean;
   placeholder?: { key?: string; value?: string };
   className?: string;
+  /** Draw `{{variable}}` in every value cell as a token — see KeyValueTableRowView. */
+  highlightVars?: boolean;
   /** Show HTTP header key autocomplete + value suggestions */
   autocompleteKeys?: boolean;
   /** Mask values for known sensitive keys (Authorization, token, etc.) */
@@ -145,6 +147,7 @@ export function KeyValueTableView({ testId,
   placeholder,
   className = '',
   autocompleteKeys = false,
+  highlightVars = false,
   maskSensitive = false,
   hideToolbar = false,
   label,
@@ -277,6 +280,7 @@ export function KeyValueTableView({ testId,
             <div className="flex flex-col mb-1.5">
               {pinnedTopRows!.map(pRow => (
                 <KeyValueTableRowView
+                  highlightVars={highlightVars}
                   key={pRow.id}
                   rowKey={pRow.key}
                   value={pRow.value}
@@ -300,6 +304,7 @@ export function KeyValueTableView({ testId,
               <div key={row.id}>
                 <div className="py-1">
                   <KeyValueTableRowView
+                  highlightVars={highlightVars}
                     rowKey={row.key}
                     value={row.value}
                     description={row.description}

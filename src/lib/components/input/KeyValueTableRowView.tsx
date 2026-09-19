@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import type { DuiSize } from '../../core/DuiTypes';
 import { TextInputView } from './TextInputView';
+import { HighlightedInputView } from './HighlightedInputView';
 import { HTTP_REQUEST_HEADERS, SENSITIVE_HEADERS, HEADER_VALUE_SUGGESTIONS } from '../../../components/shared/controls/http-headers';
 import { CheckCircleFilledIcon, LockIcon, TrashIcon } from '../../../icons';
 
@@ -32,6 +33,16 @@ export interface KeyValueTableRowViewProps {
   placeholder?: { key?: string; value?: string };
   /** HTTP header key/value autocomplete — editable mode only */
   autocompleteKeys?: boolean;
+  /**
+   * Draw `{{variable}}` in the value cell as a token, the way a URL bar does.
+   *
+   * Off by default: a plain input is the right thing for a table of ordinary
+   * strings. On, the value cell becomes the same contenteditable editor the
+   * URL bars use — which is the point of it being the same component rather
+   * than a second one that looks similar. A masked or read-only cell stays a
+   * plain input; a secret rendered as readable tokens is not a secret.
+   */
+  highlightVars?: boolean;
   size?: DuiSize;
   accentColor?: string;
   onKeyChange?: (val: string) => void;
@@ -51,6 +62,7 @@ export function KeyValueTableRowView({ testId,
   description = '',
   enabled,
   readOnly = false,
+  highlightVars = false,
   masked = false,
   maskSensitive = false,
   deletable = false,
@@ -221,6 +233,17 @@ export function KeyValueTableRowView({ testId,
 
       {/* Value */}
       <div className="relative">
+        {highlightVars && !readOnly && !isMasked ? (
+          <HighlightedInputView
+            value={value}
+            placeholder={placeholder?.value ?? 'Value'}
+            size={size}
+            onChange={val => { onValueChange?.(val); setValueFilterText(val); setValueHighlight(-1); }}
+            onKeyDown={e => handleKeyDown(e, 'val')}
+            onBlur={() => setTimeout(() => { setValueFocused(false); setValueHighlight(-1); }, 150)}
+            style={{ width: '100%' }}
+          />
+        ) : (
         <TextInputView
           ref={valueInputRef}
           value={value}
@@ -236,7 +259,8 @@ export function KeyValueTableRowView({ testId,
           onKeyDown={e => handleKeyDown(e, 'val')}
           tabIndex={readOnly ? -1 : undefined}
         />
-        {showValDrop && (
+        )}
+        {showValDrop && !highlightVars && (
           <div ref={valueDropdownRef} className={DROP_CLS}>
             {valueSuggestions.map((v, i) => (
               <button
