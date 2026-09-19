@@ -90,6 +90,20 @@
   white-space: nowrap;
 }
 
+/* A hidden value shows dots, not a chip full of dots.
+
+   `-webkit-text-security` replaces the glyphs but leaves the box: a token
+   stayed a bordered, filled pill with bullets inside it, which reads as a
+   thing rather than as hidden text. Masked, only the colour survives — enough
+   to see that a variable is in there — and the chip comes back with the value
+   when the eye is opened. */
+.dui_highlighted-input__editor--masked .dui-var-token,
+.dui_highlighted-input__editor--masked .dui-var-token--escape {
+  background: transparent;
+  border-color: transparent;
+  padding: 0;
+}
+
 /* Dragging a text selection across the token's own translucent background blends
    with the browser's default selection color, so the token reads as a different,
    muddier hue than the plain text on either side of it during a drag — looks like

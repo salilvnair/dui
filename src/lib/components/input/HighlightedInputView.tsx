@@ -292,7 +292,7 @@ export function HighlightedInputView({ testId,
         onCompositionStart={() => { composing.current = true; }}
         onCompositionEnd={() => { composing.current = false; handleInput(); }}
         data-testid={testId}
-        className={`dui_highlighted-input__editor${disabled ? ' opacity-60' : ''}`}
+        className={`dui_highlighted-input__editor${disabled ? ' opacity-60' : ''}${masked && !revealed ? ' dui_highlighted-input__editor--masked' : ''}`}
         // lineHeight 'normal' on purpose: the editor is a flex container that already
         // centers its children, so a full-height line-height's only visible effect is
         // inflating the text-selection highlight and caret to the field's entire
