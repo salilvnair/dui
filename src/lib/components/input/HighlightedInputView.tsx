@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState, useMemo, useCallback } from 'react';
 import { createPortal } from 'react-dom';
-import { SearchIcon, ServerIcon } from '../../../icons';
+import { SearchIcon, ServerIcon, EyeIcon, EyeOffIcon } from '../../../icons';
 import type { DuiSize } from '../../core/DuiTypes';
 import { useInputBase } from '../../core/InputBase';
 import { buildHighlightedHTML, getCaretOffset, setCaretOffset, createEditableHistory, isUndoKey, isRedoKey } from '../../core/VariableToken';
@@ -33,6 +33,17 @@ export interface HighlightedInputViewProps {
   /** Running mock server URLs — shown at the top with a server icon */
   mockServers?: MockServerSuggestion[];
   disabled?: boolean;
+  /**
+   * Hide the value behind dots, with an eye to reveal it.
+   *
+   * Done with `-webkit-text-security` rather than by swapping in a password
+   * input, because swapping the element loses the caret, the undo stack and
+   * the variable tokens — and a token is the thing most worth seeing once you
+   * have revealed it. Masking is presentational here: the text is still the
+   * text, editing still works, and the DOM still holds the real value, which
+   * is exactly as true of `<input type=password>`.
+   */
+  masked?: boolean;
   accentColor?: string;
   /** Falls back to DuiProvider size when omitted. */
   size?: DuiSize;
@@ -53,6 +64,7 @@ export function HighlightedInputView({ testId,
   suggestions = [],
   mockServers = [],
   disabled,
+  masked = false,
   accentColor,
   size,
   height,
@@ -82,6 +94,7 @@ export function HighlightedInputView({ testId,
   // to block the browser's native pass rather than apply a second one.
   const historyHandledRef = useRef(false);
   const [focused,     setFocused]     = useState(false);
+  const [revealed,    setRevealed]    = useState(false);
   const [dismissed,   setDismissed]   = useState(false);
   const [selectedIdx, setSelectedIdx] = useState(0);
   const [dropPos,     setDropPos]     = useState({ top: 0, left: 0, width: 0 });
@@ -176,7 +189,16 @@ export function HighlightedInputView({ testId,
     if (composing.current) return;
     const el = editorRef.current;
     if (!el) return;
-    const text = el.innerText.replace(/\n/g, '');
+    /*
+      `textContent` when masked, not `innerText`.
+
+      `innerText` is layout-aware and `-webkit-text-security` is a layout
+      effect, so in a masked field it hands back a row of bullets. Reading
+      it and calling `onChange` with the result replaces the value with the
+      dots that were standing in for it — the value destroys itself on the
+      first keystroke. `textContent` is DOM-only and unaffected.
+    */
+    const text = (masked ? (el.textContent ?? '') : el.innerText).replace(/\n/g, '');
     const offset = getCaretOffset(el);
     el.innerHTML = buildHighlightedHTML(text);
     setCaretOffset(el, offset);
@@ -185,7 +207,7 @@ export function HighlightedInputView({ testId,
     lastValue.current = text;
     historyRef.current.push(text, offset);
     onChange(text);
-  }, [onChange, setCaret]);
+  }, [onChange, setCaret, masked]);
 
   const allDropItems = useMemo(() => [
     ...filteredMockServers.map(s => s.url),
@@ -278,6 +300,10 @@ export function HighlightedInputView({ testId,
         // "everything got selected". Normal = native-input-like text-height selection.
         style={{
           height: resolvedHeight,
+          // Not in React's CSS types; a real property in every Chromium,
+          // which is the only engine a VS Code webview runs in.
+          ...(masked && !revealed ? { WebkitTextSecurity: 'disc' } as React.CSSProperties : {}),
+          paddingRight: masked ? 30 : undefined,
           lineHeight: `${editorLineHeight}px`,
           paddingTop: editorPadY,
           paddingBottom: editorPadY,
@@ -285,6 +311,32 @@ export function HighlightedInputView({ testId,
           borderColor: focused ? accent : undefined,
         }}
       />
+      {masked && (
+        <button
+          type="button"
+          tabIndex={-1}
+          onMouseDown={e => e.preventDefault()}
+          onClick={() => setRevealed(v => !v)}
+          title={revealed ? 'Hide value' : 'Show value'}
+          style={{
+            position: 'absolute',
+            right: 8,
+            top: 0,
+            height: resolvedHeight,
+            display: 'flex',
+            alignItems: 'center',
+            background: 'none',
+            border: 'none',
+            padding: 0,
+            cursor: 'pointer',
+            color: 'var(--color-text-muted)',
+          }}
+          onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-text-primary)')}
+          onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-text-muted)')}
+        >
+          {revealed ? <EyeIcon size={14} /> : <EyeOffIcon size={14} />}
+        </button>
+      )}
       <GhostText
         value={value}
         ghost={ghost}
