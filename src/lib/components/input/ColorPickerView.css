@@ -38,14 +38,36 @@
   align-items: center;
 }
 
+/*
+  The native colour input, made to look like one of the swatches above it.
+
+  Browsers draw it as a padded wrapper around a swatch that has its own border,
+  so the colour sat inset in a dark frame — a small square inside a bigger one,
+  next to a grid of swatches that fill their squares edge to edge. Zeroing the
+  wrapper's padding and the swatch's border lets the colour fill the control,
+  and the radius moves onto the swatch so the corners match the grid.
+*/
 .dui_colorpicker__native {
   width: 28px;
   height: 28px;
   padding: 0;
-  border: 1px solid var(--color-surface-border);
+  border: none;
   border-radius: 6px;
   cursor: pointer;
   background: none;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.dui_colorpicker__native::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+.dui_colorpicker__native::-webkit-color-swatch {
+  border: none;
+  border-radius: 6px;
+}
+.dui_colorpicker__native::-moz-color-swatch {
+  border: none;
+  border-radius: 6px;
 }
 
 .dui_colorpicker__hexinput {
