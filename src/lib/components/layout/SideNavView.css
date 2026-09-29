@@ -11,3 +11,8 @@
   background: var(--color-surface-hover);
   color: var(--color-text-primary);
 }
+
+/* Groups and branches open without the height animation when motion is reduced. */
+@media (prefers-reduced-motion: reduce) {
+  .dui_side-nav__expand { transition: none !important; }
+}

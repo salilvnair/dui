@@ -31,6 +31,8 @@ export interface PromptLibraryListViewProps {
   onSelect?: (id: string) => void;
   search?: string;
   onSearchChange?: (v: string) => void;
+  /** The search box's placeholder — the list is not always of prompts. */
+  searchPlaceholder?: string;
   accentColor?: string;
   className?: string;
 }
@@ -46,6 +48,7 @@ export function PromptLibraryListView({
   activeId,
   onSelect,
   search = '',
+  searchPlaceholder = 'Search prompts...',
   onSearchChange,
   accentColor,
   className = '',
@@ -96,7 +99,7 @@ export function PromptLibraryListView({
           <input
             value={search}
             onChange={e => onSearchChange?.(e.target.value)}
-            placeholder="Search prompts..."
+            placeholder={searchPlaceholder}
             style={{
               flex: 1, border: 'none', outline: 'none', background: 'transparent',
               fontSize: 11, color: 'var(--color-text-primary)', fontFamily: 'inherit',

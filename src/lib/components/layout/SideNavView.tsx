@@ -16,6 +16,12 @@ export interface SideNavItem {
   count?: number;
   /** When true: renders as uppercase section header (non-selectable, collapsible) */
   isGroup?: boolean;
+  /**
+   * A group's entries — or, on an entry that is not a group, the pages under
+   * it: the entry becomes a branch that expands under its own chevron, its
+   * pages indented beneath it, and it opens by itself when one of them is the
+   * active one. Branches nest.
+   */
   children?: SideNavItem[];
 }
 
@@ -47,22 +53,72 @@ export interface SideNavViewProps {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
+/** A non-group entry with pages under it. */
+export function isBranch(item: SideNavItem): boolean {
+  return !item.isGroup && (item.children?.length ?? 0) > 0;
+}
+
+/** The selectable entries — a group or a branch counts what is under it, not itself. */
 export function countLeaves(items: SideNavItem[]): number {
   return items.reduce((s, item) =>
-    s + (item.isGroup ? countLeaves(item.children ?? []) : 1), 0);
+    s + (item.isGroup || isBranch(item) ? countLeaves(item.children ?? []) : 1), 0);
+}
+
+/** Whether `id` is this entry or somewhere under it. */
+export function containsId(item: SideNavItem, id: string | undefined): boolean {
+  if (id === undefined) return false;
+  if (item.id === id) return true;
+  return (item.children ?? []).some(c => containsId(c, id));
 }
 
 export function filterItems(items: SideNavItem[], q: string): SideNavItem[] {
   if (!q) return items;
+  const hit = (s: string) => s.toLowerCase().includes(q.toLowerCase());
   return items.reduce<SideNavItem[]>((acc, item) => {
     if (item.isGroup) {
       const filteredChildren = filterItems(item.children ?? [], q);
       if (filteredChildren.length > 0) acc.push({ ...item, children: filteredChildren });
-    } else if (item.label.toLowerCase().includes(q.toLowerCase())) {
+    } else if (isBranch(item)) {
+      /* A branch whose own name matches keeps all its pages; otherwise the pages that match. */
+      if (hit(item.label)) acc.push(item);
+      else {
+        const filteredChildren = filterItems(item.children ?? [], q);
+        if (filteredChildren.length > 0) acc.push({ ...item, children: filteredChildren });
+      }
+    } else if (hit(item.label)) {
       acc.push(item);
     }
     return acc;
   }, []);
+}
+
+/** How far each level of a branch indents its pages. */
+const BRANCH_INDENT = 14;
+
+/** How long a group or a branch takes to open or close. */
+const EXPAND_MS = 200;
+
+/**
+ * Opens and closes its children by height, smoothly — grid rows from 0fr to
+ * 1fr, which animates to the content's own height without measuring it.
+ * Closed content is `visibility: hidden` once the animation ends, so it drops
+ * out of the tab order rather than being focusable while invisible.
+ */
+function Expand({ open, children }: { open: boolean; children: React.ReactNode }) {
+  return (
+    <div
+      className="dui_side-nav__expand"
+      style={{
+        display: 'grid',
+        gridTemplateRows: open ? '1fr' : '0fr',
+        opacity: open ? 1 : 0,
+        visibility: open ? 'visible' : 'hidden',
+        transition: `grid-template-rows ${EXPAND_MS}ms ease, opacity ${EXPAND_MS}ms ease, visibility 0s linear ${open ? '0ms' : `${EXPAND_MS}ms`}`,
+      }}
+    >
+      <div style={{ overflow: 'hidden', minHeight: 0 }}>{children}</div>
+    </div>
+  );
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -95,6 +151,9 @@ export function SideNavView({
     return new Set(items.filter(i => i.isGroup).map(i => i.id));
   });
   const [search, setSearch] = useState('');
+  /* Branches the reader closed while one of their pages was active — without
+     this, a branch holding the active page could never be folded. */
+  const [closedBranches, setClosedBranches] = useState<Set<string>>(() => new Set());
 
   const isControlled  = collapsedProp !== undefined;
   const collapsed     = isControlled ? collapsedProp : internalCollapsed;
@@ -123,9 +182,26 @@ export function SideNavView({
     });
   };
 
+  const branchOpen = (item: SideNavItem) =>
+    isFiltering || ((openGroups.has(item.id) || containsId(item, activeId)) && !closedBranches.has(item.id));
+
+  const toggleBranch = (item: SideNavItem) => {
+    const open = branchOpen(item);
+    setOpenGroups(prev => {
+      const next = new Set(prev);
+      if (open) next.delete(item.id); else next.add(item.id);
+      return next;
+    });
+    setClosedBranches(prev => {
+      const next = new Set(prev);
+      if (open) next.add(item.id); else next.delete(item.id);
+      return next;
+    });
+  };
+
   // ── Item renderer ──────────────────────────────────────────────────────────
 
-  const renderLeafItem = (item: SideNavItem) => {
+  const renderLeafItem = (item: SideNavItem, depth = 0) => {
     const isActive = item.id === activeId;
     // An accent given to this nav should tint its active row. Without this the
     // row fell back to the app-wide sidenav token, so a section-coloured nav
@@ -134,13 +210,27 @@ export function SideNavView({
       ? `color-mix(in srgb, ${accentColor} 18%, transparent)`
       : 'var(--color-sidenav-active-bg)';
     const activeFg = accentColor ?? 'var(--color-sidenav-active-text)';
-    return (
+    const branch = isBranch(item);
+    const open = branch && branchOpen(item);
+    /* A folded branch holding the active page takes the accent colour, so
+       where you are still shows. */
+    const holdsActive = branch && !isActive && containsId(item, activeId);
+    const indent = depth * BRANCH_INDENT;
+
+    if (branch && collapsed) {
+      /* An icon rail has no room for a tree: the pages stand in for their branch. */
+      return <div key={item.id}>{(item.children ?? []).map(c => renderLeafItem(c, depth))}</div>;
+    }
+
+    const row = (
       <div
         key={item.id}
         title={collapsed ? item.label : undefined}
-        onClick={() => onSelect?.(item.id)}
+        onClick={() => (branch ? toggleBranch(item) : onSelect?.(item.id))}
         data-nav-id={item.id}
-        className={`dui_side-nav__item${isActive ? ' dui_side-nav__item--active' : ''}`}
+        role={branch ? 'button' : undefined}
+        aria-expanded={branch ? open : undefined}
+        className={`dui_side-nav__item${isActive ? ' dui_side-nav__item--active' : ''}${branch ? ' dui_side-nav__item--branch' : ''}`}
         style={collapsed ? {
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           width: iconSquare, height: iconSquare, borderRadius: 8, margin: '1px auto',
@@ -150,21 +240,26 @@ export function SideNavView({
         } : {
           display: 'flex', alignItems: 'center', gap: base.gap,
           height: base.itemHeight, borderRadius: base.borderRadius,
-          padding: `0 8px 0 ${base.paddingX}`,
+          padding: `0 8px 0 calc(${base.paddingX} + ${indent}px)`,
           cursor: 'pointer', marginBottom: 1,
           background: isActive ? activeBg : 'transparent',
-          color: isActive ? activeFg : 'var(--color-text-secondary)',
+          color: isActive || holdsActive ? activeFg : 'var(--color-text-secondary)',
         }}
       >
         {item.icon && (
-          <span style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', width: base.iconSize }}>
+          <span style={{
+            flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', width: base.iconSize,
+            /* A branch's pages sit a step below it: the icon a little smaller… */
+            ...(depth > 0 && !collapsed ? { transform: 'scale(0.86)', opacity: isActive ? 1 : 0.9 } : {}),
+          }}>
             {item.icon}
           </span>
         )}
         {!collapsed && (
           <>
             <span style={{
-              flex: 1, fontSize: base.fontSize,
+              /* …and the name a pixel smaller. */
+              flex: 1, fontSize: depth > 0 ? `calc(${base.fontSize} - 1px)` : base.fontSize,
               fontWeight: isActive ? 600 : 400,
               whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
             }}>
@@ -179,8 +274,29 @@ export function SideNavView({
                 {item.badge}
               </span>
             )}
+            {branch && (
+              <ChevronDownIcon
+                size={10}
+                style={{
+                  flexShrink: 0, color: 'var(--color-text-muted)',
+                  transform: open ? 'rotate(0deg)' : 'rotate(-90deg)',
+                  transition: 'transform 180ms ease',
+                }}
+              />
+            )}
           </>
         )}
+      </div>
+    );
+
+    if (!branch) return row;
+    return (
+      <div key={item.id}>
+        {row}
+        {/* The pages, indented under the branch. */}
+        <Expand open={open}>
+          {(item.children ?? []).map(c => renderLeafItem(c, depth + 1))}
+        </Expand>
       </div>
     );
   };
@@ -192,7 +308,7 @@ export function SideNavView({
     const children = item.children ?? [];
 
     if (collapsed) {
-      return <div key={item.id} style={{ marginBottom: 8 }}>{children.map(renderLeafItem)}</div>;
+      return <div key={item.id} style={{ marginBottom: 8 }}>{children.map(c => renderLeafItem(c))}</div>;
     }
 
     return (
@@ -227,7 +343,9 @@ export function SideNavView({
             }}
           />
         </button>
-        {isOpen && children.map(renderLeafItem)}
+        <Expand open={isOpen || isFiltering}>
+          {children.map(c => renderLeafItem(c))}
+        </Expand>
       </div>
     );
   };
