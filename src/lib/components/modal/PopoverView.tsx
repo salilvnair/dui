@@ -80,6 +80,9 @@ export function PopoverView({ testId,
     const handler = (e: MouseEvent) => {
       if (anchorEl?.contains(e.target as Node)) return;
       if (menuRef.current?.contains(e.target as Node)) return;
+      /* A dropdown opened from inside the popover draws its list on the body,
+         outside it — a pick from that list is not a click away. */
+      if ((e.target as Element | null)?.closest?.('.dui_combobox__menu, .dui_select__menu')) return;
       onClose();
     };
     const keyHandler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };

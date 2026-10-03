@@ -7,6 +7,8 @@ import './ComboBoxView.css';
 export interface ComboBoxOption {
   value: string;
   label: string;
+  /** Muted text at the row's right end — a count, a kind. Not matched, not committed. */
+  hint?: string;
 }
 
 export interface ComboBoxViewProps {
@@ -85,11 +87,12 @@ export function ComboBoxView({ testId,
       if (inputRef.current?.contains(e.target as Node)) return;
       if (menuRef.current?.contains(e.target as Node)) return;
       setOpen(false);
-      if (freeSolo) onChange(query);
+      /* The box shows a picked option's label; closing commits its value, not the label. */
+      if (freeSolo) onChange(options.find(o => o.label === query)?.value ?? query);
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
-  }, [open, freeSolo, query, onChange]);
+  }, [open, freeSolo, query, onChange, options]);
 
   const select = (opt: ComboBoxOption) => {
     setQuery(opt.label);
@@ -123,9 +126,10 @@ export function ComboBoxView({ testId,
               type="button"
               className="dui_combobox__item"
               onClick={() => select(opt)}
-              style={{ fontSize: base.fontSize }}
+              style={{ fontSize: base.fontSize, display: 'flex', alignItems: 'center', gap: 12 }}
             >
-              {opt.label}
+              <span style={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}>{opt.label}</span>
+              {opt.hint && <span style={{ flexShrink: 0, opacity: 0.6, fontVariantNumeric: 'tabular-nums' }}>{opt.hint}</span>}
             </button>
           ))}
         </div>,
