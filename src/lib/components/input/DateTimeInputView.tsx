@@ -123,6 +123,8 @@ export function DateTimeInputView({ testId,
     const handler = (e: MouseEvent) => {
       if (triggerRef.current?.contains(e.target as Node)) return;
       if (popRef.current?.contains(e.target as Node)) return;
+      // the calendar's month / year menu is portalled to <body>: a pick there is inside the picker, not outside
+      if ((e.target as Element | null)?.closest?.('.dui_calendar__dropdown')) return;
       setOpen(false);
     };
     document.addEventListener('mousedown', handler);
