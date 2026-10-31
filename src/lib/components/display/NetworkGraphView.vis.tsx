@@ -1,8 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { DataSet } from 'vis-data/peer';
 import { Network } from 'vis-network/peer';
 import type { Edge as VisEdge, Node as VisNode, Options } from 'vis-network/peer';
-import type { NetworkGraphViewProps, NetworkGraphNode } from './NetworkGraphView';
+import type { NetworkGraphViewProps, NetworkGraphNode, NetworkGraphEdge } from './NetworkGraphView';
 
 const DEFAULT_PALETTE = [
   '#4E79A7', '#F28E2B', '#E15759', '#76B7B2', '#59A14F',
@@ -258,6 +258,7 @@ function clusterCommunity(network: Network, cid: number, allNodes: NetworkGraphN
 export function NetworkGraphViewImpl({
   nodes, edges, onNodeClick, selectedId, fitTrigger, onReady, colorBy, sizeBy, className = '', style,
   enableClustering = false, enableHoverDim = false, enableMinimap = false, theme = 'dark',
+  hiddenNodeIds, hiddenEdgeIds,
 }: NetworkGraphViewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const minimapCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -315,6 +316,39 @@ export function NetworkGraphViewImpl({
   // animation ends, same as they did after every throttled tick before).
   const isCameraAnimatingRef = useRef(false);
 
+  // What forces a rebuild (and a fresh physics layout) is the graph's
+  // STRUCTURE — which node ids and which edges exist — not the identity of
+  // the `nodes`/`edges` arrays. A host that recolours nodes (a new colorBy,
+  // a highlight) hands over new arrays with the same ids; rebuilding for
+  // that threw away the layout the user was looking at and re-ran physics,
+  // so every colour change flashed the whole canvas. Same structure → the
+  // recolour effect below patches the live DataSet instead.
+  const structureKey = useMemo(() => {
+    const ids = nodes.map(n => n.id).join('\u0001');
+    const links = edges.map((e, i) => [e.id ?? i, e.source, e.target, e.type ?? ''].join('\u0002')).join('\u0001');
+    return ids + '\u0003' + links;
+  }, [nodes, edges]);
+
+  // Hidden ids are applied in place (vis-network's own `hidden` flag), so a
+  // filter toggle shows/hides nodes where they already sit — no rebuild, no
+  // relayout. Read through refs by the chip/minimap passes, which are
+  // closures created once per network instance.
+  const hiddenNodes = useMemo(() => new Set<string>(hiddenNodeIds ?? []), [hiddenNodeIds]);
+  const hiddenEdges = useMemo(() => new Set<string | number>(hiddenEdgeIds ?? []), [hiddenEdgeIds]);
+  const hiddenNodesRef = useRef(hiddenNodes);
+  hiddenNodesRef.current = hiddenNodes;
+  const hiddenEdgesRef = useRef(hiddenEdges);
+  hiddenEdgesRef.current = hiddenEdges;
+  // node id -> the colour it is drawn in, shared by the chips, the minimap
+  // and the in-place recolour effect.
+  const nodeColorsRef = useRef<Map<string, string>>(new Map());
+  // Re-reads positions and repaints chips + minimap for the live network;
+  // set by the build effect, used by the in-place update effects.
+  const refreshOverlaysRef = useRef<(() => void) | null>(null);
+
+  const isEdgeHidden = (e: NetworkGraphEdge, id: string | number) =>
+    hiddenEdgesRef.current.has(id) || hiddenNodesRef.current.has(e.source) || hiddenNodesRef.current.has(e.target);
+
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -350,6 +384,7 @@ export function NetworkGraphViewImpl({
 
     const themeTokens = THEME_TOKENS[theme];
     const nodeColors = new Map<string, string>();
+    nodeColorsRef.current = nodeColors;
 
     const visNodes: VisNode[] = nodes.map(n => {
       const color = colorBy ? colorBy(n) : defaultColor(n);
@@ -370,6 +405,7 @@ export function NetworkGraphViewImpl({
         color: { background: color, border: color, highlight: { background: color, border: themeTokens.text } },
         size: Math.round(size * 10) / 10,
         shape: 'dot',
+        hidden: hiddenNodesRef.current.has(n.id),
       };
     });
 
@@ -383,6 +419,7 @@ export function NetworkGraphViewImpl({
       // stand-in for the gradient edges ck8t's ReactFlow canvas uses.
       color: { inherit: 'both', opacity: 0.55 },
       arrows: { to: { enabled: true, scaleFactor: 0.6 } },
+      hidden: isEdgeHidden(e, e.id ?? i),
     }));
 
     const nodesData = new DataSet(visNodes);
@@ -477,9 +514,10 @@ export function NetworkGraphViewImpl({
       ctx.fillRect(0, 0, w, h);
 
       Object.entries(positions).forEach(([id, pos]) => {
+        if (hiddenNodesRef.current.has(id)) return;
         const [cx, cy] = toCanvas(pos.x, pos.y);
         const n = nodesById.current.get(id);
-        ctx.fillStyle = n ? (colorBy ? colorBy(n) : defaultColor(n)) : '#6B7280';
+        ctx.fillStyle = nodeColorsRef.current.get(id) ?? (n ? (colorBy ? colorBy(n) : defaultColor(n)) : '#6B7280');
         ctx.beginPath();
         // Degree-scaled dots so hubs read as landmarks when orienting.
         const deg = degree[id] ?? 0;
@@ -593,6 +631,7 @@ export function NetworkGraphViewImpl({
         if (p.x < tl.x || p.x > br.x || p.y < tl.y || p.y > br.y) continue;
         // Cluster super-nodes carry their own badge — never chip them.
         if (!nodesById.current.has(id)) continue;
+        if (hiddenNodesRef.current.has(id)) continue;
         candidates.push({ id, deg: degree[id] ?? 0 });
       }
       if (candidates.length > NODE_LABEL_BUDGET) {
@@ -615,7 +654,7 @@ export function NetworkGraphViewImpl({
         const domPos = network.canvasToDOM({ x: (box.left + box.right) / 2, y: box.bottom });
 
         const el = chipAt(nodePool, used);
-        applyChip(el, node.label, nodeChipStyle(nodeColors.get(cand.id) ?? '#6B7280'));
+        applyChip(el, node.label, nodeChipStyle(nodeColorsRef.current.get(cand.id) ?? '#6B7280'));
         if (el.style.display !== '') el.style.display = '';
         const opacity = !dimKeepNodes || dimKeepNodes.has(cand.id) ? '1' : String(DIMMED_OPACITY);
         if (el.style.opacity !== opacity) el.style.opacity = opacity;
@@ -649,7 +688,7 @@ export function NetworkGraphViewImpl({
       for (const [edgeId, type] of edgeTypeById) {
         if (edgeUsed >= EDGE_LABEL_BUDGET) break;
         const e = edgesData.get(edgeId) as VisEdge | null;
-        if (!e) continue;
+        if (!e || e.hidden) continue;
         const from = canvasPositions[e.from as string];
         const to = canvasPositions[e.to as string];
         if (!from || !to) continue;
@@ -676,6 +715,7 @@ export function NetworkGraphViewImpl({
     };
 
     const syncOverlays = syncAllChipPositions;
+    refreshOverlaysRef.current = () => { invalidatePositions(); syncOverlays(); if (enableMinimap) drawMinimap(); };
 
     // Coalesce to at most one sync per animation frame, and run it aligned
     // with paint rather than on a wall-clock timer. A fixed 100ms throttle
@@ -941,6 +981,7 @@ export function NetworkGraphViewImpl({
       if (syncRafHandle !== null) cancelAnimationFrame(syncRafHandle);
       network.destroy();
       networkRef.current = null;
+      refreshOverlaysRef.current = null;
       nodesDataRef.current = null;
       edgesDataRef.current = null;
       for (const el of nodeChipPoolRef.current) el.remove();
@@ -950,7 +991,50 @@ export function NetworkGraphViewImpl({
       chipTextSizeRef.current.clear();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nodes, edges, enableClustering, enableHoverDim, enableMinimap, theme]);
+  }, [structureKey, enableClustering, enableHoverDim, enableMinimap, theme]);
+
+  // Same structure, new colours: patch the live DataSet so the layout, the
+  // camera and any open selection stay exactly where they are.
+  useEffect(() => {
+    const nodesData = nodesDataRef.current;
+    if (!nodesData) return;
+    nodesById.current = new Map(nodes.map(n => [n.id, n]));
+    const text = THEME_TOKENS[theme].text;
+    const updates: VisNode[] = [];
+    for (const n of nodes) {
+      const color = colorBy ? colorBy(n) : defaultColor(n);
+      if (nodeColorsRef.current.get(n.id) === color) continue;
+      nodeColorsRef.current.set(n.id, color);
+      updates.push({ id: n.id, color: { background: color, border: color, highlight: { background: color, border: text } } });
+    }
+    if (updates.length) {
+      nodesData.update(updates);
+      refreshOverlaysRef.current?.();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nodes, colorBy]);
+
+  // Show/hide in place — see hiddenNodes above.
+  useEffect(() => {
+    const nodesData = nodesDataRef.current;
+    const edgesData = edgesDataRef.current;
+    if (!nodesData || !edgesData) return;
+    const nodeUpdates: VisNode[] = [];
+    for (const n of nodes) {
+      const hidden = hiddenNodes.has(n.id);
+      if (Boolean(nodesData.get(n.id)?.hidden) !== hidden) nodeUpdates.push({ id: n.id, hidden });
+    }
+    const edgeUpdates: VisEdge[] = [];
+    edges.forEach((e, i) => {
+      const id = e.id ?? i;
+      const hidden = isEdgeHidden(e, id);
+      if (Boolean(edgesData.get(id)?.hidden) !== hidden) edgeUpdates.push({ id, hidden });
+    });
+    if (nodeUpdates.length) nodesData.update(nodeUpdates);
+    if (edgeUpdates.length) edgesData.update(edgeUpdates);
+    if (nodeUpdates.length || edgeUpdates.length) refreshOverlaysRef.current?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hiddenNodes, hiddenEdges]);
 
   useEffect(() => {
     const network = networkRef.current;
@@ -980,7 +1064,7 @@ export function NetworkGraphViewImpl({
     // changing, and the fresh network otherwise never learns it should
     // focus on it.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedId, nodes]);
+  }, [selectedId, structureKey]);
 
   // "Reset zoom" — a genuine zoom-to-fit-all, recomputed fresh every time
   // (the same bounding-box calculation vis-network runs when you scroll the

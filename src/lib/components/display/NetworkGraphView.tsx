@@ -52,6 +52,12 @@ export interface NetworkGraphViewProps {
    *  themes — canvas can't resolve CSS variables, so the resolved theme
    *  name is passed in explicitly. Defaults to 'dark'. */
   theme?: 'dark' | 'light';
+  /** Node ids to hide where they sit: no rebuild, no relayout. For filters a
+   *  user toggles on and off; only a change to which nodes and edges exist
+   *  at all rebuilds the canvas. Edges touching a hidden node hide with it. */
+  hiddenNodeIds?: Iterable<string>;
+  /** Edge ids (the edge's `id`, or its index when it has none) to hide in place. */
+  hiddenEdgeIds?: Iterable<string | number>;
 }
 
 /**
